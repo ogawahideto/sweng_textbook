@@ -82,3 +82,6 @@ python -m unittest discover tests
 *   **Check Progress:** `cat progress.md`
 *   **Read Style Guide:** `cat style-guide.md`
 *   **List Chapters:** `ls -R chapters/`
+
+## Gemini Added Memories
+- **Commit Frequency:** Commit changes frequently, ideally after completing each logical unit of work (e.g., finishing a single section draft, completing a refactor, or updating a config file). Do not wait for large batches of changes.
