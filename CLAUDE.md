@@ -69,6 +69,7 @@
 | `/session-log` | セッションログを更新（日次運用） |
 | `/positive-check [パス]` | ネガティブ表現をスキャンして代替案を提案 |
 | `/progress` | 進捗状況と次のタスクを表示 |
+| `/find-references [節]` | 参考文献を調査して提案 |
 
 スキル定義: `.ai/commands/`
 
