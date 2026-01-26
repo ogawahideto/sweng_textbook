@@ -84,4 +84,5 @@ python -m unittest discover tests
 *   **List Chapters:** `ls -R chapters/`
 
 ## Gemini Added Memories
+- **Strict Configuration Adherence:** ALWAYS strictly follow the definitions, roles, and workflows found in the `.ai/` directory (including `.ai/agents.md`, `.ai/workflows/`, and `.ai/commands/`). These files are the authoritative source for your behavior, tone, and process in this project.
 - **Commit Frequency:** Commit changes frequently, ideally after completing each logical unit of work (e.g., finishing a single section draft, completing a refactor, or updating a config file). Do not wait for large batches of changes.
