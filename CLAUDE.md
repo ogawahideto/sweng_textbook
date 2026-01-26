@@ -70,8 +70,23 @@
 | `/positive-check [パス]` | ネガティブ表現をスキャンして代替案を提案 |
 | `/progress` | 進捗状況と次のタスクを表示 |
 | `/find-references [節]` | 参考文献を調査して提案 |
+| `/update-toc` | 目次（toc.md）を最新状態に更新 |
+| `/chapter-consistency [章]` | 章内のセクション間整合性を確認 |
+| `/draw-svg [種類] [対象]` | 図の草稿をSVG形式で作成 |
 
 スキル定義: `.ai/commands/`
+
+## 自動実行タイミング
+
+以下のタイミングで該当スキルを実行:
+
+| タイミング | 実行するスキル |
+|-----------|---------------|
+| セッション開始時 | `/session-log`（前回分の確認・更新） |
+| 新しいセクション追加後 | `/update-toc` |
+| セクションタイトル変更後 | `/update-toc` |
+| 章のレビュー完了後 | `/chapter-consistency`, `/update-toc` |
+| セッション終了時 | `/update-toc`, `/session-log`
 
 ## 第1章の構成（完成）
 
