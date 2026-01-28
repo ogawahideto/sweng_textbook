@@ -77,6 +77,22 @@ python -m unittest discover tests
 *   **Tone:** The textbook should be engaging, using metaphors of magic and adventure ("Alchemy," "Grimoires," "Quests") to explain technical concepts.
 *   **AI Role:** AI acts as a "Co-author" or "Familiar," assisting with drafting, reviewing, and code generation, but the Human retains the "Architect" role.
 
+### Commit Rules
+
+**Separate changes with different intents into individual commits.**
+
+```
+# Good Examples
+git commit -m "docs: Add explanation of sorting algorithms to Section 3.1"
+git commit -m "docs: Add technical expression allowance rules to style guide"
+
+# Bad Example
+git commit -m "docs: Expand Section 3.1 and update style guide"  # Two intents mixed
+```
+
+- 1 Commit = 1 Logical Unit of Change
+- Makes review easier and allows for individual reverts if necessary.
+
 ## 5. Quick Commands
 
 *   **Check Progress:** `cat progress.md`
