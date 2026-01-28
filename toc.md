@@ -37,10 +37,11 @@
 ### 第3章 モダン・アルケミー——論理を具現化する実装の技法
 
 - [第3章 概要](chapters/part2/chapter03/chapter03.md) — 🟨 AI草稿
-- [3.1 魔力の原子——アルゴリズムとデータ構造](chapters/part2/chapter03/3-1.md) — 🟨 AI草稿
-- [3.2 魔力の流転——制御構造と論理の美学](chapters/part2/chapter03/3-2.md) — 🟨 AI草稿
-- [3.3 詠唱による具現化——AIとの共鳴](chapters/part2/chapter03/3-3.md) — 🟨 AI草稿
-- [3.4 多彩なる術式——言語の壁を超える](chapters/part2/chapter03/3-4.md) — 🟨 AI草稿
+- [3.1 魔導の元素——アルゴリズムとデータ構造](chapters/part2/chapter03/3-1.md) — 🟦 人間修正中
+- [3.2 術式の構築——制御構造と論理の美学](chapters/part2/chapter03/3-2.md) — 🟨 AI草稿
+- [3.3 審美眼の錬磨——コードの評価と静的解析](chapters/part2/chapter03/3-3.md) — 🟨 AI草稿
+- [3.4 詠唱による具現化——AIとの共鳴](chapters/part2/chapter03/3-4.md) — 🟨 AI草稿
+- [3.5 多彩なる術式——言語の壁を超える](chapters/part2/chapter03/3-5.md) — 🟨 AI草稿
 
 ### 第4章 リファクタリング：彫刻を磨く喜び
 
