@@ -38,10 +38,11 @@
 
 - [第3章 概要](chapters/part2/chapter03/chapter03.md) — 🟨 AI草稿
 - [3.1 魔導の元素——アルゴリズムとデータ構造](chapters/part2/chapter03/3-1.md) — 🟦 人間修正中
-- [3.2 術式の構築——制御構造と論理の美学](chapters/part2/chapter03/3-2.md) — 🟨 AI草稿
-- [3.3 審美眼の錬磨——コードの評価と静的解析](chapters/part2/chapter03/3-3.md) — 🟨 AI草稿
-- [3.4 詠唱による具現化——AIとの共鳴](chapters/part2/chapter03/3-4.md) — 🟨 AI草稿
-- [3.5 多彩なる術式——言語の壁を超える](chapters/part2/chapter03/3-5.md) — 🟨 AI草稿
+- [3.2 術式の構築——制御構造と論理の美学](chapters/part2/chapter03/3-2.md) — 🟦 人間修正中
+- [3.3 術式の器——関数・クラス・モジュール](chapters/part2/chapter03/3-3.md) — 🟨 AI草稿
+- [3.4 審美眼の錬磨——コードの評価と静的解析](chapters/part2/chapter03/3-4.md) — 🟩 暫定完了
+- [3.5 詠唱による具現化——自律型エージェントとの共闘](chapters/part2/chapter03/3-5.md) — 🟦 人間修正中
+- [3.6 多彩なる魔導体系——言語の壁を超える](chapters/part2/chapter03/3-6.md) — 🟦 人間修正中
 
 ### 第4章 リファクタリング：彫刻を磨く喜び
 
