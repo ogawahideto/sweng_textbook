@@ -79,3 +79,4 @@
 - 📚 **書籍**: Lisa Crispin, Janet Gregory『Agile Testing』（アジャイルにおけるテスト戦略）
 - 📚 **書籍**: Cem Kaner, Jack Falk, Hung Q. Nguyen『Testing Computer Software』（テスト技法の古典）
 - 📚 **書籍**: 秋山浩一『ソフトウェアテスト技法ドリル』（テスト設計の実践演習）
+- 📚 **書籍**: 小川秀人、佐藤陽春、森拓郎、加賀洋渡『土台からしっかり学ぶ ソフトウェアテストのセオリー』（テスト全般の体系的な理解）
