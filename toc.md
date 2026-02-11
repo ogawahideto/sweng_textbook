@@ -14,14 +14,14 @@
 
 ### 第1章 ドメインという名の異世界探検——要求工学入門 🟩
 
-- [第1章 概要](chapters/part1/chapter01/chapter01.md) — 🟨 AI草稿
-- [1.1 なぜ聴くのか？——要求工学という冒険の始まり](chapters/part1/chapter01/1-1.md) — 🟨 AI草稿
-- [1.2 どう聴くか？——アクティブ・リスニングの技法](chapters/part1/chapter01/1-2.md) — 🟨 AI草稿
-- [1.3 誰に聴くか？——AIペルソナとの対話](chapters/part1/chapter01/1-3.md) — 🟨 AI草稿
-- [1.4 どう整理するか？——ゴール指向要求分析](chapters/part1/chapter01/1-4.md) — 🟨 AI草稿
-- [1.5 どう可視化するか？——要求を描く魔法陣（UML前編）](chapters/part1/chapter01/1-5.md) — 🟨 AI草稿
+- [第1章 概要](chapters/part1/chapter01/chapter01.md) — 🟩 暫定完了
+- [1.1 なぜ聴くのか？——要求工学という冒険の始まり](chapters/part1/chapter01/1-1.md) — 🟩 暫定完了
+- [1.2 どう聴くか？——アクティブ・リスニングの技法](chapters/part1/chapter01/1-2.md) — 🟩 暫定完了
+- [1.3 誰に聴くか？——AIペルソナとの対話](chapters/part1/chapter01/1-3.md) — 🟩 暫定完了
+- [1.4 どう整理するか？——ゴール指向要求分析](chapters/part1/chapter01/1-4.md) — 🟩 暫定完了
+- [1.5 どう可視化するか？——要求を描く魔法陣（UML前編）](chapters/part1/chapter01/1-5.md) — 🟩 暫定完了
 
-### 第2章 悠久のアーキテクチャ——ソフトウェア設計入門
+### 第2章 悠久のアーキテクチャ——ソフトウェア設計入門 🟩
 
 - [第2章 概要](chapters/part1/chapter02/chapter02.md) — 🟨 AI草稿
 - [2.1 オブジェクト指向という魔法の源](chapters/part1/chapter02/2-1.md) — 🟩 暫定完了
@@ -34,9 +34,9 @@
 
 ## 第2部 構築のダイナミズム
 
-### 第3章 モダン・アルケミー——論理を具現化する実装の技法
+### 第3章 モダン・アルケミー——論理を具現化する実装の技法 🟩
 
-- [第3章 概要](chapters/part2/chapter03/chapter03.md) — 🟨 AI草稿
+- [第3章 概要](chapters/part2/chapter03/chapter03.md) — 🟩 暫定完了
 - [3.1 魔導の元素——アルゴリズムとデータ構造](chapters/part2/chapter03/3-1.md) — 🟩 暫定完了
 - [3.2 術式の構築——制御構造と論理の美学](chapters/part2/chapter03/3-2.md) — 🟩 暫定完了
 - [3.3 術式の器——関数・クラス・モジュール](chapters/part2/chapter03/3-3.md) — 🟩 暫定完了
@@ -64,17 +64,17 @@
 - [第5章 概要](chapters/part3/chapter05/chapter05.md) — 🟨 AI草稿
 - [5.1 コードの「匂い」を嗅ぎ分ける](chapters/part3/chapter05/5-1.md) — 🟦 人間修正中
 - [5.2 AIによるコードレビュー](chapters/part3/chapter05/5-2.md) — 🟨 AI草稿
-- [5.3 技術負債の返済ゲーム](chapters/part3/chapter05/5-3.md) — 🟨 AI草稿
+- [5.3 技術負債の返済ゲーム](chapters/part3/chapter05/5-3.md) — 🟩 暫定完了
 
-### 第6章 進化する生命体——デプロイと運用
+### 第6章 進化する生命体——デプロイと運用 🟩
 
-- [第6章 概要](chapters/part3/chapter06/chapter06.md) — 🟨 AI草稿
-- 6.1 命を吹き込む儀式——デプロイメントの進化 — 📝 未着手
-- 6.2 絶え間なき循環——CI/CDパイプライン — 📝 未着手
+- [第6章 概要](chapters/part3/chapter06/chapter06.md) — 🟩 暫定完了
+- [6.1 命を吹き込む儀式——デプロイメントの進化](chapters/part3/chapter06/6-1.md) — 🟩 暫定完了
+- [6.2 絶え間なき循環——CI/CDパイプライン](chapters/part3/chapter06/6-2.md) — 🟩 暫定完了
 - [6.3 鍛冶場の結界——セキュリティという守りの技法](chapters/part3/chapter06/6-3.md) — 🟩 暫定完了
-- 6.4 脈動を聴く——オブザーバビリティ — 📝 未着手
-- 6.5 カオスへの耐性——レジリエンスと自己修復 — 📝 未着手
-- 6.6 ユーザーとの共進化——フィードバックループ — 📝 未着手
+- [6.4 脈動を聴く——オブザーバビリティ](chapters/part3/chapter06/6-4.md) — 🟩 暫定完了
+- [6.5 カオスへの耐性——レジリエンスと自己修復](chapters/part3/chapter06/6-5.md) — 🟩 暫定完了
+- [6.6 ユーザーとの共進化——フィードバックループ](chapters/part3/chapter06/6-6.md) — 🟩 暫定完了
 
 ---
 
@@ -100,9 +100,9 @@
 | 状態 | セクション数 |
 |------|-------------|
 | ✅ 完成 | 1 |
-| 🟩 暫定完了 | 21 |
+| 🟩 暫定完了 | 31 |
 | 🟦 人間修正中 | 1 |
-| 🟨 AI草稿 | 22 |
-| 📝 未着手 | 5 |
+| 🟨 AI草稿 | 17 |
+| 📝 未着手 | 0 |
 
-**最終更新**: 2026-02-09
+**最終更新**: 2026-02-11
