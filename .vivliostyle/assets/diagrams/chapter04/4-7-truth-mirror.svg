@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 350" width="500" height="350">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .mirror { fill: #E1F5FE; stroke: #0288D1; stroke-width: 4; }
+      .text-main { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: bold; fill: #333; text-anchor: middle; }
+      .formula { font-family: 'serif'; font-size: 18px; fill: #01579B; font-style: italic; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="500" height="350" class="bg"/>
+  
+  <text x="250" y="40" class="text-main" font-size="18">真理の鏡（形式手法）</text>
+
+  <!-- Mirror -->
+  <ellipse cx="250" cy="180" rx="150" ry="100" class="mirror" />
+  <text x="250" y="170" class="formula">∀ s ∈ States, P(s)</text>
+  <text x="250" y="200" class="text-main" font-size="12">不変条件の網羅的検証</text>
+
+  <!-- Results -->
+  <text x="100" y="280" class="text-main" fill="#43A047">証明 (Proof)</text>
+  <text x="400" y="280" class="text-main" fill="#D32F2F">反例 (Counterexample)</text>
+
+  <text x="250" y="320" class="text-main">「漏れ」のない論理の鑑定</text>
+</svg>

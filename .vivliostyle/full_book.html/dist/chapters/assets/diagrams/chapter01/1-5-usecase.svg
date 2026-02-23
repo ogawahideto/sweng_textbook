@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <style>
+      .actor-body { stroke: #4A90D9; stroke-width: 2; fill: none; }
+      .actor-head { fill: #4A90D9; }
+      .usecase { fill: #E3F2FD; stroke: #4A90D9; stroke-width: 2; }
+      .system-boundary { fill: #FAFAFA; stroke: #999; stroke-width: 2; stroke-dasharray: 5,5; }
+      .connection { stroke: #666; stroke-width: 1.5; fill: none; }
+      .arrow { stroke: #666; stroke-width: 1; fill: none; stroke-dasharray: 4,2; marker-end: url(#arrowhead); }
+      .label { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; fill: #333; text-anchor: middle; }
+      .label-rel { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; fill: #666; text-anchor: middle; background-color: white; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon fill="#666" points="0 0, 10 3.5, 0 7" />
+    </marker>
+  </defs>
+
+  <title>QuestForge ユースケース図</title>
+
+  <!-- システム境界 -->
+  <rect class="system-boundary" x="200" y="30" width="400" height="440" rx="10"/>
+  <text x="400" y="60" class="label" font-weight="bold">QuestForge</text>
+
+  <!-- アクター: 勇者 (左) -->
+  <g transform="translate(100, 200)">
+    <circle class="actor-head" cx="0" cy="-25" r="12"/>
+    <line class="actor-body" x1="0" y1="-13" x2="0" y2="15"/>
+    <line class="actor-body" x1="-20" y1="0" x2="20" y2="0"/>
+    <line class="actor-body" x1="0" y1="15" x2="-15" y2="40"/>
+    <line class="actor-body" x1="0" y1="15" x2="15" y2="40"/>
+    <text class="label" x="0" y="60">勇者</text>
+  </g>
+
+  <!-- ユースケース1: クエスト作成 -->
+  <g transform="translate(350, 120)">
+    <ellipse class="usecase" cx="0" cy="0" rx="90" ry="30"/>
+    <text class="label" x="0" y="5">クエストを作成する</text>
+  </g>
+
+  <!-- ユースケース2: クエスト完了 -->
+  <g transform="translate(350, 220)">
+    <ellipse class="usecase" cx="0" cy="0" rx="90" ry="30"/>
+    <text class="label" x="0" y="5">クエストを完了する</text>
+  </g>
+
+  <!-- ユースケース3: 経験値獲得 -->
+  <g transform="translate(350, 320)">
+    <ellipse class="usecase" cx="0" cy="0" rx="90" ry="30"/>
+    <text class="label" x="0" y="5">経験値を獲得する</text>
+  </g>
+
+  <!-- ユースケース4: レベルアップ -->
+  <g transform="translate(350, 420)">
+    <ellipse class="usecase" cx="0" cy="0" rx="90" ry="30"/>
+    <text class="label" x="0" y="5">レベルアップする</text>
+  </g>
+
+  <!-- 接続 -->
+  <line class="connection" x1="120" y1="200" x2="260" y2="120"/> <!-- 勇者 -> 作成 -->
+  <line class="connection" x1="120" y1="200" x2="260" y2="220"/> <!-- 勇者 -> 完了 -->
+
+  <!-- Include / Extend -->
+  <path d="M 350 250 L 350 290" class="arrow"/>
+  <text x="385" y="275" class="label-rel">&lt;&lt;include&gt;&gt;</text>
+
+  <path d="M 350 390 L 350 350" class="arrow"/>
+  <text x="385" y="375" class="label-rel">&lt;&lt;extend&gt;&gt;</text>
+
+</svg>

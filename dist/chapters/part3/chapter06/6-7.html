@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>6.7 【外伝】浮遊する魔導城——サーバーレスとクラウドの経済学</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+    <style>
+        body { max-width: 900px; margin: 0 auto; background: white; }
+        section { padding: 20px; }
+        img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body style="margin:0; padding:0;">
+
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part3/chapter06/6-6.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part4/chapter07/chapter07.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    <main>
+    <section class="level1">
+      <h1 id="67-外伝浮遊する魔導城サーバーレスとクラウドの経済学">6.7 【外伝】浮遊する魔導城——サーバーレスとクラウドの経済学</h1>
+      <figure>
+        <img src="../../../assets/images/chapter_covers/Gaiden_Serverless.png" alt="扉絵: 浮遊城">
+        <figcaption aria-hidden="true">扉絵: 浮遊城</figcaption>
+      </figure>
+      <section class="level2">
+        <h2 id="導入-実体を持たないインフラ">導入: 実体を持たないインフラ</h2>
+        <p>かつて、魔法を発動させるには自前の魔法陣（サーバー）を丹念に描き、維持し続ける必要がありました。しかし現代のクラウドという空には、必要な時だけ顕現し、役目を終えれば雲散霧消する<strong>「浮遊する魔導城（サーバーレス）」</strong>が存在します。</p>
+        <p>サーバーレス（AWS Lambdaなど）やコンテナオーケストレーション（Kubernetes）は、アルケミストを「インフラの管理」という重労働から解放し、本質的な「魔法の記述」に専念させてくれます。本節では、この実体を持たない城の運用術と、その代償である「魔力（コスト）」の管理を学びます。</p>
+        <figure>
+          <img src="../../../assets/diagrams/chapter06/6-7-floating-castle.svg" alt="浮遊する魔導城">
+          <figcaption aria-hidden="true">浮遊する魔導城</figcaption>
+        </figure>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="瞬時の顕現faasとイベント駆動">瞬時の顕現：FaaSとイベント駆動</h2>
+        <p>サーバーレスの極意は、<strong>「イベントが発生した時だけ、魔力が物質化する」</strong>という点にあります。</p>
+        <ul>
+          <li><strong>従来</strong>: 冒険者が一人もいない夜中も、城（サーバー）の門番に給料を払い続ける。</li>
+          <li><strong>サーバーレス</strong>: 冒険者が門を叩いた瞬間だけ、門番が召喚され、仕事が終われば消える。</li>
+        </ul>
+        <p>このアプローチにより、私たちは「スケーラビリティ（拡張性）」という最強の魔法を手にします。冒険者が1人でも、100万人でも、浮遊城はそれに応じて自ずと大きさを変えるのです。</p>
+      </section>
+      <section class="level2">
+        <h2 id="魔力の節約術finops">魔力の節約術：FinOps</h2>
+        <p>浮遊城の維持には、物理的な実体がない代わりに、精緻な「魔力の代償（課金）」が求められます。</p>
+        <p>無駄な呪文を走らせ続ければ、クラウドの魔力供給源から膨大な請求が届きます。<strong>FinOps（フィノプス）</strong>とは、技術力を使って魔力の消費を最適化する、現代の「節約術」です。</p>
+        <ul>
+          <li><strong>適切なリソースの配分</strong>: 必要な分の魔力（メモリ）だけを割り当てる。</li>
+          <li><strong>冷たい始動（Cold Start）への対策</strong>: 召喚にかかる時間を最小限に抑える術式を組む。</li>
+        </ul>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="まとめ">まとめ</h2>
+        <ol>
+          <li><strong>実体からの解放</strong>: サーバーという「モノ」ではなく、「価値（コード）」の実行に集中する。</li>
+          <li><strong>変化への適応</strong>: 負荷に応じて自動で伸縮する、しなやかなインフラを構築する。</li>
+          <li><strong>経済的な美学</strong>: 効率的な術式は、コストという面でも「美しく」あるべきである。</li>
+        </ol>
+        <p>あなたの魔法は、もう地面に縛られる必要はありません。広大なクラウドの空へ、城を浮かべましょう。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <pre class="language-prompt"><code class="language-prompt">AWS Lambda と API Gateway を使って、QuestForgeの「通知送信機能」を実装したいです。
+イベント駆動（SNSやEventBridgeとの連携）を意識したアーキテクチャ構成案と、
+コストを最小限に抑えるためのTerraformコードの例を提示してください。</code></pre>
+      </section>
+    </section>
+  
+
+</main>
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part3/chapter06/6-6.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part4/chapter07/chapter07.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    </body></html>

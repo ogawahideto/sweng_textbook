@@ -19,8 +19,6 @@
         <a href="../../../chapters/part1/chapter02/2-5.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
     </nav>
     <main>
-    
-    
     <section class="level1">
       <h1 id="24-どう受け継ぐかデザインパターンの知恵">2.4 どう受け継ぐか？——デザインパターンの知恵</h1>
       <section class="level2">
@@ -200,7 +198,10 @@
         <p>QuestForgeの開発において、特に役立つ「3つの処方箋」を紹介しましょう。</p>
         <section class="level3">
           <h3 id="1-strategyパターン戦術の切り替え">1. Strategyパターン：戦術の切り替え</h3>
-          <p>[図: StrategyパターンによるXP計算の差し替え]</p>
+          <figure>
+            <img src="../../assets/diagrams/chapter02/2-4-strategy.svg" alt="StrategyパターンによるXP計算の差し替え">
+            <figcaption aria-hidden="true">StrategyパターンによるXP計算の差し替え</figcaption>
+          </figure>
           <p><strong>課題</strong>: クエストの経験値計算ロジックが、「通常時」「キャンペーン期間中」「プレミアム会員」などで頻繁に変わる。<code>if</code>文の嵐になりそうだ。</p>
           <p><strong>処方箋</strong>: 「計算ロジック（戦術）」をクラスとして独立させ、切り替え可能にする。</p>
           <pre class="language-python"><code class="language-python"><span class="token comment"># 戦術のインターフェース</span>
@@ -220,7 +221,7 @@
         self<span class="token punctuation">.</span>strategy <span class="token operator">=</span> strategy
 
     <span class="token keyword">def</span> <span class="token function">complete</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        <span class="token keyword">return</span> self<span class="token punctuation">.</span>strategy<span class="token punctuation">.</span>calculate<span class="token punctuation">(</span>self<span class="token punctuation">.</span>base_exp<span class="token punctuation">)</span></code></pre>
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>strategy<span class="token punctuation">.</span>calculate<span class="token punctuation">(</span>self<span class="token punctuation">.</span>base_xp<span class="token punctuation">)</span></code></pre>
           <p><strong>効果</strong>: どんなに計算式が増えても、<code>Quest</code>クラスは無傷です（OCPの遵守）。</p>
         </section>
         <section class="level3">
@@ -298,29 +299,10 @@ repo<span class="token punctuation">.</span>save<span class="token punctuation">
         <section class="level3">
           <h3 id="ステップ3-魔法陣設計図を確認する">ステップ3: 魔法陣（設計図）を確認する</h3>
           <p>AIが出力したMermaidコードをエディタやプレビューツールで確認しましょう。以下のような構造が表示されるはずです。</p>
-          <pre class="language-mermaid"><code class="language-mermaid"><span class="token keyword">classDiagram</span>
-    <span class="token keyword">class</span> Monster <span class="token punctuation">{</span>
-        -state<span class="token operator">:</span> State
-        +changeState<span class="token text string">(State)</span>
-        +act<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token arrow operator">--</span> state.execute<span class="token text string">(this)</span>を呼び出す
-    <span class="token punctuation">}</span>
-    <span class="token keyword">class</span> State <span class="token punctuation">{</span>
-        <span class="token annotation important">&lt;&lt;interface&gt;&gt;</span>
-        +execute<span class="token text string">(Monster)</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">class</span> IdleState <span class="token punctuation">{</span>
-        +execute<span class="token text string">(Monster)</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">class</span> ChaseState <span class="token punctuation">{</span>
-        +execute<span class="token text string">(Monster)</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">class</span> AttackState <span class="token punctuation">{</span>
-        +execute<span class="token text string">(Monster)</span>
-    <span class="token punctuation">}</span>
-    Monster <span class="token arrow operator">o--</span> State <span class="token operator">:</span> 現在の状態
-    <span class="token keyword">State</span> <span class="token arrow operator">&lt;|..</span> IdleState
-    <span class="token keyword">State</span> <span class="token arrow operator">&lt;|..</span> ChaseState
-    <span class="token keyword">State</span> <span class="token arrow operator">&lt;|..</span> AttackState</code></pre>
+          <figure>
+            <img src="../../assets/diagrams/chapter02/2-4-state-monster.svg" alt="モンスターの行動パターンの設計図（Stateパターン）">
+            <figcaption aria-hidden="true">モンスターの行動パターンの設計図（Stateパターン）</figcaption>
+          </figure>
           <p>
             コードを1行も書かずに、複雑な状態遷移をきれいに整理する「構造」が見えましたか？
             これがデザインパターンの力であり、設計の楽しさです。
@@ -363,9 +345,7 @@ repo<span class="token punctuation">.</span>save<span class="token punctuation">
     </section>
   
 
-
-    
-    </main>
+</main>
     <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
         <a href="../../../chapters/part1/chapter02/2-3.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
         <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>

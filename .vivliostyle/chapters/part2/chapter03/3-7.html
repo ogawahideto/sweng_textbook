@@ -97,9 +97,20 @@
     reward <span class="token operator">=</span> calculate_reward<span class="token punctuation">(</span>quest<span class="token punctuation">,</span> player<span class="token punctuation">)</span>      <span class="token comment"># CPU計算は同期的に行う</span>
     <span class="token keyword">await</span> save_reward<span class="token punctuation">(</span>reward<span class="token punctuation">)</span>                      <span class="token comment"># I/O待ちの間、また他が進む</span>
     <span class="token keyword">return</span> reward</code></pre>
-          <p>ポイントは、<strong>CPU計算は同期的に実行される</strong>ことです。async/await が威力を発揮するのは、ネットワーク通信やファイル読み書きなどの <strong>I/O バウンドな処理</strong> です。</p>
-          <hr>
         </section>
+      </section>
+      <section class="level2">
+        <h2 id="実践questforgeにおける詠唱の衝突">実践：QuestForgeにおける「詠唱の衝突」</h2>
+        <p>複数の冒険者が同時に同じ成果（共通の宝箱やサーバーの経験値カウンタ）を更新しようとすると、<strong>競合状態（Race Condition）</strong>という魔物が発生します。</p>
+        <p>例えば、QuestForgeで「ギルド全体の合計獲得XP」を管理しているとしましょう。100人の冒険者が同時に10XPずつ獲得したとき、期待される増加量は1,000XPです。しかし、適切な排他制御（ロック）をしないと、ある冒険者の更新が別の冒険者の更新を上書きしてしまい、結果が950XPになってしまうような「魔力の消失」が起こります。</p>
+        <pre class="language-python"><code class="language-python"><span class="token comment"># 危険な並列処理の例</span>
+<span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">add_guild_xp</span><span class="token punctuation">(</span>amount<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    current_xp <span class="token operator">=</span> <span class="token keyword">await</span> db<span class="token punctuation">.</span>get_xp<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token comment"># ここで別の冒険者が介入するスキができる！</span>
+    <span class="token keyword">await</span> db<span class="token punctuation">.</span>save_xp<span class="token punctuation">(</span>current_xp <span class="token operator">+</span> amount<span class="token punctuation">)</span></code></pre>
+        <p>これを防ぐには、<strong>Atomicな操作</strong>（一息に唱え切る魔法）や、<strong>ロック機構</strong>（順番待ちの結界）が必要です。並列詠唱は強力ですが、一貫性を守るための「規律」もセットで学ばなければなりません。</p>
+        <p>ポイントは、<strong>CPU計算は同期的に実行される</strong>ことです。async/await が威力を発揮するのは、ネットワーク通信やファイル読み書きなどの <strong>I/O バウンドな処理</strong> です。</p>
+        <hr>
       </section>
       <section class="level2">
         <h2 id="イベントループ一人のシェフの腕前">イベントループ——一人のシェフの腕前</h2>

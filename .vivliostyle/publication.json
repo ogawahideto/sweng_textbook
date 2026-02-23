@@ -8,7 +8,7 @@
   "name": "「楽しい」ソフトウェア工学の教科書 - デジタル・アルケミー",
   "author": "小川 秀人 & AI Familiar",
   "inLanguage": "ja",
-  "dateModified": "2026-02-23T03:35:39.265Z",
+  "dateModified": "2026-02-23T05:26:32.919Z",
   "readingOrder": [
     {
       "url": "COVER.html",
@@ -45,6 +45,10 @@
     {
       "url": "chapters/part1/chapter01/1-5.html",
       "name": "1.5 どう可視化するか？——要求を描く魔法陣（UML前編）"
+    },
+    {
+      "url": "chapters/part1/chapter01/1-6.html",
+      "name": "1.6 【外伝】言葉の壁を越えて——ドメイン翻訳とバベルの塔"
     },
     {
       "url": "chapters/part1/chapter02/chapter02.html",
@@ -107,6 +111,10 @@
       "name": "3.7 並列詠唱の奥義——非同期・並行プログラミング（The Art of Concurrent Spellcasting）"
     },
     {
+      "url": "chapters/part2/chapter03/3-8.html",
+      "name": "3.8 【外伝】失われた古代技術——レガシーコードの考古学"
+    },
+    {
       "url": "chapters/part2/chapter04/chapter04.html",
       "name": "第4章 無敵の軍団を作る——テストと品質保証"
     },
@@ -133,6 +141,10 @@
     {
       "url": "chapters/part2/chapter04/4-6.html",
       "name": "4.6 術式の不調を探る——デバッグという推理ゲーム（The Art of Debugging）"
+    },
+    {
+      "url": "chapters/part2/chapter04/4-7.html",
+      "name": "4.7 【外伝】真理の鏡——形式手法による「絶対に壊れない」証明"
     },
     {
       "url": "chapters/part3/chapter05/chapter05.html",
@@ -183,6 +195,10 @@
       "name": "6.6 ユーザーとの共進化——フィードバックループ"
     },
     {
+      "url": "chapters/part3/chapter06/6-7.html",
+      "name": "6.7 【外伝】浮遊する魔導城——サーバーレスとクラウドの経済学"
+    },
+    {
       "url": "chapters/part4/chapter07/chapter07.html",
       "name": "第7章 アジャイルという名の冒険パーティ——開発プロセス"
     },
@@ -197,6 +213,10 @@
     {
       "url": "chapters/part4/chapter07/7-3.html",
       "name": "7.3 共鳴する魂——ペアプロ・モブプロ"
+    },
+    {
+      "url": "chapters/part4/chapter07/7-4.html",
+      "name": "7.4 【外伝】冒険者のギルド——知の共有とOSS"
     },
     {
       "url": "chapters/part4/chapter08/chapter08.html",

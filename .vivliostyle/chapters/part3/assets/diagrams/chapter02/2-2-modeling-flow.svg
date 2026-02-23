@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 200" width="500" height="200">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .box { fill: #FFF; stroke-width: 2; rx: 5; }
+      .text-main { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: bold; fill: #333; text-anchor: middle; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon fill="#666" points="0 0, 10 3.5, 0 7" />
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="500" height="200" class="bg"/>
+
+  <g transform="translate(50, 50)">
+    <rect x="0" y="0" width="150" height="80" class="box" style="stroke: #1E88E5;" />
+    <text x="75" y="30" class="text-main">静的な構造</text>
+    <text x="75" y="55" class="text-main" font-size="12" font-weight="normal">(魔法陣)</text>
+    <text x="75" y="75" class="text-main" font-size="16" fill="#1E88E5">クラス図</text>
+  </g>
+
+  <g transform="translate(300, 50)">
+    <rect x="0" y="0" width="150" height="80" class="box" style="stroke: #43A047;" />
+    <text x="75" y="30" class="text-main">動的な振る舞い</text>
+    <text x="75" y="55" class="text-main" font-size="12" font-weight="normal">(儀式)</text>
+    <text x="75" y="75" class="text-main" font-size="16" fill="#43A047">シーケンス図</text>
+  </g>
+
+  <path d="M 200,70 L 290,70" class="arrow" />
+  <text x="245" y="65" class="text-main" font-size="10" font-weight="normal">構造を定義</text>
+
+  <path d="M 300,110 L 210,110" class="arrow" />
+  <text x="245" y="125" class="text-main" font-size="10" font-weight="normal">役割を実証</text>
+</svg>

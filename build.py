@@ -28,16 +28,15 @@ def setup_junctions():
         target = os.path.join(d, 'assets')
         if not os.path.exists(target):
             # mklink /J <link> <target>
-            # Note: Relative target path for junction should be correct relative to the link location
-            # But here we use absolute or relative to root for simplicity
-            run_command(f'cmd /c "mklink /J {target} assets"', f"Creating junction for {target}")
+            # Use absolute path to ensure junction works regardless of CWD
+            abs_assets = os.path.abspath('assets')
+            run_command(f'cmd /c "mklink /J {target} {abs_assets}"', f"Creating junction for {target}")
 
 def main():
-    # 1. ジャンクション作成（Markdownファイルを書き換えずにパスを解決するため）
+    # 1. ジャンクション作成
     setup_junctions()
 
     # 2. Vivliostyle ビルド
-    # --output dist/ でWeb出版形式を出力
     if not run_command("vivliostyle build --output dist/", "Running Vivliostyle build"):
         sys.exit(1)
 
@@ -45,11 +44,9 @@ def main():
     if not run_command("python scripts/fix_web_dist.py", "Running post-process script"):
         sys.exit(1)
 
-    print("
-========================================")
+    print("\n========================================")
     print("Build Complete! Open 'dist/index.html' to view the book.")
-    print("========================================
-")
+    print("========================================\n")
 
 if __name__ == "__main__":
     main()

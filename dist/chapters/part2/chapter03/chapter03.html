@@ -19,8 +19,6 @@
         <a href="../../../chapters/part2/chapter03/3-1.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
     </nav>
     <main>
-    
-    
     <section class="level1">
       <h1 id="第3章-モダンアルケミー論理を具現化する実装の技法">第3章 モダン・アルケミー——論理を具現化する実装の技法</h1>
       <figure>
@@ -32,89 +30,14 @@
         <p>第2章で「城の設計図（アーキテクチャ）」を描き終えたあなたは、ついに現場での「建築（実装）」に取り組む準備が整いました。</p>
         <p>実装とは、抽象的な設計という「魂」を、具象的なコードという「肉体」に宿らせる儀式です。現代のアルケミスト（エンジニア）には、伝統的な計算機科学の知識に加え、AIという強力な「精霊」と共鳴し、爆速で高品質なコードを生み出す技術が求められます。</p>
         <p>この章では、<strong>AI駆動の実装技法（Modern Implementation）</strong>を学びます。アルゴリズムという最小単位から、美しく淀みのないロジック、そしてAIへの「詠唱（プロンプト）」による自動生成まで——設計図を動くソフトウェアへと昇華させる力を身につけましょう。</p>
-        <hr>
-      </section>
-      <section class="level2">
-        <h2 id="章の構成">章の構成</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>セクション</th>
-              <th>タイトル</th>
-              <th>学ぶこと</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>3.1</td>
-              <td>魔導の元素</td>
-              <td>アルゴリズムとデータ構造、計算量（O記法）の本質</td>
-            </tr>
-            <tr>
-              <td>3.2</td>
-              <td>術式の構築</td>
-              <td>制御構造、可読性、ガード節、複雑度の管理</td>
-            </tr>
-            <tr>
-              <td>3.3</td>
-              <td>術式の器</td>
-              <td>関数・クラス・モジュールによる処理の構造化</td>
-            </tr>
-            <tr>
-              <td>3.4</td>
-              <td>審美眼の錬磨</td>
-              <td>コードメトリクス、静的解析、型チェックによる品質評価</td>
-            </tr>
-            <tr>
-              <td>3.5</td>
-              <td>詠唱による具現化</td>
-              <td>自律型エージェントとの共闘、AIとの設計・実装協働</td>
-            </tr>
-            <tr>
-              <td>3.6</td>
-              <td>多彩なる魔導体系</td>
-              <td>プログラミングパラダイム、静的・動的型付け、言語横断開発</td>
-            </tr>
-            <tr>
-              <td>3.7</td>
-              <td>並列詠唱の奥義</td>
-              <td>非同期・並行プログラミング、async/await、CSP・アクターモデル</td>
-            </tr>
-          </tbody>
-        </table>
-        <hr>
       </section>
       <section class="level2">
         <h2 id="冒険の地図">冒険の地図</h2>
-        <pre class="language-text"><code class="language-text">┌─────────────────────────────────────────────────────────────┐
-│                                                             │
-│   [3.1 魔導の元素] ←── アルゴリズムとデータ構造（元素）        │
-│         │                                                   │
-│         ▼                                                   │
-│   [3.2 術式の構築] ←── 美しく淀みのない術式（構築）           │
-│         │                                                   │
-│         ▼                                                   │
-│   [3.3 術式の器] ←── 関数・クラス・モジュール（構造化）       │
-│         │                                                   │
-│         ▼                                                   │
-│   [3.4 審美眼の錬磨] ←── コード品質の鑑定と解析（評価）      │
-│         │                                                   │
-│         ▼                                                   │
-│   [3.5 詠唱による具現化] ←── 詠唱（プロンプト）による具現化    │
-│         │                                                   │
-│         ▼                                                   │
-│   [3.6 多彩なる魔導体系] ←── 多彩なる言語とパラダイム         │
-│         │                                                   │
-│         ▼                                                   │
-│   [3.7 並列詠唱の奥義] ←── 非同期・並行プログラミング          │
-│         │                                                   │
-│         ▼                                                   │
-│   ──────────────────────────────────────────────────────    │
-│         │                                                   │
-│         ▼                                                   │
-│   [第4章へ] 無敵の軍団を作る（テストと品質保証）               │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘</code></pre>
+        <figure>
+          <img src="../../assets/diagrams/chapter03/chapter03-map.svg" alt="第3章：冒険の地図">
+          <figcaption aria-hidden="true">第3章：冒険の地図</figcaption>
+        </figure>
+        <hr>
         <hr>
       </section>
       <section class="level2">
@@ -144,9 +67,7 @@
     </section>
   
 
-
-    
-    </main>
+</main>
     <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
         <a href="../../../chapters/part1/chapter02/2-6.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
         <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>

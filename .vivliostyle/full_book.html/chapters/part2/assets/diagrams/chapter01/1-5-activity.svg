@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 650" width="600" height="650">
+  <defs>
+    <style>
+      .swimlane { stroke: #DDD; stroke-width: 1; fill: none; }
+      .swimlane-header { font-family: 'Noto Sans JP', sans-serif; font-size: 16px; font-weight: bold; fill: #666; text-anchor: middle; }
+      .node-start { fill: #333; }
+      .node-end { fill: none; stroke: #333; stroke-width: 2; }
+      .node-end-inner { fill: #333; }
+      .action { fill: #E8F5E9; stroke: #7CB342; stroke-width: 2; rx: 15; ry: 15; }
+      .decision { fill: #FFF3E0; stroke: #FFB74D; stroke-width: 2; }
+      .text-action { font-family: 'Noto Sans JP', sans-serif; font-size: 13px; fill: #333; text-anchor: middle; }
+      .arrow { stroke: #666; stroke-width: 1.5; fill: none; marker-end: url(#arrowhead); }
+      .label-decision { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; fill: #666; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon fill="#666" points="0 0, 10 3.5, 0 7" />
+    </marker>
+  </defs>
+
+  <title>クエスト完了フロー（アクティビティ図）</title>
+
+  <!-- スイムレーン -->
+  <line x1="300" y1="50" x2="300" y2="600" class="swimlane" />
+  <text x="150" y="40" class="swimlane-header">勇者</text>
+  <text x="450" y="40" class="swimlane-header">QuestForge (システム)</text>
+
+  <!-- 開始 -->
+  <circle cx="150" cy="80" r="10" class="node-start" />
+  <path d="M 150 90 L 150 120" class="arrow" />
+
+  <!-- 勇者: 完了ボタン押下 -->
+  <g transform="translate(150, 145)">
+    <rect x="-70" y="-25" width="140" height="50" class="action" />
+    <text x="0" y="5" class="text-action">完了ボタン押下</text>
+  </g>
+  <path d="M 220 145 L 380 145" class="arrow" />
+
+  <!-- システム: 経験値を計算 -->
+  <g transform="translate(450, 145)">
+    <rect x="-70" y="-25" width="140" height="50" class="action" />
+    <text x="0" y="5" class="text-action">経験値を計算</text>
+  </g>
+  <path d="M 450 170 L 450 220" class="arrow" />
+
+  <!-- システム: 分岐 -->
+  <polygon points="450,220 480,250 450,280 420,250" class="decision" />
+  
+  <!-- 分岐 -> レベルアップ -->
+  <path d="M 450 280 L 450 330" class="arrow" />
+  <text x="460" y="300" class="label-decision">[レベルアップ]</text>
+  
+  <g transform="translate(450, 355)">
+    <rect x="-70" y="-25" width="140" height="50" class="action" />
+    <text x="0" y="5" class="text-action">演出表示</text>
+  </g>
+  <path d="M 450 380 L 450 430" class="arrow" />
+
+  <!-- 分岐 -> 通常 -->
+  <path d="M 480 250 L 550 250 L 550 455 L 520 455" class="arrow" />
+  <text x="490" y="240" class="label-decision">[通常]</text>
+
+  <!-- 合流後の処理: 結果を保存 -->
+  <g transform="translate(450, 455)">
+    <rect x="-70" y="-25" width="140" height="50" class="action" />
+    <text x="0" y="5" class="text-action">結果を保存</text>
+  </g>
+  <path d="M 380 455 L 220 455" class="arrow" />
+
+  <!-- 勇者: 結果を確認 -->
+  <g transform="translate(150, 455)">
+    <rect x="-70" y="-25" width="140" height="50" class="action" />
+    <text x="0" y="5" class="text-action">結果を確認</text>
+  </g>
+  <path d="M 150 480 L 150 530" class="arrow" />
+
+  <!-- 終了 -->
+  <g transform="translate(150, 550)">
+    <circle cx="0" cy="0" r="12" class="node-end" />
+    <circle cx="0" cy="0" r="8" class="node-end-inner" />
+  </g>
+
+</svg>

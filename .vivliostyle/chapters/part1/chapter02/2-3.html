@@ -105,7 +105,7 @@
     <span class="token keyword">def</span> <span class="token function">complete</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token comment"># 完了処理...</span>
         bonus <span class="token operator">=</span> self<span class="token punctuation">.</span>_calculate_bonus<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment"># ボーナス計算も自分でやる</span>
-        <span class="token keyword">return</span> self<span class="token punctuation">.</span>exp <span class="token operator">+</span> bonus
+        <span class="token keyword">return</span> self<span class="token punctuation">.</span>base_xp <span class="token operator">+</span> bonus
 
     <span class="token keyword">def</span> <span class="token function">_calculate_bonus</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token comment"># 複雑なボーナス計算ロジック...</span>
@@ -118,7 +118,7 @@
     <span class="token triple-quoted-string string">"""経験値計算の専門家"""</span>
     <span class="token keyword">def</span> <span class="token function">calculate</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> quest<span class="token punctuation">:</span> Quest<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">int</span><span class="token punctuation">:</span>
         <span class="token comment"># 専門的な計算ロジック</span>
-        <span class="token keyword">return</span> quest<span class="token punctuation">.</span>base_exp <span class="token operator">+</span> bonus_logic</code></pre>
+        <span class="token keyword">return</span> quest<span class="token punctuation">.</span>base_xp <span class="token operator">+</span> bonus_logic</code></pre>
         </section>
         <section class="level3">
           <h3 id="2-開放閉鎖の原則-ocp">2. 開放閉鎖の原則 (OCP)</h3>

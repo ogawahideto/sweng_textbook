@@ -58,16 +58,10 @@
               <li><strong>活性化（魔力の練成）</strong>: ライフライン上に描かれる細長い長方形。そのオブジェクトが実際に思考し、魔力を練り上げている（処理を実行している）時間を表します。</li>
             </ul>
             <p>クラス図が「どんな魔導具があるか」を示す目録だとすれば、シーケンス図は「それらをどの順番で動かして、どんな奇跡を起こすか」を示す、いわば<strong>詠唱の連鎖</strong>なのです。</p>
-            <pre class="language-mermaid"><code class="language-mermaid"><span class="token keyword">graph</span> TD
-    <span class="token keyword">subgraph</span> <span class="token string">"静的な構造（魔法陣）"</span>
-    C<span class="token text string">[クラス図]</span>
-    <span class="token keyword">end</span>
-    <span class="token keyword">subgraph</span> <span class="token string">"動的な振る舞い（儀式）"</span>
-    S<span class="token text string">[シーケンス図]</span>
-    <span class="token keyword">end</span>
-    C <span class="token inter-arrow-label"><span class="token arrow-head arrow operator">-.</span> <span class="token label property">構造を定義</span> <span class="token arrow operator">.-&gt;</span></span> S
-    S <span class="token inter-arrow-label"><span class="token arrow-head arrow operator">-.</span> <span class="token label property">役割を実証</span> <span class="token arrow operator">.-&gt;</span></span> C</code></pre>
-            <p>[図: クラス図（静）とシーケンス図（動）の補完関係]</p>
+            <figure>
+              <img src="../../assets/diagrams/chapter02/2-2-modeling-flow.svg" alt="要求図（What）から設計図（How）への移行">
+              <figcaption aria-hidden="true">要求図（What）から設計図（How）への移行</figcaption>
+            </figure>
             <hr>
           </section>
         </section>
@@ -78,42 +72,19 @@
         <section class="level3">
           <h3 id="従来のアプローチ要求レベルのモデル">従来のアプローチ（要求レベルのモデル）</h3>
           <p>最初は、ドメインの主要な概念を抽出することから始めます。1.4節のゴール指向分析で特定した要素を、クラスの候補として配置します。</p>
-          <pre class="language-mermaid"><code class="language-mermaid"><span class="token keyword">classDiagram</span>
-    <span class="token keyword">class</span> Hero <span class="token punctuation">{</span>
-        +String name
-        +int level
-        +gainExp<span class="token text string">(amount)</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">class</span> Quest <span class="token punctuation">{</span>
-        +String title
-        +String status
-        +complete<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">class</span> Reward <span class="token punctuation">{</span>
-        +int exp
-        +String item
-    <span class="token punctuation">}</span>
-    Hero <span class="token string">"1"</span> <span class="token arrow operator">--</span> <span class="token string">"*"</span> Quest <span class="token operator">:</span> 挑戦する
-    Quest <span class="token string">"1"</span> <span class="token arrow operator">--</span> <span class="token string">"1"</span> Reward <span class="token operator">:</span> 与える</code></pre>
+          <figure>
+            <img src="../../assets/diagrams/chapter02/2-2-domain-model.svg" alt="QuestForgeのドメインモデル">
+            <figcaption aria-hidden="true">QuestForgeのドメインモデル</figcaption>
+          </figure>
         </section>
         <section class="level3">
           <h3 id="ai時代のアプローチ詳細設計への進化">AI時代のアプローチ（詳細設計への進化）</h3>
           <p>AIを活用すると、このシンプルなモデルから、より実装に近い詳細な設計へとスムーズに移行できます。AIは既存のコードや要求仕様から、クラス間の細かい依存関係や、適切なインターフェースを提案してくれます。</p>
           <p>たとえば、AIとの対話を通じて、「クエスト完了時の報酬付与プロセス」をシーケンス図として具体化してみましょう。</p>
-          <pre class="language-mermaid"><code class="language-mermaid"><span class="token keyword">sequenceDiagram</span>
-    <span class="token keyword">participant</span> User as ユーザー
-    <span class="token keyword">participant</span> QC as QuestController
-    <span class="token keyword">participant</span> Q as Quest
-    <span class="token keyword">participant</span> H as Hero
-    <span class="token keyword">participant</span> R as Reward
-
-    User<span class="token arrow operator">-&gt;&gt;</span>QC<span class="token operator">:</span> クエスト完了を報告
-    QC<span class="token arrow operator">-&gt;&gt;</span>Q<span class="token operator">:</span> set_status<span class="token text string">("Completed")</span>
-    QC<span class="token arrow operator">-&gt;&gt;</span>Q<span class="token operator">:</span> get_reward<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    Q<span class="token arrow operator">--&gt;&gt;</span>QC<span class="token operator">:</span> reward_obj
-    QC<span class="token arrow operator">-&gt;&gt;</span>R<span class="token operator">:</span> apply_to<span class="token text string">(Hero)</span>
-    R<span class="token arrow operator">-&gt;&gt;</span>H<span class="token operator">:</span> add_exp<span class="token text string">(exp)</span>
-    H<span class="token arrow operator">--&gt;&gt;</span>User<span class="token operator">:</span> レベルアップの可能性！</code></pre>
+          <figure>
+            <img src="../../assets/diagrams/chapter02/2-2-sequence-process.svg" alt="クエスト完了プロセスのシーケンス図">
+            <figcaption aria-hidden="true">クエスト完了プロセスのシーケンス図</figcaption>
+          </figure>
         </section>
         <section class="level3">
           <h3 id="比較と考察">比較と考察</h3>
@@ -306,13 +277,10 @@
             以下のコードをエディタに貼り付けてみてください。QuestForgeに「バッジ（Badge）」システムを追加する設計です。
             ここで <code>*--</code> は<strong>コンポジション（強い結びつき）</strong>を表しています。バッジは勇者の実績の一部であり、勇者が消えればバッジも意味をなさなくなる、という設計意図を込めています。
           </p>
-          <pre class="language-mermaid"><code class="language-mermaid"><span class="token keyword">classDiagram</span>
-    Hero <span class="token string">"1"</span> <span class="token arrow operator">*--</span> <span class="token string">"*"</span> Badge <span class="token operator">:</span> 獲得済み<span class="token text string">(Composition)</span>
-    <span class="token keyword">class</span> Badge <span class="token punctuation">{</span>
-        +String name
-        +String description
-        +check_condition<span class="token text string">(Hero)</span>
-    <span class="token punctuation">}</span></code></pre>
+          <figure>
+            <img src="../../assets/diagrams/chapter02/2-2-composition.svg" alt="バッジシステムの設計図">
+            <figcaption aria-hidden="true">バッジシステムの設計図</figcaption>
+          </figure>
         </section>
         <section class="level3">
           <h3 id="ステップ3-aiに図をレビューしてもらう">ステップ3: AIに図をレビューしてもらう</h3>

@@ -14,13 +14,11 @@
 <body style="margin:0; padding:0;">
 
     <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
-        <a href="../../../chapters/part2/chapter03/3-7.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../chapters/part2/chapter03/3-8.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
         <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
         <a href="../../../chapters/part2/chapter04/4-1.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
     </nav>
     <main>
-    
-    
     <section class="level1">
       <h1 id="第4章-無敵の軍団を作るテストと品質保証">第4章 無敵の軍団を作る——テストと品質保証</h1>
       <figure>
@@ -32,81 +30,14 @@
         <p>第3章でコードを実装する技を学びました。しかし、書いたコードも、無防備に野ざらしにしておけば風雨に侵食されてしまいます。</p>
         <p>ソフトウェアの世界における「風雨」とは、仕様変更、機能追加、そしてチームメンバーによる予期しない修正です。これらの変化からコードの品質を守り抜くには、<strong>自動化された守護魔法——テスト</strong>が不可欠です。</p>
         <p>この章では、テストを「面倒な検査作業」ではなく、<strong>コードを安心して進化させ続けるための最強の味方</strong>として捉え直します。伝統的なテスト設計の知恵から、テスト駆動開発のリズム、AIによるテスト生成、そして自動化の基盤まで——あなたのソフトウェアを鉄壁に守る「無敵の軍団」を編成しましょう。</p>
-        <hr>
-      </section>
-      <section class="level2">
-        <h2 id="章の構成">章の構成</h2>
-        <table>
-          <thead>
-            <tr>
-              <th>セクション</th>
-              <th>タイトル</th>
-              <th>学ぶこと</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>4.1</td>
-              <td>守護魔法の体系</td>
-              <td>テストレベル（単体/結合/システム/受入）、テストピラミッド、テストダブル</td>
-            </tr>
-            <tr>
-              <td>4.2</td>
-              <td>鑑定術の技法</td>
-              <td>カバレッジ、同値分割・境界値分析、シナリオベーステスト、探索的テスト</td>
-            </tr>
-            <tr>
-              <td>4.3</td>
-              <td>赤から緑へ</td>
-              <td>テスト駆動開発（TDD）のRed-Green-Refactorサイクル</td>
-            </tr>
-            <tr>
-              <td>4.4</td>
-              <td>AIが放つ刺客</td>
-              <td>AIによるテスト生成、プロパティベーステスト、ミューテーションテスト</td>
-            </tr>
-            <tr>
-              <td>4.5</td>
-              <td>鉄壁の防衛線</td>
-              <td>テスト自動化、CIパイプライン、品質ゲート</td>
-            </tr>
-            <tr>
-              <td>4.6</td>
-              <td>術式の不調を探る</td>
-              <td>体系的デバッグ手法、ロギング、デバッガー、AIデバッグ</td>
-            </tr>
-          </tbody>
-        </table>
-        <hr>
       </section>
       <section class="level2">
         <h2 id="冒険の地図">冒険の地図</h2>
-        <pre class="language-text"><code class="language-text">┌─────────────────────────────────────────────────────────────┐
-│                                                             │
-│   [4.1 体系] ←── テストレベルとピラミッド（全体像）          │
-│         │                                                   │
-│         ▼                                                   │
-│   [4.2 技法] ←── カバレッジ・同値分割・探索的テスト（設計）  │
-│         │                                                   │
-│         ▼                                                   │
-│   [4.3 TDD] ←── Red-Green-Refactorのリズム（実践）          │
-│         │                                                   │
-│         ▼                                                   │
-│   [4.4 AI刺客] ←── AIによるテスト生成と拡張（現代）         │
-│         │                                                   │
-│         ▼                                                   │
-│   [4.5 防衛線] ←── テスト自動化とCI（基盤）                 │
-│         │                                                   │
-│         ▼                                                   │
-│   [4.6 鑑識] ←── デバッグで原因を突き止める（診断）          │
-│         │                                                   │
-│         ▼                                                   │
-│   ──────────────────────────────────────────────────────    │
-│         │                                                   │
-│         ▼                                                   │
-│   [第5章へ] リファクタリング：彫刻を磨く喜び                 │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘</code></pre>
+        <figure>
+          <img src="../../assets/diagrams/chapter04/chapter04-map.svg" alt="第4章：冒険の地図">
+          <figcaption aria-hidden="true">第4章：冒険の地図</figcaption>
+        </figure>
+        <hr>
         <hr>
       </section>
       <section class="level2">
@@ -137,11 +68,9 @@
     </section>
   
 
-
-    
-    </main>
+</main>
     <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
-        <a href="../../../chapters/part2/chapter03/3-7.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../chapters/part2/chapter03/3-8.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
         <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
         <a href="../../../chapters/part2/chapter04/4-1.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
     </nav>

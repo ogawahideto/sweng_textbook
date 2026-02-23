@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" width="500" height="400">
+  <defs>
+    <style>
+      .pyramid-base { fill: #E8F5E9; stroke: #43A047; stroke-width: 2; }
+      .pyramid-middle { fill: #E3F2FD; stroke: #1E88E5; stroke-width: 2; }
+      .pyramid-top { fill: #FFF3E0; stroke: #FB8C00; stroke-width: 2; }
+      .text-level { font-family: 'Noto Sans JP', sans-serif; font-size: 16px; font-weight: bold; fill: #333; text-anchor: middle; }
+      .text-desc { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; fill: #666; text-anchor: middle; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon fill="#666" points="0 0, 10 3.5, 0 7" />
+    </marker>
+  </defs>
+
+  <title>テストピラミッド</title>
+  <rect x="0" y="0" width="500" height="400" fill="#FAFAFA"/>
+
+  <!-- ピラミッド -->
+  <!-- 下層: Unit Tests -->
+  <polygon points="50,350 450,350 390,250 110,250" class="pyramid-base" />
+  <text x="250" y="300" class="text-level">Unit Tests</text>
+  <text x="250" y="320" class="text-desc">単体テスト (大量・高速)</text>
+
+  <!-- 中層: Integration -->
+  <polygon points="110,250 390,250 330,150 170,150" class="pyramid-middle" />
+  <text x="250" y="200" class="text-level">Integration</text>
+  <text x="250" y="220" class="text-desc">結合テスト (中規模)</text>
+
+  <!-- 上層: E2E / System -->
+  <polygon points="170,150 330,150 250,50" class="pyramid-top" />
+  <text x="250" y="110" class="text-level">E2E / System</text>
+  <text x="250" y="130" class="text-desc">システムテスト (少数・低速)</text>
+
+  <!-- 左側の矢印: 速度・コスト -->
+  <line x1="40" y1="350" x2="40" y2="50" class="arrow" />
+  <text x="30" y="200" class="text-label" transform="rotate(-90 30,200)" text-anchor="middle" font-family="sans-serif" font-size="12">実行速度 / コスト</text>
+  <text x="30" y="60" class="text-label" text-anchor="end" font-family="sans-serif" font-size="10">遅い / 高</text>
+  <text x="30" y="340" class="text-label" text-anchor="end" font-family="sans-serif" font-size="10">速い / 低</text>
+
+</svg>

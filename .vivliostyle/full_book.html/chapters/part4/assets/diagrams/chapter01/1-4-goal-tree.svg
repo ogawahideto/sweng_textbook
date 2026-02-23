@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <style>
+      .node-rect { fill: #E3F2FD; stroke: #4A90D9; stroke-width: 2; rx: 5; ry: 5; }
+      .node-rect-strategic { fill: #FFF3E0; stroke: #FFB74D; stroke-width: 3; rx: 5; ry: 5; }
+      .text-node { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; fill: #333; text-anchor: middle; }
+      .text-label { font-family: 'Noto Sans JP', sans-serif; font-size: 10px; fill: #666; background-color: white; }
+      .line { stroke: #666; stroke-width: 1.5; fill: none; }
+    </style>
+  </defs>
+
+  <title>ゴール分解ツリー</title>
+
+  <!-- 戦略ゴール (Root) -->
+  <g transform="translate(400, 50)">
+    <rect x="-150" y="-20" width="300" height="40" class="node-rect-strategic" />
+    <text x="0" y="5" class="text-node">タスク消化を成長の実感に変換する</text>
+  </g>
+
+  <!-- Level 1 Nodes -->
+  <!-- Node 1-1 -->
+  <g transform="translate(200, 150)">
+    <rect x="-90" y="-20" width="180" height="40" class="node-rect" />
+    <text x="0" y="5" class="text-node">意欲を高める</text>
+  </g>
+  <!-- Node 1-2 -->
+  <g transform="translate(400, 150)">
+    <rect x="-90" y="-20" width="180" height="40" class="node-rect" />
+    <text x="0" y="5" class="text-node">継続させる</text>
+  </g>
+  <!-- Node 1-3 -->
+  <g transform="translate(600, 150)">
+    <rect x="-90" y="-20" width="180" height="40" class="node-rect" />
+    <text x="0" y="5" class="text-node">再開を応援する</text>
+  </g>
+
+  <!-- Connections Root -> L1 -->
+  <path d="M 400 70 L 400 110 L 200 110 L 200 130" class="line" />
+  <path d="M 400 110 L 400 130" class="line" />
+  <path d="M 400 110 L 600 110 L 600 130" class="line" />
+
+  <!-- Level 2 Nodes (Breakdown of Node 1-1) -->
+  <!-- Node 2-1 -->
+  <g transform="translate(130, 250)">
+    <rect x="-70" y="-20" width="140" height="40" class="node-rect" />
+    <text x="0" y="5" class="text-node">明確さ</text>
+  </g>
+  <!-- Node 2-2 -->
+  <g transform="translate(270, 250)">
+    <rect x="-70" y="-20" width="140" height="40" class="node-rect" />
+    <text x="0" y="5" class="text-node">報酬</text>
+  </g>
+
+  <!-- Connections L1 -> L2 (AND) -->
+  <path d="M 200 170 L 200 210 L 130 210 L 130 230" class="line" />
+  <path d="M 200 210 L 270 210 L 270 230" class="line" />
+  <text x="205" y="200" class="text-label">[AND]</text>
+
+  <!-- Level 3 Nodes (Breakdown of Node 2-2) -->
+  <!-- Node 3-1 -->
+  <g transform="translate(200, 350)">
+    <rect x="-60" y="-20" width="120" height="40" class="node-rect" />
+    <text x="0" y="5" class="text-node">経験値</text>
+  </g>
+  <!-- Node 3-2 -->
+  <g transform="translate(340, 350)">
+    <rect x="-60" y="-20" width="120" height="40" class="node-rect" />
+    <text x="0" y="5" class="text-node">バッジ</text>
+  </g>
+
+  <!-- Connections L2 -> L3 (OR) -->
+  <path d="M 270 270 L 270 310 L 200 310 L 200 330" class="line" />
+  <path d="M 270 310 L 340 310 L 340 330" class="line" />
+  <text x="275" y="300" class="text-label">[OR]</text>
+
+</svg>

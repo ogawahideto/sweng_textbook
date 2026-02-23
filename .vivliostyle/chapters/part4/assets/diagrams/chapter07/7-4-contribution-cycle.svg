@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" width="500" height="300">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .node { fill: #FFF; stroke-width: 2; }
+      .text-main { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: bold; fill: #333; text-anchor: middle; }
+      .arrow { stroke: #FB8C00; stroke-width: 2; fill: none; marker-end: url(#arrowhead); }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon fill="#FB8C00" points="0 0, 10 3.5, 0 7" />
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="500" height="300" class="bg"/>
+  
+  <text x="250" y="40" class="text-main" font-size="18">知の恩送り（Pay it Forward）</text>
+
+  <!-- Cycle -->
+  <circle cx="150" cy="120" r="40" class="node" style="stroke: #1E88E5;" />
+  <text x="150" y="125" class="text-main">享受</text>
+  <text x="150" y="180" class="text-main" font-size="10" font-weight="normal">先人の知恵を使う</text>
+
+  <circle cx="350" cy="120" r="40" class="node" style="stroke: #43A047;" />
+  <text x="350" y="125" class="text-main">貢献</text>
+  <text x="350" y="180" class="text-main" font-size="10" font-weight="normal">自分の知見を公開</text>
+
+  <circle cx="250" cy="220" r="40" class="node" style="stroke: #FB8C00;" />
+  <text x="250" y="225" class="text-main">循環</text>
+  <text x="250" y="280" class="text-main" font-size="10" font-weight="normal">コミュニティの進化</text>
+
+  <!-- Arrows -->
+  <path d="M 195,120 L 305,120" class="arrow" />
+  <path d="M 330,155 L 285,195" class="arrow" />
+  <path d="M 215,195 L 170,155" class="arrow" />
+</svg>

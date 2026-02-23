@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="600" height="300">
+  <defs>
+    <style>
+      .map-bg { fill: #FDF5E6; stroke: #D2B48C; stroke-width: 3; }
+      .path { stroke: #8B4513; stroke-width: 2; stroke-dasharray: 8; fill: none; }
+      .node-circle { fill: #FFF; stroke: #8B4513; stroke-width: 2; }
+      .text-num { font-family: 'serif'; font-size: 14px; font-weight: bold; fill: #8B4513; text-anchor: middle; }
+      .text-title { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; fill: #333; }
+      .title-main { font-family: 'Noto Sans JP', sans-serif; font-size: 18px; font-weight: bold; fill: #8B4513; text-anchor: middle; }
+    </style>
+  </defs>
+  <rect x="10" y="10" width="580" height="280" rx="15" class="map-bg" />
+  <text x="300" y="45" class="title-main">第8章：冒険の地図（倫理と未来）</text>
+
+  <path d="M 150,150 L 300,120 L 450,150" class="path" />
+
+  <g transform="translate(150, 150)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">8.1</text>
+    <text x="0" y="35" class="text-title" text-anchor="middle">賢者の誓い（倫理）</text>
+  </g>
+  <g transform="translate(300, 120)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">8.2</text>
+    <text x="0" y="35" class="text-title" text-anchor="middle">創造の火（創造性）</text>
+  </g>
+  <g transform="translate(450, 150)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">8.3</text>
+    <text x="0" y="35" class="text-title" text-anchor="middle">終わりのない旅（学習）</text>
+  </g>
+</svg>

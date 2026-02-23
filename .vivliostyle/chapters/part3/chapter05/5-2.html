@@ -60,14 +60,14 @@
           <pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">complete_quest</span><span class="token punctuation">(</span>hero<span class="token punctuation">,</span> quest<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">if</span> quest<span class="token punctuation">.</span><span class="token builtin">type</span> <span class="token operator">==</span> <span class="token string">'討伐'</span><span class="token punctuation">:</span>
         <span class="token keyword">if</span> hero<span class="token punctuation">.</span>level <span class="token operator">&gt;=</span> quest<span class="token punctuation">.</span>required_level<span class="token punctuation">:</span>
-            hero<span class="token punctuation">.</span>exp <span class="token operator">+=</span> quest<span class="token punctuation">.</span>exp
+            hero<span class="token punctuation">.</span>xp <span class="token operator">+=</span> quest<span class="token punctuation">.</span>xp
             <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"討伐成功！"</span><span class="token punctuation">)</span>
         <span class="token keyword">else</span><span class="token punctuation">:</span>
             <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"レベルが足りません"</span><span class="token punctuation">)</span>
     <span class="token keyword">elif</span> quest<span class="token punctuation">.</span><span class="token builtin">type</span> <span class="token operator">==</span> <span class="token string">'納品'</span><span class="token punctuation">:</span>
         <span class="token keyword">if</span> quest<span class="token punctuation">.</span>target_item <span class="token keyword">in</span> hero<span class="token punctuation">.</span>inventory<span class="token punctuation">:</span>
             hero<span class="token punctuation">.</span>inventory<span class="token punctuation">.</span>remove<span class="token punctuation">(</span>quest<span class="token punctuation">.</span>target_item<span class="token punctuation">)</span>
-            hero<span class="token punctuation">.</span>exp <span class="token operator">+=</span> quest<span class="token punctuation">.</span>exp
+            hero<span class="token punctuation">.</span>xp <span class="token operator">+=</span> quest<span class="token punctuation">.</span>xp
             <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"納品完了！"</span><span class="token punctuation">)</span>
         <span class="token keyword">else</span><span class="token punctuation">:</span>
             <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"アイテムがありません"</span><span class="token punctuation">)</span>
@@ -92,31 +92,6 @@
             <img src="../../assets/diagrams/chapter05/5.2-strategy-refactoring.svg" alt="Strategyパターンへのリファクタリング">
             <figcaption aria-hidden="true">Strategyパターンへのリファクタリング</figcaption>
           </figure>
-          <pre class="language-mermaid"><code class="language-mermaid"><span class="token keyword">classDiagram</span>
-    <span class="token keyword">class</span> QuestStrategy <span class="token punctuation">{</span>
-        <span class="token annotation important">&lt;&lt;interface&gt;&gt;</span>
-        +complete<span class="token text string">(hero)</span> bool
-    <span class="token punctuation">}</span>
-    <span class="token keyword">class</span> KillQuest <span class="token punctuation">{</span>
-        +required_level<span class="token operator">:</span> int
-        +exp<span class="token operator">:</span> int
-        +complete<span class="token text string">(hero)</span> bool
-    <span class="token punctuation">}</span>
-    <span class="token keyword">class</span> DeliveryQuest <span class="token punctuation">{</span>
-        +target_item<span class="token operator">:</span> Item
-        +exp<span class="token operator">:</span> int
-        +complete<span class="token text string">(hero)</span> bool
-    <span class="token punctuation">}</span>
-    <span class="token keyword">class</span> Hero <span class="token punctuation">{</span>
-        +level<span class="token operator">:</span> int
-        +exp<span class="token operator">:</span> int
-        +gain_exp<span class="token text string">(amount)</span>
-    <span class="token punctuation">}</span>
-
-    QuestStrategy <span class="token arrow operator">&lt;|--</span> KillQuest
-    QuestStrategy <span class="token arrow operator">&lt;|--</span> DeliveryQuest
-    KillQuest <span class="token arrow operator">..&gt;</span> Hero
-    DeliveryQuest <span class="token arrow operator">..&gt;</span> Hero</code></pre>
           <p>AIとの対話を経て、以下のような構造に生まれ変わりました。</p>
           <pre class="language-python"><code class="language-python"><span class="token comment"># 抽象戦略</span>
 <span class="token keyword">class</span> <span class="token class-name">QuestStrategy</span><span class="token punctuation">(</span>ABC<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -129,7 +104,7 @@
     <span class="token keyword">def</span> <span class="token function">complete</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> hero<span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token keyword">if</span> hero<span class="token punctuation">.</span>level <span class="token operator">&lt;</span> self<span class="token punctuation">.</span>required_level<span class="token punctuation">:</span>
             <span class="token keyword">return</span> <span class="token boolean">False</span>
-        hero<span class="token punctuation">.</span>gain_exp<span class="token punctuation">(</span>self<span class="token punctuation">.</span>exp<span class="token punctuation">)</span>
+        hero<span class="token punctuation">.</span>gain_xp<span class="token punctuation">(</span>self<span class="token punctuation">.</span>xp<span class="token punctuation">)</span>
         <span class="token keyword">return</span> <span class="token boolean">True</span>
 
 <span class="token comment"># コンテキスト（利用側）</span>

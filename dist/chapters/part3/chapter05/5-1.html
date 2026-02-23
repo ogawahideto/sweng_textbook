@@ -19,8 +19,6 @@
         <a href="../../../chapters/part3/chapter05/5-2.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
     </nav>
     <main>
-    
-    
     <section class="level1">
       <h1 id="51-コードの匂いを嗅ぎ分けるthe-art-of-sensing">5.1 コードの「匂い」を嗅ぎ分ける（The Art of Sensing）</h1>
       <section class="level2">
@@ -139,38 +137,10 @@
         <section class="level3">
           <h3 id="after-権限の委譲refactoring">After: 権限の委譲（Refactoring）</h3>
           <p>このクラスを「統治者」としての役割に特化させ、実務を専門家に委譲します。</p>
-          <pre class="language-mermaid"><code class="language-mermaid"><span class="token keyword">classDiagram</span>
-    <span class="token keyword">class</span> Hero <span class="token punctuation">{</span>
-        +name<span class="token operator">:</span> str
-        +status<span class="token operator">:</span> HeroStatus
-        +inventory<span class="token operator">:</span> Inventory
-        +location<span class="token operator">:</span> Location
-        +repository<span class="token operator">:</span> HeroRepository
-        +take_damage<span class="token text string">(amount)</span>
-        +add_item<span class="token text string">(item)</span>
-        +save<span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">class</span> HeroStatus <span class="token punctuation">{</span>
-        +hp<span class="token operator">:</span> int
-        +damage<span class="token text string">(amount)</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">class</span> Inventory <span class="token punctuation">{</span>
-        +items<span class="token operator">:</span> list
-        +add<span class="token text string">(item)</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">class</span> Location <span class="token punctuation">{</span>
-        +x<span class="token operator">:</span> int
-        +y<span class="token operator">:</span> int
-    <span class="token punctuation">}</span>
-    <span class="token keyword">class</span> HeroRepository <span class="token punctuation">{</span>
-        <span class="token annotation important">&lt;&lt;interface&gt;&gt;</span>
-        +save<span class="token text string">(hero)</span>
-    <span class="token punctuation">}</span>
-
-    Hero <span class="token arrow operator">*--</span> HeroStatus
-    Hero <span class="token arrow operator">*--</span> Inventory
-    Hero <span class="token arrow operator">*--</span> Location
-    Hero <span class="token arrow operator">--&gt;</span> HeroRepository</code></pre>
+          <figure>
+            <img src="../../assets/diagrams/chapter05/5-1-hero-decomposition.svg" alt="Heroクラスの解体と責務の分散">
+            <figcaption aria-hidden="true">Heroクラスの解体と責務の分散</figcaption>
+          </figure>
           <p>この再構築により、各クラスは単一の責任を持つようになります。</p>
           <pre class="language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Hero</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">,</span> repository<span class="token punctuation">:</span> HeroRepository<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -254,9 +224,7 @@
     </section>
   
 
-
-    
-    </main>
+</main>
     <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
         <a href="../../../chapters/part3/chapter05/chapter05.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
         <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>

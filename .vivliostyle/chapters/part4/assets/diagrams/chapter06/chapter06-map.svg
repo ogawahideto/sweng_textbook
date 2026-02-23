@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 350" width="600" height="350">
+  <defs>
+    <style>
+      .map-bg { fill: #FDF5E6; stroke: #D2B48C; stroke-width: 3; }
+      .path { stroke: #8B4513; stroke-width: 2; stroke-dasharray: 8; fill: none; }
+      .node-circle { fill: #FFF; stroke: #8B4513; stroke-width: 2; }
+      .text-num { font-family: 'serif'; font-size: 14px; font-weight: bold; fill: #8B4513; text-anchor: middle; }
+      .text-title { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; fill: #333; }
+      .title-main { font-family: 'Noto Sans JP', sans-serif; font-size: 18px; font-weight: bold; fill: #8B4513; text-anchor: middle; }
+    </style>
+  </defs>
+  <rect x="10" y="10" width="580" height="330" rx="15" class="map-bg" />
+  <text x="300" y="45" class="title-main">第6章：冒険の地図（デプロイと運用）</text>
+
+  <path d="M 100,100 L 250,100 L 400,120 L 450,220 L 300,250 L 150,250 L 100,300" class="path" />
+
+  <g transform="translate(100, 100)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">6.1</text>
+    <text x="-40" y="35" class="text-title" text-anchor="middle">デプロイ儀式</text>
+  </g>
+  <g transform="translate(250, 100)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">6.2</text>
+    <text x="0" y="35" class="text-title" text-anchor="middle">絶え間なき循環</text>
+  </g>
+  <g transform="translate(400, 120)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">6.3</text>
+    <text x="20" y="5" class="text-title">セキュリティの結界</text>
+  </g>
+  <g transform="translate(450, 220)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">6.4</text>
+    <text x="-80" y="30" class="text-title">システムの可観測性</text>
+  </g>
+  <g transform="translate(300, 250)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">6.5</text>
+    <text x="0" y="30" class="text-title" text-anchor="middle">レジリエンス</text>
+  </g>
+  <g transform="translate(150, 250)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">6.6</text>
+    <text x="0" y="30" class="text-title" text-anchor="middle">フィードバックループ</text>
+  </g>
+  <g transform="translate(100, 300)">
+    <circle r="15" class="node-circle" style="stroke: #D32F2F;" />
+    <text y="5" class="text-num" style="fill: #D32F2F;">6.7</text>
+    <text x="20" y="5" class="text-title" style="font-weight: bold;">【外伝】浮遊する魔導城</text>
+  </g>
+</svg>
