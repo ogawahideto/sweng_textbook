@@ -38,3 +38,4 @@
 - 📚 **書籍**: Scott Chacon, Ben Straub『[Pro Git 第2版](https://git-scm.com/book/ja/v2)』（Gitの仕組みから応用までを網羅した、公式サイト公開の決定版）
 - 📚 **書籍**: Mark Pearl著、長尾高弘訳『[モブプログラミング・ベストプラクティス](https://www.oreilly.co.jp/books/9784873118628/)』（モブプログラミングをチームに導入するための実践的ガイド）
 - 🌐 **Web**: Woody Zuill "[Mob Programming](https://woodyzuill.com/)"（モブプログラミングの提唱者による情報サイト）
+- 📄 **論文**: Hirotaka Takeuchi and Ikujiro Nonaka "[The New New Product Development Game](https://hbr.org/1986/01/the-new-new-product-development-game)" (1986)（スクラムの名称と概念の源流となった、日本発の画期的な経営学論文）

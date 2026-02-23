@@ -38,3 +38,4 @@
 - 📚 **書籍**: Virginia Eubanks『[格差の自動化 ―データによる選別・監視・処罰](http://www.jimbunshoin.co.jp/book/b589418.html)』（技術がもたらす社会的不平等の実態を暴く衝撃作）
 - 📚 **書籍**: Cathy O'Neil『[あなたを支配し、社会を破壊する、AI・ビッグデータの罠](http://www.intershift.jp/math-destruction/)』（アルゴリズムの倫理的影響を警鐘する。原題: Weapons of Math Destruction）
 - 📚 **書籍**: Eric Raymond『[伽藍とバザール](http://www.hyuki.com/yukiwiki/wiki.cgi?TheCathedralAndTheBazaar)』（オープンソースの思想と文化を決定づけた伝説的エッセイ。山形浩生氏による全訳も公開されています）
+- 📄 **論文**: Alan M. Turing "[Computing Machinery and Intelligence](https://academic.oup.com/mind/article/LIX/236/433/986230)" (1950)（「機械は思考できるか？」という問いを立て、AI時代の哲学の基礎を築いた記念碑的論文）

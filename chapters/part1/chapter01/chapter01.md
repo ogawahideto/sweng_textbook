@@ -54,3 +54,4 @@
 - 📚 **書籍**: ジェラルド・ワインバーグ『[要求仕様の探検学](https://www.kyoritsu-pub.co.jp/book/b10011444.html)』（要求発見の技法を人間心理の側面から解き明かす古典）
 - 📚 **書籍**: Axel van Lamsweerde "[Requirements Engineering: From System Goals to UML Models to Software Specifications](https://www.wiley.com/en-us/Requirements+Engineering%3A+From+System+Goals+to+UML+Models+to+Software+Specifications-p-9780470012703)"（ゴール指向分析のバイブル）
 - 📚 **書籍**: マーチン・ファウラー『[UMLモデリングのエッセンス 第3版](https://www.shoeisha.co.jp/book/detail/9784798107950)』（UMLのエッセンスを短時間で習得できる定番書）
+- 📄 **論文**: D. T. Ross and K. E. Schoman Jr. "[Structured Analysis for Requirements Definition](https://ieeexplore.ieee.org/document/1702402)" (1977)（「何を作るか」を構造的に定義する要求工学の先駆的論文）

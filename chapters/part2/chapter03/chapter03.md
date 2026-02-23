@@ -40,3 +40,4 @@
 - 📚 **書籍**: Dustin Boswell, Trevor Foucher『[リーダブルコード ―より良いコードを書くためのシンプルで実践的なテクニック](https://www.oreilly.co.jp/books/9784873115658/)』（可読性のバイブル）
 - 📚 **書籍**: Andrew Hunt, David Thomas『[達人プログラマー 第2版 ―熟達に向けたあなたの旅](https://www.ohmsha.co.jp/book/9784274226298/)』（エンジニアの心構えと技法の集大成）
 - 📚 **書籍**: Steve McConnell『[Code Complete 第2版 ―完全なプログラミングを目指して](https://shop.nikkeibp.co.jp/asbp/shop/course/codecomplete/)』（実装技術の百科事典。上下巻）
+- 📄 **論文**: Frederick P. Brooks Jr. "[No Silver Bullet — Essence and Accident in Software Engineering](https://ieeexplore.ieee.org/document/1663530)" (1987)（ソフトウェア開発の困難さの本質を説き、「銀の弾丸はない」と断じた必読論文）
