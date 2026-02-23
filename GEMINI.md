@@ -1,6 +1,6 @@
 # Gemini Context: Digital Alchemy Textbook & QuestForge
 
-This repository contains the source material for the textbook **"『「楽しい」ソフトウェア工学の教科書 - デジタル・アルケミー』"** (The "Fun" Software Engineering Textbook - Digital Alchemy) and its accompanying sample application, **QuestForge**.
+This repository contains the source material for the textbook **"『「楽しい」ソフトウェア工学の攻略本 —— デジタル・アルケミー』"** (The "Fun" Software Engineering Guidebook - Digital Alchemy) and its accompanying sample application, **QuestForge**.
 
 ## 1. Project Overview
 
