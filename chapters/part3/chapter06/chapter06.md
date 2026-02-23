@@ -40,3 +40,8 @@
 - 📚 **書籍**: Mike Julian『[入門 監視 ―モダンなモニタリングのためのデザインパターン](https://www.oreilly.co.jp/books/9784873118642/)』（可観測性の基本から実践までを学べるガイド）
 - 📚 **書籍**: Jez Humble, David Farley『[継続的デリバリー 信頼できるソフトウェアリリースのためのビルド・テスト・デプロイメントの自動化](https://www.kadokawa.co.jp/product/301708000591/)』（CI/CDの原則と実践を網羅した名著）
 - 📚 **書籍**: Ron Kohavi, Diane Tang, Ya Xu『[A/Bテスト実践ガイド 真のデータドリブンへ至る信用できる実験とは](https://tatsu-zine.com/books/trustworthy-online-controlled-experiments)』（大規模な仮説検証を支える理論と実践）
+
+### 📜 賢者伝説（学術論文）
+
+- 📄 **00s**: Roy T. Fielding "[Architectural Styles and the Design of Network-based Software Architectures](https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm)" (2000)（現代のWebの基盤であるRESTアーキテクチャスタイルを定義した伝説的学位論文）
+- 📄 **00s**: Werner Vogels "[Eventually Consistent](https://dl.acm.org/doi/10.1145/1435417.1435432)" (2009)（AmazonのCTOが、大規模分散システムにおける可用性と整合性のトレードオフを説いた重要論文）

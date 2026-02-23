@@ -38,4 +38,8 @@
 - 📚 **書籍**: Virginia Eubanks『[格差の自動化 ―データによる選別・監視・処罰](http://www.jimbunshoin.co.jp/book/b589418.html)』（技術がもたらす社会的不平等の実態を暴く衝撃作）
 - 📚 **書籍**: Cathy O'Neil『[あなたを支配し、社会を破壊する、AI・ビッグデータの罠](http://www.intershift.jp/math-destruction/)』（アルゴリズムの倫理的影響を警鐘する。原題: Weapons of Math Destruction）
 - 📚 **書籍**: Eric Raymond『[伽藍とバザール](http://www.hyuki.com/yukiwiki/wiki.cgi?TheCathedralAndTheBazaar)』（オープンソースの思想と文化を決定づけた伝説的エッセイ。山形浩生氏による全訳も公開されています）
-- 📄 **論文**: Alan M. Turing "[Computing Machinery and Intelligence](https://academic.oup.com/mind/article/LIX/236/433/986230)" (1950)（「機械は思考できるか？」という問いを立て、AI時代の哲学の基礎を築いた記念碑的論文）
+
+### 📜 賢者伝説（学術論文）
+
+- 📄 **50s**: Alan M. Turing "[Computing Machinery and Intelligence](https://academic.oup.com/mind/article/LIX/236/433/986230)" (1950)（「機械は思考できるか？」という問いを立て、AI時代の哲学の基礎を築いた記念碑的論文）
+- 📄 **10s**: A. Jobin, M. Ienca, and E. Vayena "[The global landscape of AI ethics guidelines](https://www.nature.com/articles/s42256-019-0088-2)" (2019)（世界中のAI倫理ガイドラインを俯瞰し、共通の原則（透明性、正義、責任など）を整理した現代の指針）

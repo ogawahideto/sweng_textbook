@@ -54,4 +54,9 @@
 - 📚 **書籍**: ジェラルド・ワインバーグ『[要求仕様の探検学](https://www.kyoritsu-pub.co.jp/book/b10011444.html)』（要求発見の技法を人間心理の側面から解き明かす古典）
 - 📚 **書籍**: Axel van Lamsweerde "[Requirements Engineering: From System Goals to UML Models to Software Specifications](https://www.wiley.com/en-us/Requirements+Engineering%3A+From+System+Goals+to+UML+Models+to+Software+Specifications-p-9780470012703)"（ゴール指向分析のバイブル）
 - 📚 **書籍**: マーチン・ファウラー『[UMLモデリングのエッセンス 第3版](https://www.shoeisha.co.jp/book/detail/9784798107950)』（UMLのエッセンスを短時間で習得できる定番書）
-- 📄 **論文**: D. T. Ross and K. E. Schoman Jr. "[Structured Analysis for Requirements Definition](https://ieeexplore.ieee.org/document/1702402)" (1977)（「何を作るか」を構造的に定義する要求工学の先駆的論文）
+
+### 📜 賢者伝説（学術論文）
+
+- 📄 **70s**: D. T. Ross and K. E. Schoman Jr. "[Structured Analysis for Requirements Definition](https://ieeexplore.ieee.org/document/1702402)" (1977)（「何を作るか」を構造的に定義する要求工学の先駆的論文）
+- 📄 **90s**: A. Dardenne, A. van Lamsweerde, and S. Fickas "[Goal-directed Requirements Acquisition](https://www.sciencedirect.com/science/article/abs/pii/016764239390021G)" (1993)（ゴール指向要求分析の数学的・論理的基礎を築いたKAOS手法の原典）
+- 📄 **00s**: A. van Lamsweerde "[Goal-Oriented Requirements Engineering: A Guided Tour](https://ieeexplore.ieee.org/document/917542)" (2001)（散らばった要求を「ゴール」という目的で統合する手法の集大成）

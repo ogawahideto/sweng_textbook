@@ -40,4 +40,9 @@
 - 📚 **書籍**: Lisa Crispin, Janet Gregory "[Agile Testing: A Practical Guide for Testers and Agile Teams](https://www.pearson.com/en-us/subject-catalog/p/agile-testing-a-practical-guide-for-testers-and-agile-teams/P200000000167/9780321534460)"（アジャイル開発におけるテスト戦略の決定版）
 - 📚 **書籍**: 秋山浩一『[ソフトウェアテスト技法ドリル 第2版](https://www.juse-p.co.jp/products/detail.php?product_id=155)』（テスト設計の具体的な技法を演習形式で学べる実践書）
 - 📚 **書籍**: 小川秀人、佐藤陽春、森拓郎、加賀洋渡『[土台からしっかり学ぶ ソフトウェアテストのセオリー](https://www.ric.co.jp/book/contents/pdfs/1314_introduction.pdf)』（テストの全体像を体系的に整理した、現代のエンジニアのための入門書）
-- 📄 **論文**: Edsger W. Dijkstra "[Notes on Structured Programming](https://www.cs.utexas.edu/users/EWD/ewd02xx/EWD249.PDF)" (1970)（「プログラムテストは不具合の存在を示すことはできるが、不在を証明することはできない」という有名な洞察を含む論文）
+
+### 📜 賢者伝説（学術論文）
+
+- 📄 **70s**: Edsger W. Dijkstra "[Notes on Structured Programming](https://www.cs.utexas.edu/users/EWD/ewd02xx/EWD249.PDF)" (1970)（「プログラムテストは不具合の存在を示すことはできるが、不在を証明することはできない」という有名な洞察を含む論文）
+- 📄 **00s**: K. Claessen and J. Hughes "[QuickCheck: A Lightweight Tool for Random Testing of Haskell Programs](https://dl.acm.org/doi/10.1145/351240.351266)" (2000)（現代のプロパティベーステストの先駆けとなった、自動ランダムテスト手法の原典）
+- 📄 **10s**: G. Fraser and A. Arcuri "[EvoSuite: Automatic Test Suite Generation for Object-Oriented Software](https://dl.acm.org/doi/10.1145/2025113.2025179)" (2011)（遺伝的アルゴリズムを用いて、カバレッジを最大化するテストコードを自動生成する手法の金字塔）

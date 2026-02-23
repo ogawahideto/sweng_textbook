@@ -39,4 +39,8 @@
 - 📚 **書籍**: Martin Fowler『[リファクタリング 第2版](https://www.ohmsha.co.jp/book/9784274224546/)』（リファクタリングの原典。第2版ではJavaScriptを例に現代化）
 - 📚 **書籍**: Robert C. Martin『[Clean Code アジャイルソフトウェア達人の技](https://www.kadokawa.co.jp/product/301708000593/)』（「意味のある命名」など、コードの美学を徹底解説）
 - 📚 **書籍**: Michael Feathers『[レガシーコード改善ガイド](https://www.shoeisha.co.jp/book/detail/9784798116839)』（テストのないコードをいかに安全にリファクタリングするかを説く、現場の戦術書）
-- 📄 **論文**: Ward Cunningham "[The WyCash Portfolio Management System](https://c2.com/doc/oopsla92.html)" (1992)（「技術的負債」というメタファーが初めて提唱されたOOPSLAでの経験報告）
+
+### 📜 賢者伝説（学術論文）
+
+- 📄 **90s**: Ward Cunningham "[The WyCash Portfolio Management System](https://c2.com/doc/oopsla92.html)" (1992)（「技術的負債」というメタファーが初めて提唱された、歴史的な経験報告）
+- 📄 **90s**: William F. Opdyke "[Refactoring Object-Oriented Frameworks](http://www.laputan.org/pub/papers/opdyke-thesis.pdf)" (1992)（リファクタリングという用語を定義し、そのカタログ化と自動化の可能性を初めて体系的に論じた博士論文）

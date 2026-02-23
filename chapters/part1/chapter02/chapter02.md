@@ -42,4 +42,9 @@
 - 📚 **書籍**: エリック・ガンマ他『[オブジェクト指向における再利用のためのデザインパターン](https://www.sbcr.jp/product/4797311121/)』（通称GoF。パターンの原典にして不動のバイブル）
 - 📚 **書籍**: 結城浩『[Java言語で学ぶデザインパターン入門 第3版](https://www.sbcr.jp/product/4815609801/)』（日本で最も分かりやすいデザインパターンの入門書）
 - 📚 **書籍**: Joshua Kerievsky『[リファクタリング・デザインパターン](https://www.pearson.com/en-us/subject-catalog/p/refactoring-to-patterns/P200000000137/9780321213358)』（パターンをゴールに据えた、安全な設計変更の技法）
-- 📄 **論文**: David Parnas "[On the Criteria To Be Used in Decomposing Systems into Modules](https://dl.acm.org/doi/10.1145/361598.361623)" (1972)（現代のモジュール設計と「情報隠蔽」の基礎を築いた歴史的論文）
+
+### 📜 賢者伝説（学術論文）
+
+- 📄 **70s**: David Parnas "[On the Criteria To Be Used in Decomposing Systems into Modules](https://dl.acm.org/doi/10.1145/361598.361623)" (1972)（現代のモジュール設計と「情報隠蔽」の基礎を築いた歴史的論文）
+- 📄 **90s**: E. Gamma, R. Helm, R. Johnson, and J. Vlissides "[Design Patterns: Abstraction and Reuse of Object-Oriented Design](https://link.springer.com/chapter/10.1007/3-540-47910-4_21)" (1993)（書籍『デザインパターン』の元となった、パターンの有効性を世界に知らしめた論文）
+- 📄 **00s**: Philippe Kruchten "[The 4+1 View Model of Architecture](https://ieeexplore.ieee.org/document/469759)" (1995/2000s)（複雑なアーキテクチャを、異なるステークホルダーの視点から多角的に記述する手法）
