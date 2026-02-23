@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>1.1 なぜ聴くのか？——要求工学という冒険の始まり</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+    <style>
+        body { max-width: 900px; margin: 0 auto; background: white; }
+        section { padding: 20px; }
+        img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body style="margin:0; padding:0;">
+
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part1/chapter01/chapter01.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part1/chapter01/1-2.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    <main>
+    
+    
+    <section class="level1">
+      <h1 id="11-なぜ聴くのか要求工学という冒険の始まり">1.1 なぜ聴くのか？——要求工学という冒険の始まり</h1>
+      <section class="level2">
+        <h2 id="導入-言葉の迷宮への入り口">導入: 言葉の迷宮への入り口</h2>
+        <p>「もっと使いやすいシステムにしてほしいんです」</p>
+        <p>ユーザーからそう言われたとき、あなたはどう反応しますか？</p>
+        <p>「わかりました、UIを改善しましょう」と即答する前に、ちょっと立ち止まってみませんか？　ここには、もっとワクワクする可能性が眠っています。</p>
+        <p>ユーザーの言葉は、海面に浮かぶ氷山の一角に過ぎません。その下には、言葉にできない期待、本人も気づいていない願望、そして本当に実現したいことという巨大な氷塊が隠れています。</p>
+        <p>ソフトウェア工学における<strong>要求工学（Requirements Engineering）</strong>とは、単に言われたことをメモする作業ではありません。それは、王（クライアント）の希望を聞き、町（現場）を歩いて真実を探り、「財宝（ソフトウェア）」の正体を明らかにするプロセスなのです。</p>
+        <p>この章では、その第一歩として「なぜ聴くことが重要なのか」を深く理解します。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="理論的背景-欲しいものと必要なものは違う">理論的背景: 「欲しいもの」と「必要なもの」は違う</h2>
+        <section class="level3">
+          <h3 id="ブランコの風刺画が教えてくれること">ブランコの風刺画が教えてくれること</h3>
+          <p>ソフトウェア開発の現場には、古くから伝わる有名な風刺画があります。</p>
+          <p>
+            <img src="../../assets/diagrams/chapter01/1-1-requirements-layers.svg" alt="顧客が説明した要件 vs 実際に必要だったもの">
+            <em>※注: この階層図は要求の本質を捉えるためのものです。ブランコの風刺画そのものは、歴史的に「伝言ゲームの悲劇」を象徴する図として広く知られています。</em>
+          </p>
+          <p>この絵が描いているのは、以下のようなストーリーです。</p>
+          <ul>
+            <li><strong>顧客が説明したもの</strong>: 複雑な3段構造のブランコ</li>
+            <li><strong>開発者が理解したもの</strong>: さらに複雑な何か</li>
+            <li><strong>実際に作られたもの</strong>: まったく別の何か</li>
+            <li><strong>顧客が本当に欲しかったもの</strong>: タイヤをロープで吊るしただけのシンプルなブランコ</li>
+          </ul>
+          <p>この絵は1970年代から存在し、半世紀経った今も開発現場で共有され続けています。それは、<strong>コミュニケーションの技術</strong>が、いつの時代も価値を持ち続けることを示しています。</p>
+        </section>
+        <section class="level3">
+          <h3 id="ドリルではなく穴が欲しい">ドリルではなく「穴」が欲しい</h3>
+          <p>マーケティングの世界には有名な言葉があります。</p>
+          <blockquote>
+            <p>「顧客はドリルが欲しいのではない、穴が欲しいのだ」<a id="fnref1" href="#fn1" class="footnote-ref" role="doc-noteref"><sup>1</sup></a></p>
+          </blockquote>
+          <p>しかし私たちは、さらに一歩踏み込む必要があります。</p>
+          <p><strong>なぜ穴を開けたいのでしょうか？</strong></p>
+          <ul>
+            <li>壁に絵を飾りたいから？　→　石膏ボード用の穴が目立たない壁掛けフックの方が良いかもしれない</li>
+            <li>隣の部屋へLANケーブルを通したいから？　→　Wi-Fiルーターが解決策かもしれない</li>
+            <li>換気のためか？　→　窓を開ける習慣で済むかもしれない</li>
+          </ul>
+          <p>ユーザーが「ドリルが欲しい」と言ったとき、それは<strong>解決策の一つ</strong>に過ぎません。真の要求は、その奥にある「目的」なのです。</p>
+        </section>
+        <section class="level3">
+          <h3 id="要求の3つの層">要求の3つの層</h3>
+          <p>要求には階層があります。</p>
+          <figure>
+            <img src="../../assets/diagrams/chapter01/1-1-requirements-layers.svg" alt="要求の層構造">
+            <figcaption aria-hidden="true">要求の層構造</figcaption>
+          </figure>
+          <pre class="language-text"><code class="language-text">┌─────────────────────────────────────┐
+│     ビジネス要求（Why of Why）       │  ← 組織・事業の目標
+│  「売上を20%向上させたい」           │
+├─────────────────────────────────────┤
+│     ユーザー要求（Why）              │  ← ユーザーが達成したいこと
+│  「在庫切れで機会損失したくない」     │
+├─────────────────────────────────────┤
+│     機能要求（What/How）             │  ← 具体的な機能
+│  「在庫が10個以下になったら通知」     │
+└─────────────────────────────────────┘</code></pre>
+          <p>プロジェクトが大きな成果を上げるとき、多くの場合、上位の「なぜ」から始めています。「通知機能を作ってください」という依頼に対して、「なぜ通知が必要なのか？」を掘り下げることで、より本質的な解決策が見えてきます。</p>
+          <p>上位の「なぜ」を理解できれば、期待を超える提案ができるのです。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="聴くことで広がる可能性">「聴く」ことで広がる可能性</h2>
+        <section class="level3">
+          <h3 id="言葉の奥にある宝物">言葉の奥にある宝物</h3>
+          <p>ユーザーの言葉には、まだ言語化されていない宝物が眠っています。それを見つけるチャンスが3つあります。</p>
+          <ol>
+            <li>
+              <p><strong>暗黙知の発掘</strong>: 毎日やっている作業ほど、言葉になっていない。「なんとなくこうやってる」の中に、本当のニーズが隠れている。</p>
+            </li>
+            <li>
+              <p><strong>目的への遡上</strong>: ユーザーは「解決策」を語りがち。そこから「本当の目的」へと遡ることで、より良いアイデアが生まれる。</p>
+            </li>
+            <li>
+              <p><strong>未知の可能性</strong>: ユーザーはまだ存在しないものを想像するのが難しい。だからこそ、私たちが新しい可能性を提案できる。スマートフォンが登場する前、誰が「ポケットに入るコンピュータ」を想像できただろうか？</p>
+            </li>
+          </ol>
+        </section>
+        <section class="level3">
+          <h3 id="エンジニアが持つ特別な視点">エンジニアが持つ特別な視点</h3>
+          <p>エンジニアには、ユーザーにはない強みがあります。それを活かすための意識ポイントです。</p>
+          <ol>
+            <li>
+              <p><strong>技術的可能性の提案</strong>: 「面白そうな技術」を知っているからこそ、ユーザーが想像できなかった解決策を提案できる。まずは聴いてから、技術の魔法を見せよう。</p>
+            </li>
+            <li>
+              <p><strong>多角的な検証</strong>: 自分の仮説を持ちつつも、異なる視点からも検証することで、より確かな理解に到達できる。</p>
+            </li>
+            <li>
+              <p><strong>翻訳者としての役割</strong>: ユーザーの言葉を技術に変換できるのはエンジニアだけ。丁寧な翻訳で、ニュアンスまで伝えよう。</p>
+            </li>
+          </ol>
+          <p>これらの強みを最大限に活かすために、<strong>意識的に「聴く」技術</strong>を身につけましょう。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="聴くことがもたらす価値">聴くことがもたらす価値</h2>
+        <section class="level3">
+          <h3 id="プロジェクト成功への近道">プロジェクト成功への近道</h3>
+          <p>Standish Groupの調査（CHAOS Report）によれば、プロジェクト成功の鍵となる要因のトップ3は以下の通りです。</p>
+          <ol>
+            <li><strong>ユーザーの参加（User Involvement）</strong> — ユーザーの声を聴き、対話を通じて実現できる</li>
+            <li><strong>経営層のサポート（Executive Management Support）</strong> — 経営層もステークホルダー。ビジネス要求を聴くことで得られる</li>
+            <li><strong>要求の明確化（Clear Statement of Requirements）</strong> — しっかり聴くことで達成できる</li>
+          </ol>
+          <p>3つすべてが「聴く」ことに深く関わっています。<strong>適切に聴くことは、プロジェクト成功への最も確実な近道</strong>なのです。</p>
+        </section>
+        <section class="level3">
+          <h3 id="手戻りコストの削減">手戻りコストの削減</h3>
+          <p>要求の誤りを発見するタイミングによって、修正コストは指数関数的に増加します。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>発見フェーズ</th>
+                <th>相対コスト</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>要求定義時</td>
+                <td>1x</td>
+              </tr>
+              <tr>
+                <td>設計時</td>
+                <td>5x</td>
+              </tr>
+              <tr>
+                <td>実装時</td>
+                <td>10x</td>
+              </tr>
+              <tr>
+                <td>テスト時</td>
+                <td>20x</td>
+              </tr>
+              <tr>
+                <td>リリース後</td>
+                <td>200x</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>最初に正しく聴くことは、最も費用対効果の高い投資なのです。</p>
+        </section>
+        <section class="level3">
+          <h3 id="信頼関係の構築">信頼関係の構築</h3>
+          <p>そして何より、「聴いてもらえた」という経験は、ユーザーとの信頼関係を築きます。</p>
+          <blockquote>
+            <p>「この人は私の話を本当に理解しようとしてくれている」</p>
+          </blockquote>
+          <p>その信頼があれば、開発中に発生する様々な課題も、協力して乗り越えられます。</p>
+          <hr>
+          <blockquote>
+            <h3 id="コラム-本書のサンプルプロジェクトquestforge">コラム: 本書のサンプルプロジェクト「QuestForge」</h3>
+            <p>本書では、ソフトウェア工学の各技法を<strong>QuestForge</strong>というサンプルアプリを通じて学びます。</p>
+            <h4 id="questforgeとは">QuestForgeとは</h4>
+            <p>日々のタスクをRPGの「クエスト」に見立てて管理するアプリです。タスクを完了すると経験値を獲得し、レベルアップしていきます。</p>
+            <h4 id="主な機能">主な機能</h4>
+            <table>
+              <thead>
+                <tr>
+                  <th>機能</th>
+                  <th>説明</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>クエスト管理</td>
+                  <td>タスクを「クエスト」として登録・完了</td>
+                </tr>
+                <tr>
+                  <td>経験値システム</td>
+                  <td>難易度に応じた経験値を獲得</td>
+                </tr>
+                <tr>
+                  <td>レベルアップ</td>
+                  <td>経験値が閾値を超えると勇者がレベルアップ</td>
+                </tr>
+                <tr>
+                  <td>ストリーク</td>
+                  <td>連続達成日数を記録してモチベーション維持</td>
+                </tr>
+                <tr>
+                  <td>バッジ</td>
+                  <td>特定の条件を満たすと実績を獲得</td>
+                </tr>
+              </tbody>
+            </table>
+            <h4 id="なぜquestforgeを題材にするのか">なぜQuestForgeを題材にするのか</h4>
+            <ul>
+              <li><strong>身近なテーマ</strong>: タスク管理は誰もが経験する課題</li>
+              <li><strong>適度な複雑さ</strong>: 要求分析から設計、実装、テストまで一通りの技法を適用できる</li>
+              <li><strong>拡張の余地</strong>: 章が進むにつれて機能を追加し、学んだ技法を実践できる</li>
+            </ul>
+            <h4 id="本書での発展">本書での発展</h4>
+            <table>
+              <thead>
+                <tr>
+                  <th>章</th>
+                  <th>QuestForgeで学ぶこと</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>第1章</td>
+                  <td>要求の聴き取り、ゴール分析、UMLによる可視化</td>
+                </tr>
+                <tr>
+                  <td>第2章</td>
+                  <td>ドメインモデル設計、クリーンアーキテクチャ</td>
+                </tr>
+                <tr>
+                  <td>第3章</td>
+                  <td>AIを活用した実装、コード生成</td>
+                </tr>
+                <tr>
+                  <td>第4章</td>
+                  <td>TDD、テストケース生成</td>
+                </tr>
+                <tr>
+                  <td>第5章</td>
+                  <td>リファクタリング、コードレビュー</td>
+                </tr>
+                <tr>
+                  <td>第6章</td>
+                  <td>CI/CD、運用</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>サンプルコードは <code>sample-code/questforge/</code> にあります。実際に動かしながら読み進めてください。</p>
+          </blockquote>
+          <hr>
+          <figure>
+            <img src="../../assets/diagrams/chapter01/1-1-priority-matrix.svg" alt="価値とコストによる優先度マトリクス">
+            <figcaption aria-hidden="true">価値とコストによる優先度マトリクス</figcaption>
+          </figure>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="まとめ">まとめ</h2>
+        <ol>
+          <li><strong>言葉は氷山の一角</strong>: ユーザーの発言は、真の要求のごく一部に過ぎない。</li>
+          <li><strong>解決策ではなく目的を探れ</strong>: 「ドリルが欲しい」の奥にある「なぜ穴が必要か」を問え。</li>
+          <li><strong>要求には階層がある</strong>: ビジネス要求→ユーザー要求→機能要求。上位を理解せよ。</li>
+          <li><strong>聴くことは投資</strong>: 最初に正しく聴けば、後の手戻りコストを劇的に削減できる。</li>
+          <li><strong>聴くことは信頼</strong>: 「理解しようとしてくれる」姿勢が、プロジェクトを支える土台になる。</li>
+        </ol>
+        <p>次節では、この「聴く」を実践するための具体的な技法——<strong>アクティブ・リスニング</strong>を学びます。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>📚 <strong>書籍</strong>: カール・ウィーガーズ『ソフトウェア要求 第3版』（要求工学の定番テキスト）</li>
+          <li>📚 <strong>書籍</strong>: ジェラルド・ワインバーグ『要求仕様の探検学』（要求発見の技法を物語形式で学ぶ）</li>
+          <li>📚 <strong>書籍</strong>: Barry Boehm『Software Engineering Economics』1981（手戻りコストの原典）</li>
+          <li>📊 <strong>レポート</strong>: Standish Group CHAOS Report（プロジェクト成功/失敗要因の統計データ）</li>
+          <li>🎨 <strong>風刺画</strong>: <a href="https://en.wikipedia.org/wiki/Tree_swing_cartoon">Tree swing cartoon - Wikipedia</a>（風刺画の歴史と起源）</li>
+        </ul>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> 要求の階層を分析する</span>
+以下のユーザー発言から、要求の3層（ビジネス要求、ユーザー要求、機能要求）を
+推測して整理してください。
+不明な部分は「確認が必要」と記載し、確認すべき質問も提案してください。
+
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">ユーザー発言</span><span class="token punctuation">**</span></span>:
+「毎月の経費精算が面倒なので、レシートを撮影したら自動で処理してくれるアプリが欲しい」</code></pre>
+        <pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> 「解決策」から「目的」を逆算する</span>
+以下の機能要求が、どのようなユーザー要求・ビジネス要求に紐づくか、
+3つの可能性を挙げてください。
+
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">機能要求</span><span class="token punctuation">**</span></span>:
+「QuestForgeに、友達とクエストを共有する機能を追加してほしい」</code></pre>
+      </section>
+    </section>
+    <section class="footnotes" role="doc-endnotes">
+      <hr>
+      <ol>
+        <li id="fn1" role="doc-endnote">本書の著者はドリルそのものを保有して自分で穴を開けたい人なので、誰かに穴を空けてもらったり、別のソリューションを提案されても嬉しくありません。たまにそんなめんどくさい人もいるので注意しましょう。<a href="#fnref1" class="footnote-back" role="doc-backlink">↩</a></li>
+      </ol>
+    </section>
+  
+
+
+    
+    </main>
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part1/chapter01/chapter01.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part1/chapter01/1-2.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    </body></html>

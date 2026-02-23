@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" width="500" height="300">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .box-ent { fill: #E3F2FD; stroke: #1E88E5; stroke-width: 2; }
+      .box-emb { fill: #E8F5E9; stroke: #43A047; stroke-width: 2; }
+      .text-main { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: bold; fill: #333; }
+      .text-sub { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; fill: #666; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="500" height="300" class="bg"/>
+  <title>設計のコンテキスト比較</title>
+
+  <!-- Enterprise -->
+  <rect x="50" y="50" width="180" height="200" rx="10" class="box-ent" />
+  <text x="140" y="80" class="text-main" text-anchor="middle">エンタープライズ</text>
+  <text x="70" y="120" class="text-sub">・スケーラビリティ</text>
+  <text x="70" y="150" class="text-sub">・保守性、拡張性</text>
+  <text x="70" y="180" class="text-sub">・データの整合性</text>
+  <text x="140" y="230" class="text-main" text-anchor="middle" font-size="12">「変化」への適応</text>
+
+  <!-- vs -->
+  <text x="250" y="155" class="text-main" text-anchor="middle" font-size="24" fill="#999">VS</text>
+
+  <!-- Embedded -->
+  <rect x="270" y="50" width="180" height="200" rx="10" class="box-emb" />
+  <text x="360" y="80" class="text-main" text-anchor="middle">組み込み・制御</text>
+  <text x="290" y="120" class="text-sub">・リソース制約 (メモリ/電力)</text>
+  <text x="290" y="150" class="text-sub">・リアルタイム性</text>
+  <text x="290" y="180" class="text-sub">・信頼性、安全性</text>
+  <text x="360" y="230" class="text-main" text-anchor="middle" font-size="12">「制約」の中の美</text>
+</svg>

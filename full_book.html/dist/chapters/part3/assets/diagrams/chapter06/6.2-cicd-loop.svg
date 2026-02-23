@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" width="500" height="300">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .loop-path { stroke: #1E88E5; stroke-width: 4; fill: none; stroke-linecap: round; }
+      .text-main { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: bold; fill: #333; text-anchor: middle; }
+      .node { fill: #FFF; stroke: #1E88E5; stroke-width: 2; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="500" height="300" class="bg"/>
+  
+  <!-- CI/CD Loop (Infinity symbol style) -->
+  <path d="M 150,150 C 150,50 250,50 250,150 C 250,250 350,250 350,150 C 350,50 250,50 250,150 C 250,250 150,250 150,150" class="loop-path" />
+
+  <!-- CI Side -->
+  <circle cx="150" cy="150" r="40" class="node" />
+  <text x="150" y="155" class="text-main">CI</text>
+  <text x="80" y="100" class="text-main" font-size="10">Build / Test</text>
+
+  <!-- CD Side -->
+  <circle cx="350" cy="150" r="40" class="node" style="stroke: #43A047;" />
+  <text x="350" y="155" class="text-main">CD</text>
+  <text x="420" y="100" class="text-main" font-size="10" fill="#43A047">Release / Deploy</text>
+
+  <text x="250" y="280" class="text-main">ソフトウェアの「血液循環」</text>
+</svg>

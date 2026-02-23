@@ -1,0 +1,224 @@
+{
+  "@context": [
+    "https://schema.org",
+    "https://www.w3.org/ns/pub-context"
+  ],
+  "type": "Book",
+  "conformsTo": "https://github.com/vivliostyle/vivliostyle-cli",
+  "name": "「楽しい」ソフトウェア工学の教科書 - デジタル・アルケミー",
+  "author": "小川 秀人 & AI Familiar",
+  "inLanguage": "ja",
+  "dateModified": "2026-02-23T03:35:39.265Z",
+  "readingOrder": [
+    {
+      "url": "COVER.html",
+      "name": "『「楽しい」ソフトウェア工学の教科書』"
+    },
+    {
+      "url": "toc.html",
+      "name": "『「楽しい」ソフトウェア工学の教科書』目次"
+    },
+    {
+      "url": "chapters/prologue/prologue.html",
+      "name": "プロローグ：ソフトウェア工学は「魔法の地図」である"
+    },
+    {
+      "url": "chapters/part1/chapter01/chapter01.html",
+      "name": "第1章 ドメインという名の異世界探検——要求工学入門"
+    },
+    {
+      "url": "chapters/part1/chapter01/1-1.html",
+      "name": "1.1 なぜ聴くのか？——要求工学という冒険の始まり"
+    },
+    {
+      "url": "chapters/part1/chapter01/1-2.html",
+      "name": "1.2 どう聴くか？——アクティブ・リスニングの技法"
+    },
+    {
+      "url": "chapters/part1/chapter01/1-3.html",
+      "name": "1.3 誰に聴くか？——AIペルソナとの対話"
+    },
+    {
+      "url": "chapters/part1/chapter01/1-4.html",
+      "name": "1.4 どう整理するか？——ゴール指向要求分析"
+    },
+    {
+      "url": "chapters/part1/chapter01/1-5.html",
+      "name": "1.5 どう可視化するか？——要求を描く魔法陣（UML前編）"
+    },
+    {
+      "url": "chapters/part1/chapter02/chapter02.html",
+      "name": "第2章 悠久のアーキテクチャ——ソフトウェア設計入門"
+    },
+    {
+      "url": "chapters/part1/chapter02/2-1.html",
+      "name": "2.1 オブジェクト指向という魔法の源"
+    },
+    {
+      "url": "chapters/part1/chapter02/2-2.html",
+      "name": "2.2 どう構造化するか？——設計を描く魔法陣（UML後編）"
+    },
+    {
+      "url": "chapters/part1/chapter02/2-3.html",
+      "name": "2.3 どう分けるか？——美しい構造の黄金律（SOLID原則）"
+    },
+    {
+      "url": "chapters/part1/chapter02/2-4.html",
+      "name": "2.4 どう受け継ぐか？——デザインパターンの知恵"
+    },
+    {
+      "url": "chapters/part1/chapter02/2-5.html",
+      "name": "2.5 どう守るか？——クリーンアーキテクチャ"
+    },
+    {
+      "url": "chapters/part1/chapter02/2-6.html",
+      "name": "2.6 【外伝】二つの聖域——エンタープライズと組み込み"
+    },
+    {
+      "url": "chapters/part2/chapter03/chapter03.html",
+      "name": "第3章 モダン・アルケミー——論理を具現化する実装の技法"
+    },
+    {
+      "url": "chapters/part2/chapter03/3-1.html",
+      "name": "3.1 魔導の元素——アルゴリズムとデータ構造"
+    },
+    {
+      "url": "chapters/part2/chapter03/3-2.html",
+      "name": "3.2 術式の構築——制御構造と論理の美学"
+    },
+    {
+      "url": "chapters/part2/chapter03/3-3.html",
+      "name": "3.3 術式の器——関数・クラス・モジュール"
+    },
+    {
+      "url": "chapters/part2/chapter03/3-4.html",
+      "name": "3.4 審美眼の錬磨——コードの評価と静的解析"
+    },
+    {
+      "url": "chapters/part2/chapter03/3-5.html",
+      "name": "3.5 詠唱による具現化——自律型エージェントとの共闘"
+    },
+    {
+      "url": "chapters/part2/chapter03/3-6.html",
+      "name": "3.6 多彩なる魔導体系——言語の壁を超える"
+    },
+    {
+      "url": "chapters/part2/chapter03/3-7.html",
+      "name": "3.7 並列詠唱の奥義——非同期・並行プログラミング（The Art of Concurrent Spellcasting）"
+    },
+    {
+      "url": "chapters/part2/chapter04/chapter04.html",
+      "name": "第4章 無敵の軍団を作る——テストと品質保証"
+    },
+    {
+      "url": "chapters/part2/chapter04/4-1.html",
+      "name": "4.1 守護魔法の体系——テストの全体像"
+    },
+    {
+      "url": "chapters/part2/chapter04/4-2.html",
+      "name": "4.2 鑑定術の技法——テスト設計の4つの流派"
+    },
+    {
+      "url": "chapters/part2/chapter04/4-3.html",
+      "name": "4.3 赤から緑へ——テスト駆動開発のリズム"
+    },
+    {
+      "url": "chapters/part2/chapter04/4-4.html",
+      "name": "4.4 AIが放つ刺客——テストの自動生成と拡張"
+    },
+    {
+      "url": "chapters/part2/chapter04/4-5.html",
+      "name": "4.5 鉄壁の防衛線——テスト自動化とCI"
+    },
+    {
+      "url": "chapters/part2/chapter04/4-6.html",
+      "name": "4.6 術式の不調を探る——デバッグという推理ゲーム（The Art of Debugging）"
+    },
+    {
+      "url": "chapters/part3/chapter05/chapter05.html",
+      "name": "第5章 リファクタリング：彫刻を磨く喜び"
+    },
+    {
+      "url": "chapters/part3/chapter05/5-1.html",
+      "name": "5.1 コードの「匂い」を嗅ぎ分ける（The Art of Sensing）"
+    },
+    {
+      "url": "chapters/part3/chapter05/5-2.html",
+      "name": "5.2 AIによるコードレビュー（The Dialogue with the Familiar）"
+    },
+    {
+      "url": "chapters/part3/chapter05/5-3.html",
+      "name": "5.3 技術負債の返済ゲーム（Gamification of Maintenance）"
+    },
+    {
+      "url": "chapters/part3/chapter05/5-4.html",
+      "name": "5.4 【外伝】万変の魔導書——ソフトウェアプロダクトライン"
+    },
+    {
+      "url": "chapters/part3/chapter06/chapter06.html",
+      "name": "第6章 進化する生命体——デプロイと運用"
+    },
+    {
+      "url": "chapters/part3/chapter06/6-1.html",
+      "name": "6.1 命を吹き込む儀式——デプロイメントの進化"
+    },
+    {
+      "url": "chapters/part3/chapter06/6-2.html",
+      "name": "6.2 絶え間なき循環——CI/CDパイプライン"
+    },
+    {
+      "url": "chapters/part3/chapter06/6-3.html",
+      "name": "6.3 鍛冶場の結界——セキュリティという守りの技法（The Ward of the Forge）"
+    },
+    {
+      "url": "chapters/part3/chapter06/6-4.html",
+      "name": "6.4 脈動を聴く——オブザーバビリティ"
+    },
+    {
+      "url": "chapters/part3/chapter06/6-5.html",
+      "name": "6.5 カオスへの耐性——レジリエンスと自己修復"
+    },
+    {
+      "url": "chapters/part3/chapter06/6-6.html",
+      "name": "6.6 ユーザーとの共進化——フィードバックループ"
+    },
+    {
+      "url": "chapters/part4/chapter07/chapter07.html",
+      "name": "第7章 アジャイルという名の冒険パーティ——開発プロセス"
+    },
+    {
+      "url": "chapters/part4/chapter07/7-1.html",
+      "name": "7.1 スクラムの祝祭"
+    },
+    {
+      "url": "chapters/part4/chapter07/7-2.html",
+      "name": "7.2 Git/GitHubを通じた知の交流"
+    },
+    {
+      "url": "chapters/part4/chapter07/7-3.html",
+      "name": "7.3 共鳴する魂——ペアプロ・モブプロ"
+    },
+    {
+      "url": "chapters/part4/chapter08/chapter08.html",
+      "name": "第8章 エンジニアの倫理と未来への責任——終わりなき冒険の始まり"
+    },
+    {
+      "url": "chapters/part4/chapter08/8-1.html",
+      "name": "8.1 賢者の誓い——エンジニアの倫理と社会的責任"
+    },
+    {
+      "url": "chapters/part4/chapter08/8-2.html",
+      "name": "8.2 創造の火——AI時代の創造性と「問い」を立てる力"
+    },
+    {
+      "url": "chapters/part4/chapter08/8-3.html",
+      "name": "8.3 終わりのない旅——学びのサイクルとギルドの力"
+    },
+    {
+      "url": "chapters/epilogue/epilogue.html",
+      "name": "エピローグ：世界を再構築するあなたへ"
+    }
+  ],
+  "resources": [],
+  "links": []
+}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>5.4 【外伝】万変の魔導書——ソフトウェアプロダクトライン</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+    <style>
+        body { max-width: 900px; margin: 0 auto; background: white; }
+        section { padding: 20px; }
+        img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body style="margin:0; padding:0;">
+
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part3/chapter05/5-3.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part3/chapter06/chapter06.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    <main>
+    
+    
+    <section class="level1">
+      <h1 id="54-外伝万変の魔導書ソフトウェアプロダクトライン">5.4 【外伝】万変の魔導書——ソフトウェアプロダクトライン</h1>
+      <section class="level2">
+        <h2 id="導入-一つの成功から千の多様性へ">導入: 一つの成功から、千の多様性へ</h2>
+        <p>リファクタリングの修行を積んだアルケミストは、やがて一つの壁に突き当たります。「目の前のコードは綺麗になった。しかし、似たような別のプロダクトを作るたびに、コードをコピー＆ペーストして少しだけ書き換える作業を繰り返していないか？」という壁です。</p>
+        <p>私たちが育ててきた QuestForge が大評判となり、「騎士団専用の重厚な管理システム」や「魔法学院向けの学習支援システム」といった、派生プロダクトの依頼が殺到したと想像してください。</p>
+        <p>それぞれのソースコードをバラバラに管理（クローン）すれば、バグ修正や機能改善のたびに、すべてのコードを渡り歩く地獄が待っています。この難題を解決する高度な錬金術、それが<strong>ソフトウェアプロダクトライン（SPL）</strong>です。</p>
+        <figure>
+          <img src="../../assets/diagrams/chapter05/5.4-product-line.svg" alt="ソフトウェアプロダクトライン">
+          <figcaption aria-hidden="true">ソフトウェアプロダクトライン</figcaption>
+        </figure>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="1-共通の核コア資産と変幻する頁">1. 共通の核（コア資産）と変幻する頁</h2>
+        <p>SPLの本質は、システムを<strong>「コア資産（Core Assets）」</strong>と<strong>「可変性（Variability）」</strong>に明確に分離することにあります。</p>
+        <ul>
+          <li><strong>コア資産（真理の頁）</strong>: どのプロダクトでも変わらない、共通のビジネスルールやデータ構造。QuestForgeで言えば「クエストの完了判定」や「経験値の計算ロジック」です。</li>
+          <li><strong>可変性（選択の印）</strong>: プロダクトごとに切り替える機能やUI。例えば「騎士団版のみに存在する上官への報告機能」や「魔法学院版だけの試験評価システム」などです。</li>
+        </ul>
+        <p>リファクタリングを通じて、単一のプロダクトからこれらを抽出していく作業は、あたかも一つの重厚な魔導書を、ページを差し替え可能な「バインダー式の魔導書」へと組み替えるようなものです。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="2-派生から量産へリファクタリングの戦略">2. 派生から量産へ：リファクタリングの戦略</h2>
+        <p>最初から完璧なプロダクトラインを設計するのは奥深い挑戦です。多くの場合、SPLは以下のリファクタリング・ステップを経て誕生します。</p>
+        <section class="level3">
+          <h3 id="ステップ1-共通項の括り出し抽出">ステップ1: 共通項の括り出し（抽出）</h3>
+          <p>複数の派生プロダクトを比較し、重複しているロジックを共通ライブラリやベースクラスへと吸い上げます。</p>
+        </section>
+        <section class="level3">
+          <h3 id="ステップ2-変化点のカプセル化プラグイン化">ステップ2: 変化点のカプセル化（プラグイン化）</h3>
+          <p>プロダクトごとに異なる部分を、第2章で学んだ「Strategyパターン」や「依存性注入（DI）」を使って、外から差し替えられるようにリファクタリングします。</p>
+        </section>
+        <section class="level3">
+          <h3 id="ステップ3-フィーチャーモデルの構築設計">ステップ3: フィーチャーモデルの構築（設計）</h3>
+          <p>「どの機能とどの機能が共存できるか」を整理します。</p>
+          <ul>
+            <li>「騎士団版」なら A機能とB機能は必須、C機能は禁止。</li>
+            <li>
+              「一般向け」なら A機能のみ。
+              このように、機能の組み合わせ（レシピ）を定義することで、設定一つでプロダクトを構成（ビルド）できるようにします。
+            </li>
+          </ul>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="3-アルケミストの報酬高品質な量産">3. アルケミストの報酬：高品質な量産</h2>
+        <p>プロダクトラインを構築する最大のメリットは、<strong>「一つの修正が、すべての派生製品に恩恵をもたらす」</strong>ことです。</p>
+        <p>コア資産のバグを直せば、それを利用する騎士団版も、学院版も、一般版も、同時に浄化されます。また、新しい魔法（機能）を追加する際も、コア資産に実装すれば、すべてのプロダクトで即座に利用可能になります。</p>
+        <p>これは、リファクタリングが「コードを綺麗にする」という目的を超えて、<strong>「ビジネスの機動力を極限まで高める」</strong>という戦略的な武器に進化した姿なのです。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="まとめ彫刻から金型へ">まとめ：彫刻から金型へ</h2>
+        <p>リファクタリングの初期段階は、一つの石を丁寧に磨き上げる「彫刻」のような作業です。しかし、経験を積んだアルケミストは、その彫刻を「美しい金型（プロダクトライン）」へと昇華させます。</p>
+        <p>「一つを作って終わり」ではなく、「共通の魂を持つ種族（プロダクトファミリー）」を育てる視点を持つこと。それが、複雑な現代の魔法世界を生き抜くための、高度な設計思想なのです。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="コラムquestforgeの多世界解釈">コラム：QuestForgeの多世界解釈</h2>
+        <p>もし QuestForge をプロダクトライン化するなら、以下のような「レシピ」が考えられます。</p>
+        <ul>
+          <li><strong>ベース</strong>: ユーザー管理、クエストDB、進捗計算。</li>
+          <li><strong>バリエーション点</strong>:
+            <ul>
+              <li><strong>報酬システム</strong>: 「金貨（一般向け）」「名誉勲章（騎士団向け）」「単位（学院向け）」</li>
+              <li><strong>協力プレイ</strong>: 「なし（ソロ版）」「パーティ組成（ギルド版）」</li>
+            </ul>
+          </li>
+        </ul>
+        <p>これらをソースコードを汚さずに切り替えられるようになった時、あなたのリファクタリング技術は真のマスターレベルに達したと言えるでしょう。</p>
+      </section>
+    </section>
+  
+
+
+    
+    </main>
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part3/chapter05/5-3.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part3/chapter06/chapter06.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    </body></html>

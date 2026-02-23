@@ -1,0 +1,399 @@
+<!DOCTYPE html><html lang="ja"><head>
+    <meta charset="utf-8">
+    <title>2.2 どう構造化するか？——設計を描く魔法陣（UML後編）</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+  </head>
+  <body>
+    <section class="level1">
+      <h1 id="22-どう構造化するか設計を描く魔法陣uml後編">2.2 どう構造化するか？——設計を描く魔法陣（UML後編）</h1>
+      <section class="level2">
+        <h2 id="導入-思考の解像度を上げる">導入: 思考の解像度を上げる</h2>
+        <figure>
+          <img src="../../assets/diagrams/chapter02/2-2-class-diagram.svg" alt="QuestForgeドメインのクラス図">
+          <figcaption aria-hidden="true">QuestForgeドメインのクラス図</figcaption>
+        </figure>
+        <figure>
+          <img src="../../assets/diagrams/chapter02/2-2-sequence-diagram.svg" alt="クエスト完了のシーケンス図">
+          <figcaption aria-hidden="true">クエスト完了のシーケンス図</figcaption>
+        </figure>
+        <p>第1章では、私たちは「何を作りたいのか」という、広大で魅力的な要求の世界を探索してきました。</p>
+        <p>ユースケース図で登場人物（アクター）の目的を整理し、アクティビティ図で冒険の流れを描き出しました。</p>
+        <p>しかし、冒険の地図を手にしても、実際にその場所に城を築くためには、より詳細な「設計図」が必要です。「誰が何をするか」という要求の解像度を一段引き上げ、「どんな部品が、どう組み合わさって動くのか」という構造の世界へ足を踏み入れる時が来ました。</p>
+        <p>このセクションでは、設計を描くための「共通の魔法陣」——UML（統一モデリング言語）の後半戦として、クラス図とシーケンス図を学びます。これらは、あなたの頭の中にある漠然としたアイデアを、魔法（コード）として発動可能な論理的な形へと変換するための、美しく力強いツールです。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="理論的背景">理論的背景</h2>
+        <section class="level3">
+          <h3 id="なぜこれが重要か">なぜこれが重要か</h3>
+          <p>設計図を描くことは、単なる記録作業ではありません。それは「思考の整理」そのものです。</p>
+          <p>複雑なシステムを構築する際、すべてを一度に考えるのは至難の業です。クラス図を使ってシステムの「静的な構造」を固定し、シーケンス図で「動的な振る舞い」をシミュレーションすることで、実装を始める前に設計のバランスを確認できます。これにより、後の工程でさらに効果的な改善を行うための、強固な土台を築くことができるのです。</p>
+        </section>
+        <section class="level3">
+          <h3 id="基本概念">基本概念</h3>
+          <p>設計フェーズで最も頻繁に使われる、2つの重要な図を確認しましょう。</p>
+          <section class="level4">
+            <h4 id="1-クラス図世界の骨組み">1. クラス図：世界の「骨組み」</h4>
+            <p>クラス図という魔法陣を使ってシステムの「静的な構造」を描き、概念間の関係性を固定します。</p>
+            <ul>
+              <li><strong>クラス</strong>: 名前（真名）、属性（魔力）、操作（呪文）を持つ情報の箱。</li>
+              <li><strong>関係性（魔力の結びつき）</strong>:
+                <ul>
+                  <li><strong>関連 (Association)</strong>: 通常の結びつき。互いに認識している状態。</li>
+                  <li><strong>集約 (Aggregation / 白抜きの菱形)</strong>: 「パーティ」のような緩やかな主従関係。勇者がいなくなっても、装備していた剣は独立して存在できる。</li>
+                  <li><strong>コンポジション (Composition / 黒塗りの菱形)</strong>: 「肉体」のような強い主従関係。勇者が消滅すれば、その腕力も同時に消滅する運命共同体。</li>
+                  <li><strong>依存 (Dependency / 点線矢印)</strong>: 一時的な協力関係。ある呪文を唱える一瞬だけ、他のアイテムの力を借りるような淡い関係。</li>
+                </ul>
+              </li>
+              <li><strong>継承/汎化 (Inheritance)</strong>: 「共通の性質」をまとめるエレガントな構造。</li>
+            </ul>
+          </section>
+          <section class="level4">
+            <h4 id="2-シーケンス図共鳴の儀式ダイナミズム">2. シーケンス図：共鳴の儀式（ダイナミズム）</h4>
+            <p>シーケンス図は、複数のオブジェクトが時間の経過とともに、どのようにメッセージをやり取りして一つの魔法（機能）を実現するかを描く「動的な魔法陣」です。</p>
+            <ul>
+              <li><strong>ライフライン（生命線）</strong>: 魔法の媒介者（オブジェクト）がその儀式の間に存在していることを示す点線です。</li>
+              <li><strong>メッセージ（魔力の伝達）</strong>: オブジェクト間で交わされる「呼び出し」です。あるオブジェクトが別のオブジェクトの力を借りる（メソッドを呼ぶ）たびに、魔力が横断するように矢印が描かれます。</li>
+              <li><strong>活性化（魔力の練成）</strong>: ライフライン上に描かれる細長い長方形。そのオブジェクトが実際に思考し、魔力を練り上げている（処理を実行している）時間を表します。</li>
+            </ul>
+            <p>クラス図が「どんな魔導具があるか」を示す目録だとすれば、シーケンス図は「それらをどの順番で動かして、どんな奇跡を起こすか」を示す、いわば<strong>詠唱の連鎖</strong>なのです。</p>
+            <pre class="language-mermaid"><code class="language-mermaid"><span class="token keyword">graph</span> TD
+    <span class="token keyword">subgraph</span> <span class="token string">"静的な構造（魔法陣）"</span>
+    C<span class="token text string">[クラス図]</span>
+    <span class="token keyword">end</span>
+    <span class="token keyword">subgraph</span> <span class="token string">"動的な振る舞い（儀式）"</span>
+    S<span class="token text string">[シーケンス図]</span>
+    <span class="token keyword">end</span>
+    C <span class="token inter-arrow-label"><span class="token arrow-head arrow operator">-.</span> <span class="token label property">構造を定義</span> <span class="token arrow operator">.-&gt;</span></span> S
+    S <span class="token inter-arrow-label"><span class="token arrow-head arrow operator">-.</span> <span class="token label property">役割を実証</span> <span class="token arrow operator">.-&gt;</span></span> C</code></pre>
+            <p>[図: クラス図（静）とシーケンス図（動）の補完関係]</p>
+            <hr>
+          </section>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="実践例-questforgeのドメインモデル">実践例: QuestForgeのドメインモデル</h2>
+        <p>私たちのサンプルプロジェクト「QuestForge」を題材に、実際に図を描いてみましょう。</p>
+        <section class="level3">
+          <h3 id="従来のアプローチ要求レベルのモデル">従来のアプローチ（要求レベルのモデル）</h3>
+          <p>最初は、ドメインの主要な概念を抽出することから始めます。1.4節のゴール指向分析で特定した要素を、クラスの候補として配置します。</p>
+          <pre class="language-mermaid"><code class="language-mermaid"><span class="token keyword">classDiagram</span>
+    <span class="token keyword">class</span> Hero <span class="token punctuation">{</span>
+        +String name
+        +int level
+        +gainExp<span class="token text string">(amount)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">class</span> Quest <span class="token punctuation">{</span>
+        +String title
+        +String status
+        +complete<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">class</span> Reward <span class="token punctuation">{</span>
+        +int exp
+        +String item
+    <span class="token punctuation">}</span>
+    Hero <span class="token string">"1"</span> <span class="token arrow operator">--</span> <span class="token string">"*"</span> Quest <span class="token operator">:</span> 挑戦する
+    Quest <span class="token string">"1"</span> <span class="token arrow operator">--</span> <span class="token string">"1"</span> Reward <span class="token operator">:</span> 与える</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="ai時代のアプローチ詳細設計への進化">AI時代のアプローチ（詳細設計への進化）</h3>
+          <p>AIを活用すると、このシンプルなモデルから、より実装に近い詳細な設計へとスムーズに移行できます。AIは既存のコードや要求仕様から、クラス間の細かい依存関係や、適切なインターフェースを提案してくれます。</p>
+          <p>たとえば、AIとの対話を通じて、「クエスト完了時の報酬付与プロセス」をシーケンス図として具体化してみましょう。</p>
+          <pre class="language-mermaid"><code class="language-mermaid"><span class="token keyword">sequenceDiagram</span>
+    <span class="token keyword">participant</span> User as ユーザー
+    <span class="token keyword">participant</span> QC as QuestController
+    <span class="token keyword">participant</span> Q as Quest
+    <span class="token keyword">participant</span> H as Hero
+    <span class="token keyword">participant</span> R as Reward
+
+    User<span class="token arrow operator">-&gt;&gt;</span>QC<span class="token operator">:</span> クエスト完了を報告
+    QC<span class="token arrow operator">-&gt;&gt;</span>Q<span class="token operator">:</span> set_status<span class="token text string">("Completed")</span>
+    QC<span class="token arrow operator">-&gt;&gt;</span>Q<span class="token operator">:</span> get_reward<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    Q<span class="token arrow operator">--&gt;&gt;</span>QC<span class="token operator">:</span> reward_obj
+    QC<span class="token arrow operator">-&gt;&gt;</span>R<span class="token operator">:</span> apply_to<span class="token text string">(Hero)</span>
+    R<span class="token arrow operator">-&gt;&gt;</span>H<span class="token operator">:</span> add_exp<span class="token text string">(exp)</span>
+    H<span class="token arrow operator">--&gt;&gt;</span>User<span class="token operator">:</span> レベルアップの可能性！</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="比較と考察">比較と考察</h3>
+          <p>要求を整理するための図と、実装を導くための図では、その「目的」に違いがあります。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>観点</th>
+                <th>要求モデリング（1.5節）</th>
+                <th>設計モデリング（本節）</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>主な読者</td>
+                <td>ユーザー、ステークホルダー</td>
+                <td>開発者、AIアシスタント</td>
+              </tr>
+              <tr>
+                <td>抽象度</td>
+                <td>高い（現実世界の言葉）</td>
+                <td>中〜低（プログラミングの言葉）</td>
+              </tr>
+              <tr>
+                <td>注目点</td>
+                <td>「何ができるか」</td>
+                <td>「どう実現するか」</td>
+              </tr>
+              <tr>
+                <td>ゴール</td>
+                <td>共通認識の形成</td>
+                <td>迷いのない実装のガイド</td>
+              </tr>
+            </tbody>
+          </table>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="付録-魔法陣の文法書クラス図記法リファレンス">付録: 魔法陣の文法書（クラス図記法リファレンス）</h2>
+        <p>正確な魔法陣を描くための、標準的な記法（シンタックス）をまとめました。</p>
+        <section class="level3">
+          <h3 id="1-クラスの構造">1. クラスの構造</h3>
+          <p>クラスは3つの部屋を持つ長方形で描かれます。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>部屋</th>
+                <th>内容</th>
+                <th>記法例</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>上段</strong></td>
+                <td><strong>クラス名</strong>（真名）</td>
+                <td><code>Hero</code></td>
+              </tr>
+              <tr>
+                <td><strong>中段</strong></td>
+                <td><strong>属性</strong>（魔力）</td>
+                <td><code>+name: String</code><br><code>-hp: int</code></td>
+              </tr>
+              <tr>
+                <td><strong>下段</strong></td>
+                <td><strong>操作</strong>（呪文）</td>
+                <td><code>+attack(target)</code><br><code>#recover()</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="level3">
+          <h3 id="2-可視性魔力の公開範囲">2. 可視性（魔力の公開範囲）</h3>
+          <p>属性や操作が、誰から見えるかを定義します。</p>
+          <table>
+            <thead>
+              <tr>
+                <th align="center">記号</th>
+                <th>名前</th>
+                <th>意味</th>
+                <th>イメージ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="center"><code>+</code></td>
+                <td><strong>Public</strong></td>
+                <td>誰でもアクセス可能</td>
+                <td>街の広場で叫ぶ</td>
+              </tr>
+              <tr>
+                <td align="center"><code>-</code></td>
+                <td><strong>Private</strong></td>
+                <td>自分自身のみ</td>
+                <td>心の中の独り言</td>
+              </tr>
+              <tr>
+                <td align="center"><code>#</code></td>
+                <td><strong>Protected</strong></td>
+                <td>自分と継承者（子供）のみ</td>
+                <td>一族の秘伝</td>
+              </tr>
+              <tr>
+                <td align="center"><code>~</code></td>
+                <td><strong>Package</strong></td>
+                <td>同じパッケージ内のみ</td>
+                <td>ギルドメンバー限定</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="level3">
+          <h3 id="3-関係性魔力の結びつきの詳細">3. 関係性（魔力の結びつき）の詳細</h3>
+          <p>クラス間の結びつきを、線の種類で区別します。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>関係名</th>
+                <th>線種</th>
+                <th>説明</th>
+                <th>コード例</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>関連</strong><br>(Association)</td>
+                <td>実線<br><code>──&gt;</code></td>
+                <td>知り合い。「AはBを知っている」。</td>
+                <td><code>class A { b: B }</code></td>
+              </tr>
+              <tr>
+                <td><strong>集約</strong><br>(Aggregation)</td>
+                <td>白抜き菱形<br><code>◇──</code></td>
+                <td>「全体」と「部分」。部分は独立して生きられる（弱い所有）。</td>
+                <td><code>Party</code> と <code>Hero</code></td>
+              </tr>
+              <tr>
+                <td><strong>コンポジション</strong><br>(Composition)</td>
+                <td>黒塗り菱形<br><code>◆──</code></td>
+                <td>運命共同体。全体が消えれば部分も消える（強い所有）。</td>
+                <td><code>Hero</code> と <code>Arm</code></td>
+              </tr>
+              <tr>
+                <td><strong>依存</strong><br>(Dependency)</td>
+                <td>点線矢印<br><code>..&gt;</code></td>
+                <td>一時的な利用。引数などで一時的に使うだけ。</td>
+                <td><code>Hero.heal(Potion)</code></td>
+              </tr>
+              <tr>
+                <td><strong>汎化</strong><br>(Generalization)</td>
+                <td>白抜き三角<br><code>──▷</code></td>
+                <td>継承。「BはAの一種である（Is-a）」。</td>
+                <td><code>Dragon</code> is a <code>Monster</code></td>
+              </tr>
+              <tr>
+                <td><strong>実現</strong><br>(Realization)</td>
+                <td>点線白三角<br><code>..▷</code></td>
+                <td>実装。インターフェースの契約を満たす。</td>
+                <td><code>Hero</code> implements <code>ICharacter</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="level3">
+          <h3 id="4-多重度結びつきの数">4. 多重度（結びつきの数）</h3>
+          <p>関係の端に数字を書き、相手がいくつ存在するかを示します。</p>
+          <ul>
+            <li><code>1</code>: 必ず1つ（運命の相手）</li>
+            <li><code>0..1</code>: 0か1つ（持っていないかもしれない）</li>
+            <li><code>*</code> / <code>0..*</code>: 0以上（たくさん）</li>
+            <li><code>1..*</code>: 1以上（最低1つは必要）</li>
+          </ul>
+          <p>
+            <strong>例</strong>: <code>Hero "1" -- "0..*" Badge</code>
+            「一人の勇者は、0個以上のバッジを持つ」
+          </p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="ハンズオン-実際に描いてみよう">ハンズオン: 実際に描いてみよう</h2>
+        <p>現代の設計では、マウスで図を描くよりも、テキストベースで図を「記述」するスタイルが主流です。これにより、AIとの親和性が格段に高まります。</p>
+        <section class="level3">
+          <h3 id="ステップ1-plantuml--mermaidの準備">ステップ1: PlantUML / Mermaidの準備</h3>
+          <p>VS Codeなどのエディタに、MermaidやPlantUMLの拡張機能を導入しましょう。これらは、テキストを即座に美しい図へと変換してくれます。</p>
+        </section>
+        <section class="level3">
+          <h3 id="ステップ2-クラスの関係を定義する">ステップ2: クラスの関係を定義する</h3>
+          <p>
+            以下のコードをエディタに貼り付けてみてください。QuestForgeに「バッジ（Badge）」システムを追加する設計です。
+            ここで <code>*--</code> は<strong>コンポジション（強い結びつき）</strong>を表しています。バッジは勇者の実績の一部であり、勇者が消えればバッジも意味をなさなくなる、という設計意図を込めています。
+          </p>
+          <pre class="language-mermaid"><code class="language-mermaid"><span class="token keyword">classDiagram</span>
+    Hero <span class="token string">"1"</span> <span class="token arrow operator">*--</span> <span class="token string">"*"</span> Badge <span class="token operator">:</span> 獲得済み<span class="token text string">(Composition)</span>
+    <span class="token keyword">class</span> Badge <span class="token punctuation">{</span>
+        +String name
+        +String description
+        +check_condition<span class="token text string">(Hero)</span>
+    <span class="token punctuation">}</span></code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="ステップ3-aiに図をレビューしてもらう">ステップ3: AIに図をレビューしてもらう</h3>
+          <p>描いた図（テキスト）をAIに見せ、「この設計をさらに柔軟にするにはどうすればいい？」と問いかけてみましょう。AIは、インターフェースの導入やパターンの適用など、あなたの設計を次のレベルへ引き上げるアイデアをくれるはずです。</p>
+          <p>ここでAIが提案してくる「美しさの基準」の多くは、次節（2.3節）で詳しく学ぶ「SOLID原則」に基づいています。今はまず、図を描くことで思考が整理される感覚を楽しんでください。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="より深く理解するために">より深く理解するために</h2>
+        <section class="level3">
+          <h3 id="よくある誤解">よくある誤解</h3>
+          <ol>
+            <li>
+              <p><strong>誤解</strong>: すべてのクラスを完璧に図示しなければならない。</p>
+              <ul>
+                <li><strong>真実</strong>: 図は「伝えるための道具」です。複雑すぎる図はかえって理解を妨げます。重要な部分、変化が激しい部分に絞って描くのがコツです。</li>
+              </ul>
+            </li>
+            <li>
+              <p><strong>誤解</strong>: コードを書く前にすべてのシーケンスを確定させるべきだ。</p>
+              <ul>
+                <li><strong>真実</strong>: 設計と実装は反復するものです。図で大枠を捉え、実装しながら詳細を詰め、必要に応じて図を更新していくのが、現代的なアジャイルのアプローチです。</li>
+              </ul>
+            </li>
+          </ol>
+        </section>
+        <section class="level3">
+          <h3 id="ベストプラクティス">ベストプラクティス</h3>
+          <ul>
+            <li><strong>コードと同期させる</strong>: 魔法陣が古くなると混乱を招きます。Git管理できるテキストベースのUMLを使い、コードの変更に合わせて図も更新しましょう。</li>
+            <li><strong>AIを「モデリング・パートナー」にする</strong>: AIに「このアクティビティ図を実現するクラス図を提案して」と依頼することで、要求から設計へのジャンプを軽やかに行えます。</li>
+            <li><strong>「魔力の流れ」を左から右へ</strong>: シーケンス図では、主要な流れを左から右へ、応答を右から左へ描くのが基本です。矢印が激しく交差しすぎる場合は、責務の分散が「調和」していないサインかもしれません。そんな時は、魔法陣の構成を見直すチャンスです。</li>
+          </ul>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="まとめ">まとめ</h2>
+        <ol>
+          <li><strong>クラス図</strong>は、システムの「静的な構造」を描き、部品の役割と関係を明確にする。</li>
+          <li><strong>シーケンス図</strong>は、オブジェクト間の「動的な振る舞い」を描き、処理の流れをシミュレーションする。</li>
+          <li>要求図（What）から設計図（How）への移行は、<strong>思考の解像度を上げる</strong>プロセスである。</li>
+          <li>テキストベースのUMLを活用することで、<strong>AIとの協働</strong>がスムーズになり、設計の質を高速に高められる。</li>
+        </ol>
+        <p>次は、これらの部品をどのように配置すれば、変更に強く触りやすいコードになるのか——「美しい構造の黄金律（SOLID原則）」の世界を探索しましょう。</p>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <section class="level3">
+          <h3 id="古のグリモワール推薦図書">古のグリモワール（推薦図書）</h3>
+          <ul>
+            <li>📚 <strong>マーチン・ファウラー『UMLモデリングのエッセンス 第3版』</strong>: 魔法陣（UML）のエッセンスが凝縮された、アルケミスト必携の書。薄いが内容は濃い。</li>
+            <li>📚 <strong>ロバート・C・マーチン『Clean Architecture』</strong>: 第2.5節で詳しく学びますが、構造を設計するための哲学が詰まっています。</li>
+            <li>📚 <strong>クレイグ・ラーマン『実践UML』</strong>: 反復開発とUMLを組み合わせた、実践的な魔導書。</li>
+          </ul>
+        </section>
+        <section class="level3">
+          <h3 id="魔法の道具ツール">魔法の道具（ツール）</h3>
+          <ul>
+            <li>🛠 <strong>Mermaid.js</strong>: 本書でも多用している、テキストから魔法陣を生成するツール。GitHubとの相性が抜群。</li>
+            <li>🛠 <strong>PlantUML</strong>: より高度で複雑な魔法陣を描ける、老舗のツール。</li>
+          </ul>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <p>このセクションで学んだことを実践するためのプロンプト：</p>
+        <pre class="language-text"><code class="language-text">以下の要求仕様から、主要なクラスとその関係性を示すMermaid形式のクラス図を作成してください：
+「ユーザーはクエストを受注し、達成すると経験値とアイテムを獲得できる。また、特定の条件を満たすとバッジが付与される。」</code></pre>
+        <pre class="language-text"><code class="language-text">上記の設計において、「クエスト完了から報酬付与、バッジ獲得のチェックまで」の処理の流れをシーケンス図にしてください。</code></pre>
+        <hr>
+        <p><strong>執筆メモ</strong>:</p>
+        <ul>
+          <li>執筆日時: 2026-01-26</li>
+          <li>AIモデル: Gemini 2.0 Flash (CLI)</li>
+          <li>実装の意図: 要求から設計へのスムーズな移行を、UML後編という位置づけでポジティブに解説。AI時代にテキストベースUMLが重要であることを強調。</li>
+        </ul>
+      </section>
+    </section>
+  
+
+</body></html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html><html lang="ja"><head>
+    <meta charset="utf-8">
+    <title>第4章 無敵の軍団を作る——テストと品質保証</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+  </head>
+  <body>
+    <section class="level1">
+      <h1 id="第4章-無敵の軍団を作るテストと品質保証">第4章 無敵の軍団を作る——テストと品質保証</h1>
+      <figure>
+        <img src="../../assets/images/chapter_covers/Chapter4.png" alt="扉絵: 無敵の軍団を作る">
+        <figcaption aria-hidden="true">扉絵: 無敵の軍団を作る</figcaption>
+      </figure>
+      <section class="level2">
+        <h2 id="この章で手に入れる力">この章で手に入れる力</h2>
+        <p>第3章でコードを実装する技を学びました。しかし、書いたコードも、無防備に野ざらしにしておけば風雨に侵食されてしまいます。</p>
+        <p>ソフトウェアの世界における「風雨」とは、仕様変更、機能追加、そしてチームメンバーによる予期しない修正です。これらの変化からコードの品質を守り抜くには、<strong>自動化された守護魔法——テスト</strong>が不可欠です。</p>
+        <p>この章では、テストを「面倒な検査作業」ではなく、<strong>コードを安心して進化させ続けるための最強の味方</strong>として捉え直します。伝統的なテスト設計の知恵から、テスト駆動開発のリズム、AIによるテスト生成、そして自動化の基盤まで——あなたのソフトウェアを鉄壁に守る「無敵の軍団」を編成しましょう。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="章の構成">章の構成</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>セクション</th>
+              <th>タイトル</th>
+              <th>学ぶこと</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>4.1</td>
+              <td>守護魔法の体系</td>
+              <td>テストレベル（単体/結合/システム/受入）、テストピラミッド、テストダブル</td>
+            </tr>
+            <tr>
+              <td>4.2</td>
+              <td>鑑定術の技法</td>
+              <td>カバレッジ、同値分割・境界値分析、シナリオベーステスト、探索的テスト</td>
+            </tr>
+            <tr>
+              <td>4.3</td>
+              <td>赤から緑へ</td>
+              <td>テスト駆動開発（TDD）のRed-Green-Refactorサイクル</td>
+            </tr>
+            <tr>
+              <td>4.4</td>
+              <td>AIが放つ刺客</td>
+              <td>AIによるテスト生成、プロパティベーステスト、ミューテーションテスト</td>
+            </tr>
+            <tr>
+              <td>4.5</td>
+              <td>鉄壁の防衛線</td>
+              <td>テスト自動化、CIパイプライン、品質ゲート</td>
+            </tr>
+            <tr>
+              <td>4.6</td>
+              <td>術式の不調を探る</td>
+              <td>体系的デバッグ手法、ロギング、デバッガー、AIデバッグ</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="冒険の地図">冒険の地図</h2>
+        <pre class="language-text"><code class="language-text">┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   [4.1 体系] ←── テストレベルとピラミッド（全体像）          │
+│         │                                                   │
+│         ▼                                                   │
+│   [4.2 技法] ←── カバレッジ・同値分割・探索的テスト（設計）  │
+│         │                                                   │
+│         ▼                                                   │
+│   [4.3 TDD] ←── Red-Green-Refactorのリズム（実践）          │
+│         │                                                   │
+│         ▼                                                   │
+│   [4.4 AI刺客] ←── AIによるテスト生成と拡張（現代）         │
+│         │                                                   │
+│         ▼                                                   │
+│   [4.5 防衛線] ←── テスト自動化とCI（基盤）                 │
+│         │                                                   │
+│         ▼                                                   │
+│   [4.6 鑑識] ←── デバッグで原因を突き止める（診断）          │
+│         │                                                   │
+│         ▼                                                   │
+│   ──────────────────────────────────────────────────────    │
+│         │                                                   │
+│         ▼                                                   │
+│   [第5章へ] リファクタリング：彫刻を磨く喜び                 │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="読了後のあなた">読了後のあなた</h2>
+        <p>この章を読み終えると、あなたは以下のことができるようになります。</p>
+        <ul>
+          <li><strong>見渡す</strong>: テストレベルとテストピラミッドで、何をどの粒度でテストするか判断できる</li>
+          <li><strong>設計する</strong>: カバレッジ分析や同値分割で、効率的なテストケースを設計できる</li>
+          <li><strong>駆動する</strong>: TDDのリズムで、テストが導く安全な開発を実践できる</li>
+          <li><strong>活用する</strong>: AIにテストケースを生成させ、人間が見落とすエッジケースを発見できる</li>
+          <li><strong>自動化する</strong>: CIパイプラインでテストを常時実行し、品質を継続的に守れる</li>
+          <li><strong>診断する</strong>: テストが検出した不具合の原因を、体系的なデバッグ手法で突き止められる</li>
+        </ul>
+        <p>彫刻を守る鉄壁の軍団を、今から編成していきましょう。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース章全体">さらに学ぶためのリソース（章全体）</h2>
+        <ul>
+          <li>📚 <strong>書籍</strong>: Kent Beck『テスト駆動開発』（TDDの原典）</li>
+          <li>📚 <strong>書籍</strong>: Gerard Meszaros『xUnit Test Patterns』（テストの設計パターン集）</li>
+          <li>📚 <strong>書籍</strong>: Lisa Crispin, Janet Gregory『Agile Testing』（アジャイルにおけるテスト戦略）</li>
+          <li>📚 <strong>書籍</strong>: Cem Kaner, Jack Falk, Hung Q. Nguyen『Testing Computer Software』（テスト技法の古典）</li>
+          <li>📚 <strong>書籍</strong>: 秋山浩一『ソフトウェアテスト技法ドリル』（テスト設計の実践演習）</li>
+          <li>📚 <strong>書籍</strong>: 小川秀人、佐藤陽春、森拓郎、加賀洋渡『土台からしっかり学ぶ ソフトウェアテストのセオリー』（テスト全般の体系的な理解）</li>
+        </ul>
+      </section>
+    </section>
+  
+
+</body></html>

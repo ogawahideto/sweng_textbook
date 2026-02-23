@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>第7章 アジャイルという名の冒険パーティ——開発プロセス</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+    <style>
+        body { max-width: 900px; margin: 0 auto; background: white; }
+        section { padding: 20px; }
+        img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body style="margin:0; padding:0;">
+
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part3/chapter06/6-6.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part4/chapter07/7-1.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    <main>
+    
+    
+    <section class="level1">
+      <h1 id="第7章-アジャイルという名の冒険パーティ開発プロセス">第7章 アジャイルという名の冒険パーティ——開発プロセス</h1>
+      <figure>
+        <img src="../../assets/images/chapter_covers/Chapter7.png" alt="扉絵: アジャイルという名の冒険パーティ">
+        <figcaption aria-hidden="true">扉絵: アジャイルという名の冒険パーティ</figcaption>
+      </figure>
+      <section class="level2">
+        <h2 id="この章で手に入れる力">この章で手に入れる力</h2>
+        <p>ここまでの旅で、あなたは要求を聴き取り、設計し、実装し、テストで守り、磨き上げ、本番環境へ送り出す力を身につけました。一人の冒険者として、十分な実力を備えたと言えるでしょう。</p>
+        <p>しかし、現実のソフトウェア開発は、一人では完結しません。仲間と共に走り、互いの強みを活かし、チームとして価値を生み出す——そこに新たな喜びと、一人では到達できない高みがあります。</p>
+        <p>この章では、<strong>アジャイル開発</strong>の心臓部であるスクラムのリズム、Gitを使ったコードの知の交流、そしてペアプログラミングやモブプログラミングによるリアルタイムの「思考の同期」を学びます。冒険パーティを組み、オーケストラのように調和しながら、チームの力を最大限に引き出しましょう。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="章の構成">章の構成</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>セクション</th>
+              <th>タイトル</th>
+              <th>学ぶこと</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>7.1</td>
+              <td>スクラムの祝祭</td>
+              <td>スプリント、デイリースクラム、レトロスペクティブ、アジャイル宣言の価値観</td>
+            </tr>
+            <tr>
+              <td>7.2</td>
+              <td>Git/GitHubを通じた知の交流</td>
+              <td>ブランチ戦略、プルリクエスト、コードレビューの作法</td>
+            </tr>
+            <tr>
+              <td>7.3</td>
+              <td>共鳴する魂</td>
+              <td>ペアプログラミング、モブプログラミング、リアルタイム共創の楽しさ</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="冒険の地図">冒険の地図</h2>
+        <pre class="language-text"><code class="language-text">┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   [第6章 運用] ←── ソフトウェアを世界へ送り出した               │
+│         │                                                   │
+│         ▼                                                   │
+│   [7.1 祝祭] ←── スクラムのリズムでチームが走る                │
+│         │                                                   │
+│         ▼                                                   │
+│   [7.2 交流] ←── Git/PRで知恵を交換する                       │
+│         │                                                   │
+│         ▼                                                   │
+│   [7.3 共鳴] ←── ペアプロ・モブプロで思考を同期する            │
+│         │                                                   │
+│         ▼                                                   │
+│   ──────────────────────────────────────────────────────    │
+│         │                                                   │
+│         ▼                                                   │
+│   [第8章へ] エンジニアの責任と未来への旅路                     │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘</code></pre>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="読了後のあなた">読了後のあなた</h2>
+        <p>この章を読み終えると、あなたは以下のことができるようになります。</p>
+        <ul>
+          <li><strong>リズムを刻む</strong>: スプリントとセレモニーで、チーム開発にリズムと祝祭を生み出せる</li>
+          <li><strong>交流する</strong>: プルリクエストとコードレビューで、互いの知恵をコードに込められる</li>
+          <li><strong>共鳴する</strong>: ペアプログラミングで、一人では思いつかない発想をリアルタイムに引き出せる</li>
+          <li><strong>調和する</strong>: チーム全体でモブプログラミングを実践し、知識の属人化を解消できる</li>
+        </ul>
+        <p>一人の冒険者から、最強の冒険パーティへ。仲間と共に、新たなステージへ踏み出しましょう。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース章全体">さらに学ぶためのリソース（章全体）</h2>
+        <ul>
+          <li>📚 <strong>書籍</strong>: Ken Schwaber, Jeff Sutherland『スクラムガイド』（スクラムの公式定義）</li>
+          <li>📚 <strong>書籍</strong>: Henrik Kniberg『Scrum and XP from the Trenches』（スクラム実践の体験記）</li>
+          <li>📚 <strong>書籍</strong>: Scott Chacon, Ben Straub『Pro Git 第2版』（Gitの包括的ガイド）</li>
+          <li>📚 <strong>書籍</strong>: Dave Thomas, Andy Hunt『達人プログラマー 第2版』（ペアプログラミングを含む開発者の知恵）</li>
+          <li>📚 <strong>書籍</strong>: Woody Zuill, Kevin Meadows『Mob Programming』（モブプログラミングの実践手法）</li>
+        </ul>
+      </section>
+    </section>
+  
+
+
+    
+    </main>
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part3/chapter06/6-6.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part4/chapter07/7-1.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    </body></html>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" width="500" height="400">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .scale-base { fill: #795548; }
+      .scale-beam { stroke: #5D4037; stroke-width: 4; }
+      .plate { fill: #FFF3E0; stroke: #FFB300; stroke-width: 2; }
+      .text-main { font-family: 'Noto Sans JP', sans-serif; font-size: 16px; font-weight: bold; fill: #333; text-anchor: middle; }
+      .text-sub { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; fill: #666; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="500" height="400" class="bg"/>
+  <title>責任の天秤</title>
+
+  <!-- 天秤の支柱 -->
+  <rect x="245" y="100" width="10" height="250" class="scale-base" />
+  <rect x="200" y="350" width="100" height="10" class="scale-base" />
+
+  <!-- 天秤の竿 (平衡状態) -->
+  <line x1="100" y1="150" x2="400" y2="150" class="scale-beam" />
+  <circle cx="250" cy="150" r="10" fill="#FFB300" />
+
+  <!-- 左の皿: 技術力 -->
+  <line x1="100" y1="150" x2="100" y2="250" stroke="#666" />
+  <ellipse cx="100" cy="250" rx="60" ry="10" class="plate" />
+  <text x="100" y="280" class="text-main">技術力</text>
+  <text x="100" y="300" class="text-sub">「できる」力</text>
+  <text x="100" y="315" class="text-sub">(How)</text>
+
+  <!-- 右の皿: 倫理・責任 -->
+  <line x1="400" y1="150" x2="400" y2="250" stroke="#666" />
+  <ellipse cx="400" cy="250" rx="60" ry="10" class="plate" />
+  <text x="400" y="280" class="text-main">倫理と責任</text>
+  <text x="400" y="300" class="text-sub">「すべき」の意志</text>
+  <text x="400" y="315" class="text-sub">(Why)</text>
+
+  <!-- 中心 -->
+  <text x="250" y="80" class="text-main" font-size="20">エンジニアの矜持</text>
+</svg>

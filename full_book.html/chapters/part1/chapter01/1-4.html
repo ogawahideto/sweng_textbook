@@ -1,0 +1,235 @@
+<!DOCTYPE html><html lang="ja"><head>
+    <meta charset="utf-8">
+    <title>1.4 どう整理するか？——ゴール指向要求分析</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+  </head>
+  <body>
+    <section class="level1">
+      <h1 id="14-どう整理するかゴール指向要求分析">1.4 どう整理するか？——ゴール指向要求分析</h1>
+      <section class="level2">
+        <h2 id="導入-何を作るかの前になぜ作るか">導入: 「何を作るか」の前に「なぜ作るか」</h2>
+        <p>ここまでで、なぜ聴くことが重要か（1.1）、どう聴くか（1.2）、そしてAIペルソナと対話して仮説を検証する方法（1.3）を学びました。</p>
+        <p>しかし、集まった情報はまだ「断片」に過ぎません。「レベルアップ感が欲しい」「小さな達成感を積み重ねたい」「チームで盛り上がりたい」——これらのバラバラな願いを、どうやって一貫したシステムへとまとめるのでしょうか？</p>
+        <p>ここで登場するのが<strong>ゴール指向要求分析</strong>です。RPGで言えば「メインクエスト」と「サブクエスト」の関係を整理し、冒険の全体地図を描く技術です。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="理論的背景-ゴール指向要求分析とは">理論的背景: ゴール指向要求分析とは</h2>
+        <section class="level3">
+          <h3 id="機能ではなく目的から始める">「機能」ではなく「目的」から始める</h3>
+          <p>従来の要求分析では、こう聞きがちです。</p>
+          <blockquote>
+            <p>「どんな<strong>機能</strong>が欲しいですか？」</p>
+          </blockquote>
+          <p>ゴール指向要求分析では、問いの方向が逆転します。</p>
+          <blockquote>
+            <p>「何を<strong>達成したい</strong>ですか？」</p>
+          </blockquote>
+          <p>この違いは決定的です。機能から始めると「ボタンを追加する」「画面を作る」といった手段の議論に陥ります。ゴールから始めれば、本当に必要なものが見えてきます。</p>
+        </section>
+        <section class="level3">
+          <h3 id="ゴールの階層構造">ゴールの階層構造</h3>
+          <figure>
+            <img src="../../assets/diagrams/chapter01/1-4-goal-tree.svg" alt="ゴール分解ツリー">
+            <figcaption aria-hidden="true">ゴール分解ツリー</figcaption>
+          </figure>
+          <p>ゴールは階層的に分解できます。</p>
+          <p>上位のゴールは「なぜ」を、下位のゴールは「どうやって」を表します。</p>
+          <pre class="language-text"><code class="language-text">【戦略ゴール（Why of Why）】
+  └── なぜこのシステムを作るのか？
+
+    【ユーザーゴール（Why）】
+      └── ユーザーは何を達成したいのか？
+
+        【サブゴール（How）】
+          └── それをどうやって実現するか？
+
+            【タスクゴール（What）】
+              └── 具体的に何をするか？</code></pre>
+          <p>上から下へ「How?（どうやって？）」で分解し、下から上へ「Why?（なぜ？）」で検証します。どの階層でも「なぜ？」に答えられなければ、そのゴールは不要かもしれません。</p>
+        </section>
+        <section class="level3">
+          <h3 id="andor分解">AND/OR分解</h3>
+          <figure>
+            <img src="../../assets/diagrams/chapter01/1-4-quality-tradeoffs.svg" alt="品質特性のトレードオフ関係">
+            <figcaption aria-hidden="true">品質特性のトレードオフ関係</figcaption>
+          </figure>
+          <p>ゴールの分解には2つのパターンがあります。</p>
+          <p><strong>AND分解</strong>: すべてのサブゴールを達成しないと親ゴールは達成できない。</p>
+          <pre class="language-text"><code class="language-text">ユーザーがタスクを楽しく消化する
+├── [AND] タスクに達成感がある
+├── [AND] 継続するモチベーションがある
+└── [AND] 進捗が可視化されている</code></pre>
+          <p><strong>OR分解</strong>: いずれかのサブゴールを達成すれば親ゴールは達成できる。</p>
+          <pre class="language-text"><code class="language-text">継続するモチベーションがある
+├── [OR] 経験値・レベルで成長を実感する
+├── [OR] ストリーク（連続日数）で習慣化する
+└── [OR] 仲間との競争・協力で刺激を得る</code></pre>
+          <p>OR分解は設計の選択肢を表します。すべてを実装する必要はなく、優先順位をつけて選べます。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="実践例-questforgeのゴールツリー">実践例: QuestForgeのゴールツリー</h2>
+        <p>QuestForgeのゴールを体系的に分解してみましょう。</p>
+        <section class="level3">
+          <h3 id="戦略ゴール">戦略ゴール</h3>
+          <blockquote>
+            <p><strong>「日々のタスク消化を、成長の実感と達成感に変換する」</strong></p>
+          </blockquote>
+        </section>
+        <section class="level3">
+          <h3 id="ゴールツリー全体像">ゴールツリー全体像</h3>
+          <pre class="language-text"><code class="language-text">日々のタスク消化を成長の実感と達成感に変換する [戦略ゴール]
+│
+├── タスクに取り組む意欲を高める [ユーザーゴール 1]
+│   ├── [AND] タスクが明確で取り組みやすい
+│   │   ├── タスクを適切な粒度に分解できる
+│   │   └── 難易度が可視化されている
+│   └── [AND] 取り組みの先に報酬がある
+│       ├── [OR] 経験値を獲得できる
+│       ├── [OR] バッジ（実績）を獲得できる
+│       └── [OR] レベルアップの演出がある
+│
+├── 継続するモチベーションを維持する [ユーザーゴール 2]
+│   ├── [OR] ストリーク記録で習慣化を促す
+│   ├── [OR] レベル進捗で長期的成長を可視化する
+│   └── [OR] 過去の達成を振り返れる
+│
+└── 再スタートを応援する [ユーザーゴール 3]
+    ├── [AND] 再挑戦を歓迎する設計
+    │   ├── ストリークが切れても気軽に再開できる
+    │   └── 未完了タスクも次の一歩として表示する
+    └── [AND] 再開のハードルが低い
+        ├── 1つの小さなタスクから再開できる
+        └── 復帰ボーナスで迎え入れる</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="ゴールツリーから見える設計判断">ゴールツリーから見える設計判断</h3>
+          <p>このツリーから、いくつかの重要な設計判断が浮かび上がります。</p>
+          <ol>
+            <li>
+              <p><strong>ユーザーゴール3「再スタートを応援する」</strong> は、QuestForgeならではの視点です。1.2節の対話で「やる気が失せる」という声を聴いたからこそ、ここにゴールが立ちました。</p>
+            </li>
+            <li>
+              <p><strong>OR分解の選択</strong>: 「継続のモチベーション」には3つの手段がありますが、MVP（最小限の製品）ではまず「ストリーク」に絞る、という判断ができます。</p>
+            </li>
+            <li>
+              <p><strong>AND条件の確認</strong>: 「取り組む意欲を高める」には「明確さ」と「報酬」の<strong>両方</strong>が必要です。片方だけでは不十分。</p>
+            </li>
+          </ol>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="ai時代のアプローチ-ゴール分析の加速">AI時代のアプローチ: ゴール分析の加速</h2>
+        <section class="level3">
+          <h3 id="aiにゴールツリーを補強してもらう">AIにゴールツリーを補強してもらう</h3>
+          <p>自分で作ったゴールツリーをさらに充実させましょう。AIに「追加できるゴール」を提案してもらいます。</p>
+          <pre class="language-text"><code class="language-text">以下はタスク管理アプリ「QuestForge」のゴールツリーです。
+このツリーをさらに充実させるために、
+追加すると良さそうなゴールを3つ提案してください。
+
+[ゴールツリーをここに貼り付ける]</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="ゴール間のバランスを探る">ゴール間のバランスを探る</h3>
+          <p>異なるゴール同士を両立させる工夫が必要な場面があります。</p>
+          <p>例えば「タスクを細分化する」と「画面をシンプルに保つ」は、両立のための工夫が求められます。AIにバランスの取り方を提案してもらいましょう。</p>
+          <pre class="language-text"><code class="language-text">以下のゴールツリーの中で、両立に工夫が必要なゴールの組み合わせを
+列挙してください。
+それぞれについて、うまくバランスを取る方法を提案してください。</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="非機能要求への展開冒険の品質を守る">非機能要求への展開：冒険の品質を守る</h3>
+          <p>ゴールツリーは、目に見える機能だけを描くものではありません。工学的に極めて重要なのが、<strong>非機能要求（Non-Functional Requirements: NFR）</strong>です。機能が「何ができるか」なら、非機能要求は「どのくらいの品質でできるか」を定義します。</p>
+          <p>冒険に例えるなら、機能要求は「空を飛ぶ魔法」ですが、非機能要求は「何時間飛び続けられるか（信頼性）」「何人まで乗れるか（効率性）」「詠唱中に攻撃されても発動するか（堅牢性）」といった<strong>魔法の制約条件</strong>です。</p>
+          <pre class="language-text"><code class="language-text">ユーザーがストレスなく使える [品質ゴール]
+├── [AND] 操作から1秒以内に応答する（性能）
+├── [AND] 通信が途切れてもデータが失われない（信頼性）
+└── [AND] 初見でも迷わず操作できる（使用性）</code></pre>
+          <p>これらは「機能」ではないため見落とされがちですが、これらが欠けると、どんなに素晴らしい機能があってもユーザーは離れてしまいます。ゴール指向分析の段階で、これらの「品質の願い」も明文化しておくことが、後の設計やテストの道標となります。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="ハンズオン-ゴールツリーを構築してみよう">ハンズオン: ゴールツリーを構築してみよう</h2>
+        <section class="level3">
+          <h3 id="ステップ1-戦略ゴールを1文で書く">ステップ1: 戦略ゴールを1文で書く</h3>
+          <p>あなたのプロジェクトが<strong>究極的に達成したいこと</strong>を1文で書いてください。「〜を〜に変換する」「〜によって〜を実現する」の形が書きやすいです。</p>
+        </section>
+        <section class="level3">
+          <h3 id="ステップ2-ユーザーゴールを3つ挙げる">ステップ2: ユーザーゴールを3つ挙げる</h3>
+          <p>戦略ゴールを達成するために必要な「ユーザー視点のゴール」を3つ挙げてください。1.1節や1.2節で得た洞察を活用しましょう。</p>
+        </section>
+        <section class="level3">
+          <h3 id="ステップ3-andorで分解する">ステップ3: AND/ORで分解する</h3>
+          <p>各ユーザーゴールを1〜2段階、AND/ORで分解してください。</p>
+          <ul>
+            <li>「すべて必要」ならAND</li>
+            <li>「どれか1つでよい」ならOR</li>
+          </ul>
+        </section>
+        <section class="level3">
+          <h3 id="ステップ4-aiに検証してもらう">ステップ4: AIに検証してもらう</h3>
+          <p>完成したゴールツリーをAIに見せ、以下を問いかけてみましょう。</p>
+          <ul>
+            <li>「追加すると良いゴールはあるか？」</li>
+            <li>「両立させたいゴール同士の関係は？」</li>
+            <li>「優先順位をつけるとしたら？」</li>
+          </ul>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="まとめ">まとめ</h2>
+        <ol>
+          <li><strong>ゴールから始めよ</strong>: 「何を作るか」ではなく「なぜ作るか」を問うことで、本質を見失わない。</li>
+          <li><strong>階層的に分解せよ</strong>: 戦略ゴール→ユーザーゴール→サブゴール→タスクと、抽象から具体へ降りていく。</li>
+          <li><strong>AND/ORで選択肢を可視化せよ</strong>: AND条件は「必須要件」、OR条件は「設計の選択肢」を示す。</li>
+          <li><strong>ゴール間のバランスを探れ</strong>: 両立が必要なゴールを見つけ、バランスの取り方を記録する。</li>
+          <li><strong>非機能要求も忘れるな</strong>: 性能やUXのゴールも明示的にツリーに含める。</li>
+        </ol>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>📚 <strong>書籍</strong>: Axel van Lamsweerde『Requirements Engineering: From System Goals to UML Models to Software Specifications』（ゴール指向要求分析の教科書）</li>
+          <li>📚 <strong>論文</strong>: 「Goal-Oriented Requirements Engineering: A Guided Tour」（GORE分野の概観論文）</li>
+          <li>📚 <strong>書籍</strong>: 『ソフトウェア要求 第3版』カール・ウィーガーズ著（要求工学の定番テキスト）</li>
+        </ul>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <p>このセクションで学んだことを実践するためのプロンプト：</p>
+        <pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> ゴールツリーの生成</span>
+以下のプロジェクト概要から、ゴールツリーを作成してください。
+
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">プロジェクト</span><span class="token punctuation">**</span></span>: QuestForge（タスク管理RPGアプリ）
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">戦略ゴール</span><span class="token punctuation">**</span></span>: 日々のタスク消化を成長の実感と達成感に変換する
+
+以下の形式で出力してください：
+<span class="token list punctuation">-</span> 戦略ゴール（1つ）
+<span class="token list punctuation">-</span> ユーザーゴール（3〜5つ）
+<span class="token list punctuation">-</span> 各ユーザーゴールをAND/ORで2段階に分解
+<span class="token list punctuation">-</span> 非機能要求ゴール（2〜3つ）
+
+各ゴールには [AND] または [OR] のラベルをつけてください。</code></pre>
+        <pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> ゴールツリーからユーザーストーリーへの変換</span>
+以下のゴールツリーの末端（リーフ）ゴールを、
+それぞれユーザーストーリー形式に変換してください。
+
+形式: 「[ペルソナ]として、[ゴール]したい。なぜなら[理由]だから。」
+
+さらに、各ストーリーにMoSCoW優先度（Must/Should/Could/Won't）を
+付与してください。
+
+[ゴールツリーをここに貼り付ける]</code></pre>
+      </section>
+    </section>
+  
+
+</body></html>

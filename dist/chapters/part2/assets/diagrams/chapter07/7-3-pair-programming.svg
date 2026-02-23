@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" width="500" height="400">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .aura { fill: #E3F2FD; fill-opacity: 0.5; stroke: #1E88E5; stroke-width: 1; stroke-dasharray: 5; }
+      .person { fill: #FFF; stroke: #333; stroke-width: 2; }
+      .text-main { font-family: 'Noto Sans JP', sans-serif; font-size: 16px; font-weight: bold; fill: #333; text-anchor: middle; }
+      .text-sub { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; fill: #666; text-anchor: middle; }
+      .crystal { fill: #E1F5FE; stroke: #0288D1; stroke-width: 3; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="500" height="400" class="bg"/>
+  <title>二重詠唱（ペアプログラミング）</title>
+
+  <!-- 共有オーラ -->
+  <ellipse cx="250" cy="220" rx="200" ry="120" class="aura" />
+
+  <!-- モニター (聖なるクリスタル) -->
+  <rect x="200" y="100" width="100" height="70" rx="5" class="crystal" />
+  <text x="250" y="140" class="text-main" font-size="12">コードの世界</text>
+
+  <!-- 操縦士 (Driver) -->
+  <circle cx="150" cy="250" r="40" class="person" />
+  <text x="150" y="315" class="text-main">操縦士 (Driver)</text>
+  <text x="150" y="335" class="text-sub">ミクロの視点</text>
+  <text x="150" y="350" class="text-sub">「今、ここ」を具現化</text>
+
+  <!-- 航海士 (Navigator) -->
+  <circle cx="350" cy="250" r="40" class="person" />
+  <text x="350" y="315" class="text-main">航海士 (Navigator)</text>
+  <text x="350" y="335" class="text-sub">マクロの視点</text>
+  <text x="350" y="350" class="text-sub">「少し先」を導く</text>
+
+  <!-- 思考の同期線 -->
+  <path d="M 190,250 L 310,250" stroke="#1E88E5" stroke-width="2" stroke-dasharray="5" />
+  <text x="250" y="240" class="text-sub">思考の同期</text>
+
+</svg>

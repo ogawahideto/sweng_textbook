@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" width="500" height="400">
+  <defs>
+    <style>
+      .axis { stroke: #666; stroke-width: 2; marker-end: url(#arrowhead); }
+      .text-label { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; fill: #333; font-weight: bold; }
+      .text-quadrant { font-family: 'Noto Sans JP', sans-serif; font-size: 16px; fill: #555; font-weight: bold; text-anchor: middle; }
+      .text-desc { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; fill: #777; text-anchor: middle; }
+      .grid { stroke: #DDD; stroke-width: 1; stroke-dasharray: 5,5; }
+      .quadrant-bg-1 { fill: #E8F5E9; opacity: 0.5; } /* High Value, Low Cost */
+      .quadrant-bg-2 { fill: #E3F2FD; opacity: 0.5; } /* High Value, High Cost */
+      .quadrant-bg-3 { fill: #FFF3E0; opacity: 0.5; } /* Low Value, Low Cost */
+      .quadrant-bg-4 { fill: #FFEBEE; opacity: 0.5; } /* Low Value, High Cost */
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon fill="#666" points="0 0, 10 3.5, 0 7" />
+    </marker>
+  </defs>
+
+  <title>価値とコストの優先度マトリクス</title>
+
+  <!-- 背景（象限） -->
+  <!-- 左上: High Value, Low Cost (Do Now) -->
+  <rect x="50" y="50" width="200" height="150" class="quadrant-bg-1" />
+  <!-- 右上: High Value, High Cost (Do Next/Plan) -->
+  <rect x="250" y="50" width="200" height="150" class="quadrant-bg-2" />
+  <!-- 左下: Low Value, Low Cost (Fillers) -->
+  <rect x="50" y="200" width="200" height="150" class="quadrant-bg-3" />
+  <!-- 右下: Low Value, High Cost (Don't Do) -->
+  <rect x="250" y="200" width="200" height="150" class="quadrant-bg-4" />
+
+  <!-- 軸 -->
+  <line x1="50" y1="350" x2="50" y2="30" class="axis" /> <!-- Y軸 -->
+  <line x1="30" y1="350" x2="470" y2="350" class="axis" /> <!-- X軸 -->
+
+  <!-- 軸ラベル -->
+  <text x="30" y="40" class="text-label" text-anchor="end">価値 (Value)</text>
+  <text x="450" y="380" class="text-label" text-anchor="middle">コスト (Cost)</text>
+
+  <!-- 象限ラベル -->
+  <text x="150" y="110" class="text-quadrant" fill="#2E7D32">★ すぐやる (Do Now)</text>
+  <text x="150" y="130" class="text-desc">高価値・低コスト</text>
+
+  <text x="350" y="110" class="text-quadrant" fill="#1565C0">計画する (Plan)</text>
+  <text x="350" y="130" class="text-desc">高価値・高コスト</text>
+
+  <text x="150" y="260" class="text-quadrant" fill="#EF6C00">隙間でやる (Fillers)</text>
+  <text x="150" y="280" class="text-desc">低価値・低コスト</text>
+
+  <text x="350" y="260" class="text-quadrant" fill="#C62828">やらない (Drop)</text>
+  <text x="350" y="280" class="text-desc">低価値・高コスト</text>
+
+  <!-- 中心点 -->
+  <circle cx="250" cy="200" r="5" fill="#666" />
+
+</svg>

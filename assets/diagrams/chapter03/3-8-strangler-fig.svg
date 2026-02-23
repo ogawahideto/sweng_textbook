@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" width="500" height="300">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .old-core { fill: #E0E0E0; stroke: #9E9E9E; stroke-width: 2; }
+      .new-shell { fill: #E8F5E9; stroke: #43A047; stroke-width: 3; fill-opacity: 0.6; }
+      .vine { stroke: #43A047; stroke-width: 4; fill: none; }
+      .text-main { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: bold; fill: #333; text-anchor: middle; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="500" height="300" class="bg"/>
+  
+  <!-- Old Core -->
+  <rect x="150" y="80" width="200" height="140" rx="5" class="old-core" />
+  <text x="250" y="155" class="text-main" fill="#757575">レガシーコード</text>
+
+  <!-- New Shell / Vines -->
+  <path d="M 130,60 L 370,60 L 370,240 L 130,240 Z" class="new-shell" />
+  <path d="M 130,60 Q 140,150 130,240" class="vine" />
+  <path d="M 370,60 Q 360,150 370,240" class="vine" />
+  
+  <text x="250" y="45" class="text-main">新機能・ラッパー</text>
+  <text x="250" y="270" class="text-main" fill="#43A047">Strangler Fig パターン</text>
+</svg>
