@@ -449,37 +449,20 @@ mypy <span class="token builtin class-name">.</span></code></pre>
       </section>
       <section class="level2">
         <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
-        <section class="level3">
-          <h3 id="書籍">書籍</h3>
-          <ul>
-            <li>Robert C. Martin (2008) <em>Clean Code: A Handbook of Agile Software Craftsmanship</em>, Prentice Hall. 邦訳『Clean Code アジャイルソフトウェア達人の技』</li>
-            <li>Steve McConnell (2004) <em>Code Complete: A Practical Handbook of Software Construction</em> 2nd Edition, Microsoft Press. 邦訳『Code Complete 第2版』</li>
-            <li>Martin Fowler (2018) <em>Refactoring: Improving the Design of Existing Code</em> 2nd Edition, Addison-Wesley. 邦訳『リファクタリング 第2版』— コードの匂いと改善手法の定番</li>
-          </ul>
-        </section>
-        <section class="level3">
-          <h3 id="論文技術文書">論文・技術文書</h3>
-          <ul>
-            <li>Thomas J. McCabe (1976) "A Complexity Measure", <em>IEEE Transactions on Software Engineering</em>, Vol.SE-2, No.4, pp.308-320. — 循環的複雑度の原典</li>
-            <li>G. Ann Campbell (2016) "Cognitive Complexity: A new way of measuring understandability", SonarSource. — 認知的複雑度の原典（<a href="https://www.sonarsource.com/resources/cognitive-complexity/%EF%BC%89">https://www.sonarsource.com/resources/cognitive-complexity/）</a></li>
-          </ul>
-        </section>
-        <section class="level3">
-          <h3 id="スタイルガイド公式ドキュメント">スタイルガイド・公式ドキュメント</h3>
-          <ul>
-            <li>Google Python Style Guide (<a href="https://google.github.io/styleguide/pyguide.html">https://google.github.io/styleguide/pyguide.html</a>)</li>
-            <li>Ruff 公式ドキュメント (<a href="https://docs.astral.sh/ruff/">https://docs.astral.sh/ruff/</a>) — Python向け高速Linter/Formatter</li>
-            <li>Mypy 公式ドキュメント (<a href="https://mypy.readthedocs.io/">https://mypy.readthedocs.io/</a>) — Python型チェッカー</li>
-            <li>SonarSource Rules (<a href="https://rules.sonarsource.com/">https://rules.sonarsource.com/</a>) — 各言語の静的解析ルール解説</li>
-          </ul>
-          <hr>
-          <p><strong>執筆メモ</strong>:</p>
-          <ul>
-            <li>執筆日時: 2026-01-28</li>
-            <li>構成: 3.2節から「評価」を分離して新設</li>
-            <li>内容: メトリクス（循環/認知複雑度）+ 静的解析ツール（Linter/Formatter/Type Checker）</li>
-          </ul>
-        </section>
+        <ul>
+          <li>🌐 <strong>ツール</strong>: <a href="https://docs.astral.sh/ruff/">Ruff</a>（PythonのLinterとFormatterを統合した、極めて高速な現代の標準ツール）</li>
+          <li>🌐 <strong>ツール</strong>: <a href="https://www.mypy-lang.org/">mypy</a>（Pythonに静的型チェックを導入し、堅牢なコードを構築するための番人）</li>
+          <li>🌐 <strong>Web</strong>: <a href="https://google.github.io/styleguide/pyguide.html">Google Python Style Guide</a>（世界最高峰のエンジニアリング集団が定義する、美しく保守性の高いコードの基準）</li>
+          <li>📄 <strong>論文</strong>: T. J. McCabe "<a href="https://ieeexplore.ieee.org/document/1702388">A Complexity Measure</a>" (1976)（循環的複雑度を定義した歴史的論文）</li>
+          <li>🌐 <strong>解説</strong>: <a href="https://www.sonarsource.com/resources/cognitive-complexity/">Cognitive Complexity by SonarSource</a>（人間にとっての「コードの読みづらさ」を数値化する認知的複雑度の公式ホワイトペーパー）</li>
+        </ul>
+        <hr>
+        <p><strong>執筆メモ</strong>:</p>
+        <ul>
+          <li>執筆日時: 2026-01-28</li>
+          <li>構成: 3.2節から「評価」を分離して新設</li>
+          <li>内容: メトリクス（循環/認知複雑度）+ 静的解析ツール（Linter/Formatter/Type Checker）</li>
+        </ul>
       </section>
     </section>
   
