@@ -1,7 +1,7 @@
 # 『「楽しい」ソフトウェア工学の教科書』
 ## デジタル・アルケミー：伝統の美学とAIで紡ぐ創造の地図
 
-![表紙：デジタル・アルケミー](./assets/images/front_cover.png)
+![表紙：デジタル・アルケミー](./assets/images/chapter_covers/front_cover.png)
 
 ---
 
