@@ -36,7 +36,7 @@
 
 ## さらに学ぶためのリソース（章全体）
 
-- 📚 **書籍**: Jon Bentley『珠玉のプログラミング』（アルゴリズム的思考の古典）
-- 📚 **書籍**: Dustin Boswell, Trevor Foucher『リーダブルコード』（可読性のバイブル）
-- 📚 **書籍**: Andrew Hunt, David Thomas『達人プログラマー』（エンジニアの心構えと技法）
-- 📚 **書籍**: Steve McConnell『Code Complete』（実装技術の集大成）
+- 📚 **書籍**: Jon Bentley『[珠玉のプログラミング 本質を見抜いたアルゴリズムとデータ構造](https://www.maruzen-publishing.co.jp/item/b294411.html)』（アルゴリズム的思考の古典的名著）
+- 📚 **書籍**: Dustin Boswell, Trevor Foucher『[リーダブルコード ―より良いコードを書くためのシンプルで実践的なテクニック](https://www.oreilly.co.jp/books/9784873115658/)』（可読性のバイブル）
+- 📚 **書籍**: Andrew Hunt, David Thomas『[達人プログラマー 第2版 ―熟達に向けたあなたの旅](https://www.ohmsha.co.jp/book/9784274226298/)』（エンジニアの心構えと技法の集大成）
+- 📚 **書籍**: Steve McConnell『[Code Complete 第2版 ―完全なプログラミングを目指して](https://shop.nikkeibp.co.jp/asbp/shop/course/codecomplete/)』（実装技術の百科事典。上下巻）

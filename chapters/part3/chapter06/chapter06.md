@@ -35,8 +35,8 @@
 
 ## さらに学ぶためのリソース（章全体）
 
-- 📚 **書籍**: Gene Kim, Jez Humble, Patrick Debois, John Willis『The DevOps ハンドブック』（DevOpsの原則と実践の体系的ガイド）
-- 📚 **書籍**: Betsy Beyer, Chris Jones, Jennifer Petoff, Niall Richard Murphy『SRE サイトリライアビリティエンジニアリング』（Googleのサイト信頼性工学の知見）
-- 📚 **書籍**: Mike Julian『入門 監視』（モニタリングとオブザーバビリティの実践ガイド）
-- 📚 **書籍**: Jez Humble, David Farley『継続的デリバリー』（CI/CDの原典）
-- 📚 **書籍**: Ron Kohavi, Diane Tang, Ya Xu『A/Bテスト実践ガイド』（データ駆動の意思決定手法）
+- 📚 **書籍**: Gene Kim他『[The DevOps ハンドブック 理論・原則・実践のすべて](https://shop.nikkeibp.co.jp/asbp/shop/course/devops/)』（DevOpsの全体像を理解するための決定版）
+- 📚 **書籍**: Betsy Beyer他『[SRE サイトリライアビリティエンジニアリング ―Googleの信頼性を支えるエンジニアリングチーム](https://www.oreilly.co.jp/books/9784873117911/)』（運用をエンジニアリングで解決するSREの聖典）
+- 📚 **書籍**: Mike Julian『[入門 監視 ―モダンなモニタリングのためのデザインパターン](https://www.oreilly.co.jp/books/9784873118642/)』（可観測性の基本から実践までを学べるガイド）
+- 📚 **書籍**: Jez Humble, David Farley『[継続的デリバリー 信頼できるソフトウェアリリースのためのビルド・テスト・デプロイメントの自動化](https://www.kadokawa.co.jp/product/301708000591/)』（CI/CDの原則と実践を網羅した名著）
+- 📚 **書籍**: Ron Kohavi, Diane Tang, Ya Xu『[A/Bテスト実践ガイド 真のデータドリブンへ至る信用できる実験とは](https://tatsu-zine.com/books/trustworthy-online-controlled-experiments)』（大規模な仮説検証を支える理論と実践）

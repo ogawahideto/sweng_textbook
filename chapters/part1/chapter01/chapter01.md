@@ -50,7 +50,7 @@
 
 各セクションの参考文献に加え、要求工学全般を学ぶためのリソースです。
 
-- 📚 **書籍**: カール・ウィーガーズ『ソフトウェア要求 第3版』（要求工学の定番テキスト）
-- 📚 **書籍**: ジェラルド・ワインバーグ『要求仕様の探検学』（要求発見の技法を物語形式で学ぶ）
-- 📚 **書籍**: Axel van Lamsweerde『Requirements Engineering』（ゴール指向要求分析の教科書）
-- 📚 **書籍**: マーチン・ファウラー『UMLモデリングのエッセンス 第3版』（UMLの定番入門書）
+- 📚 **書籍**: カール・ウィーガーズ『[ソフトウェア要求 第3版](https://www.shoeisha.co.jp/book/detail/9784798135946)』（要求工学の決定版。アジャイルやデータ要求も網羅）
+- 📚 **書籍**: ジェラルド・ワインバーグ『[要求仕様の探検学](https://www.kyoritsu-pub.co.jp/book/b10011444.html)』（要求発見の技法を人間心理の側面から解き明かす古典）
+- 📚 **書籍**: Axel van Lamsweerde "[Requirements Engineering: From System Goals to UML Models to Software Specifications](https://www.wiley.com/en-us/Requirements+Engineering%3A+From+System+Goals+to+UML+Models+to+Software+Specifications-p-9780470012703)"（ゴール指向分析のバイブル）
+- 📚 **書籍**: マーチン・ファウラー『[UMLモデリングのエッセンス 第3版](https://www.shoeisha.co.jp/book/detail/9784798107950)』（UMLのエッセンスを短時間で習得できる定番書）

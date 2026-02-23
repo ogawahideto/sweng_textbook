@@ -35,9 +35,8 @@
 
 ## さらに学ぶためのリソース（章全体）
 
-- 📚 **書籍**: Kent Beck『テスト駆動開発』（TDDの原典）
-- 📚 **書籍**: Gerard Meszaros『xUnit Test Patterns』（テストの設計パターン集）
-- 📚 **書籍**: Lisa Crispin, Janet Gregory『Agile Testing』（アジャイルにおけるテスト戦略）
-- 📚 **書籍**: Cem Kaner, Jack Falk, Hung Q. Nguyen『Testing Computer Software』（テスト技法の古典）
-- 📚 **書籍**: 秋山浩一『ソフトウェアテスト技法ドリル』（テスト設計の実践演習）
-- 📚 **書籍**: 小川秀人、佐藤陽春、森拓郎、加賀洋渡『土台からしっかり学ぶ ソフトウェアテストのセオリー』（テスト全般の体系的な理解）
+- 📚 **書籍**: Kent Beck『[テスト駆動開発](https://www.ohmsha.co.jp/book/9784274217883/)』（TDDの原典。和田卓人氏による「訳者解説」も必読）
+- 📚 **書籍**: Gerard Meszaros "[xUnit Test Patterns: Refactoring Test Code](https://www.informit.com/store/xunit-test-patterns-refactoring-test-code-9780131495050)"（テストコードの設計パターンと「匂い」の集大成）
+- 📚 **書籍**: Lisa Crispin, Janet Gregory "[Agile Testing: A Practical Guide for Testers and Agile Teams](https://www.pearson.com/en-us/subject-catalog/p/agile-testing-a-practical-guide-for-testers-and-agile-teams/P200000000167/9780321534460)"（アジャイル開発におけるテスト戦略の決定版）
+- 📚 **書籍**: 秋山浩一『[ソフトウェアテスト技法ドリル 第2版](https://www.juse-p.co.jp/products/detail.php?product_id=155)』（テスト設計の具体的な技法を演習形式で学べる実践書）
+- 📚 **書籍**: 小川秀人、佐藤陽春、森拓郎、加賀洋渡『[土台からしっかり学ぶ ソフトウェアテストのセオリー](https://www.ric.co.jp/book/contents/pdfs/1314_introduction.pdf)』（テストの全体像を体系的に整理した、現代のエンジニアのための入門書）

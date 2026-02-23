@@ -33,8 +33,8 @@
 
 ## さらに学ぶためのリソース（章全体）
 
-- 📚 **書籍**: Andrew Hunt, David Thomas『達人プログラマー 第2版』（生涯にわたるエンジニアの成長哲学）
-- 📚 **書籍**: Cal Newport『Deep Work』（集中力を武器にした知的生産の技法）
-- 📚 **書籍**: Virginia Eubanks『Automating Inequality』（技術と社会的公正への問いかけ）
-- 📚 **書籍**: Cathy O'Neil『あなたを支配し、社会を破壊する、AI・ビッグデータの罠』（アルゴリズムの倫理的影響）
-- 📚 **書籍**: Eric Raymond『伽藍とバザール』（オープンソースの思想と文化）
+- 📚 **書籍**: Andrew Hunt, David Thomas『[達人プログラマー 第2版 ―熟達に向けたあなたの旅](https://www.ohmsha.co.jp/book/9784274226298/)』（生涯にわたるエンジニアの成長哲学。第8章のテーマと強く共鳴します）
+- 📚 **書籍**: Cal Newport『[大事なことに集中する ―気が散るものだらけの世界で生産性を最大化する科学的方法](https://www.diamond.co.jp/book/9784478069967.html)』（Deep Workの重要性を説く、現代の知的生産者のための必読書）
+- 📚 **書籍**: Virginia Eubanks『[格差の自動化 ―データによる選別・監視・処罰](http://www.jimbunshoin.co.jp/book/b589418.html)』（技術がもたらす社会的不平等の実態を暴く衝撃作）
+- 📚 **書籍**: Cathy O'Neil『[あなたを支配し、社会を破壊する、AI・ビッグデータの罠](http://www.intershift.jp/math-destruction/)』（アルゴリズムの倫理的影響を警鐘する。原題: Weapons of Math Destruction）
+- 📚 **書籍**: Eric Raymond『[伽藍とバザール](http://www.hyuki.com/yukiwiki/wiki.cgi?TheCathedralAndTheBazaar)』（オープンソースの思想と文化を決定づけた伝説的エッセイ。山形浩生氏による全訳も公開されています）

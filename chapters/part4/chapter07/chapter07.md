@@ -33,8 +33,8 @@
 
 ## さらに学ぶためのリソース（章全体）
 
-- 📚 **書籍**: Ken Schwaber, Jeff Sutherland『スクラムガイド』（スクラムの公式定義）
-- 📚 **書籍**: Henrik Kniberg『Scrum and XP from the Trenches』（スクラム実践の体験記）
-- 📚 **書籍**: Scott Chacon, Ben Straub『Pro Git 第2版』（Gitの包括的ガイド）
-- 📚 **書籍**: Dave Thomas, Andy Hunt『達人プログラマー 第2版』（ペアプログラミングを含む開発者の知恵）
-- 📚 **書籍**: Woody Zuill, Kevin Meadows『Mob Programming』（モブプログラミングの実践手法）
+- 📚 **ガイド**: Ken Schwaber, Jeff Sutherland『[スクラムガイド](https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-Japanese.pdf)』（すべてのスクラム実践者の出発点。常に最新版を確認しましょう）
+- 📚 **書籍**: Henrik Kniberg『[塹壕より Scrum と XP](https://www.infoq.com/jp/minibooks/scrum-xp-from-the-trenches/)』（現場での苦労と工夫が詰まった、世界中で読まれている実践記。InfoQで無料公開）
+- 📚 **書籍**: Scott Chacon, Ben Straub『[Pro Git 第2版](https://git-scm.com/book/ja/v2)』（Gitの仕組みから応用までを網羅した、公式サイト公開の決定版）
+- 📚 **書籍**: Mark Pearl著、長尾高弘訳『[モブプログラミング・ベストプラクティス](https://www.oreilly.co.jp/books/9784873118628/)』（モブプログラミングをチームに導入するための実践的ガイド）
+- 🌐 **Web**: Woody Zuill "[Mob Programming](https://woodyzuill.com/)"（モブプログラミングの提唱者による情報サイト）
