@@ -42,4 +42,5 @@
 ### 📜 賢者伝説（学術論文）
 
 - 📄 **80s**: Hirotaka Takeuchi and Ikujiro Nonaka "[The New New Product Development Game](https://hbr.org/1986/01/the-new-new-product-development-game)" (1986)（スクラムの名称と概念の源流となった、日本発の画期的な経営学論文）
-- 📄 **90s**: Kent Beck "[Embracing Change with Extreme Programming](https://ieeexplore.ieee.org/document/774350)" (1999)（変化を恐れず受け入れるアジャイル開発の精神を具現化した、XP（エクストリーム・プログラミング）の宣言書）
+- 📄 **90s**: Kent Beck "[Embracing Change with Extreme Programming](https://ieeexplore.ieee.org/document/774350)" (1999)（XPの宣言書）
+- 📄 **20s**: A. Ziegler et al. "[Productivity assessment of neural code completion](https://arxiv.org/abs/2205.06537)" (2022)（GitHub Copilot等のAI補完が、開発者の生産性と幸福度にどう寄与するかを定量的・定性的に示した先駆的調査）

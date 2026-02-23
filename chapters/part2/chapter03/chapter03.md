@@ -44,4 +44,5 @@
 ### 📜 賢者伝説（学術論文）
 
 - 📄 **80s**: Frederick P. Brooks Jr. "[No Silver Bullet — Essence and Accident in Software Engineering](https://ieeexplore.ieee.org/document/1663530)" (1987)（ソフトウェア開発の困難さの本質を説き、「銀の弾丸はない」と断じた必読論文）
-- 📄 **10s**: M. Allamanis, E. T. Barr, P. Devanbu, and C. Sutton "[A Survey of Machine Learning for Big Code and Naturalness](https://dl.acm.org/doi/10.1145/3212695)" (2018)（現代のAI駆動開発（GitHub Copilot等）の技術的背景にある、コードの自然言語性と機械学習の関係を整理した重要論文）
+- 📄 **10s**: M. Allamanis, E. T. Barr, P. Devanbu, and C. Sutton "[A Survey of Machine Learning for Big Code and Naturalness](https://dl.acm.org/doi/10.1145/3212695)" (2018)（現代のAI駆動開発の技術的背景を整理した重要論文）
+- 📄 **20s**: M. Chen et al. "[Evaluating Large Language Models Trained on Code](https://arxiv.org/abs/2107.03374)" (2021)（GitHub Copilotのモデルとなった**OpenAI Codex**の原典論文）

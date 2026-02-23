@@ -45,4 +45,5 @@
 
 - 📄 **70s**: Edsger W. Dijkstra "[Notes on Structured Programming](https://www.cs.utexas.edu/users/EWD/ewd02xx/EWD249.PDF)" (1970)（「プログラムテストは不具合の存在を示すことはできるが、不在を証明することはできない」という有名な洞察を含む論文）
 - 📄 **00s**: K. Claessen and J. Hughes "[QuickCheck: A Lightweight Tool for Random Testing of Haskell Programs](https://dl.acm.org/doi/10.1145/351240.351266)" (2000)（現代のプロパティベーステストの先駆けとなった、自動ランダムテスト手法の原典）
-- 📄 **10s**: G. Fraser and A. Arcuri "[EvoSuite: Automatic Test Suite Generation for Object-Oriented Software](https://dl.acm.org/doi/10.1145/2025113.2025179)" (2011)（遺伝的アルゴリズムを用いて、カバレッジを最大化するテストコードを自動生成する手法の金字塔）
+- 📄 **10s**: G. Fraser and A. Arcuri "[EvoSuite: Automatic Test Suite Generation for Object-Oriented Software](https://dl.acm.org/doi/10.1145/2025113.2025179)" (2011)（自動テスト生成の金字塔）
+- 📄 **20s**: S. Kang et al. "[Large Language Models are Few-shot Testers](https://arxiv.org/abs/2209.11515)" (2022)（LLMを用いてバグを再現するテストコードを生成する、現代のテスト自動化の最前線）

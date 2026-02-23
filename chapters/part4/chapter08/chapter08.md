@@ -42,4 +42,5 @@
 ### 📜 賢者伝説（学術論文）
 
 - 📄 **50s**: Alan M. Turing "[Computing Machinery and Intelligence](https://academic.oup.com/mind/article/LIX/236/433/986230)" (1950)（「機械は思考できるか？」という問いを立て、AI時代の哲学の基礎を築いた記念碑的論文）
-- 📄 **10s**: A. Jobin, M. Ienca, and E. Vayena "[The global landscape of AI ethics guidelines](https://www.nature.com/articles/s42256-019-0088-2)" (2019)（世界中のAI倫理ガイドラインを俯瞰し、共通の原則（透明性、正義、責任など）を整理した現代の指針）
+- 📄 **10s**: A. Jobin, M. Ienca, and E. Vayena "[The global landscape of AI ethics guidelines](https://www.nature.com/articles/s42256-019-0088-2)" (2019)（世界中のAI倫理原則の俯瞰）
+- 📄 **20s**: E. M. Bender et al. "[On the Dangers of Stochastic Parrots: Can Language Models Be Too Big? 🦜](https://dl.acm.org/doi/10.1145/3442188.3445922)" (2021)（巨大言語モデルのリスク——環境負荷、バイアス、そして「意味を理解せず確率的に繰り返す」という本質——を鋭く指摘し、AI時代の倫理的警鐘となった極めて重要な論文）
