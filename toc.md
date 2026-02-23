@@ -23,7 +23,7 @@
 
 ### 第2章 悠久のアーキテクチャ——ソフトウェア設計入門 🟩
 
-- [第2章 概要](chapters/part1/chapter02/chapter02.md) — 🟨 AI草稿
+- [第2章 概要](chapters/part1/chapter02/chapter02.md) — 🟩 暫定完了
 - [2.1 オブジェクト指向という魔法の源](chapters/part1/chapter02/2-1.md) — 🟩 暫定完了
 - [2.2 どう構造化するか？——設計を描く魔法陣（UML後編）](chapters/part1/chapter02/2-2.md) — 🟩 暫定完了
 - [2.3 どう分けるか？——美しい構造の黄金律（SOLID原則）](chapters/part1/chapter02/2-3.md) — 🟩 暫定完了
@@ -46,26 +46,27 @@
 - [3.6 多彩なる魔導体系——言語の壁を超える](chapters/part2/chapter03/3-6.md) — 🟩 暫定完了
 - [3.7 並列詠唱の奥義——非同期・並行プログラミング](chapters/part2/chapter03/3-7.md) — 🟩 暫定完了
 
-### 第4章 無敵の軍団を作る——テストと品質保証
+### 第4章 無敵の軍団を作る——テストと品質保証 🟩
 
-- [第4章 概要](chapters/part2/chapter04/chapter04.md) — 🟨 AI草稿
-- [4.1 守護魔法の体系——テストの全体像](chapters/part2/chapter04/4-1.md) — 🟨 AI草稿
-- [4.2 鑑定術の技法——テスト設計の4つの流派](chapters/part2/chapter04/4-2.md) — 🟨 AI草稿
-- [4.3 赤から緑へ——テスト駆動開発のリズム](chapters/part2/chapter04/4-3.md) — 🟨 AI草稿
-- [4.4 AIが放つ刺客——テストの自動生成と拡張](chapters/part2/chapter04/4-4.md) — 🟨 AI草稿
-- [4.5 鉄壁の防衛線——テスト自動化とCI](chapters/part2/chapter04/4-5.md) — 🟨 AI草稿
+- [第4章 概要](chapters/part2/chapter04/chapter04.md) — 🟩 暫定完了
+- [4.1 守護魔法の体系——テストの全体像](chapters/part2/chapter04/4-1.md) — 🟩 暫定完了
+- [4.2 鑑定術の技法——テスト設計の4つの流派](chapters/part2/chapter04/4-2.md) — 🟩 暫定完了
+- [4.3 赤から緑へ——テスト駆動開発のリズム](chapters/part2/chapter04/4-3.md) — 🟩 暫定完了
+- [4.4 AIが放つ刺客——テストの自動生成と拡張](chapters/part2/chapter04/4-4.md) — 🟩 暫定完了
+- [4.5 鉄壁の防衛線——テスト自動化とCI](chapters/part2/chapter04/4-5.md) — 🟩 暫定完了
 - [4.6 術式の不調を探る——デバッグという推理ゲーム](chapters/part2/chapter04/4-6.md) — 🟩 暫定完了
 
 ---
 
 ## 第3部 守護者の誇り
 
-### 第5章 リファクタリング：彫刻を磨く喜び
+### 第5章 リファクタリング：彫刻を磨く喜び 🟩
 
-- [第5章 概要](chapters/part3/chapter05/chapter05.md) — 🟨 AI草稿
-- [5.1 コードの「匂い」を嗅ぎ分ける](chapters/part3/chapter05/5-1.md) — 🟦 人間修正中
-- [5.2 AIによるコードレビュー](chapters/part3/chapter05/5-2.md) — 🟨 AI草稿
+- [第5章 概要](chapters/part3/chapter05/chapter05.md) — 🟩 暫定完了
+- [5.1 コードの「匂い」を嗅ぎ分ける](chapters/part3/chapter05/5-1.md) — 🟩 暫定完了
+- [5.2 AIによるコードレビュー](chapters/part3/chapter05/5-2.md) — 🟩 暫定完了
 - [5.3 技術負債の返済ゲーム](chapters/part3/chapter05/5-3.md) — 🟩 暫定完了
+- [5.4 【外伝】万変の魔導書——ソフトウェアプロダクトライン](chapters/part3/chapter05/5-4.md) — 🟩 暫定完了
 
 ### 第6章 進化する生命体——デプロイと運用 🟩
 
@@ -81,18 +82,18 @@
 
 ## 第4部 チーム・オーケストラ
 
-### 第7章 アジャイルという名の冒険パーティ——開発プロセス
+### 第7章 アジャイルという名の冒険パーティ——開発プロセス 🟩
 
-- [第7章 概要](chapters/part4/chapter07/chapter07.md) — 🟨 AI草稿
-- [7.1 スクラムの祝祭](chapters/part4/chapter07/7-1.md) — 🟨 AI草稿
-- [7.2 Git/GitHubを通じた知の交流](chapters/part4/chapter07/7-2.md) — 🟨 AI草稿
-- [7.3 共鳴する魂——ペアプロ・モブプロ](chapters/part4/chapter07/7-3.md) — 🟨 AI草稿
+- [第7章 概要](chapters/part4/chapter07/chapter07.md) — 🟩 暫定完了
+- [7.1 スクラムの祝祭](chapters/part4/chapter07/7-1.md) — 🟩 暫定完了
+- [7.2 Git/GitHubを通じた知の交流](chapters/part4/chapter07/7-2.md) — 🟩 暫定完了
+- [7.3 共鳴する魂——ペアプロ・モブプロ](chapters/part4/chapter07/7-3.md) — 🟩 暫定完了
 
-### 第8章 エンジニアの倫理と未来への責任——終わりなき冒険の始まり
+### 第8章 エンジニアの倫理と未来への責任——終わりなき冒険の始まり 🟩
 
-- [第8章 概要](chapters/part4/chapter08/chapter08.md) — 🟨 AI草稿
-- [8.1 AI時代の創造性](chapters/part4/chapter08/8-1.md) — 🟨 AI草稿
-- [8.2 終わりのない学びの旅](chapters/part4/chapter08/8-2.md) — 🟨 AI草稿
+- [第8章 概要](chapters/part4/chapter08/chapter08.md) — 🟩 暫定完了
+- [8.1 AI時代の創造性](chapters/part4/chapter08/8-1.md) — 🟩 暫定完了
+- [8.2 終わりのない学びの旅](chapters/part4/chapter08/8-2.md) — 🟩 暫定完了
 
 ---
 
@@ -101,9 +102,9 @@
 | 状態 | セクション数 |
 |------|-------------|
 | ✅ 完成 | 1 |
-| 🟩 暫定完了 | 32 |
-| 🟦 人間修正中 | 1 |
-| 🟨 AI草稿 | 16 |
+| 🟩 暫定完了 | 47 |
+| 🟦 人間修正中 | 0 |
+| 🟨 AI草稿 | 0 |
 | 📝 未着手 | 0 |
 
-**最終更新**: 2026-02-11
+**最終更新**: 2026-02-23
