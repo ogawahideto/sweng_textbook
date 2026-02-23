@@ -9582,11 +9582,14 @@ AIを「自分の代わり」に使うのではなく、自分の思考を拡張
 
 一人で暗い部屋に籠もって学ぶのは限界があります。外の世界（コミュニティ）へ飛び出しましょう。
 
-- **勉強会とカンファレンス**: 同じ志を持つ仲間と出会い、熱量を共有する場です。
+- **勉強会とカンファレンス**: **デブサミ（Developers Summit）**、**XP祭り**、**Agile Japan**、**PyCon JP**など、同じ志を持つ仲間と出会い、熱量を共有する場が国内にも数多く存在します。
 - **オープンソース（OSS）**: 世界中の天才たちが書いたコードを読み、貢献できる「究極の攻略本」です。
+- **賢者たちの最高評議会（学術学会）**: ソフトウェア工学の理論を磨き、数十年先の未来を議論する場所です。国際的なIEEEやACMだけでなく、国内でも**情報処理学会（ソフトウェア工学研究会）**、**電子情報通信学会（ソフトウェアサイエンス研究会）**、**日本ソフトウェア科学会**などが、理論と実践の架け橋となっています。
 - **SNS・技術ブログ**: ゆるい繋がりから、思いがけないチャンスや知見が舞い込んできます。
 
 「教えることは、二度学ぶこと」——。あなたが学んだばかりの知識こそ、今まさに始めたばかりの誰かにとって、最も分かりやすい教えになるのです。
+
+また、実務での発見を論文や技術記事として言語化することは、あなたの知見を「人類の共有財産」へと昇華させる、最も高潔な錬金術の一つです。理論（学会）と実践（現場）の螺旋階段を登り続けること。それが、真のマスター・アルケミストへの道です。
 
 ---
 
@@ -9629,7 +9632,9 @@ AIを「自分の代わり」に使うのではなく、自分の思考を拡張
 ## さらに学ぶためのリソース
 
 - 📄 **論文**: L. Briand "[The Future of Software Engineering: A Research Perspective](https://ieeexplore.ieee.org/document/8109118)" (2017)（ソフトウェア工学の未来の研究課題を展望した、包括的なレポート）
-- 🌐 **Web**: [ICSE (International Conference on Software Engineering)](https://conf.researchr.org/home/icse-2024)（ソフトウェア工学における世界最高峰の国際会議。最先端の知見が集まります）
+- 🌐 **Web**: [ICSE (International Conference on Software Engineering)](https://conf.researchr.org/home/icse-2024)（ソフトウェア工学における世界最高峰の国際会議）
+- 🌐 **学会（日本）**: [情報処理学会 ソフトウェア工学研究会 (SIGSE)](https://www.sigse.jp/) / [電子情報通信学会 ソフトウェアサイエンス研究会 (SS)](https://www.ieice.org/~ss/) / [日本ソフトウェア科学会 (JSSST)](https://jssst.or.jp/)
+- 🌐 **コミュニティ（日本）**: [デブサミ](https://event.shoeisha.jp/devsumi) / [XP祭り](https://www.xpj.jp/) / [Agile Japan](https://www.agilejapan.jp/)
 - 📚 **書籍**: 結城浩『[新版 数学リテラシー](https://www.sbcr.jp/product/4815606145/)』（エンジニアにとっての「不変の土台」である論理的思考力を養うための一冊）
 - 🌐 **Web**: [Thoughtworks Technology Radar](https://www.thoughtworks.com/radar)（世界の技術トレンドを俯瞰し、「不変」と「流行」を見極めるための羅針盤）
 - 📄 **論文**: Mary Shaw "[Software Engineering Education: A Roadmap](https://dl.acm.org/doi/10.1145/336512.336588)" (2000)（ソフトウェア工学教育の歴史と未来を描いた、示唆に富むロードマップ）
