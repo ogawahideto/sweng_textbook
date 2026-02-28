@@ -162,7 +162,7 @@ with open(index_path, 'w', encoding='utf-8') as f:
 </head>
 <body>
     <div class="card">
-        <h1>『「楽しい」ソフトウェア工学の攻略本』</h1>
+        <h1>『「楽しい」ソフトウェアエンジニアリング』</h1>
         <p>デジタル・アルケミー：伝統の美学とAIで紡ぐ創造の地図</p>
         <a href="COVER.html" class="btn">本を開く</a>
         <a href="toc.html" class="toc-link">目次を見る</a>

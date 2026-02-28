@@ -1,5 +1,5 @@
 module.exports = {
-  title: '「楽しい」ソフトウェア工学の攻略本 —— デジタル・アルケミー',
+  title: '「楽しい」ソフトウェアエンジニアリングの攻略本 —— デジタル・アルケミー',
   author: '小川 秀人 & AI Familiar',
   language: 'ja',
   size: 'A4',
