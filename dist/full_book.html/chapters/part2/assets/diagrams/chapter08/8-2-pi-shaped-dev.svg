@@ -16,7 +16,7 @@
   <!-- 水平方向: 広い知識 -->
   <rect x="50" y="80" width="400" height="50" rx="10" class="bar-horizontal" />
   <text x="250" y="110" class="text-main">広い知識と共通言語</text>
-  <text x="250" y="70" class="text-sub">ソフトウェア工学全般 / 他分野への理解</text>
+  <text x="250" y="70" class="text-sub">ソフトウェアエンジニアリング全般 / 他分野への理解</text>
 
   <!-- 垂直方向1: 第一の専門 -->
   <rect x="120" y="130" width="60" height="200" rx="5" class="bar-vertical" />

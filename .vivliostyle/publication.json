@@ -5,22 +5,22 @@
   ],
   "type": "Book",
   "conformsTo": "https://github.com/vivliostyle/vivliostyle-cli",
-  "name": "「楽しい」ソフトウェア工学の攻略本 —— デジタル・アルケミー",
+  "name": "「楽しい」ソフトウェアエンジニアリングの攻略本 —— デジタル・アルケミー",
   "author": "小川 秀人 & AI Familiar",
   "inLanguage": "ja",
   "dateModified": "2026-02-23T06:28:41.041Z",
   "readingOrder": [
     {
       "url": "COVER.html",
-      "name": "『「楽しい」ソフトウェア工学の攻略本』"
+      "name": "『「楽しい」ソフトウェアエンジニアリングの攻略本』"
     },
     {
       "url": "toc.html",
-      "name": "『「楽しい」ソフトウェア工学の攻略本』目次"
+      "name": "『「楽しい」ソフトウェアエンジニアリングの攻略本』目次"
     },
     {
       "url": "chapters/prologue/prologue.html",
-      "name": "プロローグ：ソフトウェア工学は「魔法の地図」である"
+      "name": "プロローグ：ソフトウェアエンジニアリングは「魔法の地図」である"
     },
     {
       "url": "chapters/part1/chapter01/chapter01.html",
