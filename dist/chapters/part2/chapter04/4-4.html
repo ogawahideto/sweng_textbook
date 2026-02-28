@@ -37,24 +37,22 @@
         <section class="level3">
           <h3 id="基本の詠唱-実装からテストを生成する">基本の詠唱: 実装からテストを生成する</h3>
           <p>最もシンプルな使い方は、実装コードをAIに渡してテストを生成させることです。</p>
-          <pre class="language-text"><code class="language-text">以下のPythonコードに対して、unittestを使った包括的なテストスイートを生成してください。
-正常系、異常系、境界値のテストケースを含めてください。
-
-[calculate_quest_xp のコードを貼り付け]</code></pre>
+          <pre class="language-text"><code class="language-text">@domain/quest.py の calculate_quest_xp 関数を読んで、
+unittestを使った包括的なテストスイートを生成してください。
+正常系、異常系、境界値のテストケースを含めてください。</code></pre>
           <p>AIは4.2節で学んだ技法——同値分割、境界値分析——を自動的に適用し、テストケースを生成します。</p>
         </section>
         <section class="level3">
           <h3 id="aiならではの視点でケースを広げる">AIならではの視点でケースを広げる</h3>
           <p>AIが特に力を発揮するのは、<strong>人間が気づきにくい観点</strong>からのテストケース発見です。</p>
-          <pre class="language-text"><code class="language-text">以下のコードに対して、開発者が気づきにくいエッジケースを5つ挙げ、
+          <pre class="language-text"><code class="language-text">@domain/hero.py と @domain/quest.py を読んで、
+開発者が気づきにくいエッジケースを5つ挙げ、
 それぞれのテストコードを書いてください。
 特に以下の観点に注目してください：
 - 空のコレクション、Noneの入力
 - 整数のオーバーフロー
 - 並行実行時の競合
-- 文字列のエンコーディング
-
-[コードを貼り付け]</code></pre>
+- 文字列のエンコーディング</code></pre>
           <p>AIが見つけてくる「刺客」の例:</p>
           <table>
             <thead>
@@ -228,23 +226,35 @@ mutmut results</code></pre>
       </section>
       <section class="level2">
         <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
-        <pre class="language-text"><code class="language-text">以下のコードに対して、プロパティベーステスト（Hypothesis）を書いてください。
-テストすべき性質を3つ提案し、それぞれのテストコードを生成してください。
+        <section class="level3">
+          <h3 id="ide統合型プロパティベーステストの生成">IDE統合型：プロパティベーステストの生成</h3>
+          <pre class="language-text"><code class="language-text">@domain/hero.py と @domain/quest.py を読んで、
+Hypothesis を使ったプロパティベーステストを書いてください。
 
-[コードを貼り付け]</code></pre>
-        <pre class="language-text"><code class="language-text">以下のテストスイートに対して、ミューテーションテストの観点から
-「この変異を見逃すだろう」と推測されるケースを3つ挙げ、
-それを検知するための追加テストを提案してください。
+以下の観点で「性質」を3つ提案し、それぞれテストコードを生成してください：
+- 経験値の加減算で成立すべき数学的性質（例：順序不変性）
+- クエスト完了の前後で保たれるべき不変条件
+- ヒーローのステータスが取り得る範囲の制約</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="cliエージェント型ミューテーションテストの弱点分析">CLIエージェント型：ミューテーションテストの弱点分析</h3>
+          <pre class="language-text"><code class="language-text">domain/ のコードと tests/unit/ のテストを読んで、
+ミューテーションテストの観点から「見逃しやすい変異」を分析してください。
 
-[テストコードを貼り付け]</code></pre>
-        <hr>
-        <p><strong>執筆メモ</strong>:</p>
-        <ul>
-          <li>執筆日時: 2026-02-01</li>
-          <li>構成: AIテスト生成→プロパティベーステスト→ミューテーションテスト→形式的仕様記述（コラム）</li>
-          <li>接続: 4.2（テスト設計技法）をAIに適用させる発展。4.5（CI）でこれらを自動実行する基盤へ</li>
-        </ul>
-        <hr>
+出力：
+1. 生き残りやすいと推測されるミュータント3件
+   （変異箇所・変異の内容・なぜ検知されにくいか）
+2. 各ミュータントを検知するための追加テストコード
+3. 現在のテストスイートのミューテーションスコア推定（0〜100%）</code></pre>
+          <hr>
+          <p><strong>執筆メモ</strong>:</p>
+          <ul>
+            <li>執筆日時: 2026-02-01</li>
+            <li>構成: AIテスト生成→プロパティベーステスト→ミューテーションテスト→形式的仕様記述（コラム）</li>
+            <li>接続: 4.2（テスト設計技法）をAIに適用させる発展。4.5（CI）でこれらを自動実行する基盤へ</li>
+          </ul>
+          <hr>
+        </section>
       </section>
       <section class="level2">
         <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>

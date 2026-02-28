@@ -8,15 +8,15 @@
   "name": "「楽しい」ソフトウェアエンジニアリングの攻略本 —— デジタル・アルケミー",
   "author": "小川 秀人 & AI Familiar",
   "inLanguage": "ja",
-  "dateModified": "2026-02-23T06:28:41.041Z",
+  "dateModified": "2026-02-28T08:40:53.467Z",
   "readingOrder": [
     {
       "url": "COVER.html",
-      "name": "『「楽しい」ソフトウェアエンジニアリングの攻略本』"
+      "name": "『「楽しい」ソフトウェアエンジニアリング』"
     },
     {
       "url": "toc.html",
-      "name": "『「楽しい」ソフトウェアエンジニアリングの攻略本』目次"
+      "name": "『「楽しい」ソフトウェアエンジニアリング』目次"
     },
     {
       "url": "chapters/prologue/prologue.html",
@@ -44,7 +44,7 @@
     },
     {
       "url": "chapters/part1/chapter01/1-5.html",
-      "name": "1.5 どう可視化するか？——要求を描く魔法陣（UML前編）"
+      "name": "1.5 どう描くか？——要求を描く魔法陣（UML前編）"
     },
     {
       "url": "chapters/part1/chapter01/1-6.html",

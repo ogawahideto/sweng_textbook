@@ -77,11 +77,137 @@
         <hr>
       </section>
       <section class="level2">
+        <h2 id="コーディングエージェントによる遺跡探索の工夫">コーディングエージェントによる遺跡探索の工夫</h2>
+        <p>AIコーディングエージェントは、レガシーコードの解読において「疲れ知らずの考古学者補佐」として機能します。ただし、使い方を誤ると「自信満々に誤った推測を返す」事態になりかねません。以下の工夫を意識することで、エージェントの読解力を最大限に引き出せます。</p>
+        <section class="level3">
+          <h3 id="工夫1コンテキストを広く渡す">工夫1：コンテキストを「広く」渡す</h3>
+          <p>エージェントが見える範囲でしか推測できないことを忘れてはなりません。</p>
+          <pre class="language-text"><code class="language-text">❌ 断片だけを渡す（推測が増え、精度が下がる）
+「この関数を説明してください」と言って1関数だけ貼る
+
+✅ 関連ファイルをまとめて渡す
+「以下のファイル群を読んで全体像を把握してください：
+ - process_order.py（対象関数）
+ - models/order.py（使用しているモデル）
+ - db/legacy_schema.sql（DB構造）」</code></pre>
+          <p>CLI型エージェント（Claude Code等）であれば、プロジェクト全体を自動把握するため、この制約が大幅に緩和されます。</p>
+        </section>
+        <section class="level3">
+          <h3 id="工夫2説明--テスト--変更の順序を守る">工夫2：「説明 → テスト → 変更」の順序を守る</h3>
+          <p>エージェントに最初から「直して」と頼むのは、遺跡の内部を見ずに重機を入れるようなものです。</p>
+          <pre class="language-text"><code class="language-text">Step 1（説明）: 「このコードが何をしているか、平易な日本語で説明してください。実装は一切変更しないでください。」
+Step 2（テスト）: 「説明を踏まえ、現在の動きを記録する仕様化テストを書いてください。」
+Step 3（変更）: 「テストが通ることを確認しながら、〇〇の部分をリファクタリングしてください。」</code></pre>
+          <p>このフローを崩さないことが、安全な考古学の鉄則です。</p>
+        </section>
+        <section class="level3">
+          <h3 id="工夫3わからないを引き出す">工夫3：「わからない」を引き出す</h3>
+          <p>エージェントは自信満々に誤った推測をすることがあります。不確かな部分を積極的に吐き出させる詠唱を使いましょう。</p>
+          <pre class="language-text"><code class="language-text">「このコードを分析してください。
+不明な点や、推測の確信度が低い箇所については、
+必ず『推測：（理由）』と明記してください。
+事実と推測を必ず区別して記述してください。」</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="工夫4claudemd-にレガシーの地雷マップを記録する">工夫4：CLAUDE.md にレガシーの「地雷マップ」を記録する</h3>
+          <p>エージェントが学んだことをセッションをまたいで活かすために、CLAUDE.md に「既知の危険地帯」を書き込んでいきます。</p>
+          <pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">##</span> レガシーコードの注意事項</span>
+<span class="token list punctuation">-</span> <span class="token code-snippet code keyword">`process_order()`</span> 関数はグローバル変数 <span class="token code-snippet code keyword">`_CURRENT_USER`</span> に暗黙依存している（削除禁止）
+<span class="token list punctuation">-</span> <span class="token code-snippet code keyword">`LegacyDB`</span> クラスは本番環境で直接接続のため、テスト時は必ずモックに差し替えること
+<span class="token list punctuation">-</span> <span class="token code-snippet code keyword">`calculate_tax()`</span> は1997年の税率ロジックが混在している（2004年以前の注文データ用）</code></pre>
+          <p>発見した「地雷」をドキュメント化することで、次のセッションのエージェントも（そして人間の同僚も）同じ罠を踏まずに済みます。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
         <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
-        <pre class="language-prompt"><code class="language-prompt">この10年前に書かれたと思われる複雑な関数を分析してください。
-1. 入力と出力のパターンを5つ推測し、仕様化テストのコードを書いてください。
-2. 他の部品との依存関係が強い箇所を特定し、切り離しのための「継ぎ目」を提案してください。</code></pre>
-        <hr>
+        <p>以下に、実際のレガシーコード解析でよく使われるシナリオを示します。</p>
+        <section class="level3">
+          <h3 id="詠唱1全体像の把握読解フェーズ">詠唱1：全体像の把握（読解フェーズ）</h3>
+          <pre class="language-python"><code class="language-python"><span class="token comment"># 分析対象：10年前に書かれた注文処理関数</span>
+<span class="token keyword">def</span> <span class="token function">proc_ord</span><span class="token punctuation">(</span>uid<span class="token punctuation">,</span> itms<span class="token punctuation">,</span> disc<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">,</span> flg<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">import</span> datetime
+    r <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    tot <span class="token operator">=</span> <span class="token number">0</span>
+    db <span class="token operator">=</span> get_db_conn<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    u <span class="token operator">=</span> db<span class="token punctuation">.</span>execute<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"SELECT * FROM users WHERE id=</span><span class="token interpolation"><span class="token punctuation">{</span>uid<span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span>fetchone<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> <span class="token keyword">not</span> u<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token boolean">False</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> itms<span class="token punctuation">:</span>
+        p <span class="token operator">=</span> db<span class="token punctuation">.</span>execute<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"SELECT price, stock FROM products WHERE id=</span><span class="token interpolation"><span class="token punctuation">{</span>i<span class="token punctuation">[</span><span class="token string">'id'</span><span class="token punctuation">]</span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span>fetchone<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> p <span class="token keyword">and</span> p<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">:</span>
+            price <span class="token operator">=</span> p<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+            <span class="token keyword">if</span> disc <span class="token keyword">and</span> u<span class="token punctuation">[</span><span class="token string">'rank'</span><span class="token punctuation">]</span> <span class="token operator">&gt;</span> <span class="token number">2</span><span class="token punctuation">:</span>
+                price <span class="token operator">=</span> price <span class="token operator">*</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">-</span> disc<span class="token punctuation">)</span>
+            <span class="token keyword">if</span> flg <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">:</span>
+                price <span class="token operator">=</span> price <span class="token operator">*</span> <span class="token number">1.08</span>
+            <span class="token keyword">elif</span> flg <span class="token operator">==</span> <span class="token number">2</span><span class="token punctuation">:</span>
+                price <span class="token operator">=</span> price <span class="token operator">*</span> <span class="token number">1.10</span>
+            tot <span class="token operator">+=</span> price
+            r<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token string">'id'</span><span class="token punctuation">:</span> i<span class="token punctuation">[</span><span class="token string">'id'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string">'price'</span><span class="token punctuation">:</span> price<span class="token punctuation">}</span><span class="token punctuation">)</span>
+            db<span class="token punctuation">.</span>execute<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"UPDATE products SET stock=stock-1 WHERE id=</span><span class="token interpolation"><span class="token punctuation">{</span>i<span class="token punctuation">[</span><span class="token string">'id'</span><span class="token punctuation">]</span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> tot <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">:</span>
+        db<span class="token punctuation">.</span>execute<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"INSERT INTO orders VALUES (</span><span class="token interpolation"><span class="token punctuation">{</span>uid<span class="token punctuation">}</span></span><span class="token string">, </span><span class="token interpolation"><span class="token punctuation">{</span>tot<span class="token punctuation">}</span></span><span class="token string">, '</span><span class="token interpolation"><span class="token punctuation">{</span>datetime<span class="token punctuation">.</span>datetime<span class="token punctuation">.</span>now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">}</span></span><span class="token string">')"</span></span><span class="token punctuation">)</span>
+        db<span class="token punctuation">.</span>commit<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token string">'items'</span><span class="token punctuation">:</span> r<span class="token punctuation">,</span> <span class="token string">'total'</span><span class="token punctuation">:</span> tot<span class="token punctuation">}</span></code></pre>
+          <pre class="language-text"><code class="language-text">上記の関数を分析してください。
+
+以下の観点で回答してください：
+1. この関数が行っていること（自然言語で、箇条書き）
+2. 引数の意味（`flg=0/1/2` が何を表すかの推測を含む）
+3. 発見できるバグ・セキュリティリスク（SQLインジェクション等）
+4. 隠れた副作用（DBへの書き込み等、関数名から見えないもの）
+5. 推測が不確かな部分には「推測：」と明記してください
+
+実装は一切変更しないでください。</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="詠唱2仕様化テストの生成">詠唱2：仕様化テストの生成</h3>
+          <pre class="language-text"><code class="language-text">上記の `proc_ord()` 関数に対して、
+現在の動作をそのまま記録する仕様化テスト（Characterization Test）を書いてください。
+
+条件：
+- pytest 形式で記述すること
+- データベースはモック（unittest.mock）を使用すること
+- 以下のケースを最低限カバーすること：
+  - 通常購入（flg=0）
+  - 消費税8%適用（flg=1）
+  - ユーザーが存在しない場合
+  - 在庫が0の商品が含まれる場合
+
+テストの目的はリファクタリング後のリグレッションを検知することです。
+「正しい動作」ではなく「現在の動作」を記録するスタンスで書いてください。</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="詠唱3依存関係の地図を描く">詠唱3：依存関係の地図を描く</h3>
+          <pre class="language-text"><code class="language-text">このコードベースを読み、`proc_ord()` 関数の依存関係マップを作成してください。
+
+出力形式：
+1. 直接依存（この関数が呼び出しているもの）
+2. 暗黙依存（グローバル変数、モジュールレベルの状態など）
+3. 副作用（外部システムへの書き込みなど）
+4. 「継ぎ目（Seam）」の候補：テスト時に差し替えられそうな境界
+
+その後、「最もリスクが低いリファクタリングの最初の一手」を1つ提案してください。
+（実装はまだ行わないでください）</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="詠唱4strangler-figパターンによる段階的移行計画">詠唱4：Strangler Figパターンによる段階的移行計画</h3>
+          <pre class="language-text"><code class="language-text">`proc_ord()` をモダンな設計へ移行するため、
+Strangler Figパターンを使った段階的移行計画を立ててください。
+
+要件：
+- 本番サービスを止めないこと
+- 各ステップは独立してデプロイ可能にすること
+- 仕様化テストが常に通ること
+- 最終的にはClean Architectureの層構造に沿った設計にすること
+
+出力：
+- 移行ステップのリスト（5〜7段階）
+- 各ステップの「やること」と「確認方法」
+- 最初に着手すべきステップのコード案</code></pre>
+          <hr>
+        </section>
       </section>
       <section class="level2">
         <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>

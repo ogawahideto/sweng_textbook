@@ -53,9 +53,16 @@
       </section>
       <section class="level2">
         <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
-        <pre class="language-prompt"><code class="language-prompt">以下のシステムの挙動について、TLA+ または Alloy のモデル記述を作成したいです。
-[システムの振る舞い（例：2つのプロセスが共通のリソースを奪い合う）を記述]
-想定外の状態（不変条件の違反）が起きないことを検証するための、基本的なモデルの雛形を書いてください。</code></pre>
+        <pre class="language-text"><code class="language-text">QuestForge の「クエスト完了フロー」を形式手法で検証したいです。
+
+以下のファイルを読んで対象の振る舞いを把握してください：
+- domain/quest.py: Quest エンティティの状態遷移（未着手→進行中→完了）
+- application/use_cases/complete_quest.py: 完了ユースケースのロジック
+
+以下を順番に行ってください：
+1. クエストの状態遷移を TLA+ または Alloy のモデルで記述する雛形を作成する
+2. 「同じクエストが二重に完了できない」という不変条件を定義する
+3. モデルチェッカーで検証するためのコマンドを示す</code></pre>
       </section>
     </section>
   

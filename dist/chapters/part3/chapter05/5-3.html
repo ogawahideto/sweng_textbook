@@ -101,13 +101,105 @@
         </section>
         <section class="level3">
           <h3 id="2-コードの呪いを数値化するメトリクス">2. コードの「呪い」を数値化する（メトリクス）</h3>
-          <p>AIや静的解析ツールを使って、コードの複雑さを算出します。</p>
-          <ul>
-            <li><strong>循環複雑度（Cyclomatic Complexity）</strong>: コードの分岐の多さ。</li>
-            <li><strong>認知負荷（Cognitive Load）</strong>: 人間がそのコードを理解するのに必要な脳のメモリ量。</li>
-          </ul>
-          <p>「この関数の認知負荷は20を超えている。はぐれメタル級の強敵だ！」という共通言語を持つことで、リファクタリングはチーム共有の「クエスト」に変わります。</p>
-          <hr>
+          <p>AIや静的解析ツールを使って、コードの複雑さを算出します。代表的なメトリクスをゲームのステータスに例えて見てみましょう。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>メトリクス</th>
+                <th>魔法名</th>
+                <th>何を測るか</th>
+                <th>要注意の閾値</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>循環複雑度</td>
+                <td>「迷宮の複雑度」</td>
+                <td>条件分岐の数（独立した経路の数）</td>
+                <td>関数あたり &gt; 10</td>
+              </tr>
+              <tr>
+                <td>認知的複雑度</td>
+                <td>「脳への呪詛」</td>
+                <td>読む人の理解コスト（ネストで加算）</td>
+                <td>関数あたり &gt; 15</td>
+              </tr>
+              <tr>
+                <td>関数の行数</td>
+                <td>「術式の重み」</td>
+                <td>1つの関数の長さ</td>
+                <td>&gt; 20行</td>
+              </tr>
+              <tr>
+                <td>重複コード率</td>
+                <td>「コピー魔法の残滓」</td>
+                <td>コードの繰り返し（DRY違反）</td>
+                <td>&gt; 5%</td>
+              </tr>
+              <tr>
+                <td>結合度</td>
+                <td>「縛りの鎖」</td>
+                <td>他モジュールへの依存の多さ</td>
+                <td>文脈による</td>
+              </tr>
+            </tbody>
+          </table>
+          <section class="level4">
+            <h4 id="循環複雑度cyclomatic-complexity">循環複雑度（Cyclomatic Complexity）</h4>
+            <p>1976年にThomas McCabeが提唱した指標で、コードの中にある「分岐の数 + 1」で計算します。</p>
+            <pre class="language-python"><code class="language-python"><span class="token comment"># 循環複雑度 = 3（if が2つ）</span>
+<span class="token keyword">def</span> <span class="token function">calculate_quest_reward</span><span class="token punctuation">(</span>quest<span class="token punctuation">,</span> hero<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    reward <span class="token operator">=</span> quest<span class="token punctuation">.</span>base_xp
+    <span class="token keyword">if</span> quest<span class="token punctuation">.</span>difficulty <span class="token operator">==</span> <span class="token string">"HARD"</span><span class="token punctuation">:</span>      <span class="token comment"># +1</span>
+        reward <span class="token operator">*=</span> <span class="token number">2</span>
+    <span class="token keyword">if</span> hero<span class="token punctuation">.</span>streak_days <span class="token operator">&gt;=</span> <span class="token number">7</span><span class="token punctuation">:</span>           <span class="token comment"># +1</span>
+        reward <span class="token operator">+=</span> <span class="token number">50</span>
+    <span class="token keyword">return</span> reward</code></pre>
+            <p>分岐が10を超えると「テストケースが10通り以上必要な関数」になります。バグが潜みやすく、テストが不完全になりがちです。Pythonなら <code>radon</code> で測定できます。</p>
+            <pre class="language-bash"><code class="language-bash">pip <span class="token function">install</span> radon
+radon cc src/ -a -s
+<span class="token comment"># F src/domain/quest.py:42 calculate_quest_reward - A (2)</span>
+<span class="token comment">#   ^ ファイル   行番号  関数名                    グレード スコア</span></code></pre>
+            <p>グレードはA（1–5）からF（26+）まで。CとD（10超）が出始めたら、関数の分割を検討するサインです。</p>
+          </section>
+          <section class="level4">
+            <h4 id="認知的複雑度cognitive-complexity">認知的複雑度（Cognitive Complexity）</h4>
+            <p>SonarSourceのG. Campbell（2018年）が提唱した、より「人間感覚」に近い指標です。循環複雑度と違い、<strong>ネストが深いほどペナルティが大きく</strong>なります。</p>
+            <pre class="language-python"><code class="language-python"><span class="token comment"># 認知的複雑度の計算イメージ</span>
+<span class="token keyword">def</span> <span class="token function">process</span><span class="token punctuation">(</span>quests<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> quest <span class="token keyword">in</span> quests<span class="token punctuation">:</span>          <span class="token comment"># +1（ループ）</span>
+        <span class="token keyword">if</span> quest<span class="token punctuation">.</span>is_active<span class="token punctuation">:</span>       <span class="token comment"># +2（if、ネスト1）</span>
+            <span class="token keyword">if</span> quest<span class="token punctuation">.</span>is_hard<span class="token punctuation">:</span>     <span class="token comment"># +3（if、ネスト2）</span>
+                apply_bonus<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+            <p>「同じ行数でも、浅いコードの方が読みやすい」という直感が数値に反映されます。SonarQubeのデフォルト閾値は15で、これを超えると警告が出ます。</p>
+          </section>
+          <section class="level4">
+            <h4 id="関数の行数method-length">関数の行数（Method Length）</h4>
+            <p>最もシンプルで、最も効果的な指標の一つです。1つの関数が何行かを数えるだけ。</p>
+            <p>「1関数は20行以内」が広く言われる目安ですが、<strong>行数はあくまで「臭いを嗅ぎ取るための入口」</strong>です。長い関数は往々にして「一つの関数が複数の仕事をしている」サインです。3.3節で学んだ「関数の単一責任」の原則に照らし合わせて判断しましょう。</p>
+          </section>
+          <section class="level4">
+            <h4 id="重複コード率code-duplication">重複コード率（Code Duplication）</h4>
+            <p>同じ、または酷似したコードが複数箇所に存在する割合です。DRY原則（Don't Repeat Yourself）の違反を定量化します。</p>
+            <pre class="language-bash"><code class="language-bash"><span class="token comment"># Python: pylint --disable=all --enable=duplicate-code</span>
+<span class="token comment"># JavaScript: jscpd --min-lines 5 src/</span></code></pre>
+            <p>重複が5%を超えたら「コピー魔法の残滓」が溜まり始めているサイン。どちらか一方のバグを直しても、もう一方に同じバグが残ります。</p>
+          </section>
+          <section class="level4">
+            <h4 id="結合度coupling">結合度（Coupling）</h4>
+            <p>あるモジュールが「他のどれだけのモジュールに依存しているか（流出結合度: Ce）」と、「他のどれだけのモジュールから依存されているか（流入結合度: Ca）」を測ります。</p>
+            <pre class="language-text"><code class="language-text">不安定度 = Ce / (Ca + Ce)
+  0に近い → 安定（多くに依存される、変更コストが高い）
+  1に近い → 不安定（多くに依存する、変更の影響を受けやすい）</code></pre>
+            <p>QuestForgeの <code>domain/</code> は多くの層から依存される「コア」なので、不安定度は低く（安定して）あるべきです。逆に <code>infrastructure/</code> は不安定で構いません。</p>
+            <hr>
+            <blockquote>
+              <p><strong>メトリクスの黄金律</strong>: 数字を「目標」にするのは本末転倒です。循環複雑度を下げるために if を消してネストにしたり、行数を減らすために意味のない行を詰めたりするのは逆効果です。メトリクスは「どこが痛いか」を教えてくれる体温計。治療するのはコードの設計であって、体温計の数字ではありません。</p>
+            </blockquote>
+            <hr>
+            <p>「この関数の認知的複雑度は18——はぐれメタル級の強敵だ！」という共通言語を持つことで、リファクタリングはチーム共有の「クエスト」に変わります。</p>
+            <hr>
+          </section>
         </section>
       </section>
       <section class="level2">
@@ -193,8 +285,39 @@
       </section>
       <section class="level2">
         <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
-        <pre class="language-prompt"><code class="language-prompt">このレガシーコードの動作を一切変えずに、可読性を高めるためのリファクタリング案を3つ提案してください。それぞれのメリットと、壊れていないかを確認するためのテストケースも合わせて提示してください。</code></pre>
-        <pre class="language-prompt"><code class="language-prompt">以下の複雑な条件分岐を、Polymorphism（多態性）を使って整理する設計案を書いてください。</code></pre>
+        <section class="level3">
+          <h3 id="ide統合型技術負債の発見と返済計画">IDE統合型：技術負債の発見と返済計画</h3>
+          <pre class="language-text"><code class="language-text">@application/use_cases/complete_quest.py を読んで、
+技術的負債の観点から以下を行ってください：
+
+1. コードの「呪い」を特定
+   - 循環複雑度が高い関数（分岐が多すぎる箇所）
+   - 認知的複雑度が高い箇所（ネストが深い、条件式が複雑）
+   - 重複しているロジック
+
+2. 優先度順に3つの「クエスト（リファクタリングタスク）」を提案
+   （難易度・影響範囲・期待効果を添えて）
+
+3. 最も優先度の高い1つについて、動作を変えずにリファクタリングしてください。
+   既存のテストが通ることを確認しながら進めてください。</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="cliエージェント型コードベース全体のメトリクス分析">CLIエージェント型：コードベース全体のメトリクス分析</h3>
+          <pre class="language-text"><code class="language-text">sample-code/questforge/ のコードベース全体を走査して、
+技術負債の可視化レポートを作成してください。
+
+出力：
+1. メトリクスの危険地帯（上位3件）
+   - 循環複雑度が最も高い関数
+   - 行数が最も長いクラス・関数
+   - 重複が疑われる箇所
+
+2. 「今すぐ直せる小さな負債」3件
+   （変数名の改善、マジックナンバーの定数化、不要なコメントの削除など）
+
+3. 1件だけ実際にリファクタリングを実施し、
+   変更前後のコードと「何がどう改善されたか」を説明してください。</code></pre>
+        </section>
       </section>
     </section>
   

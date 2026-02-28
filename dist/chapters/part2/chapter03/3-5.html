@@ -165,6 +165,135 @@
         <hr>
       </section>
       <section class="level2">
+        <h2 id="cliエージェントという新たな魔導体系claude-codeを例に">CLIエージェントという新たな魔導体系——Claude Codeを例に</h2>
+        <p>IDE統合型エージェントが「魔法陣の中に住む使い魔」なら、CLIエージェントは「ターミナルという召喚の祭壇から呼び出す、より自律的な使い魔」です。</p>
+        <p>代表格である<strong>Claude Code</strong>（Anthropic製）は、コマンドラインから起動するだけで、プロジェクトのディレクトリ構造を読み解き、ファイルの編集、テストの実行、そしてGitへのコミットまで——一連の作業を自律的に実行できます。</p>
+        <section class="level3">
+          <h3 id="ide型-vs-cli型二つの使い魔の特性">IDE型 vs CLI型：二つの使い魔の特性</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>特性</th>
+                <th>IDE統合型（Cursor、Windsurf等）</th>
+                <th>CLI型（Claude Code、Aider等）</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>起動</strong></td>
+                <td>エディタ内のパネル・サイドバー</td>
+                <td><code>claude</code> とターミナルに入力</td>
+              </tr>
+              <tr>
+                <td><strong>コンテキスト指定</strong></td>
+                <td><code>@ファイル名</code> で明示的に参照</td>
+                <td>プロジェクト全体を自動で把握</td>
+              </tr>
+              <tr>
+                <td><strong>指示の粒度</strong></td>
+                <td>コード片・関数単位の局所的な指示</td>
+                <td>機能単位のタスク全体を依頼</td>
+              </tr>
+              <tr>
+                <td><strong>得意な作業</strong></td>
+                <td>その場でのコード補完・提案</td>
+                <td>ファイル横断的な大規模実装、Git操作まで</td>
+              </tr>
+              <tr>
+                <td><strong>自律度</strong></td>
+                <td>人間が確認しながら進める</td>
+                <td>「よしなに」と任せて自律実行</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>どちらが優れているわけではありません。作業の性質に応じて使い分けるのが、熟練のアルケミストの流儀です。</p>
+        </section>
+        <section class="level3">
+          <h3 id="claudemdゴーレムへの永続的な魂の書き込み">CLAUDE.md：ゴーレムへの「永続的な魂の書き込み」</h3>
+          <p>前述の <code>.cursorrules</code> と同様の役割を、Claude Codeは <strong><code>CLAUDE.md</code></strong> というファイルで果たします。ただし、その深さは一段上です。</p>
+          <p><code>.cursorrules</code> が「作業ルールの伝達」を目的とするのに対し、<code>CLAUDE.md</code> は<strong>「プロジェクトの記憶と文脈」そのもの</strong>を記述します。セッションをまたいでも、エージェントはここを読んでプロジェクトの背景を再学習します。</p>
+          <pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> QuestForge プロジェクト設定</span>
+
+<span class="token title important"><span class="token punctuation">##</span> このプロジェクトについて</span>
+RPG風タスク管理アプリ。Clean Architectureを採用。
+
+<span class="token title important"><span class="token punctuation">##</span> 絶対に守るルール</span>
+<span class="token list punctuation">-</span> domain/ 層には外部ライブラリのimportを禁止
+<span class="token list punctuation">-</span> すべてのユースケースにはpytestのテストが必須
+<span class="token list punctuation">-</span> コミットはfeature単位で分割すること
+
+<span class="token title important"><span class="token punctuation">##</span> よく使うコマンド</span>
+<span class="token list punctuation">-</span> テスト実行: <span class="token code-snippet code keyword">`python -m pytest`</span>
+<span class="token list punctuation">-</span> 型チェック: <span class="token code-snippet code keyword">`mypy src/`</span></code></pre>
+          <p>このファイルをプロジェクトルートに置くだけで、ゴーレムは「プロジェクトの掟」を忘れない存在になります。</p>
+        </section>
+        <section class="level3">
+          <h3 id="実践的な詠唱パターン三流派">実践的な詠唱パターン三流派</h3>
+          <p>CLIエージェントへの指示には、大きく三つの流派があります。</p>
+          <section class="level4">
+            <h4 id="流派1タスク丸投げ型大規模実装">流派1：タスク丸投げ型（大規模実装）</h4>
+            <p>機能全体を「まるごと」任せるスタイルです。</p>
+            <pre class="language-text"><code class="language-text">クエスト検索APIを実装してください。
+
+- GET /api/quests?status=active&amp;level_min=5
+- レスポンスはJSONでクエスト一覧を返す
+- Clean Architectureの層構造を守ること
+- テストを書いてからロジックを実装すること（TDD）
+- 最後に適切な単位でコミットまで行うこと</code></pre>
+            <p>エージェントはこれだけで、インターフェース定義→ユースケース→インフラ実装→テスト→コミットを自律的にこなします。人間は完成した作業を確認・承認するだけです。</p>
+          </section>
+          <section class="level4">
+            <h4 id="流派2探索型文脈を理解してから作業">流派2：探索型（文脈を理解してから作業）</h4>
+            <p>既存のコードを調査した上で、文脈に沿った実装を進めてもらうパターンです。</p>
+            <pre class="language-text"><code class="language-text">現在の QuestRepository の実装を読んで、
+定義されているメソッドと設計方針を把握してください。
+その上で「期限切れクエストを一括アーカイブする」機能を追加してください。</code></pre>
+            <p>エージェントはまずコードを「読み」、既存設計と一貫した実装を行います。コードベースが大きくなるほど、このアプローチの威力が増します。</p>
+          </section>
+          <section class="level4">
+            <h4 id="流派3段階的承認型慎重に進めたいとき">流派3：段階的承認型（慎重に進めたいとき）</h4>
+            <p>大きな変更を「小さな確認ステップ」に分割し、各段階で人間が承認するパターンです。</p>
+            <pre class="language-text"><code class="language-text">アーキテクチャのリファクタリングを3段階で進めます。
+まずステップ1として、現在の設計の課題を分析して
+レポートしてください。実装はまだ行わないでください。</code></pre>
+            <p>「分析 → 承認 → 実装 → 承認 → 仕上げ」のサイクルにより、大規模な変更も確実にコントロールできます。</p>
+          </section>
+        </section>
+        <section class="level3">
+          <h3 id="スラッシュコマンド使い魔への短縮詠唱">スラッシュコマンド：使い魔への「短縮詠唱」</h3>
+          <p>Claude Codeには、頻繁に使う操作をワンフレーズで呼び出す<strong>スラッシュコマンド</strong>が用意されています。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>コマンド</th>
+                <th>効果</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>/commit</code></td>
+                <td>変更を論理単位ごとに自動でグループ化してコミット</td>
+              </tr>
+              <tr>
+                <td><code>/review-pr</code></td>
+                <td>プルリクエストのレビューを依頼</td>
+              </tr>
+              <tr>
+                <td><code>/fix</code></td>
+                <td>直前のエラーを自動修正</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>さらに、プロジェクト固有のスラッシュコマンドを <strong><code>.claude/commands/</code></strong> フォルダに定義することで、「このプロジェクト専用の詠唱術」を作り出せます。たとえば <code>/deploy</code> と入力するだけで、テスト→ビルド→デプロイの一連の儀式を自動実行させることも可能です。</p>
+          <pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> .claude/commands/deploy.md</span>
+テスト(<span class="token code-snippet code keyword">`pytest`</span>)を実行し、全て通過したらDockerイメージをビルドして
+ステージング環境にデプロイしてください。
+デプロイ後、ヘルスチェックエンドポイントを叩いて正常を確認してください。</code></pre>
+          <p>定型作業の「詠唱書」を整備していくことが、チーム全体の生産性を底上げします。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
         <h2 id="コラム-vibe-codingとスペック駆動開発">コラム: 「Vibe Coding」と「スペック駆動開発」</h2>
         <p>AI時代の開発スタイルには、大きく分けて二つの流派が生まれつつあります。状況に応じてこれらを使い分けるのが、熟練したアルケミストの証です。</p>
         <section class="level3">
@@ -194,7 +323,8 @@
         <h2 id="まとめ">まとめ</h2>
         <ol>
           <li><strong>エージェントは「手」と「目」を持つ</strong>: ファイル操作とコマンド実行により、実装→テスト→修正のループを自律的に回せる。</li>
-          <li><strong>コンテキストが命</strong>: <code>@</code> 参照やルールファイルを使って、プロジェクトの文脈（地図）を正確に渡すことが成功の鍵。</li>
+          <li><strong>コンテキストが命</strong>: <code>@</code> 参照やルールファイル（<code>.cursorrules</code>、<code>CLAUDE.md</code>）を使って、プロジェクトの文脈（地図）を正確に渡すことが成功の鍵。</li>
+          <li><strong>IDE型とCLI型を使い分ける</strong>: その場でのコード補完にはIDE統合型、機能単位の大規模実装にはCLI型が強みを発揮する。</li>
           <li><strong>人間は監督者（Supervisor）</strong>: コードを書く作業はエージェントに譲り、人間は「要件の定義」「コンテキストの供給」「最終品質の保証」に注力する。</li>
         </ol>
         <p>次節では、一つの言語に縛られず、あらゆる「魔導体系（パラダイム）」を自在に操るための視点を学びます。</p>
@@ -213,24 +343,47 @@
       </section>
       <section class="level2">
         <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
-        <pre class="language-text"><code class="language-text">Clean Architectureに従ったPythonプロジェクトで、
-「クエスト完了」ユースケースを実装してください。
-
-- domain/quest.py にQuestエンティティ（complete()メソッド付き）
-- application/use_cases/complete_quest.py にユースケース
-- infrastructure/json_quest_repository.py にJSON永続化
-- tests/ に各レイヤーの単体テスト
-
+        <section class="level3">
+          <h3 id="チャットide統合型局所的な実装依頼">チャット／IDE統合型：局所的な実装依頼</h3>
+          <pre class="language-text"><code class="language-text">@Quest エンティティと @QuestRepository インターフェースに基づき、
+infrastructure/ フォルダ内に JsonQuestRepository を実装してください。
+実装後は test_quest_repository.py を作成して動作確認を行ってください。
 依存方向は必ず内側（domain）に向けてください。</code></pre>
-        <pre class="language-text"><code class="language-text">以下のプロジェクトルールファイル（CLAUDE.md）を作成してください。
+        </section>
+        <section class="level3">
+          <h3 id="cliエージェント型機能単位の丸投げclaude-code等">CLIエージェント型：機能単位の丸投げ（Claude Code等）</h3>
+          <pre class="language-text"><code class="language-text">クエスト検索機能を実装してください。
 
-対象プロジェクト: QuestForge（Python 3.10+）
-アーキテクチャ: Clean Architecture
-テストフレームワーク: pytest
-コーディング規約: PEP 8準拠、型ヒント必須
+要件:
+- GET /api/quests?status=active&amp;level_min=5
+- Clean Architectureの層構造を守ること
+- pytestでテストを書いてから実装すること（TDD）
+- 実装完了後、適切な単位でコミットまで行うこと
 
-エージェントが自律的にコードを生成・修正する際に
-従うべきルールを網羅的に記述してください。</code></pre>
+まず現在のアーキテクチャを把握してから作業を開始してください。</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="cliエージェント型claudemd-の作成依頼">CLIエージェント型：CLAUDE.md の作成依頼</h3>
+          <pre class="language-text"><code class="language-text">このプロジェクト（QuestForge）用の CLAUDE.md を作成してください。
+
+含める内容:
+- プロジェクトの概要と目的
+- アーキテクチャの説明（Clean Architecture、各層の役割）
+- 絶対に守るべきルール（依存方向、テスト必須など）
+- よく使うコマンド（テスト実行、型チェック、ビルド）
+- コミット規約
+
+エージェントがセッション開始時に読むことを想定し、
+簡潔かつ漏れなく記述してください。</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="cliエージェント型段階的承認でリファクタリング">CLIエージェント型：段階的承認でリファクタリング</h3>
+          <pre class="language-text"><code class="language-text">QuestRepository の実装を読んで、
+現在の設計における改善の余地を3点挙げてください。
+（この段階では実装は行わないでください）
+
+確認後、優先度の高い改善から順に実装を進めます。</code></pre>
+        </section>
       </section>
     </section>
   

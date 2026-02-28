@@ -224,22 +224,45 @@
       </section>
       <section class="level2">
         <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
-        <pre class="language-text"><code class="language-text">以下のクラスの単体テストを書いてください。
-外部依存（リポジトリ）はモックに差し替え、以下のケースをテストしてください：
-1. 正常系: クエスト完了時に経験値が加算される
-2. 異常系: 存在しないクエストIDを指定した場合
-[コードを貼り付け]</code></pre>
-        <pre class="language-text"><code class="language-text">このプロジェクトのテストピラミッドを分析してください。
-単体テスト、結合テスト、E2Eテストの比率を数え、
-理想的なピラミッドとの乖離を指摘してください。</code></pre>
-        <hr>
-        <p><strong>執筆メモ</strong>:</p>
-        <ul>
-          <li>執筆日時: 2026-02-01</li>
-          <li>構成: テストの全体像を「地図」として最初に提示。以降の節の前提知識。</li>
-          <li>接続: 1章（要求定義）→4章（受入テスト）、2章（DIP）→テストダブル、5章（リファクタリング）→テストの安全網</li>
-        </ul>
-        <hr>
+        <blockquote>
+          <p>
+            <strong>前提</strong>: 現代のコーディングエージェントはプロジェクトのファイルを自動参照します。
+            IDE統合型は <code>@ファイル名</code> で対象を絞り、CLI型（Claude Code等）はパス指定や自動走査で対応します。
+            <code>[コードを貼り付け]</code> という操作は不要です。
+          </p>
+        </blockquote>
+        <section class="level3">
+          <h3 id="ide統合型ユースケースの単体テスト生成">IDE統合型：ユースケースの単体テスト生成</h3>
+          <pre class="language-text"><code class="language-text">@application/use_cases/complete_quest.py を読んで、
+単体テストを pytest 形式で書いてください。
+
+- 外部依存（QuestRepository）は unittest.mock でモックに差し替えること
+- 以下のケースを必ずカバーすること：
+  1. 正常系: クエスト完了時に経験値が加算される
+  2. 異常系: 存在しないクエストIDを指定した場合
+  3. 異常系: すでに完了済みのクエストを再完了しようとした場合
+- @domain/quest.py の Quest クラスの仕様にも準拠すること</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="cliエージェント型テストピラミッドの診断と補強">CLIエージェント型：テストピラミッドの診断と補強</h3>
+          <pre class="language-text"><code class="language-text">tests/ ディレクトリ全体を走査して、現在のテストピラミッドを分析してください。
+
+出力：
+1. 単体テスト・結合テスト・E2Eテストそれぞれの件数と比率
+2. 理想的なピラミッド構成との差異
+3. 最優先で補強すべき層とその理由
+
+分析後、最も手薄な層に追加すべきテストを3件提案し、
+コードも合わせて生成してください。</code></pre>
+          <hr>
+          <p><strong>執筆メモ</strong>:</p>
+          <ul>
+            <li>執筆日時: 2026-02-01</li>
+            <li>構成: テストの全体像を「地図」として最初に提示。以降の節の前提知識。</li>
+            <li>接続: 1章（要求定義）→4章（受入テスト）、2章（DIP）→テストダブル、5章（リファクタリング）→テストの安全網</li>
+          </ul>
+          <hr>
+        </section>
       </section>
       <section class="level2">
         <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>

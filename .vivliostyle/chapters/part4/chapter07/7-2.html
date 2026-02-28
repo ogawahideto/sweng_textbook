@@ -98,21 +98,16 @@
       <section class="level2">
         <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
         <p>この節で学んだことを実践するためのプロンプト：</p>
-        <pre class="language-text"><code class="language-text">私はGitHubのプルリクエスト（PR）を作成しようとしています。
-以下の変更内容（git diffの出力）をもとに、
-レビュアーに分かりやすいPRのタイトルと本文（Markdown形式）を作成してください。
-本文には「変更の目的」「実施したこと」「特に見てほしい点」を含めてください。
-
-[git diffの内容を貼り付け]</code></pre>
-        <pre class="language-text"><code class="language-text">あなたは経験豊富なシニアエンジニアです。
-以下のコードをレビューし、
+        <pre class="language-text"><code class="language-text">`git diff main..HEAD` を実行して変更内容を把握してください。
+その結果をもとに、レビュアーに分かりやすいPRのタイトルと本文（Markdown形式）を作成してください。
+本文には「変更の目的」「実施したこと」「特に見てほしい点」を含めてください。</code></pre>
+        <pre class="language-text"><code class="language-text">@application/use_cases/complete_quest.py を読んで、
+経験豊富なシニアエンジニアの視点でコードレビューしてください。
 1. 良い点（褒めるポイント）
 2. 改善点（具体的な提案とともに）
 3. セキュリティ上の懸念点
 を挙げてください。
-口調は「後輩を指導する優しい先輩」のように、丁寧で建設的なトーンでお願いします。
-
-[コードを貼り付け]</code></pre>
+口調は「後輩を指導する優しい先輩」のように、丁寧で建設的なトーンでお願いします。</code></pre>
       </section>
     </section>
   

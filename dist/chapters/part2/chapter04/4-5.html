@@ -240,27 +240,36 @@
       </section>
       <section class="level2">
         <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
-        <pre class="language-text"><code class="language-text">以下のPythonプロジェクトに対して、GitHub Actionsの設定ファイルを生成してください。
-要件:
-- Python 3.12を使用
-- pytest でテストを実行
-- ruff でLintチェック
-- mypy で型チェック
-- カバレッジ80%以上を品質ゲートに設定</code></pre>
-        <pre class="language-text"><code class="language-text">CIの実行時間が長くなってきました。
-以下のテストスイートを分析し、
-「単体テスト」「結合テスト」「E2Eテスト」に分類してください。
-また、実行時間を短縮するための並列化戦略を提案してください。
+        <section class="level3">
+          <h3 id="cliエージェント型ci設定ファイルの生成">CLIエージェント型：CI設定ファイルの生成</h3>
+          <pre class="language-text"><code class="language-text">このプロジェクトの構成（pyproject.toml / requirements.txt 等）を読んで、
+QuestForge 用の GitHub Actions ワークフローを生成し、
+.github/workflows/ci.yml として保存してください。
 
-[テストファイル一覧を貼り付け]</code></pre>
-        <hr>
-        <p><strong>執筆メモ</strong>:</p>
-        <ul>
-          <li>執筆日時: 2026-02-01</li>
-          <li>構成: CI基礎→GitHub Actions実践→品質ゲート→実行戦略→カオスエンジニアリング（コラム）</li>
-          <li>接続: 3.4節（静的解析）との統合、4.1（テストピラミッド）の実行戦略への応用、5章（リファクタリング）への橋渡し</li>
-        </ul>
-        <hr>
+要件：
+- Python 3.12 を使用
+- pytest でテストを実行（カバレッジ80%以上を品質ゲートに設定）
+- ruff で Lint チェック
+- mypy で型チェック
+- プッシュ時とプルリクエスト時に自動実行</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="cliエージェント型テスト分類と並列化戦略">CLIエージェント型：テスト分類と並列化戦略</h3>
+          <pre class="language-text"><code class="language-text">tests/ ディレクトリ全体を走査して、以下を行ってください。
+
+1. 各テストファイルを「単体テスト・結合テスト・E2Eテスト」に自動分類し、
+   現在の実行時間の見積もりを算出する
+2. 分類に基づき、pytest-xdist を使った並列化戦略を提案する
+3. .github/workflows/ci.yml に並列化設定を追記する</code></pre>
+          <hr>
+          <p><strong>執筆メモ</strong>:</p>
+          <ul>
+            <li>執筆日時: 2026-02-01</li>
+            <li>構成: CI基礎→GitHub Actions実践→品質ゲート→実行戦略→カオスエンジニアリング（コラム）</li>
+            <li>接続: 3.4節（静的解析）との統合、4.1（テストピラミッド）の実行戦略への応用、5章（リファクタリング）への橋渡し</li>
+          </ul>
+          <hr>
+        </section>
       </section>
       <section class="level2">
         <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>

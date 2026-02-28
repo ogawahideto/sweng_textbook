@@ -251,20 +251,35 @@ logger<span class="token punctuation">.</span>info<span class="token punctuation
       </section>
       <section class="level2">
         <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
-        <p>この節で学んだことを実践するためのプロンプト：</p>
-        <pre class="language-text"><code class="language-text">以下のPythonコードでバグが報告されています。
-体系的なデバッグの手順に従って、原因の候補を優先度順に列挙し、
-それぞれの検証方法を提案してください。
+        <section class="level3">
+          <h3 id="ide統合型バグの体系的調査">IDE統合型：バグの体系的調査</h3>
+          <pre class="language-text"><code class="language-text">@application/use_cases/complete_quest.py を読んでください。
 
-[コードを貼り付け]
-[エラーメッセージまたは期待される動作と実際の動作の違い]</code></pre>
-        <pre class="language-text"><code class="language-text">以下の関数に対して、効果的なロギングを追加してください。
+以下のバグが報告されています：
+「同じクエストを2回完了操作すると、経験値が二重に加算される」
+
+体系的なデバッグ手順に従い、以下を行ってください：
+1. 原因の候補を優先度順に列挙
+2. 各仮説の検証方法（確認すべきコード箇所・テストケース）
+3. 最も可能性の高い修正案を提示
+
+修正の実装は私が確認してから行ってください。</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="cliエージェント型ロギングの整備">CLIエージェント型：ロギングの整備</h3>
+          <pre class="language-text"><code class="language-text">application/ と infrastructure/ のコードを読んで、
+デバッグと運用監視に役立つロギングを追加してください。
+
+方針：
+- Python 標準の logging モジュールを使用
 - ログレベルを適切に使い分けること
-- 構造化ログ（JSON形式）を使用すること
-- デバッグ時に原因特定を助ける情報を含めること
+  （DEBUG: 詳細な処理フロー、INFO: 重要なイベント、WARNING/ERROR: 異常系）
+- 構造化ログ（JSON形式）を採用すること
+- ユーザーIDやクエストIDなど、原因特定に役立つ情報を含めること
 
-[関数のコードを貼り付け]</code></pre>
-        <hr>
+変更後に既存のテストが通ることを確認してください。</code></pre>
+          <hr>
+        </section>
       </section>
       <section class="level2">
         <h2 id="まとめ">まとめ</h2>

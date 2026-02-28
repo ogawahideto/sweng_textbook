@@ -53,7 +53,113 @@
         </section>
       </section>
       <section class="level2">
-        <h2 id="3-アルケミストの報酬高品質な量産">3. アルケミストの報酬：高品質な量産</h2>
+        <h2 id="3-プロダクトラインの計測数字で成果を見る">3. プロダクトラインの計測：数字で成果を見る</h2>
+        <p>プロダクトライン化の効果は、いくつかの指標で定量的に把握できます。直感や経験則だけでなく、数字で語れることが、投資判断や設計改善の羅針盤になります。</p>
+        <section class="level3">
+          <h3 id="再利用率reuse-rate">再利用率（Reuse Rate）</h3>
+          <p>最も直接的な指標は「コア資産をどれだけ使い回せているか」です。</p>
+          <pre class="language-text"><code class="language-text">再利用率 = コア資産の行数の合計 / 全プロダクトの全行数の合計 × 100</code></pre>
+          <p>QuestForgeで3つの派生プロダクトを持つ場合：</p>
+          <table>
+            <thead>
+              <tr>
+                <th>プロダクト</th>
+                <th>コア資産（行）</th>
+                <th>固有コード（行）</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>騎士団版</td>
+                <td>3,000</td>
+                <td>800</td>
+              </tr>
+              <tr>
+                <td>魔法学院版</td>
+                <td>3,000</td>
+                <td>600</td>
+              </tr>
+              <tr>
+                <td>一般向け</td>
+                <td>3,000</td>
+                <td>400</td>
+              </tr>
+              <tr>
+                <td><strong>合計</strong></td>
+                <td><strong>9,000</strong></td>
+                <td><strong>1,800</strong></td>
+              </tr>
+            </tbody>
+          </table>
+          <p>再利用率 = 9,000 / (9,000 + 1,800) × 100 ≈ <strong>83%</strong></p>
+          <p>個別開発なら同じ機能を3回書き直すため、総行数は10,800行近くになります。プロダクトラインにより<strong>わずか1,800行の差分で3製品を差別化</strong>できたことになります。</p>
+        </section>
+        <section class="level3">
+          <h3 id="可変性複雑度variability-complexity">可変性複雑度（Variability Complexity）</h3>
+          <p>バリエーションポイントが増えるほど、テストすべき組み合わせ数が増加します。</p>
+          <pre class="language-text"><code class="language-text">最大組み合わせ数 = 各バリエーションポイントの選択肢数の積</code></pre>
+          <table>
+            <thead>
+              <tr>
+                <th>バリエーションポイント</th>
+                <th>選択肢</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>報酬システム</td>
+                <td>3種類（金貨・勲章・単位）</td>
+              </tr>
+              <tr>
+                <td>協力プレイ</td>
+                <td>2種類（なし・あり）</td>
+              </tr>
+              <tr>
+                <td>レポート機能</td>
+                <td>2種類（なし・あり）</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>最大組み合わせ: 3 × 2 × 2 = <strong>12通り</strong></p>
+          <p>「12通りすべてのビルドが正しく動作するか」を自動テストで保証できると、プロダクトラインの品質を管理しやすくなります。この数字を「許容できる範囲に収める」ことが、フィーチャーモデル設計の実践的な指針になります。</p>
+        </section>
+        <section class="level3">
+          <h3 id="roi投資対効果の試算">ROI（投資対効果）の試算</h3>
+          <p>プロダクトライン化には初期コストがかかりますが、製品数が増えるほどメリットが拡大します。</p>
+          <pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">calculate_spl_roi</span><span class="token punctuation">(</span>
+    num_products<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">,</span>
+    core_dev_effort<span class="token punctuation">:</span> <span class="token builtin">float</span><span class="token punctuation">,</span>     <span class="token comment"># コア資産の開発工数（人月）</span>
+    variant_dev_effort<span class="token punctuation">:</span> <span class="token builtin">float</span><span class="token punctuation">,</span>  <span class="token comment"># 各バリエーションの開発工数（人月）</span>
+    solo_dev_effort<span class="token punctuation">:</span> <span class="token builtin">float</span><span class="token punctuation">,</span>     <span class="token comment"># 個別開発した場合の1製品あたりの工数（人月）</span>
+<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">dict</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""プロダクトライン化のROIを試算する"""</span>
+    spl_total <span class="token operator">=</span> core_dev_effort <span class="token operator">+</span> <span class="token punctuation">(</span>variant_dev_effort <span class="token operator">*</span> num_products<span class="token punctuation">)</span>
+    solo_total <span class="token operator">=</span> solo_dev_effort <span class="token operator">*</span> num_products
+    savings <span class="token operator">=</span> solo_total <span class="token operator">-</span> spl_total
+    roi_percent <span class="token operator">=</span> <span class="token punctuation">(</span>savings <span class="token operator">/</span> core_dev_effort<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100</span>
+
+    <span class="token keyword">return</span> <span class="token punctuation">{</span>
+        <span class="token string">"spl_total_months"</span><span class="token punctuation">:</span> spl_total<span class="token punctuation">,</span>
+        <span class="token string">"solo_total_months"</span><span class="token punctuation">:</span> solo_total<span class="token punctuation">,</span>
+        <span class="token string">"savings_months"</span><span class="token punctuation">:</span> savings<span class="token punctuation">,</span>
+        <span class="token string">"roi_percent"</span><span class="token punctuation">:</span> roi_percent<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+
+<span class="token comment"># QuestForgeの例</span>
+result <span class="token operator">=</span> calculate_spl_roi<span class="token punctuation">(</span>
+    num_products<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">,</span>
+    core_dev_effort<span class="token operator">=</span><span class="token number">30</span><span class="token punctuation">,</span>    <span class="token comment"># コア構築に30人月</span>
+    variant_dev_effort<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">,</span>  <span class="token comment"># 各バリエーションに5人月</span>
+    solo_dev_effort<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">,</span>    <span class="token comment"># 個別開発なら1製品20人月</span>
+<span class="token punctuation">)</span>
+<span class="token comment"># → spl_total_months: 45  solo_total_months: 60</span>
+<span class="token comment"># → savings_months: 15（25%削減）  roi_percent: 50.0%</span></code></pre>
+          <p>製品数が4つ、5つと増えるにつれて、節約効果はさらに加速します。これがプロダクトラインを「戦略的投資」と呼ぶ理由であり、「コアを綺麗に保つ」というリファクタリングの精神が長期的な価値を生み出す仕組みです。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="4-アルケミストの報酬高品質な量産">4. アルケミストの報酬：高品質な量産</h2>
         <p>プロダクトラインを構築する最大のメリットは、<strong>「一つの修正が、すべての派生製品に恩恵をもたらす」</strong>ことです。</p>
         <p>コア資産のバグを直せば、それを利用する騎士団版も、学院版も、一般版も、同時に浄化されます。また、新しい魔法（機能）を追加する際も、コア資産に実装すれば、すべてのプロダクトで即座に利用可能になります。</p>
         <p>これは、リファクタリングが「コードを綺麗にする」という目的を超えて、<strong>「ビジネスの機動力を極限まで高める」</strong>という戦略的な武器に進化した姿なのです。</p>
@@ -62,6 +168,12 @@
       <section class="level2">
         <h2 id="まとめ彫刻から金型へ">まとめ：彫刻から金型へ</h2>
         <p>リファクタリングの初期段階は、一つの石を丁寧に磨き上げる「彫刻」のような作業です。しかし、経験を積んだアルケミストは、その彫刻を「美しい金型（プロダクトライン）」へと昇華させます。</p>
+        <ol>
+          <li><strong>コア資産と可変性の分離</strong>: どのプロダクトでも変わらない共通部分と、切り替える部分を明確に分ける。</li>
+          <li><strong>漸進的なリファクタリング</strong>: 共通項の括り出し → 変化点のカプセル化 → フィーチャーモデルの構築、という3ステップで育てる。</li>
+          <li><strong>数字で効果を測る</strong>: 再利用率・可変性複雑度・ROIという指標で、プロダクトライン化の成果を定量的に把握する。</li>
+          <li><strong>一修正が全製品に波及</strong>: コア資産を磨くことで、すべての派生製品が同時に恩恵を受ける構造を作る。</li>
+        </ol>
         <p>「一つを作って終わり」ではなく、「共通の魂を持つ種族（プロダクトファミリー）」を育てる視点を持つこと。それが、複雑な現代の魔法世界を生き抜くための、高度な設計思想なのです。</p>
         <hr>
       </section>
@@ -82,10 +194,31 @@
       </section>
       <section class="level2">
         <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
-        <pre class="language-prompt"><code class="language-prompt">現在、似たような機能を持つ3つのプロジェクト（A, B, C）を並行してメンテナンスしています。
-これらのコードを比較し、共通化できる「コア資産」と、各プロジェクト固有の「バリエーション点」を整理してください。
-また、将来的にソフトウェア・プロダクトラインとして統合するための、ディレクトリ構造とインターフェース設計の案を提示してください。</code></pre>
-        <hr>
+        <section class="level3">
+          <h3 id="ide統合型コア資産の抽出分析">IDE統合型：コア資産の抽出分析</h3>
+          <pre class="language-text"><code class="language-text">@domain/quest.py と @domain/hero.py を読んで、
+現在の実装から「どの部分がプロダクトライン化できるコア資産か」を分析してください。
+共通化できるロジックと、バリエーションポイントになりうる箇所を具体的に列挙し、
+将来の派生プロダクトに向けたディレクトリ構造とインターフェース設計の案を提示してください。</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="cliエージェント型再利用率の計測">CLIエージェント型：再利用率の計測</h3>
+          <pre class="language-text"><code class="language-text">sample-code/questforge/ のコードベース全体を走査して、
+ソフトウェアプロダクトライン化の観点から以下を分析してください：
+
+1. 再利用率の推定
+   - どのモジュール・クラスが「コア資産」候補か（変更頻度が低く、汎用性が高いもの）
+   - どの部分が「バリエーションポイント」候補か（プロダクトごとに変わりそうな箇所）
+
+2. 可変性複雑度の評価
+   - 現状でif/switchによる分岐が集中している箇所を抽出
+   - Strategyパターンや依存性注入で置き換えられる候補を提示
+
+3. 段階的な移行計画
+   - 最初に取り組むべき「最もROIが高い共通化」を1つ提案し、
+     具体的なリファクタリング手順をコードとともに示してください</code></pre>
+          <hr>
+        </section>
       </section>
       <section class="level2">
         <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
