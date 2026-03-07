@@ -16,6 +16,16 @@
 
 ---
 
+## 本章の構成
+
+- **4.1 守護魔法の体系**：テストレベル、ピラミッド、V字モデル。
+- **4.2 鑑定術の技法**：テスト設計の4つの流派（カバレッジ、同値分割、シナリオ、探索的）。
+- **4.3 赤から緑へ**：テスト駆動開発（TDD）のリズムと設計の駆動。
+- **4.4 AIが放つ刺客**：テストの自動生成、プロパティベース、ミューテーションテスト。
+- **4.5 鉄壁の防衛線**：テスト自動化とCIパイプラインの構築。
+- **4.6 術式の不調を探る**：体系的デバッグ手法と推理の作法。
+- **4.7 【外伝】真理の鏡**：形式手法による「絶対に壊れない」証明の神秘。
+
 ---
 
 ## 読了後のあなた
@@ -35,11 +45,9 @@
 
 ## さらに学ぶためのリソース（章全体）
 
-- 📚 **書籍**: Kent Beck『[テスト駆動開発](https://www.ohmsha.co.jp/book/9784274217883/)』（TDDの原典。和田卓人氏による「訳者解説」も必読）
-- 📚 **書籍**: Gerard Meszaros "[xUnit Test Patterns: Refactoring Test Code](https://www.informit.com/store/xunit-test-patterns-refactoring-test-code-9780131495050)"（テストコードの設計パターンと「匂い」の集大成）
-- 📚 **書籍**: Lisa Crispin, Janet Gregory "[Agile Testing: A Practical Guide for Testers and Agile Teams](https://www.pearson.com/en-us/subject-catalog/p/agile-testing-a-practical-guide-for-testers-and-agile-teams/P200000000167/9780321534460)"（アジャイル開発におけるテスト戦略の決定版）
-- 📚 **書籍**: 秋山浩一『[ソフトウェアテスト技法ドリル 第2版](https://www.juse-p.co.jp/products/detail.php?product_id=155)』（テスト設計の具体的な技法を演習形式で学べる実践書）
-- 📚 **書籍**: 小川秀人、佐藤陽春、森拓郎、加賀洋渡『[土台からしっかり学ぶ ソフトウェアテストのセオリー](https://www.ric.co.jp/book/contents/pdfs/1314_introduction.pdf)』（テストの全体像を体系的に整理した、現代のエンジニアのための入門書）
+この章のテーマである「テスト」の全体像を、日本の開発現場の文脈で体系的に学べる一冊です。
+
+- 📚 **書籍**: 小川秀人、佐藤陽春、森拓郎、加賀洋渡『[土台からしっかり学ぶ ソフトウェアテストのセオリー](https://www.ric.co.jp/book/contents/pdfs/1314_introduction.pdf)』（テストの全体像を体系的に整理し、初心者から中級者まで「なぜ、何を、どうテストするか」を明確にしてくれる入門書です）
 
 ### 📜 賢者伝説（学術論文）
 
