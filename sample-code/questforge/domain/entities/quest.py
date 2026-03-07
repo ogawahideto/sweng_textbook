@@ -38,50 +38,25 @@ class DifficultyLevel(Enum):
         self.base_exp = base_exp
 
 
-class QuestStatus(Enum):
+from ..exceptions import InvalidQuestStateError
+
+
+class QuestStatus(str, Enum):
     """クエストステータス
 
     クエストの現在の状態を表します。
     """
-    AVAILABLE = "available"  # 利用可能（まだ着手していない）
-    IN_PROGRESS = "in_progress"  # 進行中
-    COMPLETED = "completed"  # 完了
-    FAILED = "failed"  # 失敗（期限切れなど）
-    CANCELLED = "cancelled"  # キャンセル
+    AVAILABLE = "AVAILABLE"  # 利用可能（まだ着手していない）
+    IN_PROGRESS = "IN_PROGRESS"  # 進行中
+    COMPLETED = "COMPLETED"  # 完了
+    FAILED = "FAILED"  # 失敗（期限切れなど）
+    CANCELLED = "CANCELLED"  # キャンセル
 
 
 @dataclass
 class Quest:
     """クエスト（タスク）エンティティ
-
-    ユーザーが達成すべきタスクを表現します。
-    RPGゲームの「クエスト」に相当し、完了すると経験値を獲得できます。
-
-    Attributes:
-        id: クエストの一意識別子
-        title: タイトル（例: "プロローグを書く"）
-        description: 詳細説明
-        category: カテゴリ（デイリー、エピックなど）
-        difficulty: 難易度
-        experience_points: 獲得できる経験値
-        status: 現在のステータス
-        hero_id: 担当するヒーローのID
-        due_date: 期限（オプション）
-        created_at: 作成日時
-        completed_at: 完了日時（完了していない場合はNone）
-
-    Example:
-        >>> quest = Quest(
-        ...     title="第1章を書く",
-        ...     description="要求工学の章を執筆する",
-        ...     category=QuestCategory.EPIC,
-        ...     difficulty=DifficultyLevel.HARD,
-        ...     hero_id=UUID("...")
-        ... )
-        >>> quest.start()
-        >>> quest.complete()
-        >>> print(f"獲得経験値: {quest.experience_points}")
-        獲得経験値: 100
+    # ... (省略)
     """
 
     # 必須フィールド
@@ -114,10 +89,10 @@ class Quest:
         ステータスをIN_PROGRESSに変更します。
 
         Raises:
-            ValueError: すでに開始済みまたは完了済みの場合
+            InvalidQuestStateError: すでに開始済みまたは完了済みの場合
         """
         if self.status != QuestStatus.AVAILABLE:
-            raise ValueError(
+            raise InvalidQuestStateError(
                 f"Cannot start quest in status {self.status}. "
                 "Quest must be AVAILABLE."
             )
@@ -132,10 +107,10 @@ class Quest:
             獲得した経験値
 
         Raises:
-            ValueError: 進行中でない場合
+            InvalidQuestStateError: 進行中でない場合
         """
         if self.status != QuestStatus.IN_PROGRESS:
-            raise ValueError(
+            raise InvalidQuestStateError(
                 f"Cannot complete quest in status {self.status}. "
                 "Quest must be IN_PROGRESS."
             )
@@ -155,7 +130,7 @@ class Quest:
         ステータスをCANCELLEDに変更します。
         """
         if self.status == QuestStatus.COMPLETED:
-            raise ValueError("Cannot cancel completed quest.")
+            raise InvalidQuestStateError("Cannot cancel completed quest.")
 
         self.status = QuestStatus.CANCELLED
 
@@ -165,7 +140,7 @@ class Quest:
         期限切れなどの場合に呼び出されます。
         """
         if self.status == QuestStatus.COMPLETED:
-            raise ValueError("Cannot fail completed quest.")
+            raise InvalidQuestStateError("Cannot fail completed quest.")
 
         self.status = QuestStatus.FAILED
 

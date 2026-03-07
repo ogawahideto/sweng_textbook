@@ -7,6 +7,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime, date
 from uuid import UUID, uuid4
+from ..exceptions import DomainError
 
 
 @dataclass
@@ -71,7 +72,7 @@ class Hero:
             レベルアップ結果
 
         Raises:
-            ValueError: 経験値がマイナスの場合
+            DomainError: 経験値がマイナスの場合
 
         Example:
             >>> hero = Hero(name="Bob", email="bob@example.com")
@@ -80,7 +81,7 @@ class Hero:
             True
         """
         if points < 0:
-            raise ValueError("Experience points must be non-negative")
+            raise DomainError("Experience points must be non-negative")
 
         previous_level = self.level
         self.total_experience += points
