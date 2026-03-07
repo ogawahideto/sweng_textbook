@@ -200,7 +200,7 @@
     },
     {
       "url": "chapters/part4/chapter07/chapter07.html",
-      "name": "第7章 アジャイルという名の冒険パーティ——開発プロセス"
+      "name": "第7章 冒険者パーティのチーミング——開発プロセスとチーム設計"
     },
     {
       "url": "chapters/part4/chapter07/7-1.html",
@@ -219,6 +219,14 @@
       "name": "7.4 【外伝】冒険者のギルド——知の共有とOSS"
     },
     {
+      "url": "chapters/part4/chapter07/7-5.html",
+      "name": "7.5 冒険パーティを率いる——プロジェクト管理の実践"
+    },
+    {
+      "url": "chapters/part4/chapter07/7-6.html",
+      "name": "7.6 パーティの形が魔法を決める——チーム設計とコンウェイの法則"
+    },
+    {
       "url": "chapters/part4/chapter08/chapter08.html",
       "name": "第8章 エンジニアの倫理と未来への責任——終わりなき冒険の始まり"
     },
@@ -232,7 +240,11 @@
     },
     {
       "url": "chapters/part4/chapter08/8-3.html",
-      "name": "8.3 終わりのない旅——学びのサイクルとギルドの力"
+      "name": "8.3 王国の掟——AIガバナンス・機能安全・セキュリティ標準と法規制"
+    },
+    {
+      "url": "chapters/part4/chapter08/8-4.html",
+      "name": "8.4 終わりのない旅——学びのサイクルとギルドの力"
     },
     {
       "url": "chapters/epilogue/epilogue.html",
