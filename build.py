@@ -13,7 +13,7 @@ def run_command(command, description):
         return False
 
 def setup_junctions():
-    print("--- Setting up directory junctions for asset resolution ---")
+    print("--- Setting up directory junctions/symlinks for asset resolution ---")
     base_dirs = [
         'chapters',
         'chapters/part1',
@@ -21,16 +21,20 @@ def setup_junctions():
         'chapters/part3',
         'chapters/part4',
         'chapters/epilogue',
-        'chapters/prologue'
+        'chapters/prologue',
+        'chapters/appendix',
     ]
-    
+
+    abs_assets = os.path.abspath('assets')
+
     for d in base_dirs:
         target = os.path.join(d, 'assets')
         if not os.path.exists(target):
-            # mklink /J <link> <target>
-            # Use absolute path to ensure junction works regardless of CWD
-            abs_assets = os.path.abspath('assets')
-            run_command(f'cmd /c "mklink /J {target} {abs_assets}"', f"Creating junction for {target}")
+            if sys.platform == 'win32':
+                run_command(f'cmd /c "mklink /J {target} {abs_assets}"', f"Creating junction for {target}")
+            else:
+                os.symlink(abs_assets, target)
+                print(f"Created symlink: {target} -> {abs_assets}")
 
 def main():
     # 1. ジャンクション作成
