@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 630 310" width="630" height="310">
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="7" refX="7" refY="3.5" orient="auto">
+      <polygon points="0 0, 8 3.5, 0 7" fill="#666"/>
+    </marker>
+  </defs>
+  <rect width="630" height="310" fill="#FAFAFA" rx="8"/>
+
+  <!-- システム境界 -->
+  <rect x="120" y="15" width="490" height="278" fill="#F0F4FF" stroke="#888" stroke-width="2" stroke-dasharray="8,4" rx="6"/>
+  <text x="365" y="40" text-anchor="middle" font-family="'Noto Sans JP','Hiragino Sans','Meiryo',sans-serif" font-size="14" font-weight="bold" fill="#333">QuestForge</text>
+  <text x="300" y="302" text-anchor="middle" font-family="'Noto Sans JP','Hiragino Sans','Meiryo',sans-serif" font-size="10" fill="#888">システム境界</text>
+
+  <!-- ユースケース楕円 -->
+  <ellipse cx="350" cy="80" rx="110" ry="25" fill="#E3F2FD" stroke="#4A90D9" stroke-width="2"/>
+  <text x="350" y="85" text-anchor="middle" font-family="'Noto Sans JP','Hiragino Sans','Meiryo',sans-serif" font-size="12" fill="#333">クエストを作成する</text>
+
+  <ellipse cx="350" cy="145" rx="110" ry="25" fill="#E3F2FD" stroke="#4A90D9" stroke-width="2"/>
+  <text x="350" y="150" text-anchor="middle" font-family="'Noto Sans JP','Hiragino Sans','Meiryo',sans-serif" font-size="12" fill="#333">クエストを完了する</text>
+
+  <ellipse cx="350" cy="210" rx="110" ry="25" fill="#E3F2FD" stroke="#4A90D9" stroke-width="2"/>
+  <text x="350" y="215" text-anchor="middle" font-family="'Noto Sans JP','Hiragino Sans','Meiryo',sans-serif" font-size="12" fill="#333">経験値を獲得する</text>
+
+  <ellipse cx="350" cy="270" rx="110" ry="25" fill="#E3F2FD" stroke="#4A90D9" stroke-width="2"/>
+  <text x="350" y="275" text-anchor="middle" font-family="'Noto Sans JP','Hiragino Sans','Meiryo',sans-serif" font-size="12" fill="#333">レベルアップする</text>
+
+  <!-- アクター：勇者 -->
+  <circle cx="58" cy="126" r="13" fill="none" stroke="#4A90D9" stroke-width="2"/>
+  <line x1="58" y1="139" x2="58" y2="172" stroke="#4A90D9" stroke-width="2"/>
+  <line x1="36" y1="153" x2="80" y2="153" stroke="#4A90D9" stroke-width="2"/>
+  <line x1="58" y1="172" x2="40" y2="196" stroke="#4A90D9" stroke-width="2"/>
+  <line x1="58" y1="172" x2="76" y2="196" stroke="#4A90D9" stroke-width="2"/>
+  <text x="58" y="214" text-anchor="middle" font-family="'Noto Sans JP','Hiragino Sans','Meiryo',sans-serif" font-size="13" fill="#4A90D9" font-weight="bold">勇者</text>
+  <text x="58" y="230" text-anchor="middle" font-family="'Noto Sans JP','Hiragino Sans','Meiryo',sans-serif" font-size="10" fill="#888">(Actor)</text>
+
+  <!-- 接続線（アクター→ユースケース） -->
+  <line x1="84" y1="138" x2="240" y2="83" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="84" y1="153" x2="240" y2="148" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="84" y1="168" x2="240" y2="210" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="84" y1="178" x2="240" y2="270" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+</svg>
