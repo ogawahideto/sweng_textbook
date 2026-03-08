@@ -52,6 +52,7 @@ module.exports = {
     'chapters/part3/chapter06/6-5.md',
     'chapters/part3/chapter06/6-6.md',
     'chapters/part3/chapter06/6-7.md',
+    'chapters/part3/chapter06/6-8.md',
     'chapters/part4/chapter07/chapter07.md',
     'chapters/part4/chapter07/7-1.md',
     'chapters/part4/chapter07/7-2.md',

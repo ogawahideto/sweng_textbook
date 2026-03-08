@@ -196,7 +196,11 @@
     },
     {
       "url": "chapters/part3/chapter06/6-7.html",
-      "name": "6.7 【外伝】浮遊する魔導城——サーバーレスとクラウドの経済学"
+      "name": "6.7 クラウドネイティブの三本柱——コンテナ・マイクロサービス・API設計"
+    },
+    {
+      "url": "chapters/part3/chapter06/6-8.html",
+      "name": "6.8 【外伝】浮遊する魔導城——サーバーレスとクラウドの経済学"
     },
     {
       "url": "chapters/part4/chapter07/chapter07.html",
