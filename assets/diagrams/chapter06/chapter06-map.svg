@@ -48,7 +48,7 @@
   <g transform="translate(220, 270)">
     <circle r="15" class="node-circle" />
     <text y="5" class="text-num">6.7</text>
-    <text x="0" y="30" class="text-title" text-anchor="middle">クラウドネイティブ三本柱</text>
+    <text x="0" y="30" class="text-title" text-anchor="middle">クラウドネイティブ・スタック</text>
   </g>
   <g transform="translate(90, 310)">
     <circle r="15" class="node-circle" style="stroke: #D32F2F;" />
