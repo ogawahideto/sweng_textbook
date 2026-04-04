@@ -21,19 +21,19 @@
     <main>
     <section class="level1">
       <h1 id="33-術式の器関数クラスモジュール">3.3 術式の器——関数・クラス・モジュール</h1>
-      <section class="level2">
-        <h2 id="導入-器なき術式は霧散する">導入: 器なき術式は霧散する</h2>
-        <p>前節までに、あなたはアルゴリズムという「元素」と、制御構造という「術式の構文」を学びました。しかし、数十行の処理を直接書き連ねていくだけでは、コードはあっという間に読み解けない長文呪文になってしまいます。</p>
-        <p>ここで必要になるのが、処理を適切な単位に分けて名前をつけ、再利用できるようにする<strong>「器（Container）」</strong>です。関数、クラス、モジュール——これらの器を使いこなすことで、術式は整理され、他の魔術師（チームメンバー）と共有でき、未来の自分にとっても読みやすいものになります。</p>
-        <p>厳密に言えば、関数・クラス・モジュールはそれぞれ異なる概念です。特にクラスは「オブジェクト指向」、関数を中心に据える発想は「関数型」というように、プログラミングパラダイムと深く結びついています。その違いは3.6節で詳しく扱います。本節ではパラダイムの違いには立ち入らず、これらに共通する<strong>「処理をまとめて名前をつけ、適切な粒度で構造化する」</strong>という考え方に焦点を当てます。</p>
-        <figure>
-          <img src="../../assets/diagrams/chapter03/3-3-encapsulation-pot.svg" alt="術式の器">
-          <figcaption aria-hidden="true">術式の器</figcaption>
-        </figure>
-        <hr>
-      </section>
+      <p>前節までに、あなたはアルゴリズムという「元素」と、制御構造という「術式の構文」を学びました。しかし、数十行の処理を直接書き連ねていくだけでは、コードはあっという間に読み解けない長文呪文になってしまいます。</p>
+      <p>ここで必要になるのが、処理を適切な単位に分けて名前をつけ、再利用できるようにする<strong>「器（Container）」</strong>です。関数、クラス、モジュール——これらの器を使いこなすことで、術式は整理され、他の魔術師（チームメンバー）と共有でき、未来の自分にとっても読みやすいものになります。</p>
+      <p>厳密に言えば、関数・クラス・モジュールはそれぞれ異なる概念です。特にクラスは「オブジェクト指向」、関数を中心に据える発想は「関数型」というように、プログラミングパラダイムと深く結びついています。その違いは3.6節で詳しく扱います。本節ではパラダイムの違いには立ち入らず、これらに共通する<strong>「処理をまとめて名前をつけ、適切な粒度で構造化する」</strong>という考え方に焦点を当てます。</p>
+      <p>次の図は、関数・クラス・モジュールという三層の「器」が処理をどのように包み込んでいるかを示しています。</p>
+      <figure>
+        <img src="../../assets/diagrams/chapter03/3-3-encapsulation-pot.svg" alt="術式の器">
+        <figcaption aria-hidden="true">術式の器</figcaption>
+      </figure>
+      <p>ここで表現されているのは、小さな器（関数）が中くらいの器（クラス）に収まり、さらに大きな器（モジュール）が全体を包む入れ子構造です。各層では異なる単位の「関心の分離」が行われており、最も内側の関数が「一つの仕事」に集中することで、外側の器も自然と整理されます。この階層的な包含関係がコードの可読性と再利用性を支える骨格となります。</p>
+      <hr>
       <section class="level2">
         <h2 id="関数function-最小の器">関数（Function）: 最小の器</h2>
+        <p>最も小さな器である関数から出発し、クラス、モジュールという順に器を大きくしていきましょう。</p>
         <section class="level3">
           <h3 id="一つの関数--一つの仕事">一つの関数 = 一つの仕事</h3>
           <p>関数は、処理をまとめる最も基本的な器です。良い関数は「一つの仕事」だけを担います。</p>
@@ -48,7 +48,7 @@
         </section>
         <section class="level3">
           <h3 id="引数と戻り値-契約の明示">引数と戻り値: 契約の明示</h3>
-          <p>関数の入口（引数）と出口（戻り値）を明確にすることは、関数の「契約」を読み手に示すことです。</p>
+          <p>「一つの仕事」が定まったら、次はその仕事の「入口」と「出口」をどう設計するかが問われます。関数の入口（引数）と出口（戻り値）を明確にすることは、関数の「契約」を読み手に示すことです。</p>
           <pre class="language-python"><code class="language-python"><span class="token comment"># 契約が明確な関数</span>
 <span class="token keyword">def</span> <span class="token function">find_available_quests</span><span class="token punctuation">(</span>
     hero_level<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">,</span>
@@ -65,7 +65,7 @@
         </section>
         <section class="level3">
           <h3 id="純粋関数と副作用">純粋関数と副作用</h3>
-          <p>関数には2つの種類があります。</p>
+          <p>契約が明確になったら、関数の「性質」という観点からもう一段深く捉えてみましょう。関数には2つの種類があります。</p>
           <table>
             <thead>
               <tr>
@@ -100,7 +100,7 @@
         </section>
         <section class="level3">
           <h3 id="スコープ-名前が届く範囲">スコープ: 名前が届く範囲</h3>
-          <p>変数や関数には「見える範囲（スコープ）」があります。</p>
+          <p>純粋関数と副作用の分離が意識できたら、もう一つ関数を使いこなすうえで欠かせない概念——スコープを押さえておきましょう。変数や関数には「見える範囲（スコープ）」があります。</p>
           <pre class="language-python"><code class="language-python">total_xp <span class="token operator">=</span> <span class="token number">0</span>  <span class="token comment"># モジュールスコープ（広い）</span>
 
 <span class="token keyword">def</span> <span class="token function">add_quest_reward</span><span class="token punctuation">(</span>quest<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -116,7 +116,7 @@
         <h2 id="クラスclass-データと振る舞いの器">クラス（Class）: データと振る舞いの器</h2>
         <section class="level3">
           <h3 id="フィールドとメソッド">フィールドとメソッド</h3>
-          <p>関数が「処理」の器なら、クラスは「データとそれに関連する処理」をひとまとめにする器です。</p>
+          <p>関数で処理を整理できるようになったら、今度はデータと処理をひとまとめにするより大きな器——クラス——に目を向けましょう。関数が「処理」の器なら、クラスは「データとそれに関連する処理」をひとまとめにする器です。</p>
           <pre class="language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Hero</span><span class="token punctuation">:</span>
     <span class="token triple-quoted-string string">"""冒険者を表すクラス"""</span>
 
@@ -140,7 +140,7 @@
         </section>
         <section class="level3">
           <h3 id="コンストラクタ-器の初期化">コンストラクタ: 器の初期化</h3>
-          <p><code>__init__</code> メソッド（コンストラクタ）は、オブジェクトが生まれる瞬間に呼ばれる特別なメソッドです。ここで、オブジェクトが正しい状態で生まれることを保証します。</p>
+          <p>フィールドとメソッドの役割を把握したら、次はオブジェクトが「どのように生まれるか」を定める初期化の仕組みを見ていきましょう。<code>__init__</code> メソッド（コンストラクタ）は、オブジェクトが生まれる瞬間に呼ばれる特別なメソッドです。ここで、オブジェクトが正しい状態で生まれることを保証します。</p>
           <pre class="language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Quest</span><span class="token punctuation">:</span>
     <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> difficulty<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> base_xp<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token comment"># 生まれた瞬間から正しい状態を保証</span>
@@ -156,7 +156,7 @@
         </section>
         <section class="level3">
           <h3 id="言語による表現の違い">言語による表現の違い</h3>
-          <p>「データと振る舞いをまとめる」という概念は、言語によって異なる姿をとります。</p>
+          <p>Pythonでのクラスの書き方が掴めたところで、この「データと振る舞いをまとめる」という概念が他の言語でどのように表現されるかも知っておくと、多言語の設計を読む力が広がります。言語によって異なる姿をとります。</p>
           <table>
             <thead>
               <tr>
@@ -194,6 +194,7 @@
       </section>
       <section class="level2">
         <h2 id="モジュール--パッケージ-大きな器">モジュール / パッケージ: 大きな器</h2>
+        <p>関数とクラスを整理できたら、さらに大きな視点——複数のクラスや関数をどのファイルにまとめ、外部にどこまで公開するかという「モジュール」の設計に目を向けましょう。</p>
         <section class="level3">
           <h3 id="公開範囲の制御">公開範囲の制御</h3>
           <p>モジュールは、関連するクラスや関数をまとめ、外部に<strong>何を見せるか</strong>を制御する器です。</p>
@@ -216,14 +217,14 @@
         </section>
         <section class="level3">
           <h3 id="名前空間とインポート">名前空間とインポート</h3>
-          <p>モジュールは「名前空間」としても機能します。同じ名前の要素が衝突することを防ぎます。</p>
+          <p>公開範囲の制御に加え、モジュールには名前の衝突を防ぐというもう一つの重要な役割があります。モジュールは「名前空間」としても機能します。同じ名前の要素が衝突することを防ぎます。</p>
           <pre class="language-python"><code class="language-python"><span class="token comment"># それぞれのモジュールに Item クラスがあっても衝突しない</span>
 <span class="token keyword">from</span> questforge<span class="token punctuation">.</span>domain<span class="token punctuation">.</span>items <span class="token keyword">import</span> Item <span class="token keyword">as</span> DomainItem
 <span class="token keyword">from</span> questforge<span class="token punctuation">.</span>presentation<span class="token punctuation">.</span>dto <span class="token keyword">import</span> Item <span class="token keyword">as</span> ItemDTO</code></pre>
         </section>
         <section class="level3">
           <h3 id="パッケージ構成の例">パッケージ構成の例</h3>
-          <p>QuestForgeのパッケージ構成を見てみましょう。</p>
+          <p>名前空間の仕組みが分かったところで、QuestForgeを例にモジュールが実際のプロジェクトでどのように組み合わさるかを見てみましょう。</p>
           <pre class="language-text"><code class="language-text">questforge/
 ├── domain/           # ドメイン層（ビジネスロジック）
 │   ├── hero.py       #   Hero クラス
@@ -338,13 +339,9 @@
       </section>
       <section class="level2">
         <h2 id="まとめ">まとめ</h2>
-        <ol>
-          <li><strong>関数は最小の器</strong>: 一つの関数に一つの仕事を割り当て、引数と戻り値で契約を明示する。</li>
-          <li><strong>純粋関数と副作用を意識する</strong>: 計算と状態変更を分離すると、テストしやすく見通しの良いコードになる。</li>
-          <li><strong>クラスはデータと振る舞いの器</strong>: 第2章で学んだ設計思想を、実装として具現化する。</li>
-          <li><strong>モジュール/パッケージで関心を分離</strong>: 公開範囲を制御し、大規模なコードベースでも秩序を保つ。</li>
-          <li><strong>器の階層を意識する</strong>: 文→関数→クラス→モジュール→パッケージの各レベルで、適切な粒度の関心分離を行う。</li>
-        </ol>
+        <p>術式は器によって初めて命を持ちます。関数は「一つの仕事を一つに」という契約を守ることで再利用可能になり、純粋関数と副作用のある操作を分離することでテストが格段に楽になります。クラスは第2章で学んだ設計思想を実装として具現化する場所であり、データと振る舞いを一体として表現します。</p>
+        <p>モジュールとパッケージはさらに大きな器として、関心の分離と公開範囲の制御を担います。文→関数→クラス→モジュール→パッケージという階層のそれぞれで適切な粒度の分離が行われていれば、数千行のコードベースでも読み解くことができます。AIが提案するコードもこの階層を意識しているかどうかを確認することが、採用・修正の判断基準になります。</p>
+        <p>次の3.4節では、こうして書かれたコードが本当に「良いコード」かどうかを客観的に測定する技術——コードメトリクスと静的解析について学びます。美しさを直感だけで語るのではなく、数値と道具を使って審美眼を磨く方法を探っていきましょう。</p>
         <hr>
       </section>
       <section class="level2">
@@ -398,8 +395,8 @@ QuestForgeプロジェクトのクリーンアーキテクチャ（domain / appl
       <section class="level2">
         <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
         <ul>
-          <li>📚 <strong>書籍</strong>: Robert C. Martin『<a href="https://www.kadokawa.co.jp/product/301708000624/">Clean Code アジャイルソフトウェア達人の技</a>』（「関数は小さく」「引数は少なく」など、実装の細部を美しく保つためのバイブル）</li>
-          <li>📚 <strong>書籍</strong>: Sandi Metz『<a href="https://www.gihyo.co.jp/book/2016/978-4-7741-8038-0">オブジェクト指向設計実践ガイド ―Rubyでわかる 進化し続ける柔軟なアプリケーションの作り方</a>』（クラスの責任をどう分けるか、言語を問わず役立つ設計の知恵）</li>
+          <li>📚 <strong>書籍</strong>: Steve McConnell『<a href="https://shop.nikkeibp.co.jp/asbp/shop/course/codecomplete/">Code Complete 第2版 ―完全なプログラミングを目指して</a>』（実装技術の百科事典。関数やクラスの設計について、膨大な知見が詰まっています）</li>
+          <li>📚 <strong>書籍</strong>: Sandi Metz『<a href="https://www.gihyo.co.jp/book/2016/978-4-7741-8036-6">オブジェクト指向設計実践ガイド ―Rubyでわかる 進化し続ける柔軟なアプリケーションの作り方</a>』（クラスの責任をどう分けるか、言語を問わず役立つ設計の知恵）</li>
           <li>🌐 <strong>Web</strong>: Python 公式チュートリアル "<a href="https://docs.python.org/ja/3/tutorial/classes.html">クラス</a>"（Pythonのクラス機構とスコープに関する公式解説）</li>
           <li>📄 <strong>論文</strong>: Barbara Liskov and Stephen Zilles "<a href="https://dl.acm.org/doi/10.1145/942572.807045">Programming with Abstract Data Types</a>" (1974)（データ抽象と抽象データ型（ADT）の概念を確立した歴史的論文）</li>
         </ul>

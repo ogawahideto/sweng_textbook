@@ -21,14 +21,11 @@
     <main>
     <section class="level1">
       <h1 id="51-コードの匂いを嗅ぎ分けるthe-art-of-sensing">5.1 コードの「匂い」を嗅ぎ分ける（The Art of Sensing）</h1>
-      <section class="level2">
-        <h2 id="導入-理屈の前に違和感がある">導入: 理屈の前に「違和感」がある</h2>
-        <p>美しいコードを書くための第一歩は、まず「美しくないもの」に気づくことです。熟練したエンジニアは、悪いコードを見た瞬間に、理屈よりも先に「嫌な予感」や「生理的な不快感」を覚えます。</p>
-        <p>リファクタリングの提唱者であるMartin Fowlerは、この兆候を<strong>「コードの匂い（Code Smells）」</strong>と名付けました。</p>
-        <p>これはバグ（欠陥）ではありません。コンパイラは文句を言わず、プログラムは正常に動きます。しかし、そこからは「将来トラブルを起こしそうな気配」——魔法の回路における「マナの淀み」のようなもの——が漂っています。</p>
-        <p>このセクションでは、その「匂い」の正体を突き止め、言語化する訓練を行います。「なんとなく汚い」を「このメソッドはデータ泥棒をしている」と言い換えられるようになった時、あなたは真の錬金術師への階段を登り始めます。</p>
-        <hr>
-      </section>
+      <p>美しいコードを書くための第一歩は、まず「美しくないもの」に気づくことです。熟練したエンジニアは、悪いコードを見た瞬間に、理屈よりも先に「嫌な予感」や「生理的な不快感」を覚えます。</p>
+      <p>リファクタリングの提唱者であるMartin Fowlerは、この兆候を<strong>「コードの匂い（Code Smells）」</strong>と名付けました。</p>
+      <p>これはバグ（欠陥）ではありません。コンパイラは文句を言わず、プログラムは正常に動きます。しかし、そこからは「将来トラブルを起こしそうな気配」——魔法の回路における「マナの淀み」のようなもの——が漂っています。</p>
+      <p>このセクションでは、その「匂い」の正体を突き止め、言語化する訓練を行います。「なんとなく汚い」を「このメソッドはデータ泥棒をしている」と言い換えられるようになった時、あなたは真の錬金術師への階段を登り始めます。</p>
+      <hr>
       <section class="level2">
         <h2 id="理論的背景-代表的な匂いのカタログ">理論的背景: 代表的な「匂い」のカタログ</h2>
         <p>数ある匂いの中から、特に遭遇頻度が高く、早めに気づくほど効果が大きいものを紹介します。</p>
@@ -71,10 +68,12 @@
             <li><strong>なぜ悪いか</strong>: Pythonではデフォルト引数は<strong>一度だけ生成され、使い回されます</strong>。ある呼び出しでリストに追加した内容が、次の呼び出しにも残ってしまいます（幽霊のようなバグ）。</li>
             <li><strong>対処法</strong>: デフォルト値を <code>None</code> にし、内部で初期化する。</li>
           </ul>
+          <p>次の図は、代表的なコードの匂いを一覧で示しています。</p>
           <figure>
             <img src="../../assets/diagrams/chapter05/5.1-code-smells.svg" alt="代表的なコードの匂い">
             <figcaption aria-hidden="true">代表的なコードの匂い</figcaption>
           </figure>
+          <p>ここで示された5つの匂いは、いずれも「コードが将来の変更を拒んでいるサイン」として読み取ることができます。長すぎる関数は理解コストを、巨大なクラスは変更の影響範囲を、重複コードは修正漏れのリスクをそれぞれ生み出します。まずこれらの匂いに名前をつけて認識できるようになることが、リファクタリングの第一歩です。</p>
           <blockquote>
             <p>
               [!TIP]
@@ -133,10 +132,12 @@
             <li><strong>抽象度の混在</strong>: ゲームのルール（HP計算）と、低レベルな実装詳細（SQL発行）が同じ場所にあります。</li>
             <li><strong>認知的負荷が高い</strong>: <code>Hero</code> を修正しようとすると、アイテムやDBのことまで気にしなければなりません。</li>
           </ol>
+          <p>匂いを正確に名付けられたところで、いよいよ「解体と再建」の術式を施しましょう。</p>
         </section>
         <section class="level3">
           <h3 id="after-権限の委譲refactoring">After: 権限の委譲（Refactoring）</h3>
           <p>このクラスを「統治者」としての役割に特化させ、実務を専門家に委譲します。</p>
+          <p>次の図は、Heroクラスを分解して各責務を専門クラスに分散させた構造を示しています。</p>
           <figure>
             <img src="../../assets/diagrams/chapter05/5-1-hero-decomposition.svg" alt="Heroクラスの解体と責務の分散">
             <figcaption aria-hidden="true">Heroクラスの解体と責務の分散</figcaption>
@@ -193,6 +194,14 @@
         <hr>
       </section>
       <section class="level2">
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <pre class="language-text"><code class="language-text">以下のPythonコードを分析し、「コードの匂い（Code Smells）」があれば指摘してください。
+特に以下の観点でチェックしてください：
+1. 長すぎる関数がないか
+2. ネストが深すぎていないか
+3. 変数名が意図を表しているか</code></pre>
+      </section>
+      <section class="level2">
         <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
         <ul>
           <li>📚 <strong>書籍</strong>: マーチン・ファウラー『<a href="https://www.ohmsha.co.jp/book/9784274224546/">リファクタリング 第2版 ―既存のコードを安全に改善する</a>』（リファクタリングのバイブル。JavaScriptを例に、カタログ形式で技法を学べます）</li>
@@ -201,14 +210,6 @@
           <li>📄 <strong>論文</strong>: William F. Opdyke "<a href="http://www.laputan.org/pub/papers/opdyke-thesis.pdf">Refactoring Object-Oriented Frameworks</a>" (1992)（リファクタリングという用語を定義し、その体系化の先駆けとなった歴史的論文）</li>
         </ul>
         <hr>
-      </section>
-      <section class="level2">
-        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
-        <pre class="language-text"><code class="language-text">以下のPythonコードを分析し、「コードの匂い（Code Smells）」があれば指摘してください。
-特に以下の観点でチェックしてください：
-1. 長すぎる関数がないか
-2. ネストが深すぎていないか
-3. 変数名が意図を表しているか</code></pre>
       </section>
     </section>
   

@@ -21,187 +21,185 @@
     <main>
     <section class="level1">
       <h1 id="24-どう受け継ぐかデザインパターンの知恵">2.4 どう受け継ぐか？——デザインパターンの知恵</h1>
-      <section class="level2">
-        <h2 id="導入-賢者たちの処方箋">導入: 賢者たちの処方箋</h2>
-        <p>ここまでの旅で、あなたは「オブジェクト指向」という魔法の源（2.1節）を手に入れ、「UML」という魔法陣（2.2節）を描き、「SOLID原則」という黄金律（2.3節）を学びました。</p>
+      <p>ここまでの旅で、あなたは「オブジェクト指向」という魔法の源（2.1節）を手に入れ、「UML」という魔法陣（2.2節）を描き、「SOLID原則」という黄金律（2.3節）を学びました。</p>
+      <p>
+        しかし、実際の冒険（開発）では、似たような挑戦に何度も遭遇することになります。
+        「変化するアルゴリズムをどう切り替えるか？」「状態の変化をどうやって皆に知らせるか？」「複雑なオブジェクトをどうやって生成するか？」
+      </p>
+      <p>安心してくだい。これらの問題は、あなたより先にこの道を歩いた「古の賢者たち」も悩み、そして解決してきたものです。彼らが残した解決策の結晶、それが<strong>デザインパターン</strong>です。</p>
+      <p>これは単なる再利用ではありません。「知恵の継承」です。先人たちの知恵を受け継ぎ、巨人の肩の上に立つことで、私たちはより遠くへ行けるのです。</p>
+      <hr>
+      <section class="level3">
+        <h3 id="パターンランゲージ建築家からの贈り物">パターン・ランゲージ：建築家からの贈り物</h3>
+        <p>次の図は、GoFが定義した23のデザインパターンを「生成・構造・振る舞い」という三つの分類でまとめた全体地図を示しています。</p>
+        <figure>
+          <img src="../../assets/diagrams/chapter02/2-4-design-patterns-map.svg" alt="デザインパターンの地図（分類）">
+          <figcaption aria-hidden="true">デザインパターンの地図（分類）</figcaption>
+        </figure>
+        <p>ここで示された三つの分類は、パターンを選ぶ際の道標となります。「どうオブジェクトを生み出すか」という生成パターン、「どう組み合わせて構造を作るか」という構造パターン、そして「どう協調して振る舞いを実現するか」という振る舞いパターン——自分が直面している課題がどの分類に属するかを見極めることで、適切な「処方箋」を素早く引き出せるようになります。</p>
         <p>
-          しかし、実際の冒険（開発）では、似たような挑戦に何度も遭遇することになります。
-          「変化するアルゴリズムをどう切り替えるか？」「状態の変化をどうやって皆に知らせるか？」「複雑なオブジェクトをどうやって生成するか？」
+          「パターン」という考え方は、実はソフトウェアの世界で生まれたものではありません。
+          元々は建築家クリストファー・アレグザンダーが提唱した<strong>パターン・ランゲージ</strong>という概念です。彼は、心地よい街や建物に共通する「構造」をパターンとして抽出しました。
         </p>
-        <p>安心してくだい。これらの問題は、あなたより先にこの道を歩いた「古の賢者たち」も悩み、そして解決してきたものです。彼らが残した解決策の結晶、それが<strong>デザインパターン</strong>です。</p>
-        <p>これは単なる再利用ではありません。「知恵の継承」です。先人たちの知恵を受け継ぎ、巨人の肩の上に立つことで、私たちはより遠くへ行けるのです。</p>
-        <hr>
+        <p>「日当たりの良い場所（Sunny Place）」や「縁側（Arcade）」のように、名前をつけることで、誰もがその良さを認識し、設計に取り入れられるようにしたのです。</p>
+        <p>この「共通の課題に、名前のついた解決策を与える」という思想が、ソフトウェアエンジニアリングにも輸入されました。私たちもまた、バーチャルな世界に「心地よい構造」を築く建築家だからです。</p>
       </section>
-      <section class="level2">
-        <h2 id="理論的背景">理論的背景</h2>
-        <section class="level3">
-          <h3 id="パターンランゲージ建築家からの贈り物">パターン・ランゲージ：建築家からの贈り物</h3>
-          <figure>
-            <img src="../../assets/diagrams/chapter02/2-4-design-patterns-map.svg" alt="デザインパターンの地図（分類）">
-            <figcaption aria-hidden="true">デザインパターンの地図（分類）</figcaption>
-          </figure>
-          <p>
-            「パターン」という考え方は、実はソフトウェアの世界で生まれたものではありません。
-            元々は建築家クリストファー・アレグザンダーが提唱した<strong>パターン・ランゲージ</strong>という概念です。彼は、心地よい街や建物に共通する「構造」をパターンとして抽出しました。
-          </p>
-          <p>「日当たりの良い場所（Sunny Place）」や「縁側（Arcade）」のように、名前をつけることで、誰もがその良さを認識し、設計に取り入れられるようにしたのです。</p>
-          <p>この「共通の課題に、名前のついた解決策を与える」という思想が、ソフトウェアエンジニアリングにも輸入されました。私たちもまた、バーチャルな世界に「心地よい構造」を築く建築家だからです。</p>
-        </section>
-        <section class="level3">
-          <h3 id="gofのデザインパターン">GoFのデザインパターン</h3>
-          <p>1994年、4人の賢者（Gang of Four: GoF）によって記されたグリモワール『デザインパターン』は、この思想をソフトウェアの世界で決定的なものにしました。彼らは23のパターンを定義しましたが、現代のAI駆動開発において特に重要なのは以下の3つの分類です。</p>
-          <ol>
-            <li><strong>生成に関するパターン（Creational）</strong>: 「どう生み出すか」の知恵（例：Factory Method）</li>
-            <li><strong>構造に関するパターン（Structural）</strong>: 「どう組み合わせるか」の知恵（例：Adapter）</li>
-            <li><strong>振る舞いに関するパターン（Behavioral）</strong>: 「どう協調するか」の知恵（例：Strategy, Observer）</li>
-          </ol>
-        </section>
-        <section class="level3">
-          <h3 id="パターンは共通言語">パターンは「共通言語」</h3>
-          <p>「ここにStrategyパターンを使おう」と言えば、世界中のエンジニア（そしてAI）に一瞬で意図が伝わります。パターンを学ぶことは、より高度な魔法の言葉を習得することと同じなのです。</p>
-        </section>
-        <section class="level3">
-          <h3 id="gofの23の紋章全パターン一覧">GoFの23の紋章（全パターン一覧）</h3>
-          <p>すべてのパターンを一度に覚える必要はありませんが、目録として知っておくと便利です。本書の世界観に合わせて、ひとこと比喩を添えました。</p>
-          <table>
-            <thead>
-              <tr>
-                <th align="center">分類</th>
-                <th>パターン名</th>
-                <th>ひとこと比喩</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td align="center"><strong>生成</strong></td>
-                <td><strong>Factory Method</strong></td>
-                <td>「町工場」：製品の作り方は工場に任せる</td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Abstract Factory</strong></td>
-                <td>「王立工廠」：関連する製品群をまとめて作る</td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Builder</strong></td>
-                <td>「建築手順書」：複雑な建築手順を段階的に進める</td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Prototype</strong></td>
-                <td>「影分身」：自分自身のコピーを作って増える</td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Singleton</strong></td>
-                <td>「唯一神」：世界に一つしか存在しないことを保証する</td>
-              </tr>
-              <tr>
-                <td align="center"><strong>構造</strong></td>
-                <td><strong>Adapter</strong></td>
-                <td>「翻訳機」：異なる言葉（インターフェース）を繋ぐ</td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Bridge</strong></td>
-                <td>「機能と実装の架け橋」：両者を独立して拡張する</td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Composite</strong></td>
-                <td>「マトリョーシカ」：全体と部分を同じように扱う</td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Decorator</strong></td>
-                <td>「着せ替え人形」：中身を変えずに機能を追加・装飾する</td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Facade</strong></td>
-                <td>「執事」：複雑な裏側を隠し、シンプルな窓口になる</td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Flyweight</strong></td>
-                <td>「共有倉庫」：大量の細かいオブジェクトを共有して軽くする</td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Proxy</strong></td>
-                <td>「代理人」：本人の代わりにアクセスを制御する</td>
-              </tr>
-              <tr>
-                <td align="center"><strong>振る舞い</strong></td>
-                <td><strong>Chain of Responsibility</strong></td>
-                <td>「たらい回し」：責任を持てる人が見つかるまで次へ渡す</td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Command</strong></td>
-                <td>「命令書」：要求をオブジェクトとしてカプセル化する</td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Interpreter</strong></td>
-                <td>「通訳」：文法規則に従って言語を解釈する</td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Iterator</strong></td>
-                <td>「ガイド」：内部構造を知らなくても要素に順にアクセスする</td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Mediator</strong></td>
-                <td>「仲介者」：オブジェクト同士の複雑な通信を整理する</td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Memento</strong></td>
-                <td>「セーブポイント」：状態を保存し、後で復元する</td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Observer</strong></td>
-                <td><strong>「狼煙（のろし）」：状態変化を登録者に通知する</strong></td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>State</strong></td>
-                <td>「変身」：状態によって振る舞いを変える</td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Strategy</strong></td>
-                <td><strong>「軍師の策」：アルゴリズム（戦術）を切り替える</strong></td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Template Method</strong></td>
-                <td>「秘伝のレシピ」：処理の枠組みを決め、詳細は子に任せる</td>
-              </tr>
-              <tr>
-                <td align="center"></td>
-                <td><strong>Visitor</strong></td>
-                <td>「訪問者」：データ構造と処理を分離する</td>
-              </tr>
-            </tbody>
-          </table>
-          <p>※ <strong>太字</strong> は、以下の実践例で詳しく解説する、現代のAI駆動開発においても特に頻出のパターンです。なお、<strong>Repositoryパターン</strong>はGoFには含まれませんが（PofEAA由来）、現代の設計では必須級のため併せて紹介します。</p>
-          <hr>
-        </section>
+      <section class="level3">
+        <h3 id="gofのデザインパターン">GoFのデザインパターン</h3>
+        <p>1994年、4人の賢者（Gang of Four: GoF）によって記されたグリモワール『デザインパターン』は、この思想をソフトウェアの世界で決定的なものにしました。彼らは23のパターンを定義しましたが、現代のAI駆動開発において特に重要なのは以下の3つの分類です。</p>
+        <ol>
+          <li><strong>生成に関するパターン（Creational）</strong>: 「どう生み出すか」の知恵（例：Factory Method）</li>
+          <li><strong>構造に関するパターン（Structural）</strong>: 「どう組み合わせるか」の知恵（例：Adapter）</li>
+          <li><strong>振る舞いに関するパターン（Behavioral）</strong>: 「どう協調するか」の知恵（例：Strategy, Observer）</li>
+        </ol>
+      </section>
+      <section class="level3">
+        <h3 id="パターンは共通言語">パターンは「共通言語」</h3>
+        <p>「ここにStrategyパターンを使おう」と言えば、世界中のエンジニア（そしてAI）に一瞬で意図が伝わります。パターンを学ぶことは、より高度な魔法の言葉を習得することと同じなのです。</p>
+      </section>
+      <section class="level3">
+        <h3 id="gofの23の紋章全パターン一覧">GoFの23の紋章（全パターン一覧）</h3>
+        <p>すべてのパターンを一度に覚える必要はありませんが、目録として知っておくと便利です。本書の世界観に合わせて、ひとこと比喩を添えました。</p>
+        <table>
+          <thead>
+            <tr>
+              <th align="center">分類</th>
+              <th>パターン名</th>
+              <th>ひとこと比喩</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td align="center"><strong>生成</strong></td>
+              <td><strong>Factory Method</strong></td>
+              <td>「町工場」：製品の作り方は工場に任せる</td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Abstract Factory</strong></td>
+              <td>「王立工廠」：関連する製品群をまとめて作る</td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Builder</strong></td>
+              <td>「建築手順書」：複雑な建築手順を段階的に進める</td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Prototype</strong></td>
+              <td>「影分身」：自分自身のコピーを作って増える</td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Singleton</strong></td>
+              <td>「唯一神」：世界に一つしか存在しないことを保証する</td>
+            </tr>
+            <tr>
+              <td align="center"><strong>構造</strong></td>
+              <td><strong>Adapter</strong></td>
+              <td>「翻訳機」：異なる言葉（インターフェース）を繋ぐ</td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Bridge</strong></td>
+              <td>「機能と実装の架け橋」：両者を独立して拡張する</td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Composite</strong></td>
+              <td>「マトリョーシカ」：全体と部分を同じように扱う</td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Decorator</strong></td>
+              <td>「着せ替え人形」：中身を変えずに機能を追加・装飾する</td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Facade</strong></td>
+              <td>「執事」：複雑な裏側を隠し、シンプルな窓口になる</td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Flyweight</strong></td>
+              <td>「共有倉庫」：大量の細かいオブジェクトを共有して軽くする</td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Proxy</strong></td>
+              <td>「代理人」：本人の代わりにアクセスを制御する</td>
+            </tr>
+            <tr>
+              <td align="center"><strong>振る舞い</strong></td>
+              <td><strong>Chain of Responsibility</strong></td>
+              <td>「たらい回し」：責任を持てる人が見つかるまで次へ渡す</td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Command</strong></td>
+              <td>「命令書」：要求をオブジェクトとしてカプセル化する</td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Interpreter</strong></td>
+              <td>「通訳」：文法規則に従って言語を解釈する</td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Iterator</strong></td>
+              <td>「ガイド」：内部構造を知らなくても要素に順にアクセスする</td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Mediator</strong></td>
+              <td>「仲介者」：オブジェクト同士の複雑な通信を整理する</td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Memento</strong></td>
+              <td>「セーブポイント」：状態を保存し、後で復元する</td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Observer</strong></td>
+              <td><strong>「狼煙（のろし）」：状態変化を登録者に通知する</strong></td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>State</strong></td>
+              <td>「変身」：状態によって振る舞いを変える</td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Strategy</strong></td>
+              <td><strong>「軍師の策」：アルゴリズム（戦術）を切り替える</strong></td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Template Method</strong></td>
+              <td>「秘伝のレシピ」：処理の枠組みを決め、詳細は子に任せる</td>
+            </tr>
+            <tr>
+              <td align="center"></td>
+              <td><strong>Visitor</strong></td>
+              <td>「訪問者」：データ構造と処理を分離する</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>※ <strong>太字</strong> は、以下の実践例で詳しく解説する、現代のAI駆動開発においても特に頻出のパターンです。なお、<strong>Repositoryパターン</strong>はGoFには含まれませんが（PofEAA由来）、現代の設計では必須級のため併せて紹介します。</p>
+        <hr>
       </section>
       <section class="level2">
         <h2 id="実践例-questforgeへの継承">実践例: QuestForgeへの継承</h2>
         <p>QuestForgeの開発において、特に役立つ「3つの処方箋」を紹介しましょう。</p>
         <section class="level3">
           <h3 id="1-strategyパターン戦術の切り替え">1. Strategyパターン：戦術の切り替え</h3>
+          <p>パターンの地図と共通言語を手に入れた今、QuestForgeという実際の冒険の場で、それらの処方箋がどう生きるかを確かめましょう。次の図は、Strategyパターンを使って経験値（XP）計算ロジックを差し替え可能にした設計の構造を示しています。</p>
           <figure>
             <img src="../../assets/diagrams/chapter02/2-4-strategy.svg" alt="StrategyパターンによるXP計算の差し替え">
             <figcaption aria-hidden="true">StrategyパターンによるXP計算の差し替え</figcaption>
           </figure>
+          <p>ここでのポイントは、<code>Quest</code> クラスが具体的な計算式を「知らない」という点です。<code>Quest</code> は「計算してほしい」という依頼を <code>ExpStrategy</code> インターフェースに投げるだけで、実際に通常計算をするのか、キャンペーン倍率を適用するのかは、切り替えられたストラテジー次第です。新しい計算ルールが生まれても、既存のコードは一切変えずに新しいクラスを追加するだけで対応できます。これが開放閉鎖の原則（OCP）の美しい実例です。</p>
           <p><strong>課題</strong>: クエストの経験値計算ロジックが、「通常時」「キャンペーン期間中」「プレミアム会員」などで頻繁に変わる。<code>if</code>文の嵐になりそうだ。</p>
           <p><strong>処方箋</strong>: 「計算ロジック（戦術）」をクラスとして独立させ、切り替え可能にする。</p>
           <pre class="language-python"><code class="language-python"><span class="token comment"># 戦術のインターフェース</span>
@@ -268,6 +266,7 @@ repo<span class="token punctuation">.</span>save<span class="token punctuation">
       <section class="level2">
         <h2 id="ai時代のアプローチ-パターンの民主化">AI時代のアプローチ: パターンの民主化</h2>
         <p>かつて、デザインパターンの習得には長い修行が必要でした。しかし今は、AIという相棒がいます。</p>
+        <p>3つの処方箋を実際のコードで体験したことで、パターンの威力がつかめてきたはずです——では、AIはこの「知恵の継承」をどう加速させてくれるでしょうか。</p>
         <section class="level3">
           <h3 id="パターンの発見と適用">パターンの発見と適用</h3>
           <p>「このコード、条件分岐が多くて読みづらいんだけど、いいパターンある？」とAIに聞いてみてください。「Strategyパターンが使えますよ」と提案し、リファクタリング後のコードまで生成してくれるでしょう。</p>
@@ -283,7 +282,7 @@ repo<span class="token punctuation">.</span>save<span class="token punctuation">
         <p>コードを書く前に、まずは「どのパターンを使うべきか」を判断し、構造を設計することが重要です。AIを参謀として、最適な戦術を選んでみましょう。</p>
         <section class="level3">
           <h3 id="ステップ1-課題をaiに相談する">ステップ1: 課題をAIに相談する</h3>
-          <p>あなたは「モンスターの行動パターンが複雑すぎて、管理しきれない」という問題に直面しています。以下のプロンプトをAIに投げかけ、解決策を探ってください。</p>
+          <p>AIがパターンの発見と学習を支援できることがわかったところで、実際にAIと対話しながら設計の選定を体験してみましょう。あなたは「モンスターの行動パターンが複雑すぎて、管理しきれない」という問題に直面しています。以下のプロンプトをAIに投げかけ、解決策を探ってください。</p>
           <pre class="language-text"><code class="language-text">RPGを作っていますが、モンスターの状態（待機、追跡、攻撃、逃走）によって行動がガラリと変わり、switch文が肥大化して困っています。
 この問題を解決するのに適したGoFデザインパターンを提案し、その理由を教えてください。</code></pre>
         </section>
@@ -308,21 +307,17 @@ repo<span class="token punctuation">.</span>save<span class="token punctuation">
             これがデザインパターンの力であり、設計の楽しさです。
           </p>
           <hr>
+          <p>デザインパターンは、特定の技術ではなく「問題の形」に対する答えです。Strategyパターンがアルゴリズムをカプセル化して交換可能にし、Observerパターンが状態の変化を疎結合な通知で伝える——この二つを押さえるだけで、変更に強い設計の感覚がぐっと身につきます。23のGoFパターンを一度に覚える必要はありません。コードを書きながら「これは以前も同じような形だったな」という感覚が積み重なったとき、自然にパターンの言語が育ちます。</p>
+          <p>AIは適切なパターンの選択でも力を発揮します。「このコードにはどのパターンが合いそうですか？」と問いかければ、選択肢と理由を丁寧に提示してくれます。</p>
+          <p>道具箱に強力な魔法の道具が揃いました。次は、これらの部品をどのように組み合わせて城全体を設計するか——2.5節では、システム全体の「城郭設計図」、クリーンアーキテクチャの世界を探索します。</p>
+          <hr>
         </section>
       </section>
       <section class="level2">
-        <h2 id="まとめ">まとめ</h2>
-        <ol>
-          <li><strong>デザインパターン</strong>は、先人たちの知恵の結晶であり、共通の課題に対する「処方箋」である。</li>
-          <li><strong>Strategyパターン</strong>は、アルゴリズム（戦術）をカプセル化し、交換可能にする。</li>
-          <li><strong>Observerパターン</strong>は、状態変化を通知し、疎結合な連携を実現する。</li>
-          <li><strong>AIを活用</strong>することで、適切なパターンの選択と実装が劇的に容易になる。</li>
-        </ol>
-        <p>
-          これで、あなたの道具箱には強力な魔法の道具が揃いました。
-          次節では、これらを組み合わせて城全体を築くための設計図——<strong>アーキテクチャ</strong>について学びます。
-        </p>
-        <hr>
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <pre class="language-text"><code class="language-text">PythonでObserverパターンを実装したいです。
+「天気が変わったら、村人とカエルがそれぞれの反応をする」というサンプルコードを書いてください。</code></pre>
+        <pre class="language-text"><code class="language-text">StrategyパターンとStateパターンの違いを、RPGのキャラクターの状態変化に例えて説明してください。</code></pre>
       </section>
       <section class="level2">
         <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
@@ -333,12 +328,6 @@ repo<span class="token punctuation">.</span>save<span class="token punctuation">
           <li>🌐 <strong>Web</strong>: Refactoring.Guru "<a href="https://refactoring.guru/design-patterns">Design Patterns</a>"（美しく分かりやすい図解でパターンを学べる現代的なWebリソース）</li>
         </ul>
         <hr>
-      </section>
-      <section class="level2">
-        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
-        <pre class="language-text"><code class="language-text">PythonでObserverパターンを実装したいです。
-「天気が変わったら、村人とカエルがそれぞれの反応をする」というサンプルコードを書いてください。</code></pre>
-        <pre class="language-text"><code class="language-text">StrategyパターンとStateパターンの違いを、RPGのキャラクターの状態変化に例えて説明してください。</code></pre>
       </section>
     </section>
   

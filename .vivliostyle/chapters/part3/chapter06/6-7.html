@@ -1,70 +1,351 @@
 <!DOCTYPE html><html lang="ja"><head>
     <meta charset="utf-8">
-    <title>6.7 【外伝】浮遊する魔導城——サーバーレスとクラウドの経済学</title>
+    <title>6.7 クラウドネイティブ・スタック——コンテナ・マイクロサービス・API設計</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
   </head>
   <body>
     <section class="level1">
-      <h1 id="67-外伝浮遊する魔導城サーバーレスとクラウドの経済学">6.7 【外伝】浮遊する魔導城——サーバーレスとクラウドの経済学</h1>
-      <figure>
-        <img src="../../../assets/images/chapter_covers/Gaiden_Serverless.png" alt="扉絵: 浮遊城">
-        <figcaption aria-hidden="true">扉絵: 浮遊城</figcaption>
-      </figure>
+      <h1 id="67-クラウドネイティブスタックコンテナマイクロサービスapi設計">6.7 クラウドネイティブ・スタック——コンテナ・マイクロサービス・API設計</h1>
+      <p>QuestForgeが小さなサービスだった頃、すべての機能は一つの巨大な城（モノリシックアプリケーション）に収まっていました。しかし冒険者の数が増え、ギルド機能・課金システム・リアルタイム通知と機能が膨らむにつれ、城は重くなり、一部屋の工事が全館の閉鎖を招くようになりました。</p>
+      <p>これを解決する現代の答えが、<strong>クラウドネイティブ</strong>という設計思想です。大きな城を解体し、目的ごとに特化した小さな砦（マイクロサービス）に再編し、それぞれを軽量な「転送装置」（コンテナ）に乗せて連携させる。そして砦と砦をつなぐ「通信の書式」（API）を標準化する——これらの技術スタックが、現代の大規模システムを支えています。</p>
+      <hr>
       <section class="level2">
-        <h2 id="導入-実体を持たないインフラ">導入: 実体を持たないインフラ</h2>
-        <p>かつて、魔法を発動させるには自前の魔法陣（サーバー）を丹念に描き、維持し続ける必要がありました。しかし現代のクラウドという空には、必要な時だけ顕現し、役目を終えれば雲散霧消する<strong>「浮遊する魔導城（サーバーレス）」</strong>が存在します。</p>
-        <p>サーバーレス（AWS Lambdaなど）やコンテナオーケストレーション（Kubernetes）は、アルケミストを「インフラの管理」という重労働から解放し、本質的な「魔法の記述」に専念させてくれます。本節では、この実体を持たない城の運用術と、その代償である「魔力（コスト）」の管理を学びます。</p>
-        <figure>
-          <img src="../../../assets/diagrams/chapter06/6-7-floating-castle.svg" alt="浮遊する魔導城">
-          <figcaption aria-hidden="true">浮遊する魔導城</figcaption>
-        </figure>
-        <hr>
+        <h2 id="コンテナという転送装置dockerの魔法">コンテナという「転送装置」——Dockerの魔法</h2>
+        <section class="level3">
+          <h3 id="環境依存という呪い">環境依存という呪い</h3>
+          <p>コンテナという転送装置が解決する核心の問題がここにあります。「自分の開発環境では動くのに、本番では動かない」——これはかつて、ソフトウェアエンジニアを苦しめた古典的な呪いです。ライブラリのバージョン、OSの違い、環境変数の差異——あらゆる「環境依存」がこの呪いの原因でした。</p>
+          <p><strong>Docker</strong>はこの呪いを解く「封印の箱」です。アプリケーションとその動作に必要なすべて（ランタイム・ライブラリ・設定）を一つの<strong>コンテナイメージ</strong>として封印し、どの環境でも同一の状態で起動できるようにします。</p>
+        </section>
+        <section class="level3">
+          <h3 id="dockerfileと魔法の設計図">Dockerfileと魔法の設計図</h3>
+          <p>この封印の箱の設計図が <code>Dockerfile</code> です。以下にQuestForgeの例を示します。</p>
+          <pre class="language-dockerfile"><code class="language-dockerfile"><span class="token comment"># QuestForge API サーバーのDockerfile</span>
+<span class="token instruction"><span class="token keyword">FROM</span> python:3.12-slim</span>
+
+<span class="token instruction"><span class="token keyword">WORKDIR</span> /app</span>
+
+<span class="token instruction"><span class="token keyword">COPY</span> requirements.txt .</span>
+<span class="token instruction"><span class="token keyword">RUN</span> pip install --no-cache-dir -r requirements.txt</span>
+
+<span class="token instruction"><span class="token keyword">COPY</span> . .</span>
+
+<span class="token instruction"><span class="token keyword">EXPOSE</span> 8000</span>
+<span class="token instruction"><span class="token keyword">CMD</span> [<span class="token string">"uvicorn"</span>, <span class="token string">"main:app"</span>, <span class="token string">"--host"</span>, <span class="token string">"0.0.0.0"</span>, <span class="token string">"--port"</span>, <span class="token string">"8000"</span>]</span></code></pre>
+          <p>この <code>Dockerfile</code> はコンテナの「設計図」です。<code>docker build</code> でイメージを作成し、<code>docker run</code> でコンテナとして起動します。開発者のMacBook、テスト用のLinuxサーバー、本番のクラウド——いずれでも同一のイメージが動きます。</p>
+        </section>
+        <section class="level3">
+          <h3 id="コンテナとvmの違い">コンテナとVMの違い</h3>
+          <p>コンテナの特徴をより明確に理解するために、従来の仮想マシンと比較しておきましょう。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>比較軸</th>
+                <th>仮想マシン（VM）</th>
+                <th>コンテナ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>起動時間</td>
+                <td>数分</td>
+                <td>数秒〜数十秒</td>
+              </tr>
+              <tr>
+                <td>サイズ</td>
+                <td>GBオーダー</td>
+                <td>MBオーダー</td>
+              </tr>
+              <tr>
+                <td>OS</td>
+                <td>専用OSを内包</td>
+                <td>ホストOSのカーネルを共有</td>
+              </tr>
+              <tr>
+                <td>用途</td>
+                <td>完全な環境分離</td>
+                <td>アプリケーションの軽量パッケージ化</td>
+              </tr>
+            </tbody>
+          </table>
+          <hr>
+        </section>
       </section>
       <section class="level2">
-        <h2 id="瞬時の顕現faasとイベント駆動">瞬時の顕現：FaaSとイベント駆動</h2>
-        <p>サーバーレスの極意は、<strong>「イベントが発生した時だけ、魔力が物質化する」</strong>という点にあります。</p>
-        <ul>
-          <li><strong>従来</strong>: 冒険者が一人もいない夜中も、城（サーバー）の門番に給料を払い続ける。</li>
-          <li><strong>サーバーレス</strong>: 冒険者が門を叩いた瞬間だけ、門番が召喚され、仕事が終われば消える。</li>
-        </ul>
-        <p>このアプローチにより、私たちは「スケーラビリティ（拡張性）」という最強の魔法を手にします。冒険者が1人でも、100万人でも、浮遊城はそれに応じて自ずと大きさを変えるのです。</p>
+        <h2 id="kubernetesコンテナのオーケストラ指揮者">Kubernetes：コンテナのオーケストラ指揮者</h2>
+        <p>コンテナ一つを動かすだけなら <code>docker run</code> で十分です。しかし本番環境では、数十〜数百のコンテナが協調して動き、負荷に応じて増減し、障害が起きれば自己修復する必要があります。これを統率する指揮者が <strong>Kubernetes（k8s）</strong> です。</p>
+        <section class="level3">
+          <h3 id="k8sの基本概念">k8sの基本概念</h3>
+          <p>k8sを使いこなすために、まず基本的な概念を把握しておきましょう。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>概念</th>
+                <th>役割</th>
+                <th>QuestForgeでの例</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Pod</strong></td>
+                <td>コンテナの最小実行単位</td>
+                <td>Quest APIコンテナ1個</td>
+              </tr>
+              <tr>
+                <td><strong>Deployment</strong></td>
+                <td>Podの宣言的管理・自動復元</td>
+                <td>「Quest APIを常に3つ動かす」</td>
+              </tr>
+              <tr>
+                <td><strong>Service</strong></td>
+                <td>Podへのネットワーク窓口</td>
+                <td>クエスト検索への負荷分散エンドポイント</td>
+              </tr>
+              <tr>
+                <td><strong>Ingress</strong></td>
+                <td>外部からのHTTPルーティング</td>
+                <td><code>/api/quests</code> → Quest Service</td>
+              </tr>
+              <tr>
+                <td><strong>ConfigMap / Secret</strong></td>
+                <td>設定・機密情報の分離管理</td>
+                <td>DB接続文字列、APIキー</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="level3">
+          <h3 id="宣言的設定という考え方">宣言的設定という考え方</h3>
+          <p>k8sの最大の特徴は「<strong>どうするか</strong>ではなく<strong>どうあるべきか</strong>を宣言する」点にあります。</p>
+          <pre class="language-yaml"><code class="language-yaml"><span class="token comment"># QuestForge Quest Service の Deployment</span>
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Deployment
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> quest<span class="token punctuation">-</span>service
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">3</span>          <span class="token comment"># 常に3つのPodを維持する</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span>
+      <span class="token key atrule">app</span><span class="token punctuation">:</span> quest<span class="token punctuation">-</span>service
+  <span class="token key atrule">template</span><span class="token punctuation">:</span>
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span>
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> quest<span class="token punctuation">-</span>service
+        <span class="token key atrule">image</span><span class="token punctuation">:</span> questforge/quest<span class="token punctuation">-</span>service<span class="token punctuation">:</span>v1.2.0
+        <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">8000</span>
+        <span class="token key atrule">resources</span><span class="token punctuation">:</span>
+          <span class="token key atrule">requests</span><span class="token punctuation">:</span>
+            <span class="token key atrule">cpu</span><span class="token punctuation">:</span> <span class="token string">"100m"</span>
+            <span class="token key atrule">memory</span><span class="token punctuation">:</span> <span class="token string">"128Mi"</span>
+          <span class="token key atrule">limits</span><span class="token punctuation">:</span>
+            <span class="token key atrule">cpu</span><span class="token punctuation">:</span> <span class="token string">"500m"</span>
+            <span class="token key atrule">memory</span><span class="token punctuation">:</span> <span class="token string">"512Mi"</span></code></pre>
+          <p><code>kubectl apply -f quest-service.yaml</code> を実行するだけで、k8sはこの「理想状態」を実現・維持し続けます。3つのうち1つがクラッシュすれば、自動的に新しいPodを起動します。</p>
+          <hr>
+        </section>
       </section>
       <section class="level2">
-        <h2 id="魔力の節約術finops">魔力の節約術：FinOps</h2>
-        <p>浮遊城の維持には、物理的な実体がない代わりに、精緻な「魔力の代償（課金）」が求められます。</p>
-        <p>無駄な呪文を走らせ続ければ、クラウドの魔力供給源から膨大な請求が届きます。<strong>FinOps（フィノプス）</strong>とは、技術力を使って魔力の消費を最適化する、現代の「節約術」です。</p>
-        <ul>
-          <li><strong>適切なリソースの配分</strong>: 必要な分の魔力（メモリ）だけを割り当てる。</li>
-          <li><strong>冷たい始動（Cold Start）への対策</strong>: 召喚にかかる時間を最小限に抑える術式を組む。</li>
-        </ul>
+        <h2 id="マイクロサービスアーキテクチャ城の解体と再編">マイクロサービスアーキテクチャ——城の解体と再編</h2>
+        <section class="level3">
+          <h3 id="モノリスとマイクロサービス">モノリスとマイクロサービス</h3>
+          <p>コンテナという転送装置が整ったところで、その器に乗せるアーキテクチャ自体をどう設計するかを考えましょう。</p>
+          <pre class="language-text"><code class="language-text">【モノリシックなQuestForge】
+┌─────────────────────────────────────────┐
+│  クエスト管理 ｜ 勇者管理 ｜ 通知 ｜ 課金 │
+│            （全部が一つのプロセス）         │
+└─────────────────────────────────────────┘
+                    ↓ 分解
+【マイクロサービス化したQuestForge】
+  [Quest Service] ←→ [Hero Service]
+       ↕                    ↕
+  [Notification Service] [Billing Service]
+       ↕
+  [API Gateway（入口の門番）]</code></pre>
+          <p>マイクロサービスの各サービスは：</p>
+          <ul>
+            <li><strong>独立してデプロイ可能</strong> — 課金サービスを更新しても、クエストサービスは無停止</li>
+            <li><strong>技術スタックの自由</strong> — 通知サービスをNode.jsで、課金サービスをGoで実装</li>
+            <li><strong>障害の局所化</strong> — 通知サービスが落ちても、クエスト管理は動き続ける</li>
+          </ul>
+        </section>
+        <section class="level3">
+          <h3 id="マイクロサービスのトレードオフ">マイクロサービスのトレードオフ</h3>
+          <p>魅力的なメリットの一方で、マイクロサービスが持つ固有の複雑さも正直に見ておきましょう。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>利点</th>
+                <th>課題</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>独立デプロイ・スケール</td>
+                <td>ネットワーク越しの通信レイテンシ</td>
+              </tr>
+              <tr>
+                <td>技術スタックの柔軟性</td>
+                <td>分散トレーシングの難しさ</td>
+              </tr>
+              <tr>
+                <td>チームの自律性（コンウェイの法則）</td>
+                <td>分散トランザクションの複雑さ</td>
+              </tr>
+              <tr>
+                <td>障害の局所化</td>
+                <td>運用オーバーヘッドの増大</td>
+              </tr>
+            </tbody>
+          </table>
+          <p><strong>すべてのシステムがマイクロサービスを必要とするわけではありません。</strong> 初期のQuestForgeのようなスタートアップには、モノリスから始めて、スケールの課題が具体的になった時点で分割する「モノリスファースト」戦略が賢明です。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="api設計の三流派restgraphqlgrpc">API設計の三流派——REST・GraphQL・gRPC</h2>
+        <p>砦（マイクロサービス）をつなぐ「通信の書式」がAPIです。現代には目的に応じた三つの主要な流派があります。</p>
+        <section class="level3">
+          <h3 id="restrepresentational-state-transfer">REST（Representational State Transfer）</h3>
+          <p>まず、Webの基盤として最も広く普及したRESTを見ていきましょう。HTTPのメソッドとURLでリソースを操作するシンプルな設計です。</p>
+          <pre class="language-text"><code class="language-text">GET    /quests          # クエスト一覧を取得
+POST   /quests          # 新しいクエストを作成
+GET    /quests/{id}     # 特定のクエストを取得
+PUT    /quests/{id}     # クエストを更新
+DELETE /quests/{id}     # クエストを削除</code></pre>
+          <p>
+            <strong>強み</strong>: シンプルで理解しやすい、ブラウザ・モバイル問わず利用可能
+            <strong>適合</strong>: 公開API、Webアプリとのやりとり、リソース中心の操作
+          </p>
+        </section>
+        <section class="level3">
+          <h3 id="graphql">GraphQL</h3>
+          <p>RESTがサーバー側の返すデータ形を決めるのに対し、GraphQLはクライアントが「欲しいデータの形」を指定して問い合わせる宣言的なAPIです。</p>
+          <pre class="language-graphql"><code class="language-graphql"><span class="token comment"># クライアントが必要なフィールドだけ指定する</span>
+<span class="token keyword">query</span> <span class="token punctuation">{</span>
+  <span class="token property-query">quest</span><span class="token punctuation">(</span><span class="token attr-name">id</span><span class="token punctuation">:</span> <span class="token string">"q-001"</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token property">title</span>
+    <span class="token property">difficulty</span>
+    <span class="token object">assignedHero</span> <span class="token punctuation">{</span>
+      <span class="token property">name</span>
+      <span class="token property">level</span>    <span class="token comment"># ← これだけ欲しい</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+          <p>
+            <strong>強み</strong>: オーバーフェッチ（不要なデータの取得）とアンダーフェッチ（複数リクエスト）を解消
+            <strong>適合</strong>: モバイルアプリ（通信量を最小化したい）、複雑に絡み合ったデータグラフ
+          </p>
+        </section>
+        <section class="level3">
+          <h3 id="grpc">gRPC</h3>
+          <p>サービス間通信でさらに高いパフォーマンスを求める場合、第三の流派が選択肢に上がります。Googleが設計した高性能RPC（Remote Procedure Call）フレームワークで、Protocol Buffersでデータを定義し、バイナリで通信します。</p>
+          <pre class="language-protobuf"><code class="language-protobuf"><span class="token comment">// クエストサービスのインターフェース定義</span>
+<span class="token keyword">service</span> <span class="token class-name">QuestService</span> <span class="token punctuation">{</span>
+  <span class="token keyword">rpc</span> <span class="token function">GetQuest</span> <span class="token punctuation">(</span><span class="token class-name">GetQuestRequest</span><span class="token punctuation">)</span> <span class="token keyword">returns</span> <span class="token punctuation">(</span><span class="token class-name">Quest</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">rpc</span> <span class="token function">CompleteQuest</span> <span class="token punctuation">(</span><span class="token class-name">CompleteQuestRequest</span><span class="token punctuation">)</span> <span class="token keyword">returns</span> <span class="token punctuation">(</span><span class="token class-name">CompleteQuestResponse</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">message</span> <span class="token class-name">Quest</span> <span class="token punctuation">{</span>
+  <span class="token builtin">string</span> id <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+  <span class="token builtin">string</span> title <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+  <span class="token builtin">int32</span> difficulty <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre>
+          <p>
+            <strong>強み</strong>: JSON比較で数倍高速、型安全、双方向ストリーミング対応
+            <strong>適合</strong>: マイクロサービス間通信、リアルタイム性が求められるシステム
+          </p>
+        </section>
+        <section class="level3">
+          <h3 id="三流派の使い分け">三流派の使い分け</h3>
+          <p>三つの流派の特徴が揃ったところで、QuestForgeを例に使い分けの判断基準を整理しましょう。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>観点</th>
+                <th>REST</th>
+                <th>GraphQL</th>
+                <th>gRPC</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>対象</td>
+                <td>公開Web API</td>
+                <td>クライアント駆動</td>
+                <td>内部サービス間</td>
+              </tr>
+              <tr>
+                <td>パフォーマンス</td>
+                <td>普通</td>
+                <td>普通</td>
+                <td>高速</td>
+              </tr>
+              <tr>
+                <td>学習コスト</td>
+                <td>低</td>
+                <td>中</td>
+                <td>中〜高</td>
+              </tr>
+              <tr>
+                <td>ブラウザ対応</td>
+                <td>◎</td>
+                <td>◎</td>
+                <td>△（grpc-web経由）</td>
+              </tr>
+              <tr>
+                <td>型安全</td>
+                <td>△</td>
+                <td>○</td>
+                <td>◎</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>QuestForgeの場合：</p>
+          <ul>
+            <li><strong>外部（ブラウザ/モバイル）→ API Gateway</strong>: REST</li>
+            <li><strong>モバイルアプリ → BFF（Backend for Frontend）</strong>: GraphQL</li>
+            <li><strong>サービス間通信（Quest ↔ Notification）</strong>: gRPC</li>
+          </ul>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="ai時代のクラウドネイティブ設計">AI時代のクラウドネイティブ設計</h2>
+        <p>AIはアーキテクチャ設計の強力なパートナーです。</p>
+        <p><strong>サービス分割の相談</strong>: 「QuestForgeをマイクロサービスに分割する場合、どのような境界でサービスを切るべきか。ドメイン駆動設計の観点から、境界づけられたコンテキストを特定して」とAIに問えば、DDD的な境界の候補を列挙してくれます。</p>
+        <p><strong>API設計のレビュー</strong>: 「このREST APIのエンドポイント設計を、RESTfulの原則に照らしてレビューして。改善提案があれば示して」という依頼は、設計品質の向上に直結します。</p>
+        <p><strong>k8sマニフェストの生成</strong>: 「このDockerfileに対応するKubernetes Deploymentのマニフェストを、リソース制限とヘルスチェックを含めて生成して」——繰り返し発生する定型作業はAIに任せ、アーキテクチャの判断に集中しましょう。</p>
         <hr>
       </section>
       <section class="level2">
         <h2 id="まとめ">まとめ</h2>
-        <ol>
-          <li><strong>実体からの解放</strong>: サーバーという「モノ」ではなく、「価値（コード）」の実行に集中する。</li>
-          <li><strong>変化への適応</strong>: 負荷に応じて自動で伸縮する、しなやかなインフラを構築する。</li>
-          <li><strong>経済的な美学</strong>: 効率的な術式は、コストという面でも「美しく」あるべきである。</li>
-        </ol>
-        <p>あなたの魔法は、もう地面に縛られる必要はありません。広大なクラウドの空へ、城を浮かべましょう。</p>
+        <p>クラウドネイティブの技術スタックは、スケールという現実の課題に応えるための進化の産物です。Dockerというコンテナが環境依存の呪いを解き、「どこでも同一の動作環境」を実現します。Kubernetesはその大軍団を指揮するオーケストラの指揮者として、宣言的な設定で自己修復・自動スケーリングを当然のように実現します。マイクロサービスは城を目的ごとの砦に分解し、独立デプロイと障害局所化という強力な武器をもたらします——ただし、複雑さも比例して増すことを忘れてはなりません。</p>
+        <p>APIの三流派（REST・GraphQL・gRPC）はそれぞれ輝く場所が異なり、使い分けの判断力こそがアーキテクトの腕の見せどころです。そして何より大切なのは「選択の知恵」——すべてのシステムが複雑なアーキテクチャを必要とするわけではなく、スケールの課題が具体的になった時に初めて分割を検討する「モノリスファースト」の姿勢が、多くの場合最も賢明です。</p>
+        <p>第7章では、こうした技術を駆使するチームそのものの動かし方へと目を向けます。アジャイルという名の冒険パーティで、スクラム・Git・ペアプログラミングを武器に、持続可能な速度で最高の価値を届けるチーム運営の技法を学びましょう。</p>
         <hr>
       </section>
       <section class="level2">
         <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
-        <pre class="language-prompt"><code class="language-prompt">AWS Lambda と API Gateway を使って、QuestForgeの「通知送信機能」を実装したいです。
-イベント駆動（SNSやEventBridgeとの連携）を意識したアーキテクチャ構成案と、
-コストを最小限に抑えるためのTerraformコードの例を提示してください。</code></pre>
+        <pre class="language-text"><code class="language-text">QuestForgeを以下のマイクロサービスに分割することを検討しています：
+- Quest Service（クエスト管理）
+- Hero Service（勇者管理）
+- Notification Service（通知）
+- Billing Service（課金）
+
+それぞれのサービス間の通信に REST / GraphQL / gRPC のどれを採用すべきか、
+理由とともに推奨構成を提示してください。</code></pre>
         <hr>
       </section>
       <section class="level2">
         <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
         <ul>
-          <li>🌐 <strong>Web</strong>: <a href="https://github.com/anaibol/awesome-serverless#manifestos">Serverless Manifesto</a>（サーバーレスの本質的な価値観を整理した宣言）</li>
-          <li>🌐 <strong>ドキュメント</strong>: <a href="https://docs.aws.amazon.com/lambda/">AWS Lambda Documentation</a>（サーバーレスコンピューティングの先駆者の公式ドキュメント）</li>
-          <li>🌐 <strong>ドキュメント</strong>: <a href="https://vercel.com/docs">Vercel Documentation</a>（サーバーレスなフロントエンドとバックエンドのデプロイを極限までシンプルにするプラットフォーム）</li>
-          <li>📄 <strong>論文</strong>: E. Jonas et al. "<a href="https://arxiv.org/abs/1902.03383">Cloud Programming Simplified: A Berkeley View on Serverless Computing</a>" (2019)（サーバーレスがクラウドの未来をどう変えるかをバークレー大学の研究者が論じた重要論文）</li>
-          <li>📚 <strong>書籍</strong>: サーバーレス開発ガイド（AWSを活用した実践的なサーバーレスアーキテクチャの構築方法）</li>
+          <li>📚 <strong>書籍</strong>: Sam Newman『<a href="https://www.oreilly.co.jp/books/9784873119915/">マイクロサービスアーキテクチャ 第2版</a>』（マイクロサービスの設計・移行・運用を体系的に解説した決定版）</li>
+          <li>📚 <strong>書籍</strong>: Brendan Burns et al.『<a href="https://www.oreilly.co.jp/books/9784873119014/">Kubernetesで実践するクラウドネイティブDevOps</a>』（k8sを実際の開発・運用に活かすための実践的ガイド）</li>
+          <li>🌐 <strong>ドキュメント</strong>: <a href="https://kubernetes.io/ja/docs/home/">Kubernetes公式ドキュメント</a>（k8sの概念・チュートリアル・APIリファレンスの完全版）</li>
+          <li>🌐 <strong>仕様</strong>: <a href="https://spec.graphql.org/">GraphQL Specification</a>（GraphQLの公式仕様。言語設計の意図を理解できる）</li>
+          <li>📄 <strong>論文</strong>: L. Richardson, S. Ruby "<a href="https://www.oreilly.com/library/view/restful-web-services/9780596529260/">RESTful Web Services</a>" (2007)（REST設計原則の実践的解説の古典）</li>
+          <li>📄 <strong>論文</strong>: P. Jamshidi et al. "<a href="https://ieeexplore.ieee.org/document/8354433">Microservices: The Journey So Far and Challenges Ahead</a>" (2018)（マイクロサービス研究の体系的サーベイ）</li>
         </ul>
       </section>
     </section>

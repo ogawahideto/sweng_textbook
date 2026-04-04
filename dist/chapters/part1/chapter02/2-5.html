@@ -21,76 +21,73 @@
     <main>
     <section class="level1">
       <h1 id="25-どう守るかクリーンアーキテクチャ">2.5 どう守るか？——クリーンアーキテクチャ</h1>
-      <section class="level2">
-        <h2 id="導入-嵐の中の堅牢な城">導入: 嵐の中の堅牢な城</h2>
-        <p>オブジェクト指向で「魔力の源」を知り、UMLで「魔法陣」を描き、SOLID原則とデザインパターンで「美しい構造」を学びました。しかし、あなたの作ったシステムは、外の世界の嵐（変化）に耐えられるでしょうか？</p>
-        <ul>
-          <li>「データベースをOracleからPostgreSQLに変えたい」</li>
-          <li>「Web画面だけでなく、スマホアプリも作りたい」</li>
-          <li>「UIフレームワークをReactからVueに変えたい」</li>
-        </ul>
-        <p>こうした外側の変化のたびに、大切なビジネスロジック（クエストの計算式やレベルアップのルール）まで書き換える必要があったら、冒険はいつまでたっても進みません。</p>
-        <p>本当に大切な「魂（ドメインロジック）」を守るために、堅牢な城壁を築く必要があります。それが<strong>クリーンアーキテクチャ</strong>です。</p>
-        <hr>
+      <p>オブジェクト指向で「魔力の源」を知り、UMLで「魔法陣」を描き、SOLID原則とデザインパターンで「美しい構造」を学びました。しかし、あなたの作ったシステムは、外の世界の嵐（変化）に耐えられるでしょうか？</p>
+      <ul>
+        <li>「データベースをOracleからPostgreSQLに変えたい」</li>
+        <li>「Web画面だけでなく、スマホアプリも作りたい」</li>
+        <li>「UIフレームワークをReactからVueに変えたい」</li>
+      </ul>
+      <p>こうした外側の変化のたびに、大切なビジネスロジック（クエストの計算式やレベルアップのルール）まで書き換える必要があったら、冒険はいつまでたっても進みません。</p>
+      <p>本当に大切な「魂（ドメインロジック）」を守るために、堅牢な城壁を築く必要があります。それが<strong>クリーンアーキテクチャ</strong>です。</p>
+      <hr>
+      <section class="level3">
+        <h3 id="同心円の城郭都市">同心円の城郭都市</h3>
+        <p>次の図は、クリーンアーキテクチャを構成する同心円状の各レイヤーと、それらの間の依存の方向を示しています。</p>
+        <figure>
+          <img src="../../assets/diagrams/chapter02/2-5-clean-architecture.svg" alt="クリーンアーキテクチャの層と依存方向">
+          <figcaption aria-hidden="true">クリーンアーキテクチャの層と依存方向</figcaption>
+        </figure>
+        <p>ここで特に注目すべきは、矢印の向きです。すべての依存関係は「外から内」——すなわちインフラ層やインターフェース層からドメイン層へと向かっています。中心にある「ドメイン層」は何にも依存せず、データベースやWebフレームワークの存在を知りません。この構造により、外側の「道具」が何であれ、城の本丸（ビジネスロジック）は傷つかずに輝き続けます。</p>
+        <p>クリーンアーキテクチャは、システムを同心円状の階層（レイヤー）に分ける考え方です。</p>
+        <p>中心に行けば行くほど「重要で変化しにくいもの」、外側に行けば行くほど「詳細で変化しやすいもの」を配置します。</p>
+        <section class="level4">
+          <h4 id="1-ドメイン層entities城の本丸keep">1. ドメイン層（Entities）：城の本丸（Keep）</h4>
+          <p>ビジネスの核心となるルールです。QuestForgeで言えば、「経験値が溜まればレベルが上がる」といった、ゲーム自体のルールです。データベースやUIが何であれ、このルールは変わりません。</p>
+        </section>
+        <section class="level4">
+          <h4 id="2-アプリケーション層use-cases内郭inner-wall">2. アプリケーション層（Use Cases）：内郭（Inner Wall）</h4>
+          <p>ユーザーがシステムを使って達成したいこと（ユースケース）です。「クエストを作成する」「報酬を受け取る」といった処理の流れを記述します。</p>
+        </section>
+        <section class="level4">
+          <h4 id="3-インターフェース層interface-adapters外郭outer-wall">3. インターフェース層（Interface Adapters）：外郭（Outer Wall）</h4>
+          <p>内側のデータを、外側（DBやUI）が使いやすい形に変換する翻訳者たちです。ControllerやPresenter、Gatewayがここにいます。</p>
+        </section>
+        <section class="level4">
+          <h4 id="4-インフラ層frameworks--drivers城下町">4. インフラ層（Frameworks &amp; Drivers）：城下町</h4>
+          <p>Webフレームワーク、データベース、外部APIなど。これらはあくまで「道具」であり、いつでも取り替え可能な状態にしておきます。</p>
+        </section>
       </section>
-      <section class="level2">
-        <h2 id="理論的背景">理論的背景</h2>
-        <section class="level3">
-          <h3 id="同心円の城郭都市">同心円の城郭都市</h3>
-          <figure>
-            <img src="../../assets/diagrams/chapter02/2-5-clean-architecture.svg" alt="クリーンアーキテクチャの層と依存方向">
-            <figcaption aria-hidden="true">クリーンアーキテクチャの層と依存方向</figcaption>
-          </figure>
-          <p>クリーンアーキテクチャは、システムを同心円状の階層（レイヤー）に分ける考え方です。</p>
-          <p>中心に行けば行くほど「重要で変化しにくいもの」、外側に行けば行くほど「詳細で変化しやすいもの」を配置します。</p>
-          <section class="level4">
-            <h4 id="1-ドメイン層entities城の本丸keep">1. ドメイン層（Entities）：城の本丸（Keep）</h4>
-            <p>ビジネスの核心となるルールです。QuestForgeで言えば、「経験値が溜まればレベルが上がる」といった、ゲーム自体のルールです。データベースやUIが何であれ、このルールは変わりません。</p>
-          </section>
-          <section class="level4">
-            <h4 id="2-アプリケーション層use-cases内郭inner-wall">2. アプリケーション層（Use Cases）：内郭（Inner Wall）</h4>
-            <p>ユーザーがシステムを使って達成したいこと（ユースケース）です。「クエストを作成する」「報酬を受け取る」といった処理の流れを記述します。</p>
-          </section>
-          <section class="level4">
-            <h4 id="3-インターフェース層interface-adapters外郭outer-wall">3. インターフェース層（Interface Adapters）：外郭（Outer Wall）</h4>
-            <p>内側のデータを、外側（DBやUI）が使いやすい形に変換する翻訳者たちです。ControllerやPresenter、Gatewayがここにいます。</p>
-          </section>
-          <section class="level4">
-            <h4 id="4-インフラ層frameworks--drivers城下町">4. インフラ層（Frameworks &amp; Drivers）：城下町</h4>
-            <p>Webフレームワーク、データベース、外部APIなど。これらはあくまで「道具」であり、いつでも取り替え可能な状態にしておきます。</p>
-          </section>
-        </section>
-        <section class="level3">
-          <h3 id="依存の方向性the-dependency-rule">依存の方向性（The Dependency Rule）</h3>
-          <p>[図: 依存方向のルール（内向きの矢印）]</p>
-          <p>この城にはたった一つ、絶対の掟があります。</p>
-          <blockquote>
-            <p><strong>「依存の矢印は、常に外側から内側へ向かわなければならない」</strong></p>
-          </blockquote>
-          <p>外側（DBやUI）は内側（ドメイン）を知っていますが、内側は外側のことを一切知りません。王様（ドメイン）は、城下町（DB）の流行り廃りに影響されないのです。</p>
-        </section>
-        <section class="level3">
-          <h3 id="城壁の高さオーバーエンジニアリングとyagniの智慧">城壁の高さ：オーバーエンジニアリングとYAGNIの智慧</h3>
-          <p>クリーンアーキテクチャは強力な「守り」ですが、一つだけ心がけておきたいポイントがあります。それは、<strong>オーバーエンジニアリング（過剰設計）</strong>です。</p>
-          <p>小さな小屋を建てるだけなのに、何十メートルもの石造りの城壁（何層もの抽象化レイヤー）を築くのは、かえって時間と労力の無駄になり、身動きが取れなくなってしまいます。</p>
-          <p>ここで、アルケミストが心得ておくべき2つの「自戒の呪文」を紹介します。</p>
-          <ol>
-            <li>
-              <strong>YAGNI（You Aren't Gonna Need It）</strong>:
-              「それはきっと必要にならない」。将来の変更を予測して複雑な構造を作るのではなく、本当に必要になった瞬間に初めてその構造を導入せよ、という教えです。
-            </li>
-            <li>
-              <strong>KISS（Keep It Simple, Stupid）</strong>:
-              「常にシンプルにしておけ」。複雑な魔法陣よりも、誰にでも効果がわかる単純な術式の方が、間違いが少なく扱いやすいのです。
-            </li>
-          </ol>
-          <p>クリーンアーキテクチャという「堅牢な城」を築くべきか、あるいは今はまだ「身軽なキャンプ」で済ませるべきか。その<strong>トレードオフ（利害のバランス）</strong>を見極めることこそが、真のエンジニアリングの醍醐味です。</p>
-          <hr>
-        </section>
+      <section class="level3">
+        <h3 id="依存の方向性the-dependency-rule">依存の方向性（The Dependency Rule）</h3>
+        <p>[図: 依存方向のルール（内向きの矢印）]</p>
+        <p>この城にはたった一つ、絶対の掟があります。</p>
+        <blockquote>
+          <p><strong>「依存の矢印は、常に外側から内側へ向かわなければならない」</strong></p>
+        </blockquote>
+        <p>外側（DBやUI）は内側（ドメイン）を知っていますが、内側は外側のことを一切知りません。王様（ドメイン）は、城下町（DB）の流行り廃りに影響されないのです。</p>
+      </section>
+      <section class="level3">
+        <h3 id="城壁の高さオーバーエンジニアリングとyagniの智慧">城壁の高さ：オーバーエンジニアリングとYAGNIの智慧</h3>
+        <p>クリーンアーキテクチャは強力な「守り」ですが、一つだけ心がけておきたいポイントがあります。それは、<strong>オーバーエンジニアリング（過剰設計）</strong>です。</p>
+        <p>小さな小屋を建てるだけなのに、何十メートルもの石造りの城壁（何層もの抽象化レイヤー）を築くのは、かえって時間と労力の無駄になり、身動きが取れなくなってしまいます。</p>
+        <p>ここで、アルケミストが心得ておくべき2つの「自戒の呪文」を紹介します。</p>
+        <ol>
+          <li>
+            <strong>YAGNI（You Aren't Gonna Need It）</strong>:
+            「それはきっと必要にならない」。将来の変更を予測して複雑な構造を作るのではなく、本当に必要になった瞬間に初めてその構造を導入せよ、という教えです。
+          </li>
+          <li>
+            <strong>KISS（Keep It Simple, Stupid）</strong>:
+            「常にシンプルにしておけ」。複雑な魔法陣よりも、誰にでも効果がわかる単純な術式の方が、間違いが少なく扱いやすいのです。
+          </li>
+        </ol>
+        <p>クリーンアーキテクチャという「堅牢な城」を築くべきか、あるいは今はまだ「身軽なキャンプ」で済ませるべきか。その<strong>トレードオフ（利害のバランス）</strong>を見極めることこそが、真のエンジニアリングの醍醐味です。</p>
+        <hr>
       </section>
       <section class="level2">
         <h2 id="実践例-questforgeの城郭構造">実践例: QuestForgeの城郭構造</h2>
         <p>QuestForgeのディレクトリ構造は、この思想を反映しています。</p>
+        <p>同心円の城郭設計と依存の掟を理解したところで、QuestForgeという実際の城の構造を見ながら、それが現実のコードにどう現れるかを確認しましょう。</p>
         <pre class="language-text"><code class="language-text">questforge/
 ├── domain/           # [本丸] エンティティ、リポジトリのインターフェース
 │   ├── hero.py       # Heroクラス（純粋なPythonコード）
@@ -140,7 +137,7 @@
         <p>レイヤーを分けると、どうしても似たようなクラスや変換処理（ボイラープレートコード）が増えます。これを手で書くのは退屈ですが、AIにとっては得意分野です。</p>
         <section class="level3">
           <h3 id="レイヤー構造の生成">レイヤー構造の生成</h3>
-          <p>「Heroエンティティを基に、Repositoryインターフェース、ユースケース、そしてSQLite用の実装クラスの雛形を一括生成して」と詠唱すれば、AIは城の骨組みを一瞬で築き上げます。</p>
+          <p>「依存の逆転」でコードの繋がり方が変わることを確認したところで、AIを使ってその城の骨組みをどれだけ素早く築けるかを探ってみましょう。「Heroエンティティを基に、Repositoryインターフェース、ユースケース、そしてSQLite用の実装クラスの雛形を一括生成して」と詠唱すれば、AIは城の骨組みを一瞬で築き上げます。</p>
         </section>
         <section class="level3">
           <h3 id="依存ルールのチェック">依存ルールのチェック</h3>
@@ -152,7 +149,7 @@
         <h2 id="ハンズオン-城壁を築く">ハンズオン: 城壁を築く</h2>
         <section class="level3">
           <h3 id="ステップ1-レイヤーを定義する">ステップ1: レイヤーを定義する</h3>
-          <p>自分のプロジェクトフォルダに <code>domain</code>, <code>application</code>, <code>infrastructure</code> という3つのディレクトリを作成しましょう。</p>
+          <p>AIを使った設計のスピードを体感したところで、今度は自分でディレクトリを切り、本丸（ドメイン）を守る城壁の初めの一石を置いてみましょう。自分のプロジェクトフォルダに <code>domain</code>, <code>application</code>, <code>infrastructure</code> という3つのディレクトリを作成します。</p>
         </section>
         <section class="level3">
           <h3 id="ステップ2-本丸ドメインを守る">ステップ2: 本丸（ドメイン）を守る</h3>
@@ -171,7 +168,7 @@
         <section class="level3">
           <h3 id="1-ユビキタス言語翻訳の壁を壊す共通語">1. ユビキタス言語：翻訳の壁を壊す「共通語」</h3>
           <p>
-            開発者と、ビジネスの専門家（ドメインエキスパート）が使う言葉がバラバラだと、悲劇が起きます。
+            城壁の設計を終えた後の問いは自然と「では、城の中に秩序をどう築くか」へと向かいます。その基盤となるのが「共通語」です。開発者と、ビジネスの専門家（ドメインエキスパート）が使う言葉がバラバラだと、悲劇が起きます。
             専門家が「冒険者の称号を授与する」と言っているのに、コードが <code>update_user_status(3)</code> となっていたらどうでしょう？ 修正のたびに「status(3)って称号のことだっけ？」という脳内翻訳が必要になり、いつか必ずミスが起きます。
           </p>
           <p>
@@ -200,16 +197,8 @@
           <p>これを防ぐのが「集約」です。クエストとタスクを一つのグループ（集約）とし、外部からの操作は必ずグループのリーダー（集約ルート）である「クエスト」を通すように制限します。これにより、「タスクが全部終わっていないのにクエストが完了扱いになる」といった矛盾した状態を防ぐ、強力な防壁となるのです。</p>
           <p>城壁（アーキテクチャ）を作ったら、その中にはこれらの法律を敷き、豊かで秩序ある王国（ドメインモデル）を築いていきましょう。</p>
           <hr>
+          <p>クリーンアーキテクチャは、ビジネスロジックという「宝」を、フレームワークやデータベースという「道具」の変化から守るための城郭です。同心円の中心に近いほど重要で変化しにくいものを置き、依存の方向は常に「外から内」へ——この一点を守るだけで、DBを取り替えてもUIを変えても、核心のロジックは傷つきません。そしてこの構造は、テストの書きやすさにも直結します。外側の詳細（DBやUIフレームワーク）を差し替えてテストを走らせられるからこそ、設計の健全性を継続的に確認できるのです。</p>
         </section>
-      </section>
-      <section class="level2">
-        <h2 id="まとめ">まとめ</h2>
-        <ol>
-          <li><strong>クリーンアーキテクチャ</strong>は、ビジネスロジック（宝）をフレームワークやDB（道具）の変化から守るための城郭である。</li>
-          <li><strong>同心円の構造</strong>を持ち、中心ほど重要で変化しにくいものを配置する。</li>
-          <li><strong>依存の方向性</strong>は常に「外から内」へ。内側は外側の詳細を知ってはならない。</li>
-          <li>この構造を守ることで、<strong>テストが容易</strong>になり、技術選定の変更にも<strong>柔軟に対応</strong>できる。</li>
-        </ol>
         <section class="level3">
           <h3 id="技術的負債という魔物">技術的負債という魔物</h3>
           <p>ここで一つ、アルケミストが心に留めておくべき概念があります——<strong>技術的負債（Technical Debt）</strong>です。</p>
@@ -229,17 +218,6 @@
         </section>
       </section>
       <section class="level2">
-        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
-        <ul>
-          <li>📚 <strong>書籍</strong>: ロバート・C・マーチン『<a href="https://www.kadokawa.co.jp/product/301802000596/">Clean Architecture 達人に学ぶソフトウェアの構造と設計</a>』（アーキテクチャの普遍的なルールを説く原典）</li>
-          <li>📚 <strong>書籍</strong>: エリック・エヴァンス『<a href="https://www.shoeisha.co.jp/book/detail/9784798121963">ドメイン駆動設計</a>』（ビジネスの複雑さに立ち向かうための設計思想）</li>
-          <li>📚 <strong>書籍</strong>: ヴァーン・ヴァーノン『<a href="https://www.shoeisha.co.jp/book/detail/9784798131610">実践ドメイン駆動設計</a>』（DDDの実装パターンを詳細に解説した、通称「赤本」）</li>
-          <li>📚 <strong>書籍</strong>: 成瀬 允宣『<a href="https://www.shoeisha.co.jp/book/detail/9784798161501">ドメイン駆動設計入門</a>』（ボトムアップでDDDを学べる、日本で最も分かりやすい入門書）</li>
-          <li>🌐 <strong>Web</strong>: Robert C. Martin "<a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html">The Clean Architecture</a>"（すべての始まりとなった、伝説的なブログ記事）</li>
-        </ul>
-        <hr>
-      </section>
-      <section class="level2">
         <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
         <pre class="language-text"><code class="language-text">以下のドメインオブジェクト（Heroクラス）に対して、クリーンアーキテクチャに基づいた
 1. リポジトリインターフェース
@@ -247,6 +225,16 @@
 3. インメモリで動作するリポジトリの実装
 のPythonコードを生成してください。</code></pre>
         <pre class="language-text"><code class="language-text">このPythonプロジェクトのディレクトリ構造を解析し、Clean Architectureの「依存性のルール（外側から内側へのみ依存）」に違反しているimport文があれば指摘してください。</code></pre>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>📚 <strong>書籍</strong>: エリック・エヴァンス『<a href="https://www.shoeisha.co.jp/book/detail/9784798121963">ドメイン駆動設計</a>』（ビジネスの複雑さに立ち向かうための設計思想）</li>
+          <li>📚 <strong>書籍</strong>: ヴァーン・ヴァーノン『<a href="https://www.shoeisha.co.jp/book/detail/9784798131610">実践ドメイン駆動設計</a>』（DDDの実装パターンを詳細に解説した、通称「赤本」）</li>
+          <li>📚 <strong>書籍</strong>: 成瀬 允宣『<a href="https://www.shoeisha.co.jp/book/detail/9784798161501">ドメイン駆動設計入門</a>』（ボトムアップでDDDを学べる、日本で最も分かりやすい入門書）</li>
+          <li>🌐 <strong>Web</strong>: Robert C. Martin "<a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html">The Clean Architecture</a>"（すべての始まりとなった、伝説的なブログ記事）</li>
+        </ul>
+        <hr>
       </section>
     </section>
   

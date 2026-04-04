@@ -7,22 +7,21 @@
   <body>
     <section class="level1">
       <h1 id="53-技術負債の返済ゲームgamification-of-maintenance">5.3 技術負債の返済ゲーム（Gamification of Maintenance）</h1>
+      <p>
+        ソフトウェア開発において、最も長く、最も奥深い旅路。それは「メンテナンス」です。
+        納期に追われて書いた急ごしらえのコード、一時的な回避策、古くなったライブラリ...これらは<strong>「技術的負債（Technical Debt）」</strong>として積み重なり、利子（開発速度の低下）を要求し続けます。
+      </p>
+      <p>次の図は、技術負債をRPGのゲームとして捉えた「返済ゲーム」の全体像を示しています。</p>
+      <figure>
+        <img src="../../assets/diagrams/chapter05/5-3-debt-game.svg" alt="技術負債の返済ゲーム">
+        <figcaption aria-hidden="true">技術負債の返済ゲーム</figcaption>
+      </figure>
+      <p>ここで示されているのは、負債を「倒すべきモンスター」として可視化し、少しずつ経験値を稼ぎながら返済していくという発想の転換です。負債を抱えた状態でも開発は続けられますが、返済が遅れるほど利子（開発速度の低下）が膨らんでいきます。リファクタリングを「義務」ではなく「クエスト」として楽しむマインドセットが、長期的なコードの健康を保ちます。</p>
+      <p>多くのエンジニアにとって、負債の返済（リファクタリング）は「やらなきゃいけないけど、面倒で評価されない仕事」になりがちです。しかし、私たちは「楽しむ」ためにここにいます。</p>
+      <p>このセクションでは、地道な借金返済を、モンスターを倒し経験値を得る<strong>「RPG（ロールプレイングゲーム）」</strong>へと変えるマインドセットと、AIという「鑑定眼」を武器にした現代のリファクタリング術を紹介します。</p>
+      <hr>
       <section class="level2">
-        <h2 id="導入-終わらない戦いを遊びに変える">導入: 終わらない戦いを「遊び」に変える</h2>
-        <p>
-          ソフトウェア開発において、最も長く、最も奥深い旅路。それは「メンテナンス」です。
-          納期に追われて書いた急ごしらえのコード、一時的な回避策、古くなったライブラリ...これらは<strong>「技術的負債（Technical Debt）」</strong>として積み重なり、利子（開発速度の低下）を要求し続けます。
-        </p>
-        <figure>
-          <img src="../../assets/diagrams/chapter05/5-3-debt-game.svg" alt="技術負債の返済ゲーム">
-          <figcaption aria-hidden="true">技術負債の返済ゲーム</figcaption>
-        </figure>
-        <p>多くのエンジニアにとって、負債の返済（リファクタリング）は「やらなきゃいけないけど、面倒で評価されない仕事」になりがちです。しかし、私たちは「楽しむ」ためにここにいます。</p>
-        <p>このセクションでは、地道な借金返済を、モンスターを倒し経験値を得る<strong>「RPG（ロールプレイングゲーム）」</strong>へと変えるマインドセットと、AIという「鑑定眼」を武器にした現代のリファクタリング術を紹介します。</p>
-        <hr>
-      </section>
-      <section class="level2">
-        <h2 id="理論的背景魔導の代償負債の四象限">理論的背景：魔導の代償（負債の四象限）</h2>
+        <h2 id="魔導の代償負債の四象限">魔導の代償（負債の四象限）</h2>
         <p>すべての負債が悪というわけではありません。Ward Cunninghamが提唱した「技術的負債」の概念を、魔導のタイプ別に分類してみましょう。</p>
         <table>
           <thead>
@@ -87,7 +86,7 @@
         </section>
         <section class="level3">
           <h3 id="2-コードの呪いを数値化するメトリクス">2. コードの「呪い」を数値化する（メトリクス）</h3>
-          <p>AIや静的解析ツールを使って、コードの複雑さを算出します。代表的なメトリクスをゲームのステータスに例えて見てみましょう。</p>
+          <p>図鑑が埋まってきたら、次は敵の「強さ」を客観的な数値で測る番です。AIや静的解析ツールを使って、コードの複雑さを算出します。代表的なメトリクスをゲームのステータスに例えて見てみましょう。</p>
           <table>
             <thead>
               <tr>
@@ -150,7 +149,7 @@ radon cc src/ -a -s
           </section>
           <section class="level4">
             <h4 id="認知的複雑度cognitive-complexity">認知的複雑度（Cognitive Complexity）</h4>
-            <p>SonarSourceのG. Campbell（2018年）が提唱した、より「人間感覚」に近い指標です。循環複雑度と違い、<strong>ネストが深いほどペナルティが大きく</strong>なります。</p>
+            <p>循環複雑度が「分岐の数」を機械的に数えるのに対し、SonarSourceのG. Campbell（2018年）が提唱した認知的複雑度はより「読む人間の感覚」に寄り添った指標です。循環複雑度と違い、<strong>ネストが深いほどペナルティが大きく</strong>なります。</p>
             <pre class="language-python"><code class="language-python"><span class="token comment"># 認知的複雑度の計算イメージ</span>
 <span class="token keyword">def</span> <span class="token function">process</span><span class="token punctuation">(</span>quests<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">for</span> quest <span class="token keyword">in</span> quests<span class="token punctuation">:</span>          <span class="token comment"># +1（ループ）</span>
@@ -161,19 +160,19 @@ radon cc src/ -a -s
           </section>
           <section class="level4">
             <h4 id="関数の行数method-length">関数の行数（Method Length）</h4>
-            <p>最もシンプルで、最も効果的な指標の一つです。1つの関数が何行かを数えるだけ。</p>
+            <p>複雑さを数値で捉えたところで、最もシンプルながら見落とされがちな指標も押さえておきましょう。最もシンプルで、最も効果的な指標の一つ——1つの関数が何行かを数えるだけです。</p>
             <p>「1関数は20行以内」が広く言われる目安ですが、<strong>行数はあくまで「臭いを嗅ぎ取るための入口」</strong>です。長い関数は往々にして「一つの関数が複数の仕事をしている」サインです。3.3節で学んだ「関数の単一責任」の原則に照らし合わせて判断しましょう。</p>
           </section>
           <section class="level4">
             <h4 id="重複コード率code-duplication">重複コード率（Code Duplication）</h4>
-            <p>同じ、または酷似したコードが複数箇所に存在する割合です。DRY原則（Don't Repeat Yourself）の違反を定量化します。</p>
+            <p>行数の次は、コードの「コピー」という古典的な呪いに目を向けましょう。同じ、または酷似したコードが複数箇所に存在する割合で、DRY原則（Don't Repeat Yourself）の違反を定量化します。</p>
             <pre class="language-bash"><code class="language-bash"><span class="token comment"># Python: pylint --disable=all --enable=duplicate-code</span>
 <span class="token comment"># JavaScript: jscpd --min-lines 5 src/</span></code></pre>
             <p>重複が5%を超えたら「コピー魔法の残滓」が溜まり始めているサイン。どちらか一方のバグを直しても、もう一方に同じバグが残ります。</p>
           </section>
           <section class="level4">
             <h4 id="結合度coupling">結合度（Coupling）</h4>
-            <p>あるモジュールが「他のどれだけのモジュールに依存しているか（流出結合度: Ce）」と、「他のどれだけのモジュールから依存されているか（流入結合度: Ca）」を測ります。</p>
+            <p>最後に、モジュール間の「依存の網」を測る指標です。あるモジュールが「他のどれだけのモジュールに依存しているか（流出結合度: Ce）」と、「他のどれだけのモジュールから依存されているか（流入結合度: Ca）」を測ります。</p>
             <pre class="language-text"><code class="language-text">不安定度 = Ce / (Ca + Ce)
   0に近い → 安定（多くに依存される、変更コストが高い）
   1に近い → 不安定（多くに依存する、変更の影響を受けやすい）</code></pre>
@@ -190,7 +189,7 @@ radon cc src/ -a -s
       </section>
       <section class="level2">
         <h2 id="ai考古学者古文書の解読と浄化">AI考古学者：古文書の解読と浄化</h2>
-        <p>AI時代のリファクタリングにおける最大の武器は、AIを<strong>「考古学者」</strong>として使うことです。</p>
+        <p>AI時代のリファクタリングにおける最大の武器は、AIを<strong>「考古学者」</strong>として使うことです。その得意技は二つの役割に整理できます。</p>
         <section class="level3">
           <h3 id="古文書の解読explain-code">古文書の解読（Explain Code）</h3>
           <p>意味不明なスパゲッティコードを見つけたとき、AIに「このコードの意図を要約し、データの流れを可視化して」と頼みます。AIは、数年前の自分（または他人）が残した「古文書」の解釈を助けてくれます。</p>
@@ -209,6 +208,7 @@ radon cc src/ -a -s
         </p>
         <section class="level3">
           <h3 id="攻略手順">攻略手順</h3>
+          <p>その鉄則を実践するための手順をステップごとに追っていきましょう。</p>
           <ol>
             <li><strong>仕様化テスト（Characterization Test）</strong>: 現在の挙動（たとえバグであっても）を確定させるテストを書く。</li>
             <li><strong>保護壁の設置</strong>: テストが通ることを確認し、セーブポイントを作る。</li>
@@ -253,20 +253,10 @@ radon cc src/ -a -s
         <hr>
       </section>
       <section class="level2">
-        <h2 id="まとめ-借金ではなく投資">まとめ: 借金ではなく「投資」</h2>
-        <p>技術的負債という言葉はネガティブですが、見方を変えれば、それは<strong>「未来の自分たちへの投資のチャンス」</strong>です。</p>
-        <p>リファクタリングを通じて、コードだけでなく、あなた自身とチームもレベルアップしていく。汚いコードを見つけた時、こう思えるようになれば、あなたは一流のアルケミストです。</p>
-        <p>「おっ、あそこに経験値の塊（はぐれメタル）がいるぞ」と。</p>
-        <hr>
-      </section>
-      <section class="level2">
-        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
-        <ul>
-          <li>📄 <strong>論文</strong>: Ward Cunningham "<a href="https://c2.com/doc/oopsla92.html">The WyCash Portfolio Management System</a>" (1992)（「技術的負債」というメタファーが世界で初めて提唱された、歴史的な経験報告）</li>
-          <li>📚 <strong>書籍</strong>: Martin Fowler『<a href="https://www.ohmsha.co.jp/book/9784274224546/">リファクタリング 第2版</a>』（リファクタリングのカタログ。本書で触れた技法の詳細はこちらを確認してください）</li>
-          <li>🌐 <strong>Web</strong>: <a href="https://github.com/emilybache/GildedRose-Refactoring-Kata">Gilded Rose Refactoring Kata</a>（汚いコードをリファクタリングする、世界的に有名な練習問題。多くの言語に対応しています）</li>
-          <li>🌐 <strong>Web</strong>: <a href="https://www.industriallogic.com/blog/refactoring-album/">Industrial Logic - Refactoring Album</a>（有名なリファクタリングの事例を動画や記事で学べるリソース）</li>
-        </ul>
+        <h2 id="まとめ">まとめ</h2>
+        <p>技術的負債という言葉はネガティブに響きますが、見方を変えれば、それは<strong>「未来の自分たちへの投資のチャンス」</strong>です。負債の四象限で現状を正確に把握し、メトリクスでモンスターを数値化し、一振りの砥石で毎日少しずつ磨き続ける。この習慣こそが、コードベースを腐食から守り、開発速度を長期にわたって維持する最強の防衛魔法です。</p>
+        <p>AIは古文書の解読から攻略チャートの作成まで、リファクタリングのあらゆる局面で力を発揮します。「この関数の認知的複雑度は18——はぐれメタル級の強敵だ！」という共通言語を持つことで、メンテナンスはチーム全員が参加できる冒険になります。汚いコードを見つけた時に「おっ、あそこに経験値の塊がいるぞ」と思えるようになれば、あなたは一流のアルケミストです。</p>
+        <p>5.4節では視点をさらに広げ、ソフトウェアプロダクトラインという手法で、個々のシステムを超えた「設計資産の再利用」という奥深い世界へと踏み込みます。</p>
         <hr>
       </section>
       <section class="level2">
@@ -304,6 +294,15 @@ radon cc src/ -a -s
 3. 1件だけ実際にリファクタリングを実施し、
    変更前後のコードと「何がどう改善されたか」を説明してください。</code></pre>
         </section>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>📄 <strong>論文</strong>: Ward Cunningham "<a href="https://c2.com/doc/oopsla92.html">The WyCash Portfolio Management System</a>" (1992)（「技術的負債」というメタファーが世界で初めて提唱された、歴史的な経験報告）</li>
+          <li>📚 <strong>書籍</strong>: Martin Fowler『<a href="https://www.ohmsha.co.jp/book/9784274224546/">リファクタリング 第2版</a>』（リファクタリングのカタログ。本書で触れた技法の詳細はこちらを確認してください）</li>
+          <li>🌐 <strong>Web</strong>: <a href="https://github.com/emilybache/GildedRose-Refactoring-Kata">Gilded Rose Refactoring Kata</a>（汚いコードをリファクタリングする、世界的に有名な練習問題。多くの言語に対応しています）</li>
+        </ul>
+        <hr>
       </section>
     </section>
   

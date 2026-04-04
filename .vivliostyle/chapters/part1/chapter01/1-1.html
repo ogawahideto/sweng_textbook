@@ -7,33 +7,37 @@
   <body>
     <section class="level1">
       <h1 id="11-なぜ聴くのか要求工学という冒険の始まり">1.1 なぜ聴くのか？——要求工学という冒険の始まり</h1>
+      <p>「もっと使いやすいシステムにしてほしいんです」</p>
+      <p>ユーザーからそう言われたとき、あなたはどう反応しますか？</p>
+      <p>「わかりました、UIを改善しましょう」と即答する前に、ちょっと立ち止まってみませんか？　ここには、もっとワクワクする可能性が眠っています。</p>
+      <p>ユーザーの言葉は、海面に浮かぶ氷山の一角に過ぎません。その下には、言葉にできない期待、本人も気づいていない願望、そして本当に実現したいことという巨大な氷塊が隠れています。</p>
+      <p>ソフトウェアエンジニアリングにおける<strong>要求工学（Requirements Engineering）</strong>とは、単に言われたことをメモする作業ではありません。それは、王（クライアント）の希望を聞き、町（現場）を歩いて真実を探り、「財宝（ソフトウェア）」の正体を明らかにするプロセスなのです。</p>
+      <p>この章では、その第一歩として「なぜ聴くことが重要なのか」を深く理解します。</p>
+      <hr>
       <section class="level2">
-        <h2 id="導入-言葉の迷宮への入り口">導入: 言葉の迷宮への入り口</h2>
-        <p>「もっと使いやすいシステムにしてほしいんです」</p>
-        <p>ユーザーからそう言われたとき、あなたはどう反応しますか？</p>
-        <p>「わかりました、UIを改善しましょう」と即答する前に、ちょっと立ち止まってみませんか？　ここには、もっとワクワクする可能性が眠っています。</p>
-        <p>ユーザーの言葉は、海面に浮かぶ氷山の一角に過ぎません。その下には、言葉にできない期待、本人も気づいていない願望、そして本当に実現したいことという巨大な氷塊が隠れています。</p>
-        <p>ソフトウェアエンジニアリングにおける<strong>要求工学（Requirements Engineering）</strong>とは、単に言われたことをメモする作業ではありません。それは、王（クライアント）の希望を聞き、町（現場）を歩いて真実を探り、「財宝（ソフトウェア）」の正体を明らかにするプロセスなのです。</p>
-        <p>この章では、その第一歩として「なぜ聴くことが重要なのか」を深く理解します。</p>
-        <hr>
-      </section>
-      <section class="level2">
-        <h2 id="理論的背景-欲しいものと必要なものは違う">理論的背景: 「欲しいもの」と「必要なもの」は違う</h2>
+        <h2 id="欲しいものと必要なものは違う">「欲しいもの」と「必要なもの」は違う</h2>
+        <p>この「欲しいもの」と「必要なもの」の隔たりは、どこから生まれるのでしょうか。半世紀以上語り継がれてきた一枚の絵が、その答えを鮮やかに示してくれます。</p>
         <section class="level3">
           <h3 id="ブランコの風刺画が教えてくれること">ブランコの風刺画が教えてくれること</h3>
           <p>ソフトウェア開発の現場には、古くから伝わる有名な風刺画があります。</p>
+          <figure>
+            <img src="../../assets/diagrams/chapter01/1-1-blanco.jpg" alt="ブランコの風刺画——顧客・マネージャー・開発者それぞれが描いた「ブランコ」と、ユーザーが本当に欲しかったもの">
+            <figcaption aria-hidden="true">ブランコの風刺画——顧客・マネージャー・開発者それぞれが描いた「ブランコ」と、ユーザーが本当に欲しかったもの</figcaption>
+          </figure>
+          <p>この絵が描いているのは、6コマのストーリーです。</p>
+          <ol>
+            <li><strong>スポンサーが発案したもの</strong>: 太い枝から吊るした、3段の豪華な座席</li>
+            <li><strong>仕様書に書かれたもの</strong>: 木の幹を貫通して固定された、動かない3段の座席</li>
+            <li><strong>システムアナリストが設計したもの</strong>: 幹をロープでぐるぐる巻きにした複雑な構造</li>
+            <li><strong>プログラマーが作ったもの</strong>: 強度が怪しい別の枝から吊るした座席</li>
+            <li><strong>現場に設置されたもの</strong>: 幹を切り落とし、A型の支柱で支えた不安定な座席</li>
+            <li><strong>ユーザーが本当に欲しかったもの</strong>: 木の枝に吊るした、1本の古タイヤ</li>
+          </ol>
           <p>
-            <img src="../../assets/diagrams/chapter01/1-1-requirements-layers.svg" alt="顧客が説明した要件 vs 実際に必要だったもの">
-            <em>※注: この階層図は要求の本質を捉えるためのものです。ブランコの風刺画そのものは、歴史的に「伝言ゲームの悲劇」を象徴する図として広く知られています。</em>
+            この絵は1970年代から存在し、半世紀経った今も開発現場で共有され続けています。それは、<strong>コミュニケーションの技術</strong>が、いつの時代も価値を持ち続けることを示しています。
+            なお原作者は不明とのことで、上記のイラストは原著に最も近いと言われているUniversity of London Computer Center Newsletter　No.53,March.1973（ブライアン・L・ミーク、パトリシア・M・ヒース）をもとにnano banana 2で生成したものです。
           </p>
-          <p>この絵が描いているのは、以下のようなストーリーです。</p>
-          <ul>
-            <li><strong>顧客が説明したもの</strong>: 複雑な3段構造のブランコ</li>
-            <li><strong>開発者が理解したもの</strong>: さらに複雑な何か</li>
-            <li><strong>実際に作られたもの</strong>: まったく別の何か</li>
-            <li><strong>顧客が本当に欲しかったもの</strong>: タイヤをロープで吊るしただけのシンプルなブランコ</li>
-          </ul>
-          <p>この絵は1970年代から存在し、半世紀経った今も開発現場で共有され続けています。それは、<strong>コミュニケーションの技術</strong>が、いつの時代も価値を持ち続けることを示しています。</p>
+          <p>では、この風刺画が示す「欲しいもの」と「必要なもの」のズレは、なぜ生まれるのでしょうか。マーケティングの世界には、そのエッセンスを突いた言葉があります。</p>
         </section>
         <section class="level3">
           <h3 id="ドリルではなく穴が欲しい">ドリルではなく「穴」が欲しい</h3>
@@ -52,11 +56,13 @@
         </section>
         <section class="level3">
           <h3 id="要求の3つの層">要求の3つの層</h3>
-          <p>要求には階層があります。</p>
+          <p>要求には階層があります。この「目的」を体系的に把握するには、要求に階層があることを知っておく必要があります。</p>
+          <p>次の図は、要求の3層構造——ビジネス要求・ユーザー要求・機能要求の関係を示しています。</p>
           <figure>
             <img src="../../assets/diagrams/chapter01/1-1-requirements-layers.svg" alt="要求の層構造">
             <figcaption aria-hidden="true">要求の層構造</figcaption>
           </figure>
+          <p>ここで重要なのは、上位層ほど「なぜ（Why）」を問い、下位層ほど「何を・どのように（What/How）」を表す点です。開発者は下位の機能要求（「通知を実装してください」）だけを見がちですが、上位のビジネス要求（「売上を伸ばしたい」）まで遡ることで、より本質的な解決策が見えてきます。</p>
           <pre class="language-text"><code class="language-text">┌─────────────────────────────────────┐
 │     ビジネス要求（Why of Why）       │  ← 組織・事業の目標
 │  「売上を20%向上させたい」           │
@@ -74,6 +80,7 @@
       </section>
       <section class="level2">
         <h2 id="聴くことで広がる可能性">「聴く」ことで広がる可能性</h2>
+        <p>要求の三層構造を理解したとき、「聴く」という行為がまったく違う輝きを帯びてきます。</p>
         <section class="level3">
           <h3 id="言葉の奥にある宝物">言葉の奥にある宝物</h3>
           <p>ユーザーの言葉には、まだ言語化されていない宝物が眠っています。それを見つけるチャンスが3つあります。</p>
@@ -109,6 +116,7 @@
       </section>
       <section class="level2">
         <h2 id="聴くことがもたらす価値">聴くことがもたらす価値</h2>
+        <p>「聴く」ことには、感覚的な手応え以上の、データで裏付けられた確かな価値があります。</p>
         <section class="level3">
           <h3 id="プロジェクト成功への近道">プロジェクト成功への近道</h3>
           <p>Standish Groupの調査（CHAOS Report）によれば、プロジェクト成功の鍵となる要因のトップ3は以下の通りです。</p>
@@ -118,6 +126,7 @@
             <li><strong>要求の明確化（Clear Statement of Requirements）</strong> — しっかり聴くことで達成できる</li>
           </ol>
           <p>3つすべてが「聴く」ことに深く関わっています。<strong>適切に聴くことは、プロジェクト成功への最も確実な近道</strong>なのです。</p>
+          <p>成功率だけでなく、コストの観点でも「聴く」効果は明確な数字で表れます。</p>
         </section>
         <section class="level3">
           <h3 id="手戻りコストの削減">手戻りコストの削減</h3>
@@ -153,6 +162,7 @@
             </tbody>
           </table>
           <p>最初に正しく聴くことは、最も費用対効果の高い投資なのです。</p>
+          <p>さらに、コスト削減という実利の先に、もう一つの大きな価値が育ちます。</p>
         </section>
         <section class="level3">
           <h3 id="信頼関係の構築">信頼関係の構築</h3>
@@ -167,6 +177,7 @@
             <p>本書では、ソフトウェアエンジニアリングの各技法を<strong>QuestForge</strong>というサンプルアプリを通じて学びます。</p>
             <h4 id="questforgeとは">QuestForgeとは</h4>
             <p>日々のタスクをRPGの「クエスト」に見立てて管理するアプリです。タスクを完了すると経験値を獲得し、レベルアップしていきます。</p>
+            <p>なお、本書ではQuestForgeのエンドユーザーを<strong>「冒険者」</strong>と呼びます。一般的なシステム設計の文脈でユーザーについて述べる際は「ユーザー」を使います。</p>
             <h4 id="主な機能">主な機能</h4>
             <table>
               <thead>
@@ -242,35 +253,17 @@
             <p>サンプルコードは <code>sample-code/questforge/</code> にあります。実際に動かしながら読み進めてください。</p>
           </blockquote>
           <hr>
+          <p>次の図は、要求の価値とコストを軸にした優先度マトリクスを示しています。</p>
           <figure>
             <img src="../../assets/diagrams/chapter01/1-1-priority-matrix.svg" alt="価値とコストによる優先度マトリクス">
             <figcaption aria-hidden="true">価値とコストによる優先度マトリクス</figcaption>
           </figure>
+          <p>ここで縦軸は「ビジネス価値の高さ」、横軸は「実装コストの大きさ」を表しています。右上（高価値・低コスト）の要求から優先的に取り組むことで、限られた時間と資源を最大限に活かせます。逆に左下（低価値・高コスト）の要求は、後回しにするか再検討する候補として整理できます。</p>
+          <p>ユーザーの言葉は、氷山の一角に過ぎません。「使いやすくしてほしい」の奥には、ビジネス要求・ユーザー要求・機能要求という三層構造が潜んでいます。「ドリルが欲しい」と言われたとき、その奥にある<strong>「なぜ穴が必要なのか」</strong>を問い続けること——それが、ユーザーの期待を超えるソフトウェアを生み出す第一歩です。</p>
+          <p>聴くことは単なる情報収集ではありません。最初に正しく聴くことで、後工程の手戻りコストを何十倍も削減できます。そして何より、「この人は本当に理解しようとしてくれている」という信頼が育ちます。信頼こそが、困難なプロジェクトを共に乗り越える見えない土台なのです。</p>
+          <p>「なぜ聴くのか」を腑に落とせたところで、次の問いが自然に浮かびます——<strong>では、どう聴くのか？</strong> 1.2節では、ユーザーの隠れた願いを引き出す具体的な技法、アクティブ・リスニングの世界に踏み込みます。</p>
+          <hr>
         </section>
-      </section>
-      <section class="level2">
-        <h2 id="まとめ">まとめ</h2>
-        <ol>
-          <li><strong>言葉は氷山の一角</strong>: ユーザーの発言は、真の要求のごく一部に過ぎない。</li>
-          <li><strong>解決策ではなく目的を探れ</strong>: 「ドリルが欲しい」の奥にある「なぜ穴が必要か」を問え。</li>
-          <li><strong>要求には階層がある</strong>: ビジネス要求→ユーザー要求→機能要求。上位を理解せよ。</li>
-          <li><strong>聴くことは投資</strong>: 最初に正しく聴けば、後の手戻りコストを劇的に削減できる。</li>
-          <li><strong>聴くことは信頼</strong>: 「理解しようとしてくれる」姿勢が、プロジェクトを支える土台になる。</li>
-        </ol>
-        <p>次節では、この「聴く」を実践するための具体的な技法——<strong>アクティブ・リスニング</strong>を学びます。</p>
-        <hr>
-      </section>
-      <section class="level2">
-        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
-        <ul>
-          <li>📚 <strong>書籍</strong>: カール・ウィーガーズ『<a href="https://www.shoeisha.co.jp/book/detail/9784798135946">ソフトウェア要求 第3版</a>』（要求工学の必読書）</li>
-          <li>📚 <strong>書籍</strong>: ジェラルド・ワインバーグ『<a href="https://www.kyoritsu-pub.co.jp/book/b10011444.html">要求仕様の探検学</a>』（要求発見の技法を人間心理の側面から説く古典）</li>
-          <li>🌐 <strong>BABOK</strong>: IIBA "<a href="https://www.iiba.org/career-resources/a-business-analysis-professionals-foundation-for-success/babok/">BABOK Guide</a>"（ビジネスアナリシスの知識体系）</li>
-          <li>🌐 <strong>IREB</strong>: "<a href="https://www.ireb.org/en/cpre/">Certified Professional for Requirements Engineering (CPRE)</a>"（要求工学の国際標準カリキュラム）</li>
-          <li>📊 <strong>レポート</strong>: Standish Group "<a href="https://www.standishgroup.com/sample_reports/">CHAOS Report</a>"（プロジェクト成功要因の統計データ）</li>
-          <li>🎨 <strong>風刺画</strong>: "<a href="https://en.wikipedia.org/wiki/Tree_swing_cartoon">Tree swing cartoon - Wikipedia</a>"（「顧客が本当に欲しかったもの」の歴史）</li>
-        </ul>
-        <hr>
       </section>
       <section class="level2">
         <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
@@ -287,6 +280,17 @@
 
 <span class="token bold"><span class="token punctuation">**</span><span class="token content">機能要求</span><span class="token punctuation">**</span></span>:
 「QuestForgeに、友達とクエストを共有する機能を追加してほしい」</code></pre>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>📚 <strong>書籍</strong>: ジェラルド・ワインバーグ『<a href="https://www.kyoritsu-pub.co.jp/book/b10011444.html">要求仕様の探検学</a>』（要求発見の技法を人間心理の側面から説く古典）</li>
+          <li>🌐 <strong>BABOK</strong>: IIBA "<a href="https://www.iiba.org/career-resources/a-business-analysis-professionals-foundation-for-success/babok/">BABOK Guide</a>"（ビジネスアナリシスの知識体系）</li>
+          <li>🌐 <strong>IREB</strong>: "<a href="https://www.ireb.org/en/cpre/">Certified Professional for Requirements Engineering (CPRE)</a>"（要求工学の国際標準カリキュラム）</li>
+          <li>📊 <strong>レポート</strong>: Standish Group "<a href="https://www.standishgroup.com/sample_reports/">CHAOS Report</a>"（プロジェクト成功要因の統計データ）</li>
+          <li>🎨 <strong>風刺画</strong>: "<a href="https://en.wikipedia.org/wiki/Tree_swing_cartoon">Tree swing cartoon - Wikipedia</a>"（「顧客が本当に欲しかったもの」の歴史）</li>
+        </ul>
+        <hr>
       </section>
     </section>
     <section class="footnotes" role="doc-endnotes">

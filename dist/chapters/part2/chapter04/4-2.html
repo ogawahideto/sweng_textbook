@@ -21,17 +21,16 @@
     <main>
     <section class="level1">
       <h1 id="42-鑑定術の技法テスト設計の4つの流派">4.2 鑑定術の技法——テスト設計の4つの流派</h1>
-      <section class="level2">
-        <h2 id="導入-何をテストすれば十分か">導入: 何をテストすれば十分か？</h2>
-        <p>テストの全体像（4.1節）を学んだあなたは、次にこう問うはずです。「具体的に、<strong>どのテストケースを書けば十分なのか？</strong>」</p>
-        <p>すべての入力パターンをテストするのは不可能です。経験値の計算関数ひとつとっても、整数の入力パターンは事実上無限にあります。では、「十分なテスト」とはどう設計すればよいのでしょうか？</p>
-        <p>先人たちは、この問いに対して複数のアプローチを編み出しました。本節では、テストケースの設計技法を<strong>4つの流派</strong>として整理し、それぞれの強みと適所を学びます。</p>
-        <figure>
-          <img src="../../assets/diagrams/chapter04/4.2-test-design.svg" alt="テスト設計の4つの流派">
-          <figcaption aria-hidden="true">テスト設計の4つの流派</figcaption>
-        </figure>
-        <hr>
-      </section>
+      <p>テストの全体像（4.1節）を学んだあなたは、次にこう問うはずです。「具体的に、<strong>どのテストケースを書けば十分なのか？</strong>」</p>
+      <p>すべての入力パターンをテストするのは不可能です。経験値の計算関数ひとつとっても、整数の入力パターンは事実上無限にあります。では、「十分なテスト」とはどう設計すればよいのでしょうか？</p>
+      <p>先人たちは、この問いに対して複数のアプローチを編み出しました。本節では、テストケースの設計技法を<strong>4つの流派</strong>として整理し、それぞれの強みと適所を学びます。</p>
+      <p>次の図は、テストケース設計における4つの流派とそれぞれの着眼点を示しています。</p>
+      <figure>
+        <img src="../../assets/diagrams/chapter04/4.2-test-design.svg" alt="テスト設計の4つの流派">
+        <figcaption aria-hidden="true">テスト設計の4つの流派</figcaption>
+      </figure>
+      <p>ここで示された4流派は、互いに補完し合う関係にあります。コードの内部を見る「コードベース（ホワイトボックス）」、仕様から設計する「仕様ベース（ブラックボックス）」、ユーザーの物語を辿る「シナリオベース」、そして即興で探索する「探索的テスト」——この4つを問いの性質に応じて使い分けることが、テストという守護魔法を真に強化する道です。</p>
+      <hr>
       <section class="level2">
         <h2 id="第1の流派-コードベースホワイトボックス">第1の流派: コードベース（ホワイトボックス）</h2>
         <section class="level3">
@@ -51,7 +50,7 @@
           </section>
           <section class="level4">
             <h4 id="分岐カバレッジbranch-coverage">分岐カバレッジ（Branch Coverage）</h4>
-            <p>「すべての条件分岐のTrue/Falseが実行されたか」を測定します。命令カバレッジよりも厳しい基準です。</p>
+            <p>命令カバレッジをクリアしても、条件分岐の片方だけしか試されていない可能性があります。分岐カバレッジは「すべての条件分岐のTrue/Falseが実行されたか」を測定する、より厳密な基準です。</p>
             <pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">can_accept_quest</span><span class="token punctuation">(</span>hero<span class="token punctuation">:</span> Hero<span class="token punctuation">,</span> quest<span class="token punctuation">:</span> Quest<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">bool</span><span class="token punctuation">:</span>
     <span class="token keyword">if</span> hero<span class="token punctuation">.</span>level <span class="token operator">&gt;=</span> quest<span class="token punctuation">.</span>required_level <span class="token keyword">and</span> <span class="token keyword">not</span> quest<span class="token punctuation">.</span>is_expired<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
         <span class="token keyword">return</span> <span class="token boolean">True</span>    <span class="token comment"># 分岐: True</span>
@@ -87,7 +86,7 @@
           </section>
           <section class="level4">
             <h4 id="条件カバレッジcondition-coverage">条件カバレッジ（Condition Coverage）</h4>
-            <p>複合条件（<code>and</code> / <code>or</code>）の各部分がTrue/Falseの両方を取ったかを測定します。分岐カバレッジよりもさらに厳密です。</p>
+            <p>複合条件の各部分が独立してTrue/Falseの両方を取るかまで確かめるには、さらに一段階厳しい基準が必要です。条件カバレッジは、複合条件（<code>and</code> / <code>or</code>）の各部分がTrue/Falseの両方を取ったかを測定し、分岐カバレッジよりもさらに厳密です。</p>
             <table>
               <thead>
                 <tr>
@@ -122,7 +121,7 @@
           </section>
           <section class="level4">
             <h4 id="カバレッジの限界">カバレッジの限界</h4>
-            <p>カバレッジ100%は「すべてのコードが実行された」ことを意味しますが、「正しく動いている」ことの証明ではありません。</p>
+            <p>これら3種類のカバレッジをすべて満たせば品質は保証されるかというと、実はそうではありません。カバレッジ100%は「すべてのコードが実行された」ことを意味しますが、「正しく動いている」ことの証明ではありません。</p>
             <pre class="language-python"><code class="language-python"><span class="token comment"># カバレッジ100%でも見逃すバグの例</span>
 <span class="token keyword">def</span> <span class="token function">calculate_tax</span><span class="token punctuation">(</span>price<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">int</span><span class="token punctuation">:</span>
     <span class="token keyword">return</span> price <span class="token operator">*</span> <span class="token number">0.1</span>  <span class="token comment"># 本来は0.08のはずだが...</span>
@@ -136,6 +135,7 @@
       </section>
       <section class="level2">
         <h2 id="第2の流派-仕様ベースブラックボックス">第2の流派: 仕様ベース（ブラックボックス）</h2>
+        <p>コードの内部構造を見る第1の流派に対し、第2の流派はコードの中身を一切見ません。仕様書と期待される振る舞いだけを手がかりに、テストケースを設計します。</p>
         <section class="level3">
           <h3 id="同値分割-入力の代表選手を選ぶ">同値分割: 入力の「代表選手」を選ぶ</h3>
           <p>コードの中身を見ずに、<strong>仕様（入力と期待出力の関係）</strong>に基づいてテストケースを設計する技法です。</p>
@@ -188,7 +188,7 @@
         </section>
         <section class="level3">
           <h3 id="境界値分析-境界線上を狙い撃つ">境界値分析: 境界線上を狙い撃つ</h3>
-          <p>バグは「境界」に集まる傾向があります。境界値分析では、同値クラスの<strong>境目の値</strong>を重点的にテストします。</p>
+          <p>同値分割で「クラスの代表値」を選んだとして、クラスの境目そのものにはバグが最も集まりやすい傾向があります。境界値分析では、同値クラスの<strong>境目の値</strong>を重点的にテストします。</p>
           <p>推奨レベル10の場合:</p>
           <table>
             <thead>
@@ -311,12 +311,9 @@
       </section>
       <section class="level2">
         <h2 id="まとめ">まとめ</h2>
-        <ol>
-          <li><strong>コードベース（カバレッジ）</strong>: テストされていない場所を地図で示す。100%が目的ではなく、不十分な箇所の発見が目的。</li>
-          <li><strong>仕様ベース（同値分割・境界値）</strong>: 入力空間を効率的に分割し、代表値と境界を狙い撃つ。</li>
-          <li><strong>シナリオベース（Given-When-Then）</strong>: ユーザーの物語をテストに変換し、仕様書としても機能させる。</li>
-          <li><strong>探索的テスト</strong>: 仕様書にない「想定外」を即興で発見する。自動テストとの補完関係。</li>
-        </ol>
+        <p>テスト設計の4つの流派は互いに補完し合います。コードベースのカバレッジはテストされていない場所を地図として示し、不十分な箇所の発見に役立ちます（100%が目的ではありません）。仕様ベースの同値分割・境界値分析は入力空間を効率的に分割し、代表値と境界を狙い撃てます。</p>
+        <p>シナリオベースのGiven-When-Then形式はユーザーの物語をテストに変換し、仕様書としても機能する優れた表現力を持ちます。そして探索的テストは仕様書にない「想定外」を即興で発見する、自動テストとの補完関係にある技法です。この4つを問いの性質に応じて使い分けることで、テストは単なる動作確認を超えた「生きた仕様書」へと昇華します。</p>
+        <p>次の4.3節では、テストを「後から書く検証」から「先に書く設計ツール」に転換するテスト駆動開発（TDD）を学びます。赤から緑へのサイクルが、コードの設計品質をどう変えるかを体感していきましょう。</p>
         <hr>
       </section>
       <section class="level2">

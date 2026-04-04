@@ -21,16 +21,13 @@
     <main>
     <section class="level1">
       <h1 id="52-aiによるコードレビューthe-dialogue-with-the-familiar">5.2 AIによるコードレビュー（The Dialogue with the Familiar）</h1>
-      <section class="level2">
-        <h2 id="導入-使い魔familiarとの対話">導入: 使い魔（Familiar）との対話</h2>
-        <p>かつて、コードレビューといえば「先輩エンジニアに怒られる時間」だったかもしれません。あるいは、一人開発（ぼっち開発）で、誰の目にも触れずにコードが腐っていく孤独な戦いだったかもしれません。</p>
-        <p>
-          しかし、現代のアルケミストには強力な相棒がいます。AIです。
-          AIは、あなたが書いたコードの「死角」を冷静に見抜き、より良い書き方を提案してくれる「使い魔（Familiar）」です。
-        </p>
-        <p>ただし、AIは黙っていても助けてくれません。適切な「召喚（プロンプト）」を行い、対話を重ねることで初めて、その真価を発揮します。このセクションでは、AIを単なる「コード生成機」ではなく、<strong>「最強のレビュアー兼メンター」</strong>として活用する術を学びます。</p>
-        <hr>
-      </section>
+      <p>かつて、コードレビューといえば「先輩エンジニアに怒られる時間」だったかもしれません。あるいは、一人開発（ぼっち開発）で、誰の目にも触れずにコードが腐っていく孤独な戦いだったかもしれません。</p>
+      <p>
+        しかし、現代のアルケミストには強力な相棒がいます。AIです。
+        AIは、あなたが書いたコードの「死角」を冷静に見抜き、より良い書き方を提案してくれる「使い魔（Familiar）」です。
+      </p>
+      <p>ただし、AIは黙っていても助けてくれません。適切な「召喚（プロンプト）」を行い、対話を重ねることで初めて、その真価を発揮します。このセクションでは、AIを単なる「コード生成機」ではなく、<strong>「最強のレビュアー兼メンター」</strong>として活用する術を学びます。</p>
+      <hr>
       <section class="level2">
         <h2 id="視点を切り替える召喚術">視点を切り替える召喚術</h2>
         <p>「このコードを直して」と頼むだけでは、AIは表面的な修正しかしません。AIに<strong>「人格（ロール）」</strong>と<strong>「観点（パースペクティブ）」</strong>を与えることで、レビューの質は劇的に向上します。</p>
@@ -69,6 +66,7 @@
       <section class="level2">
         <h2 id="実践-questforgeの分岐地獄を浄化する">実践: QuestForgeの分岐地獄を浄化する</h2>
         <p>QuestForgeのクエスト完了処理(<code>complete_quest</code>)が、仕様追加により複雑怪奇な <code>if-elif</code> の塔になってしまったとします。これをAIと共にリファクタリングしてみましょう。</p>
+        <p>まず、現状のコードを正直に見つめるところから始めます。</p>
         <section class="level3">
           <h3 id="before-条件分岐の塔">Before: 条件分岐の塔</h3>
           <pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">complete_quest</span><span class="token punctuation">(</span>hero<span class="token punctuation">,</span> quest<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -102,6 +100,7 @@
         </section>
         <section class="level3">
           <h3 id="after-美しきポリモーフィズム">After: 美しきポリモーフィズム</h3>
+          <p>次の図は、Strategyパターンを適用したリファクタリング後のクラス構造を示しています。</p>
           <figure>
             <img src="../../assets/diagrams/chapter05/5.2-strategy-refactoring.svg" alt="Strategyパターンへのリファクタリング">
             <figcaption aria-hidden="true">Strategyパターンへのリファクタリング</figcaption>
@@ -166,6 +165,7 @@
         </table>
         <section class="level3">
           <h3 id="ハイブリッドレビューの黄金律">ハイブリッド・レビューの黄金律</h3>
+          <p>この違いを踏まえた上で、両者を組み合わせる実践的な黄金律を押さえましょう。</p>
           <ol>
             <li><strong>静的解析・AIレビューを先に通す</strong>: インデントのズレやタイポなど、機械が直せる部分で人間の貴重な時間を使わせない。</li>
             <li><strong>人間は「なぜ」に集中する</strong>: 「この設計にした意図は？」「将来、別のクエストが増えたらどうする？」といった、文脈が必要な議論に人間が注力する。</li>
@@ -190,27 +190,6 @@
         <hr>
       </section>
       <section class="level2">
-        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
-        <ul>
-          <li>🌐 <strong>Web</strong>: <a href="https://google.github.io/eng-practices/review/">Google Engineering Practices Documentation - Code Review</a>（世界最高峰のチームによる、建設的で効率的なコードレビューの極意）</li>
-          <li>📚 <strong>書籍</strong>: Karl Wiegers『<a href="https://www.amazon.co.jp/dp/4822281897">ピアレビュー ―高品質ソフトウェア開発のための手引</a>』（人間同士のレビューにおける心理的な側面や、フィードバックの方法論を学べる名著）</li>
-          <li>🌐 <strong>Web</strong>: <a href="https://martinfowler.com/bliki/CodeSmell.html">Martin Fowler's Bliki - CodeSmell</a>（匂いの概念を理解するための原典記事）</li>
-          <li>🌐 <strong>ツール</strong>: <a href="https://github.com/Codium-ai/pr-agent">PR-Agent (CodiumAI)</a>（AIによる自律的なプルリクエストのレビュー、要約、改善提案を体験できるツール）</li>
-        </ul>
-        <hr>
-      </section>
-      <section class="level2">
-        <h2 id="まとめ">まとめ</h2>
-        <ul>
-          <li><strong>視点を与える</strong>: AIに「誰になりきって」「何を見るか」を指定する。</li>
-          <li><strong>対話する</strong>: 一発の回答で満足せず、「もっと良くできる？」「Strategyパターンを使ったら？」とディスカッションする。</li>
-          <li><strong>学ぶ</strong>: AIの修正案から、より良いコーディングスタイルやデザインパターンを吸収する。</li>
-          <li><strong>補完する</strong>: 機械の目（AI・静的解析）と、心の目（人間）を使い分ける。</li>
-        </ul>
-        <p>AIは、あなたのコードを批判する敵ではありません。共に最高傑作を作り上げるための、頼れる相棒なのです。</p>
-        <hr>
-      </section>
-      <section class="level2">
         <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
         <pre class="language-text"><code class="language-text">@domain/quest.py を読んでコードをレビューしてください。
 **可読性**、**パフォーマンス**、**型安全性**の3つの観点から改善点を指摘し、
@@ -219,6 +198,23 @@
 含まれる条件分岐を Strategyパターンを使ってリファクタリングしたいです。
 設計案（クラス図）とリファクタリング後のコードを提示してください。
 既存のテストが壊れないよう、段階的な手順も示してください。</code></pre>
+      </section>
+      <section class="level2">
+        <h2 id="まとめ">まとめ</h2>
+        <p>AIをコードレビューに活用する鍵は、「視点を与えること」と「対話を重ねること」にあります。「誰になりきって」「何を見るか」を明示するだけで、レビューの質は劇的に変わります。一発の回答で満足せず、「もっと良くできる？」「Strategyパターンを使ったら？」と問い返すことで、AIは本当のメンターへと変貌します。そしてAIの修正案から、より良いコーディングスタイルやデザインパターンを吸収していくことが、あなた自身の成長にもつながります。</p>
+        <p>大切なのは、機械の目（AI・静的解析）と心の目（人間）を使い分けることです。AIは凡ミスや命名の揺れを瞬時に検知し、人間のレビュアーは設計の意図や将来の展望について深く議論する。この役割分担こそが、最高品質の魔法陣（コード）を生み出す黄金律です。AIは批判者ではなく、共に最高傑作を作り上げるための頼れる相棒なのです。</p>
+        <p>5.3節では、技術的負債という「見えない借金」を楽しくゲーム感覚で返済していく技法へと進みます。AIとのレビューで磨いた審美眼を活かし、コードベース全体を持続的に向上させる戦略を学びましょう。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>🌐 <strong>Web</strong>: <a href="https://google.github.io/eng-practices/review/">Google Engineering Practices Documentation - Code Review</a>（世界最高峰のチームによる、建設的で効率的なコードレビューの極意）</li>
+          <li>📚 <strong>書籍</strong>: Karl Wiegers『<a href="https://www.amazon.co.jp/dp/4822281897">ピアレビュー ―高品質ソフトウェア開発のための手引</a>』（人間同士のレビューにおける心理的な側面や、フィードバックの方法論を学べる名著）</li>
+          <li>🌐 <strong>Web</strong>: <a href="https://martinfowler.com/bliki/CodeSmell.html">Martin Fowler's Bliki - CodeSmell</a>（匂いの概念を理解するための原典記事）</li>
+          <li>🌐 <strong>ツール</strong>: <a href="https://github.com/Codium-ai/pr-agent">PR-Agent (CodiumAI)</a>（AIによる自律的なプルリクエストのレビュー、要約、改善提案を体験できるツール）</li>
+        </ul>
+        <hr>
       </section>
     </section>
   

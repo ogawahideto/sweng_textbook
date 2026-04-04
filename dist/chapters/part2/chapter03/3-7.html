@@ -21,27 +21,26 @@
     <main>
     <section class="level1">
       <h1 id="37-並列詠唱の奥義非同期並行プログラミングthe-art-of-concurrent-spellcasting">3.7 並列詠唱の奥義——非同期・並行プログラミング（The Art of Concurrent Spellcasting）</h1>
-      <section class="level2">
-        <h2 id="導入-複数の術式を同時に紡ぐ">導入: 複数の術式を同時に紡ぐ</h2>
-        <p>これまでの旅で、あなたは一つの処理を美しく構築する力を身につけてきました。しかし、現実のソフトウェアでは、<strong>複数のことを「同時に」こなす</strong>場面が当たり前のように訪れます。</p>
-        <p>QuestForgeを想像してみてください。プレイヤーがクエスト一覧を開いた瞬間、アプリは以下のことを「同時に」行う必要があります。</p>
-        <ul>
-          <li>データベースからクエスト一覧を取得する</li>
-          <li>プレイヤーの実績データを読み込む</li>
-          <li>報酬画像のサムネイルを生成する</li>
-          <li>リアルタイム通知をチェックする</li>
-        </ul>
-        <p>これらを一つずつ順番にやっていたら、ユーザーは何秒も待たされてしまいます。<strong>並行プログラミング</strong>は、この「待ち時間」を劇的に短縮し、ソフトウェアに「瞬発力」を与える技術です。</p>
-        <p>前セクション（3.6）で学んだ並行モデル（CSP、アクターモデル）の概念を土台に、ここではより実践的な技法を深掘りします。</p>
-        <figure>
-          <img src="../../assets/diagrams/chapter03/3-7-concurrency-parallelism.svg" alt="並行と並列">
-          <figcaption aria-hidden="true">並行と並列</figcaption>
-        </figure>
-        <hr>
-      </section>
+      <p>これまでの旅で、あなたは一つの処理を美しく構築する力を身につけてきました。しかし、現実のソフトウェアでは、<strong>複数のことを「同時に」こなす</strong>場面が当たり前のように訪れます。</p>
+      <p>QuestForgeを想像してみてください。プレイヤーがクエスト一覧を開いた瞬間、アプリは以下のことを「同時に」行う必要があります。</p>
+      <ul>
+        <li>データベースからクエスト一覧を取得する</li>
+        <li>プレイヤーの実績データを読み込む</li>
+        <li>報酬画像のサムネイルを生成する</li>
+        <li>リアルタイム通知をチェックする</li>
+      </ul>
+      <p>これらを一つずつ順番にやっていたら、ユーザーは何秒も待たされてしまいます。<strong>並行プログラミング</strong>は、この「待ち時間」を劇的に短縮し、ソフトウェアに「瞬発力」を与える技術です。</p>
+      <p>前セクション（3.6）で学んだ並行モデル（CSP、アクターモデル）の概念を土台に、ここではより実践的な技法を深掘りします。</p>
+      <p>次の図は、並行（Concurrency）と並列（Parallelism）という二つの概念の違いを、シェフの調理に例えて対比しています。</p>
+      <figure>
+        <img src="../../assets/diagrams/chapter03/3-7-concurrency-parallelism.svg" alt="並行と並列">
+        <figcaption aria-hidden="true">並行と並列</figcaption>
+      </figure>
+      <p>ここで描かれているのは、一人のシェフが複数の料理を「切り替えながら」同時進行させる並行性と、複数のシェフが実際に「同時に」異なる料理を進める並列性の本質的な違いです。並行はタスクをどのように構造化するかという設計の問題であり、シングルコアのマシンでも効果を発揮します。この区別を理解することが、async/awaitやスレッドを適切に使い分けるための出発点となります。</p>
+      <hr>
       <section class="level2">
         <h2 id="並行と並列似て非なる二つの概念">並行と並列——似て非なる二つの概念</h2>
-        <p>まず、混同されやすい二つの概念を整理しましょう。</p>
+        <p>並行プログラミングを正しく使いこなすには、まず「並行」と「並列」という二つの概念の違いを整理することから始めましょう。</p>
         <section class="level3">
           <h3 id="concurrency並行と-parallelism並列">Concurrency（並行）と Parallelism（並列）</h3>
           <table>
@@ -77,9 +76,9 @@
       </section>
       <section class="level2">
         <h2 id="asyncawait現代の非同期パターン">async/await——現代の非同期パターン</h2>
-        <p>Python、JavaScript、Rust、C# など、多くの現代言語が採用する <strong>async/await</strong> パターンは、非同期処理を直感的に書ける革命的な仕組みです。</p>
         <section class="level3">
           <h3 id="同期-vs-非同期">同期 vs 非同期</h3>
+          <p>並行と並列の違いが明確になったところで、現代のほとんどのWebアプリが採用する非同期の主役——async/await パターン——を見ていきましょう。</p>
           <pre class="language-python"><code class="language-python"><span class="token keyword">import</span> time
 
 <span class="token comment"># 同期版: 一つずつ順番に待つ（合計6秒）</span>
@@ -103,7 +102,7 @@
         </section>
         <section class="level3">
           <h3 id="asyncawait-の本質">async/await の本質</h3>
-          <p><code>async def</code> で定義した関数は<strong>コルーチン</strong>と呼ばれ、<code>await</code> で「ここで一旦制御を返す（中断してもいいよ）」と宣言します。</p>
+          <p>速度の違いが実感できたら、async/await という構文がどのような仕組みで動いているのかを掘り下げましょう。<code>async def</code> で定義した関数は<strong>コルーチン</strong>と呼ばれ、<code>await</code> で「ここで一旦制御を返す（中断してもいいよ）」と宣言します。</p>
           <pre class="language-python"><code class="language-python"><span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">prepare_quest_reward</span><span class="token punctuation">(</span>quest_id<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token comment"># awaitのたびに、他のコルーチンが動ける「隙間」が生まれる</span>
     quest <span class="token operator">=</span> <span class="token keyword">await</span> fetch_quest<span class="token punctuation">(</span>quest_id<span class="token punctuation">)</span>        <span class="token comment"># I/O待ちの間、他の処理が進む</span>
@@ -115,7 +114,7 @@
       </section>
       <section class="level2">
         <h2 id="実践questforgeにおける詠唱の衝突">実践：QuestForgeにおける「詠唱の衝突」</h2>
-        <p>複数の冒険者が同時に同じ成果（共通の宝箱やサーバーの経験値カウンタ）を更新しようとすると、<strong>競合状態（Race Condition）</strong>という魔物が発生します。</p>
+        <p>async/awaitの仕組みが掴めたら、並行処理に潜む代表的な落とし穴——「詠唱の衝突」——を見ておきましょう。複数の冒険者が同時に同じ成果（共通の宝箱やサーバーの経験値カウンタ）を更新しようとすると、<strong>競合状態（Race Condition）</strong>という魔物が発生します。</p>
         <p>例えば、QuestForgeで「ギルド全体の合計獲得XP」を管理しているとしましょう。100人の冒険者が同時に10XPずつ獲得したとき、期待される増加量は1,000XPです。しかし、適切な排他制御（ロック）をしないと、ある冒険者の更新が別の冒険者の更新を上書きしてしまい、結果が950XPになってしまうような「魔力の消失」が起こります。</p>
         <pre class="language-python"><code class="language-python"><span class="token comment"># 危険な並列処理の例</span>
 <span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">add_guild_xp</span><span class="token punctuation">(</span>amount<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -128,7 +127,7 @@
       </section>
       <section class="level2">
         <h2 id="イベントループ一人のシェフの腕前">イベントループ——一人のシェフの腕前</h2>
-        <p>async/await の裏側には、<strong>イベントループ</strong>という仕組みが動いています。</p>
+        <p>競合状態という魔物の正体が分かったところで、async/awaitを裏で支えている「一人のシェフ」——イベントループ——の仕組みを覗いてみましょう。async/await の裏側には、<strong>イベントループ</strong>という仕組みが動いています。</p>
         <pre class="language-text"><code class="language-text">┌─────────────────────────────────────────┐
 │            イベントループ                  │
 │                                          │
@@ -145,7 +144,7 @@
       </section>
       <section class="level2">
         <h2 id="スレッドと共有メモリ力と責任">スレッドと共有メモリ——力と責任</h2>
-        <p>イベントループが「一人のシェフ」なら、<strong>スレッド</strong>は「複数のシェフが一つのキッチンを共有する」モデルです。</p>
+        <p>イベントループという「一人のシェフ」を理解したら、今度は「複数のシェフが同じキッチンを共有する」スレッドという別の並行モデルに踏み込みましょう。イベントループが「一人のシェフ」なら、<strong>スレッド</strong>は「複数のシェフが一つのキッチンを共有する」モデルです。</p>
         <section class="level3">
           <h3 id="スレッドの威力とレースコンディション">スレッドの威力とレースコンディション</h3>
           <pre class="language-python"><code class="language-python"><span class="token keyword">import</span> threading
@@ -166,7 +165,7 @@ total_xp <span class="token operator">=</span> <span class="token number">0</spa
         </section>
         <section class="level3">
           <h3 id="ロックによる制御">ロックによる制御</h3>
-          <p>レースコンディションを防ぐ基本的な方法が<strong>ロック（排他制御）</strong>です。</p>
+          <p>レースコンディションという問題が明確になれば、それを防ぐ基本的な手段——ロック——の役割も自然と見えてきます。レースコンディションを防ぐ基本的な方法が<strong>ロック（排他制御）</strong>です。</p>
           <pre class="language-python"><code class="language-python"><span class="token keyword">import</span> threading
 
 total_xp <span class="token operator">=</span> <span class="token number">0</span>
@@ -186,7 +185,7 @@ lock <span class="token operator">=</span> threading<span class="token punctuati
       </section>
       <section class="level2">
         <h2 id="メッセージパッシング安全な並行の思想">メッセージパッシング——安全な並行の思想</h2>
-        <p>3.6節で触れたCSP（Communicating Sequential Processes）とアクターモデルは、「共有メモリ」の代わりに「メッセージのやり取り」で並行処理を組み立てる思想です。</p>
+        <p>ロックによる排他制御を学んだところで、そもそも「共有メモリ」を避けるという根本的に異なるアプローチを見ていきましょう。3.6節で触れたCSP（Communicating Sequential Processes）とアクターモデルは、「共有メモリ」の代わりに「メッセージのやり取り」で並行処理を組み立てる思想です。</p>
         <section class="level3">
           <h3 id="go-のチャネルcsp-モデル">Go のチャネル（CSP モデル）</h3>
           <pre class="language-go"><code class="language-go"><span class="token comment">// Go言語: チャネルによるメッセージパッシング</span>
@@ -214,7 +213,7 @@ lock <span class="token operator">=</span> threading<span class="token punctuati
         </section>
         <section class="level3">
           <h3 id="python-での実践">Python での実践</h3>
-          <p>Pythonでも、<code>asyncio.Queue</code> を使ってメッセージパッシングのスタイルを取り入れることができます。</p>
+          <p>GoのCSPモデルに触れたら、Pythonでも同じ思想を取り入れる方法を確認しておきましょう。<code>asyncio.Queue</code> を使えばメッセージパッシングのスタイルを取り入れることができます。</p>
           <pre class="language-python"><code class="language-python"><span class="token keyword">import</span> asyncio
 
 <span class="token keyword">async</span> <span class="token keyword">def</span> <span class="token function">quest_processor</span><span class="token punctuation">(</span>queue<span class="token punctuation">:</span> asyncio<span class="token punctuation">.</span>Queue<span class="token punctuation">)</span><span class="token punctuation">:</span>
@@ -241,7 +240,7 @@ lock <span class="token operator">=</span> threading<span class="token punctuati
       </section>
       <section class="level2">
         <h2 id="aiとの協働-並行コードのレビューと検証">AIとの協働: 並行コードのレビューと検証</h2>
-        <p>並行プログラミングのバグは、タイミングに依存するため再現が難しく、デバッグも容易ではありません。ここでこそ、AIの「論理的推論力」が真価を発揮します。</p>
+        <p>メッセージパッシングで安全な並行処理の構造が分かったら、この分野でAIが特に力を発揮する場面を見てみましょう。並行プログラミングのバグは、タイミングに依存するため再現が難しく、デバッグも容易ではありません。ここでこそ、AIの「論理的推論力」が真価を発揮します。</p>
         <section class="level3">
           <h3 id="レースコンディションの検出">レースコンディションの検出</h3>
           <blockquote>
@@ -286,14 +285,9 @@ lock <span class="token operator">=</span> threading<span class="token punctuati
       </section>
       <section class="level2">
         <h2 id="まとめ">まとめ</h2>
-        <ul>
-          <li><strong>並行は構造、並列は実行</strong>: 並行性はシングルコアでも効果を発揮する「タスク管理」の設計</li>
-          <li><strong>async/await はI/Oの味方</strong>: ネットワークやディスクの待ち時間を有効活用する現代の標準パターン</li>
-          <li><strong>イベントループは一人のシェフ</strong>: 待ち時間を巧みに使い、複数の処理を効率的に進める仕組み</li>
-          <li><strong>共有メモリは慎重に</strong>: レースコンディションとデッドロックを心がけるため、共有状態は最小限に</li>
-          <li><strong>メッセージパッシングで安全に</strong>: CSPやアクターモデルは、並行処理の安全性を構造的に保証する</li>
-          <li><strong>AIで並行コードを検証</strong>: タイミング依存のバグは人間の目では見つけにくく、AIの論理的分析が力を発揮する</li>
-        </ul>
+        <p>並行と並列は異なる概念です。並行性は「タスクを切り替えながら進める構造」であり、シングルコアでも効果を発揮します。async/awaitはI/O待ちの時間を有効活用する現代の標準パターンであり、イベントループという「一人のシェフ」が複数のオーダーを巧みに捌く仕組みで成り立っています。</p>
+        <p>共有メモリによる並行処理はレースコンディションやデッドロックを招く可能性があるため、共有状態は最小限に抑えることが重要です。CSPやアクターモデルといったメッセージパッシングの仕組みは、並行処理の安全性を構造的に保証し、複数のゴーレムが協調して動く世界を実現します。AIはタイミング依存のバグを論理的に分析するパートナーとして、この分野でも力を発揮します。</p>
+        <p>次の3.8節（外伝）では、視点を現代から過去に向け、レガシーコードという「呪われた遺構」に足を踏み入れます。古いコードを恐れずに読み解き、安全に改善していくための考古学的な技法を学んでいきましょう。</p>
         <hr>
       </section>
       <section class="level2">

@@ -21,96 +21,92 @@
     <main>
     <section class="level1">
       <h1 id="23-どう分けるか美しい構造の黄金律solid原則">2.3 どう分けるか？——美しい構造の黄金律（SOLID原則）</h1>
-      <section class="level2">
-        <h2 id="導入-触るのが楽しいコードの秘密">導入: 「触るのが楽しいコード」の秘密</h2>
-        <p>あなたは、これまでにコードを書いていて「一箇所を直しただけなのに、思わぬところが壊れてしまった」という経験はありませんか？あるいは、「機能を追加したいだけなのに、関係ないファイルまで大量に書き換えなければならなかった」ことは？</p>
-        <p>それは、魔法陣（設計）の「構造」が少しだけ複雑に絡み合ってしまっているサインかもしれません。</p>
-        <p>美しいソフトウェアには、共通する「黄金律」があります。それは、整理整頓が行き届いたアトリエのように、どこに何があるかが明確で、一つひとつの道具（クラス）が自分の役割に誇りを持っている状態です。</p>
-        <p>このセクションでは、変化に強く、拡張するのがワクワクするような美しい構造を生み出すための5つの原則——<strong>SOLID原則</strong>について学びます。</p>
-        <hr>
+      <p>あなたは、これまでにコードを書いていて「一箇所を直しただけなのに、思わぬところが壊れてしまった」という経験はありませんか？あるいは、「機能を追加したいだけなのに、関係ないファイルまで大量に書き換えなければならなかった」ことは？</p>
+      <p>それは、魔法陣（設計）の「構造」が少しだけ複雑に絡み合ってしまっているサインかもしれません。</p>
+      <p>美しいソフトウェアには、共通する「黄金律」があります。それは、整理整頓が行き届いたアトリエのように、どこに何があるかが明確で、一つひとつの道具（クラス）が自分の役割に誇りを持っている状態です。</p>
+      <p>このセクションでは、変化に強く、拡張するのがワクワクするような美しい構造を生み出すための5つの原則——<strong>SOLID原則</strong>について学びます。</p>
+      <hr>
+      <section class="level3">
+        <h3 id="なぜこれが重要か">なぜこれが重要か</h3>
+        <p>ソフトウェアは、一度作って終わりではありません。使われ続ける限り、新しい魔法（機能）が追加され、既存の術式（ロジック）が磨かれ、変化し続けます。</p>
+        <p>SOLID原則は、その変化を「苦労」ではなく「楽しみ」に変えるための知恵です。この原則に従うことで、コードは「高凝集・疎結合」な状態になります。</p>
+        <p>[図: 高凝集・疎結合のイメージ比較]</p>
+        <section class="level4">
+          <h4 id="美しい構造の2つの条件">美しい構造の2つの条件</h4>
+          <ol>
+            <li>
+              <p>
+                <strong>高凝集（High Cohesion）：専門家の誇り</strong>
+                クラスの中に、強く関連する要素だけが集まっている状態です。「私はこの仕事のプロフェッショナルだ」と胸を張れる状態とも言えます。凝集度が高いと、修正箇所が散らばらず、コードを読むのも直すのも楽になります。
+              </p>
+            </li>
+            <li>
+              <p>
+                <strong>疎結合（Low Coupling）：自立した関係</strong>
+                クラス同士の依存が最小限である状態です。「相手の秘密（内部実装）を知らなくても、インターフェース（契約）さえ守れば協力できる」という、大人の関係です。結合度が低いと、一つの変更が他の場所に波及する「予期せぬ破壊」を防げます。
+              </p>
+            </li>
+          </ol>
+          <p>SOLID原則は、この「高凝集・疎結合」を実現するための具体的なガイドラインなのです。</p>
+          <figure>
+            <img src="../../assets/diagrams/chapter02/2-3-dip.svg" alt="依存逆転の原則（DIP）の依存関係">
+            <figcaption aria-hidden="true">依存逆転の原則（DIP）の依存関係</figcaption>
+          </figure>
+          <p>図の矢印の向きに注目してください。DIP適用前は上位モジュールが下位の実装クラスに直接依存しています。DIP適用後は両者がインターフェース（抽象）に依存する形に逆転し、実装を自由に差し替えられる設計が生まれます。</p>
+        </section>
       </section>
-      <section class="level2">
-        <h2 id="理論的背景">理論的背景</h2>
-        <section class="level3">
-          <h3 id="なぜこれが重要か">なぜこれが重要か</h3>
-          <p>ソフトウェアは、一度作って終わりではありません。使われ続ける限り、新しい魔法（機能）が追加され、既存の術式（ロジック）が磨かれ、変化し続けます。</p>
-          <p>SOLID原則は、その変化を「苦労」ではなく「楽しみ」に変えるための知恵です。この原則に従うことで、コードは「高凝集・疎結合」な状態になります。</p>
-          <p>[図: 高凝集・疎結合のイメージ比較]</p>
-          <section class="level4">
-            <h4 id="美しい構造の2つの条件">美しい構造の2つの条件</h4>
-            <ol>
-              <li>
-                <p>
-                  <strong>高凝集（High Cohesion）：専門家の誇り</strong>
-                  クラスの中に、強く関連する要素だけが集まっている状態です。「私はこの仕事のプロフェッショナルだ」と胸を張れる状態とも言えます。凝集度が高いと、修正箇所が散らばらず、コードを読むのも直すのも楽になります。
-                </p>
-              </li>
-              <li>
-                <p>
-                  <strong>疎結合（Low Coupling）：自立した関係</strong>
-                  クラス同士の依存が最小限である状態です。「相手の秘密（内部実装）を知らなくても、インターフェース（契約）さえ守れば協力できる」という、大人の関係です。結合度が低いと、一つの変更が他の場所に波及する「予期せぬ破壊」を防げます。
-                </p>
-              </li>
-            </ol>
-            <p>SOLID原則は、この「高凝集・疎結合」を実現するための具体的なガイドラインなのです。</p>
-            <figure>
-              <img src="../../assets/diagrams/chapter02/2-3-dip.svg" alt="依存逆転の原則（DIP）の依存関係">
-              <figcaption aria-hidden="true">依存逆転の原則（DIP）の依存関係</figcaption>
-            </figure>
-          </section>
-        </section>
-        <section class="level3">
-          <h3 id="solid原則5つの黄金律">SOLID原則：5つの黄金律</h3>
-          <table>
-            <thead>
-              <tr>
-                <th align="center">頭文字</th>
-                <th>原則名</th>
-                <th>ひとことで言うと</th>
-                <th>冒険パーティでのたとえ</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td align="center"><strong>S</strong></td>
-                <td><strong>単一責任の原則</strong><br>(SRP)</td>
-                <td>一つのクラスは、一つの役割だけを持つ</td>
-                <td><strong>「魔法使いは剣を振るうな」</strong><br>回復役が前衛に出るとパーティが崩壊する。役割に集中せよ。</td>
-              </tr>
-              <tr>
-                <td align="center"><strong>O</strong></td>
-                <td><strong>開放閉鎖の原則</strong><br>(OCP)</td>
-                <td>修正には閉じ、拡張には開いている</td>
-                <td><strong>「装備は変えられても、技は変えるな」</strong><br>新しい武器（拡張）は装備できるが、剣術の型（既存コード）は崩さない。</td>
-              </tr>
-              <tr>
-                <td align="center"><strong>L</strong></td>
-                <td><strong>リスコフの置換原則</strong><br>(LSP)</td>
-                <td>子は親の代わりを完璧に務められる</td>
-                <td><strong>「伝説の剣は、ただの剣としても使える」</strong><br>上位職は下位職の仕事を完全にこなせなければならない。</td>
-              </tr>
-              <tr>
-                <td align="center"><strong>I</strong></td>
-                <td><strong>インターフェース分離の原則</strong><br>(ISP)</td>
-                <td>必要な機能だけが入った道具箱を渡す</td>
-                <td><strong>「盗賊に重装備を渡すな」</strong><br>使わないスキルや道具を押し付けられると、動きが鈍くなる。</td>
-              </tr>
-              <tr>
-                <td align="center"><strong>D</strong></td>
-                <td><strong>依存性逆転の原則</strong><br>(DIP)</td>
-                <td>具体的な実装ではなく、抽象的概念に頼る</td>
-                <td><strong>「特定の剣ではなく、『剣技』に頼れ」</strong><br>「聖剣」がないと戦えない勇者より、どんな剣でも戦える達人になれ。</td>
-              </tr>
-            </tbody>
-          </table>
-          <hr>
-        </section>
+      <section class="level3">
+        <h3 id="solid原則5つの黄金律">SOLID原則：5つの黄金律</h3>
+        <table>
+          <thead>
+            <tr>
+              <th align="center">頭文字</th>
+              <th>原則名</th>
+              <th>ひとことで言うと</th>
+              <th>冒険パーティでのたとえ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td align="center"><strong>S</strong></td>
+              <td><strong>単一責任の原則</strong><br>(SRP)</td>
+              <td>一つのクラスは、一つの役割だけを持つ</td>
+              <td><strong>「魔法使いは剣を振るうな」</strong><br>回復役が前衛に出るとパーティが崩壊する。役割に集中せよ。</td>
+            </tr>
+            <tr>
+              <td align="center"><strong>O</strong></td>
+              <td><strong>開放閉鎖の原則</strong><br>(OCP)</td>
+              <td>修正には閉じ、拡張には開いている</td>
+              <td><strong>「装備は変えられても、技は変えるな」</strong><br>新しい武器（拡張）は装備できるが、剣術の型（既存コード）は崩さない。</td>
+            </tr>
+            <tr>
+              <td align="center"><strong>L</strong></td>
+              <td><strong>リスコフの置換原則</strong><br>(LSP)</td>
+              <td>子は親の代わりを完璧に務められる</td>
+              <td><strong>「伝説の剣は、ただの剣としても使える」</strong><br>上位職は下位職の仕事を完全にこなせなければならない。</td>
+            </tr>
+            <tr>
+              <td align="center"><strong>I</strong></td>
+              <td><strong>インターフェース分離の原則</strong><br>(ISP)</td>
+              <td>必要な機能だけが入った道具箱を渡す</td>
+              <td><strong>「盗賊に重装備を渡すな」</strong><br>使わないスキルや道具を押し付けられると、動きが鈍くなる。</td>
+            </tr>
+            <tr>
+              <td align="center"><strong>D</strong></td>
+              <td><strong>依存性逆転の原則</strong><br>(DIP)</td>
+              <td>具体的な実装ではなく、抽象的概念に頼る</td>
+              <td><strong>「特定の剣ではなく、『剣技』に頼れ」</strong><br>「聖剣」がないと戦えない勇者より、どんな剣でも戦える達人になれ。</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr>
       </section>
       <section class="level2">
         <h2 id="実践例-questforgeの改善">実践例: QuestForgeの改善</h2>
         <p>QuestForgeの初期のコードを題材に、これらの原則を適用して、より効果的な設計へと進化させてみましょう。</p>
         <section class="level3">
           <h3 id="1-単一責任の原則-srp">1. 単一責任の原則 (SRP)</h3>
+          <p>5つの黄金律を一覧で確認したところで、中でも最も日常的に遭遇する2つの原則を、実際のコードで体験してみましょう。</p>
           <p>
             <strong>初期の状態</strong>:
             <code>Quest</code> クラスが、自分のデータ管理だけでなく、「経験値ボーナスの計算ロジック」や「作業時間の推定」まで抱え込んでいます。
@@ -152,7 +148,7 @@
         <p>SOLID原則は非常に強力ですが、常に完璧に守り続けるのは根気のいる作業です。ここで、AIを「設計の守護者」として活用しましょう。</p>
         <section class="level3">
           <h3 id="1-責務の肥大化を検知する">1. 責務の肥大化を検知する</h3>
-          <p>AIに自分のコードを渡し、「このクラスに複数の責務が混ざっていないか？」と問いかけてみてください。AIは「このロジックは別のクラスに分けたほうが、将来の拡張性が高まりますよ」といった、冷静で的確なアドバイスをくれます。</p>
+          <p>実践例でSOLID原則の効果を確かめた今、AIをパートナーとして活かす具体的な方法を探ってみましょう。AIに自分のコードを渡し、「このクラスに複数の責務が混ざっていないか？」と問いかけてみてください。AIは「このロジックは別のクラスに分けたほうが、将来の拡張性が高まりますよ」といった、冷静で的確なアドバイスをくれます。</p>
         </section>
         <section class="level3">
           <h3 id="2-リファクタリング案の生成">2. リファクタリング案の生成</h3>
@@ -169,7 +165,7 @@
         <p>実際に、多すぎる役割を抱えたクラスを整理（リファクタリング）してみましょう。</p>
         <section class="level3">
           <h3 id="ステップ1-整理前のコードを確認する">ステップ1: 整理前のコードを確認する</h3>
-          <p>以下の <code>Quest</code> クラスを見てください。データの管理だけでなく、複雑な「作業時間の推定」ロジックまで自分で抱え込んでしまっています。</p>
+          <p>AIとの協力イメージをつかんだところで、今度は自分の手でSRPを体験する番です。三つのステップで「役割の分離」を実感してみましょう。以下の <code>Quest</code> クラスを見てください。データの管理だけでなく、複雑な「作業時間の推定」ロジックまで自分で抱え込んでしまっています。</p>
           <pre class="language-python"><code class="language-python"><span class="token keyword">from</span> datetime <span class="token keyword">import</span> timedelta
 
 <span class="token keyword">class</span> <span class="token class-name">Quest</span><span class="token punctuation">:</span>
@@ -211,38 +207,11 @@
         <span class="token keyword">return</span> self<span class="token punctuation">.</span>_estimator<span class="token punctuation">.</span>estimate<span class="token punctuation">(</span>self<span class="token punctuation">.</span>difficulty<span class="token punctuation">)</span></code></pre>
           <p>これで、<code>Quest</code> クラスは「自分のデータを知っている」という本来の役割に集中できるようになりました。これが単一責任の原則（SRP）の第一歩です。</p>
           <hr>
-        </section>
-      </section>
-      <section class="level2">
-        <h2 id="まとめ">まとめ</h2>
-        <ol>
-          <li><strong>SOLID原則</strong>は、変更に強く、拡張するのが楽しくなる「美しい構造」を作るための指針である。</li>
-          <li><strong>単一責任の原則 (SRP)</strong> を意識するだけで、コードの理解しやすさと再利用性は劇的に向上する。</li>
-          <li><strong>高凝集・疎結合</strong>な設計は、将来の自分やチームメンバーへの最高のプレゼントになる。</li>
-          <li><strong>AIをパートナー</strong>にすることで、原則の適用やトレードオフの判断をよりスムーズに行える。</li>
-        </ol>
-        <p>次は、これらの原則をより具体的に実現するための、先人たちの知恵の結晶——「デザインパターン（賢者たちの処方箋）」の世界へ進みましょう。</p>
-      </section>
-      <section class="level2">
-        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
-        <section class="level3">
-          <h3 id="古のグリモワール推薦図書">古のグリモワール（推薦図書）</h3>
-          <ul>
-            <li>📚 <strong>ロバート・C・マーチン『Clean Architecture』</strong>: SOLID原則を含む、ソフトウェア構造の哲学が記された大著。</li>
-            <li>📚 <strong>ロバート・C・マーチン『アジャイルソフトウェア開発の奥義』</strong>: SOLID原則の起源と詳細な解説が載っている、原典に近い魔導書。</li>
-            <li>📚 <strong>エリック・フリーマン他『Head Firstデザインパターン』</strong>: SOLID原則をどのようにデザインパターンに応用するかを、視覚的に学べる楽しい一冊。</li>
-          </ul>
+          <p>SOLID原則は、「こう書けばいい」というルールではなく、変更に強く、拡張するのが楽しくなる「美しい構造」を作るための羅針盤です。特に単一責任の原則（SRP）を意識するだけで、コードの理解しやすさと再利用性は劇的に向上します。一つのクラスが一つの仕事に集中し、関係する責務が同じ場所に集まる（高凝集）——それは、半年後に同じコードを読む自分や、初めてコードを触るチームメンバーへの最高のプレゼントです。</p>
+          <p>AIはこれらの原則の適用でも力を発揮します。「このクラスはSRPに違反していますか？」と問いかければ、具体的なリファクタリングの提案とトレードオフの説明が返ってきます。</p>
+          <p>原則を知った次のステップは、それをより具体的なパターンとして活用することです。2.4節では、世界中の先人たちがSOLID原則を実践する中で蓄積してきた知恵の結晶、デザインパターンの世界へと進みます。</p>
           <hr>
         </section>
-      </section>
-      <section class="level2">
-        <h2 id="さらに学ぶためのリソース-1">さらに学ぶためのリソース</h2>
-        <ul>
-          <li>🌐 <strong>Web</strong>: Robert C. Martin "<a href="http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod">The Principles of OOD</a>"（提唱者自身による、SOLID原則を含む設計原則のまとめ）</li>
-          <li>📚 <strong>書籍</strong>: ロバート・C・マーチン『<a href="https://www.kadokawa.co.jp/product/301802000596/">Clean Architecture 達人に学ぶソフトウェアの構造と設計</a>』（第3章「設計の原則」にて、SOLIDの各原則が詳細に解説されています）</li>
-          <li>📄 <strong>論文</strong>: Robert C. Martin "<a href="https://web.archive.org/web/20150906155800/http://www.objectmentor.com/resources/articles/Principles_and_Patterns.pdf">Design Principles and Design Patterns</a>"（2000年。SOLID原則のエッセンスが凝縮された論文）</li>
-        </ul>
-        <hr>
       </section>
       <section class="level2">
         <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
@@ -257,6 +226,16 @@
           <li>AIモデル: Gemini 2.0 Flash (CLI)</li>
           <li>実装の意図: QuestForgeの実際のコード（Questクラス）を題材に、SRPなどの適用前後のイメージをポジティブに提示。AIを「設計の相談相手」として位置づける。</li>
         </ul>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>📚 <strong>書籍</strong>: ロバート・C・マーチン『<a href="https://www.sbcr.jp/product/4797333673/">アジャイルソフトウェア開発の奥義</a>』（SOLID原則の起源と詳細な解説が載っている、原典に近い魔導書）</li>
+          <li>📚 <strong>書籍</strong>: エリック・フリーマン他『<a href="https://www.oreilly.co.jp/books/9784814400317/">Head Firstデザインパターン 第2版</a>』（SOLID原則をどのようにデザインパターンに応用するかを、視覚的に学べる楽しい一冊）</li>
+          <li>🌐 <strong>Web</strong>: Robert C. Martin "<a href="http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod">The Principles of OOD</a>"（提唱者自身による、SOLID原則を含む設計原則のまとめ）</li>
+          <li>📄 <strong>論文</strong>: Robert C. Martin "<a href="https://web.archive.org/web/20150906155800/http://www.objectmentor.com/resources/articles/Principles_and_Patterns.pdf">Design Principles and Design Patterns</a>"（2000年。SOLID原則のエッセンスが凝縮された論文）</li>
+        </ul>
+        <hr>
       </section>
     </section>
   

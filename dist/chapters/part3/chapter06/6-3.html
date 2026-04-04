@@ -21,17 +21,16 @@
     <main>
     <section class="level1">
       <h1 id="63-鍛冶場の結界セキュリティという守りの技法the-ward-of-the-forge">6.3 鍛冶場の結界——セキュリティという守りの技法（The Ward of the Forge）</h1>
-      <section class="level2">
-        <h2 id="導入-結界なき城は砂の城">導入: 結界なき城は砂の城</h2>
-        <p>CI/CDパイプライン（6.2）で、コードが自動的に本番環境へ届く仕組みを手に入れました。しかし、外の世界は必ずしも友好的ではありません。あなたのソフトウェアが外界に公開された瞬間から、それは<strong>守るべき城</strong>になります。</p>
-        <p>セキュリティは「怖い」「自分には関係ない」と感じるかもしれません。しかし、考え方を変えてみましょう。セキュリティとは、<strong>あなたの作品とユーザーを守る「結界」</strong>を張ること。それは、鍛冶場で武器を鍛えるように、ソフトウェアの「強度」を高めるクラフトマンシップの一部です。</p>
-        <p>このセクションでは、セキュアコーディングの基本原則から、認証・認可のパターン、そしてCI/CDに組み込むDevSecOpsまで——ソフトウェアを脅威から守る実践的な技法を学びます。</p>
-        <figure>
-          <img src="../../assets/diagrams/chapter06/6.3-security-barrier.svg" alt="鍛冶場の結界（多層防御）">
-          <figcaption aria-hidden="true">鍛冶場の結界（多層防御）</figcaption>
-        </figure>
-        <hr>
-      </section>
+      <p>CI/CDパイプライン（6.2）で、コードが自動的に本番環境へ届く仕組みを手に入れました。しかし、外の世界は必ずしも友好的ではありません。あなたのソフトウェアが外界に公開された瞬間から、それは<strong>守るべき城</strong>になります。</p>
+      <p>セキュリティは「怖い」「自分には関係ない」と感じるかもしれません。しかし、考え方を変えてみましょう。セキュリティとは、<strong>あなたの作品とユーザーを守る「結界」</strong>を張ること。それは、鍛冶場で武器を鍛えるように、ソフトウェアの「強度」を高めるクラフトマンシップの一部です。</p>
+      <p>このセクションでは、セキュアコーディングの基本原則から、認証・認可のパターン、そしてCI/CDに組み込むDevSecOpsまで——ソフトウェアを脅威から守る実践的な技法を学びます。</p>
+      <p>次の図は、セキュリティの多層防御（鍛冶場の結界）がどのような層で構成されているかを示しています。</p>
+      <figure>
+        <img src="../../assets/diagrams/chapter06/6.3-security-barrier.svg" alt="鍛冶場の結界（多層防御）">
+        <figcaption aria-hidden="true">鍛冶場の結界（多層防御）</figcaption>
+      </figure>
+      <p>ここで示されているのは、単一の防衛線ではなく複数の層でシステムを守るという「深層防御（Defense in Depth）」の考え方です。外側の層が突破されても、内側の層が守りを続けます。コーディング規約・入力検証・認証認可・通信暗号化・監査ログという各層が組み合わさることで、城壁は本物の「結界」となります。</p>
+      <hr>
       <section class="level2">
         <h2 id="セキュアコーディングの三原則">セキュアコーディングの三原則</h2>
         <p>セキュリティの基本は、驚くほどシンプルな原則に集約されます。</p>
@@ -106,7 +105,7 @@ safe_output <span class="token operator">=</span> html<span class="token punctua
             <tr>
               <td>1</td>
               <td>アクセス制御の不備</td>
-              <td>他プレイヤーのクエストを編集できてしまう</td>
+              <td>他の冒険者のクエストを編集できてしまう</td>
             </tr>
             <tr>
               <td>2</td>
@@ -157,7 +156,7 @@ safe_output <span class="token operator">=</span> html<span class="token punctua
         </section>
         <section class="level3">
           <h3 id="jwtjson-web-tokenの基本">JWT（JSON Web Token）の基本</h3>
-          <p>JWTは、ユーザーの認証情報を安全に受け渡すための標準的なトークン形式です。</p>
+          <p>パスワードの保管と並んで重要なのが、「誰がログインしているか」をサービス間で安全に伝えるトークンの仕組みです。JWTは、ユーザーの認証情報を安全に受け渡すための標準的なトークン形式です。</p>
           <pre class="language-python"><code class="language-python"><span class="token keyword">import</span> jwt
 <span class="token keyword">from</span> datetime <span class="token keyword">import</span> datetime<span class="token punctuation">,</span> timedelta
 
@@ -186,6 +185,7 @@ SECRET_KEY <span class="token operator">=</span> <span class="token string">"you
         <p>現代のソフトウェアは、多くの外部ライブラリに依存しています。あなた自身のコードが完璧でも、依存ライブラリに脆弱性があれば、城門は破られます。</p>
         <section class="level3">
           <h3 id="自動チェックツール">自動チェックツール</h3>
+          <p>この脅威に対応する第一手として、自動チェックツールの活用が挙げられます。</p>
           <pre class="language-bash"><code class="language-bash"><span class="token comment"># Python: pip-audit で脆弱性をスキャン</span>
 pip-audit
 
@@ -203,6 +203,72 @@ pip-audit
       <span class="token key atrule">interval</span><span class="token punctuation">:</span> <span class="token string">"weekly"</span>
     <span class="token key atrule">open-pull-requests-limit</span><span class="token punctuation">:</span> <span class="token number">10</span></code></pre>
           <p>Dependabotを有効にしておくと、依存ライブラリに脆弱性が見つかった際に、修正バージョンへのアップデートを提案するプルリクエストが自動的に作成されます。まるで、城の見張り番が24時間体制でパトロールしてくれるようなものです。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="sbomソフトウェアの部品表で見えない依存を照らす">SBOM——ソフトウェアの「部品表」で見えない依存を照らす</h2>
+        <p>依存ライブラリのスキャンは、既知の脆弱性を検知します。しかし「そもそも自分たちのシステムに何が入っているか」を一覧できる仕組みが必要です。それが <strong>SBOM（Software Bill of Materials / ソフトウェア部品表）</strong> です。</p>
+        <p>製造業の部品表（BOM）と同じ発想で、アプリケーションを構成するすべてのライブラリ・バージョン・ライセンスを機械可読な形式で列挙したドキュメントです。</p>
+        <section class="level3">
+          <h3 id="なぜsbomが重要か">なぜSBOMが重要か</h3>
+          <p>2021年12月に発覚した「Log4Shell（CVE-2021-44228）」では、多くの組織が「自社システムでLog4jを使っているか？」すら即座に把握できませんでした。SBOMがあれば、影響範囲を数分で特定できます。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>活用場面</th>
+                <th>内容</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>脆弱性対応</strong></td>
+                <td>新しいCVEが発表された際、即座に影響サービスを特定</td>
+              </tr>
+              <tr>
+                <td><strong>ライセンスコンプライアンス</strong></td>
+                <td>GPLやMITなど、OSSのライセンス条件を一覧で確認</td>
+              </tr>
+              <tr>
+                <td><strong>規制対応</strong></td>
+                <td>米国行政命令14028（2021年）は連邦政府向けソフトウェアにSBOMを義務化</td>
+              </tr>
+              <tr>
+                <td><strong>サプライチェーン攻撃の検知</strong></td>
+                <td>SolarWinds事件のような依存ライブラリ経由の攻撃を早期に検知</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="level3">
+          <h3 id="標準フォーマットとcicd連携">標準フォーマットとCI/CD連携</h3>
+          <p>SBOMの重要性が明らかになったところで、実際にCI/CDへ組み込む方法を見ていきましょう。主要フォーマットは2つあります。</p>
+          <ul>
+            <li><strong>SPDX</strong>: Linux Foundation 策定の国際標準（ISO/IEC 5962:2021）</li>
+            <li><strong>CycloneDX</strong>: OWASP 策定の、セキュリティ用途に最適化されたフォーマット</li>
+          </ul>
+          <p>どちらもCI/CDに組み込んで自動生成できます。</p>
+          <pre class="language-yaml"><code class="language-yaml"><span class="token comment"># GitHub Actions でのSBOM生成 + 脆弱性スキャン例</span>
+<span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Generate SBOM (CycloneDX)
+  <span class="token key atrule">uses</span><span class="token punctuation">:</span> CycloneDX/gh<span class="token punctuation">-</span>python<span class="token punctuation">-</span>generate<span class="token punctuation">-</span>sbom@v2
+  <span class="token key atrule">with</span><span class="token punctuation">:</span>
+    <span class="token key atrule">input</span><span class="token punctuation">:</span> ./requirements.txt
+    <span class="token key atrule">output</span><span class="token punctuation">:</span> sbom.json
+    <span class="token key atrule">format</span><span class="token punctuation">:</span> json
+
+<span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Upload SBOM as artifact
+  <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/upload<span class="token punctuation">-</span>artifact@v3
+  <span class="token key atrule">with</span><span class="token punctuation">:</span>
+    <span class="token key atrule">name</span><span class="token punctuation">:</span> sbom
+    <span class="token key atrule">path</span><span class="token punctuation">:</span> sbom.json
+
+<span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Scan for vulnerabilities (Grype)
+  <span class="token key atrule">uses</span><span class="token punctuation">:</span> anchore/scan<span class="token punctuation">-</span>action@v3
+  <span class="token key atrule">with</span><span class="token punctuation">:</span>
+    <span class="token key atrule">sbom</span><span class="token punctuation">:</span> sbom.json
+    <span class="token key atrule">fail-build</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
+    <span class="token key atrule">severity-cutoff</span><span class="token punctuation">:</span> high</code></pre>
+          <p>QuestForgeでは、このパイプラインを各サービスのCIに組み込むことで、コードがプッシュされるたびに自動的にSBOMを生成・アーカイブし、高深刻度の脆弱性があればビルドを停止します。</p>
           <hr>
         </section>
       </section>
@@ -238,9 +304,10 @@ pip-audit
       <section class="level2">
         <h2 id="実践-questforgeでのセキュリティ対策">実践: QuestForgeでのセキュリティ対策</h2>
         <p>QuestForgeに具体的なセキュリティ対策を施してみましょう。</p>
+        <p>まず、Webアプリケーションで最も頻繁に遭遇するXSSへの対処から始めます。</p>
         <section class="level3">
           <h3 id="xssクロスサイトスクリプティング対策">XSS（クロスサイトスクリプティング）対策</h3>
-          <p>プレイヤーがクエストの説明文に <code>&lt;script&gt;alert('hacked!')&lt;/script&gt;</code> と入力した場合、そのまま表示するとブラウザでスクリプトが実行されてしまいます。</p>
+          <p>冒険者がクエストの説明文に <code>&lt;script&gt;alert('hacked!')&lt;/script&gt;</code> と入力した場合、そのまま表示するとブラウザでスクリプトが実行されてしまいます。</p>
           <pre class="language-python"><code class="language-python"><span class="token comment"># テンプレートエンジンの自動エスケープを活用</span>
 <span class="token comment"># Flask + Jinja2 の場合、{{ }} は自動エスケープされる</span>
 <span class="token comment"># &lt;script&gt; → &amp;lt;script&amp;gt; として表示される</span>
@@ -255,7 +322,7 @@ pip-audit
         </section>
         <section class="level3">
           <h3 id="csrfクロスサイトリクエストフォージェリ対策">CSRF（クロスサイトリクエストフォージェリ）対策</h3>
-          <p>CSRFトークンを使って、リクエストが正規のフォームから送信されたことを確認します。</p>
+          <p>XSSで出力を守ったら、もう一つの古典的な攻撃パターンにも備えておきましょう。CSRFトークンを使って、リクエストが正規のフォームから送信されたことを確認します。</p>
           <pre class="language-python"><code class="language-python"><span class="token comment"># Flask-WTFを使用した例</span>
 <span class="token keyword">from</span> flask_wtf<span class="token punctuation">.</span>csrf <span class="token keyword">import</span> CSRFProtect
 
@@ -282,14 +349,9 @@ OWASP Top 10を参考に、以下の点をチェックしてください：
       </section>
       <section class="level2">
         <h2 id="まとめ">まとめ</h2>
-        <ul>
-          <li><strong>入力を信じない</strong>: 外部データは必ずバリデーションし、エスケープしてから使う</li>
-          <li><strong>最小権限</strong>: 必要最小限の権限だけを付与し、攻撃の影響範囲を限定する</li>
-          <li><strong>OWASP Top 10 をチェックリストに</strong>: 新機能の開発時に脅威のカタログを参照する習慣を持つ</li>
-          <li><strong>認証と認可を分けて考える</strong>: 「誰か」と「何ができるか」は別の仕組みで管理する</li>
-          <li><strong>依存ライブラリを監視</strong>: DependabotやCI/CDでの自動チェックで脆弱性を早期発見する</li>
-          <li><strong>DevSecOps</strong>: セキュリティを「特別な作業」ではなく「日常のワークフロー」に組み込む</li>
-        </ul>
+        <p>セキュリティの三原則——「入力を信じない」「最小権限を与える」「出力をエスケープする」——は、どれもシンプルですが、これを日常的に意識するだけで、アプリケーションの強度は劇的に向上します。OWASP Top 10 をチェックリストとして活用し、新機能を開発するたびに「この機能、脅威のカタログに当てはまらないか？」と自問する習慣が、結界を自然に強化し続けます。認証（誰か）と認可（何ができるか）を明確に分けて設計し、依存ライブラリをDependabotやSBOMで継続的に監視することで、自分のコードだけでなくサプライチェーン全体を守る体制が整います。</p>
+        <p>DevSecOpsの核心は、セキュリティを「特別な作業」から「日常のワークフロー」に変えることです。CI/CDパイプラインに脆弱性スキャンやシークレット検出を組み込むことで、脅威が混入した瞬間に自動検知できます。城を守る結界は、一度張れば終わりではなく、毎日のコードプッシュとともに更新され続けるものなのです。</p>
+        <p>6.4節では、守りを固めた後に重要になる「脈動を聴く」能力へと進みます。ログ・メトリクス・トレースを組み合わせたオブザーバビリティの技法で、動き続けるシステムの内側を透かし見る目を養いましょう。</p>
         <hr>
       </section>
       <section class="level2">
