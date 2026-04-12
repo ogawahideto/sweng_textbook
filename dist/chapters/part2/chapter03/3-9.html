@@ -1,0 +1,293 @@
+<!DOCTYPE html><html lang="ja"><head>
+    <meta charset="utf-8">
+    <title>3.9 【外伝】手技の工房——Skills・MCP・サブエージェントでゴーレムを拡張する</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+  </head>
+  <body>
+    <section class="level1">
+      <h1 id="39-外伝手技の工房skillsmcpサブエージェントでゴーレムを拡張する">3.9 【外伝】手技の工房——Skills・MCP・サブエージェントでゴーレムを拡張する</h1>
+      <figure>
+        <img src="../../../assets/images/chapter_covers/Gaiden_Workshop.png" alt="扉絵: 手技の工房">
+        <figcaption aria-hidden="true">扉絵: 手技の工房</figcaption>
+      </figure>
+      <p>3.5節で、あなたはコーディングエージェント（ゴーレム）を召喚し、使役する術を学びました。しかし、そのゴーレムはまだ「生まれたまま」の状態です。</p>
+      <p>真の錬金術師は、ゴーレムを<strong>改造</strong>します。</p>
+      <p>繰り返す作業を<strong>「手技（スキル）」</strong>として定義し、呪文の一言で再現できるようにする。外の世界の情報源を<strong>「道具（MCP）」</strong>としてゴーレムに装備させ、データベースや外部APIを直接参照させる。さらにゴーレム同士を組み合わせて<strong>「群れ（マルチエージェント）」</strong>を形成し、並列に複雑な仕事を遂行させる——これが、AI時代の上位魔術です。</p>
+      <p>次の図は、Skills（スキル定義）・MCP（外部ツール接続）・サブエージェント（ゴーレムの連鎖）という三つの拡張技術が、単体のエージェントをどのように強化するかを示しています。</p>
+      <figure>
+        <img src="../../../assets/diagrams/chapter03/3-9-agent-extension.svg" alt="手技の工房：Skills・MCP・サブエージェントの関係">
+        <figcaption aria-hidden="true">手技の工房：Skills・MCP・サブエージェントの関係</figcaption>
+      </figure>
+      <p>ここで描かれているのは、一体のゴーレムが持つ能力の限界を、三つの方向から拡張する構造です。Skillsは繰り返す作業をMarkdownで定義して召喚コスト（指示の手間）を下げ、MCPはファイルシステムを超えてDBや外部APIへと感覚器官を伸ばし、サブエージェントは分業によってコンテキスト上限を突破します。この三者が組み合わさることで、エンジニアは一人の術者から専門部隊の指揮官へと変貌を遂げます。</p>
+      <hr>
+      <section class="level2">
+        <h2 id="skills繰り返す手技を呪文集に刻む">Skills——繰り返す手技を呪文集に刻む</h2>
+        <p>三つの拡張技術のうち、最も手軽に始められるのがSkillsです。まずその概念を掴みましょう。</p>
+        <section class="level3">
+          <h3 id="概念-短縮詠唱の書">概念: 短縮詠唱の書</h3>
+          <p>スキルとは「繰り返し行う作業を、一つの短縮詠唱として定義したもの」です。3.5節でスラッシュコマンド（<code>/commit</code>、<code>/review-pr</code> など）を紹介しましたが、あれはあくまでツールが提供する「既製品の呪文」でした。</p>
+          <p>スキルは、それを<strong>自分で定義</strong>できる仕組みです。</p>
+        </section>
+        <section class="level3">
+          <h3 id="claude-codeでの実装">Claude Codeでの実装</h3>
+          <p>概念を理解したら、Claude Codeでどのように定義するかを具体的に見ていきましょう。<code>.claude/commands/</code> フォルダにMarkdownファイルを置くと、そのファイル名がそのままカスタムスラッシュコマンドになります。</p>
+          <pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> .claude/commands/security-review.md</span>
+<span class="token title important"><span class="token punctuation">#</span> 使い方: /security-review</span>
+
+infrastructure/ と .github/workflows/ を読んで、
+セキュリティレビューを実施してください。
+
+OWASP Top 10を参考に、以下の点をチェックしてください：
+<span class="token list punctuation">-</span> SQLインジェクション・XSSの可能性
+<span class="token list punctuation">-</span> 認証・認可の不備
+<span class="token list punctuation">-</span> シークレットのハードコーディング
+
+問題点を優先度順にリスト化し、修正案をコードで示してください。</code></pre>
+          <p>これを定義すれば、今後チームの誰もが <code>/security-review</code> と入力するだけで、この複雑な手順が毎回同じ品質で実行されます。</p>
+        </section>
+        <section class="level3">
+          <h3 id="questforge-プロジェクトのスキル集の例">QuestForge プロジェクトのスキル集の例</h3>
+          <p>一つのスキルがどれほど実務を変えるかが伝わったところで、プロジェクト全体でどのようなスキルが揃うかをイメージしてみましょう。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>スキル名</th>
+                <th>概要</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>/commit</code></td>
+                <td>変更を論理単位ごとにグループ分けしてコミット</td>
+              </tr>
+              <tr>
+                <td><code>/security-review</code></td>
+                <td>OWASP観点でのセキュリティレビュー</td>
+              </tr>
+              <tr>
+                <td><code>/add-tests</code></td>
+                <td>指定ファイルの網羅的なテストを自動生成</td>
+              </tr>
+              <tr>
+                <td><code>/update-docs</code></td>
+                <td>コードの変更に合わせてドキュメントを更新</td>
+              </tr>
+              <tr>
+                <td><code>/estimate-complexity</code></td>
+                <td>メトリクスを分析して改修工数を試算</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>スキルはMarkdownファイルなので<strong>Gitで管理でき</strong>、チームで共有できます。「今日から入ったメンバーも、ベテランと同じ品質でセキュリティレビューができる」——それがスキルの力です。</p>
+        </section>
+        <section class="level3">
+          <h3 id="他のツールとの対応">他のツールとの対応</h3>
+          <p>QuestForgeでの例が揃ったら、この思想が他のツールではどのように実現されているかも確認しておきましょう。スキルの概念はClaude Code固有ではありません。エージェントが変わっても「繰り返す手技を定義して再利用する」という思想は共通です。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>ツール</th>
+                <th>スキル定義の場所</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Claude Code</td>
+                <td><code>.claude/commands/*.md</code></td>
+              </tr>
+              <tr>
+                <td>Cursor / Windsurf</td>
+                <td><code>.cursorrules</code> + カスタムスラッシュコマンド</td>
+              </tr>
+              <tr>
+                <td>GitHub Copilot</td>
+                <td><code>.github/copilot-instructions.md</code></td>
+              </tr>
+              <tr>
+                <td>汎用スクリプト</td>
+                <td>シェルスクリプト・Makefile</td>
+              </tr>
+            </tbody>
+          </table>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="mcpmodel-context-protocol道具の召喚儀式">MCP（Model Context Protocol）——道具の召喚儀式</h2>
+        <section class="level3">
+          <h3 id="概念-ゴーレムの感覚器官を拡張する">概念: ゴーレムの「感覚器官」を拡張する</h3>
+          <p>Skillsでゴーレムへの指示を効率化できたら、次はゴーレムの「見える世界」そのものを広げる技術——MCPに目を向けましょう。MCPとは「AIエージェントが外部ツールやデータソースに接続するための<strong>標準プロトコル</strong>」です。2024年にAnthropicが策定・公開し、急速に普及しています。</p>
+          <p>MCPが登場する以前、AIエージェントの「見える世界」はプロジェクトのファイルシステムに限られていました。MCPにより、ゴーレムはデータベース、外部API、ブラウザ、クラウドサービスなど、あらゆるものに目と手を伸ばせるようになります。</p>
+          <pre class="language-text"><code class="language-text">エージェント（Claude Code）
+      ↕ MCP Protocol
+  MCPサーバー（仲介役）
+      ↕ 各種インターフェース
+┌──────────────────────────────────┐
+│ DB │ GitHub │ Web検索 │ ブラウザ │ ...│
+└──────────────────────────────────┘</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="代表的なmcpサーバー">代表的なMCPサーバー</h3>
+          <p>MCPの仕組みが分かれば、どんなサーバーが用意されているかを知ることで可能性が一気に広がります。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>MCPサーバー</th>
+                <th>できること</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>filesystem</code></td>
+                <td>ローカルファイルの読み書き（エージェントの基本装備）</td>
+              </tr>
+              <tr>
+                <td><code>github</code></td>
+                <td>PRの作成・レビュー・Issue管理・コード検索</td>
+              </tr>
+              <tr>
+                <td><code>postgres</code></td>
+                <td>DBへの直接クエリと結果の取得・加工</td>
+              </tr>
+              <tr>
+                <td><code>brave-search</code></td>
+                <td>Web検索で最新情報やドキュメントを取得</td>
+              </tr>
+              <tr>
+                <td><code>puppeteer</code></td>
+                <td>ブラウザ操作（E2Eテストや画面確認）</td>
+              </tr>
+              <tr>
+                <td><code>slack</code></td>
+                <td>Slackチャンネルへのメッセージ送受信</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="level3">
+          <h3 id="questforgeでの活用例">QuestForgeでの活用例</h3>
+          <p>サーバーの一覧が揃ったところで、QuestForgeに当てはめた具体的な活用イメージを見ておきましょう。QuestForgeのPostgreSQLデータベースにMCPで接続すると、このような自然な対話が可能になります。</p>
+          <pre class="language-text"><code class="language-text">「先月完了されたクエストの件数と平均報酬XPを集計して、
+ それを踏まえてcalculate_quest_xp()のロジックを見直してください」</code></pre>
+          <p>エージェントは自ら DBに接続し、実データを集計した上でコードを改善します。「仮想の例」ではなく「実際のデータ」に基づいた改善——それがMCPで広がる世界です。</p>
+        </section>
+        <section class="level3">
+          <h3 id="mcpサーバーの追加方法">MCPサーバーの追加方法</h3>
+          <p>活用のイメージが掴めたら、実際にMCPサーバーを追加する手順を確認しておきましょう。Claude Codeでは、<code>claude_desktop_config.json</code>（またはプロジェクトの設定ファイル）にサーバーを登録します。</p>
+          <pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"mcpServers"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"questforge-db"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"uvx"</span><span class="token punctuation">,</span>
+      <span class="token property">"args"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"mcp-server-postgres"</span><span class="token punctuation">,</span> <span class="token string">"postgresql://localhost/questforge"</span><span class="token punctuation">]</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token property">"github"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"uvx"</span><span class="token punctuation">,</span>
+      <span class="token property">"args"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"mcp-server-github"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token property">"env"</span><span class="token operator">:</span> <span class="token punctuation">{</span> <span class="token property">"GITHUB_TOKEN"</span><span class="token operator">:</span> <span class="token string">"..."</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+          <p>一度設定すれば、エージェントが自動的に「この会話でどのツールを使うべきか」を判断して呼び出します。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="サブエージェント使い魔の連鎖">サブエージェント——使い魔の連鎖</h2>
+        <section class="level3">
+          <h3 id="概念-一匹から群れへ">概念: 一匹から、群れへ</h3>
+          <p>SkillsとMCPで一体のゴーレムを強化できたら、いよいよ最後の拡張——ゴーレムを「群れ」として組織するサブエージェントへと進みましょう。サブエージェントとは「エージェントが、別のエージェントに仕事を委譲する」仕組みです。複雑なタスクを分解し、専門化したエージェントに並列・直列で処理させます。</p>
+          <p>単一のエージェントには限界があります——コンテキスト（記憶）の上限、一度に処理できる量、専門性の制約。それを突破するのがサブエージェントです。</p>
+        </section>
+        <section class="level3">
+          <h3 id="構成のパターン">構成のパターン</h3>
+          <p>「一匹から群れへ」という概念を掴んだら、その群れをどのように組織するか——構成のパターンを見ていきましょう。</p>
+          <pre class="language-text"><code class="language-text">【直列パターン（調査→実装→検証）】
+メイン → 調査エージェント → 設計エージェント → 実装エージェント
+                                                        ↓
+                                               テストエージェント
+
+【並列パターン（同時多発）】
+メイン ─── セキュリティ調査エージェント ───┐
+       ├── パフォーマンス分析エージェント ───┤→ 統合・レポート
+       └── テスト生成エージェント          ─┘</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="claude-codeでの実践例">Claude Codeでの実践例</h3>
+          <p>パターンの形が見えたら、Claude Codeを使った実際の指示の姿を見てみましょう。「大規模なリファクタリング」のようなタスクをサブエージェントで分解すると、以下のように指示できます。</p>
+          <pre class="language-text"><code class="language-text">このプロジェクトを3つのエージェントで並列に分析してください：
+
+エージェント1: domain/ と application/ のアーキテクチャを分析し、
+              Clean Architecture違反を列挙してください
+エージェント2: tests/ 全体のカバレッジと抜け漏れを分析してください
+エージェント3: infrastructure/ のセキュリティリスクを評価してください
+
+3つの分析結果を統合し、優先度付きの改善計画を作成してください。</code></pre>
+          <p>Claude Codeはこれを受け取り、内部でサブエージェント（<code>Agent</code>ツール）を起動して並列処理し、結果を統合します。</p>
+        </section>
+        <section class="level3">
+          <h3 id="コンテキストの節約という設計思想">コンテキストの節約という設計思想</h3>
+          <p>並列処理によるスピードアップだけでなく、サブエージェントにはもう一つ見落とされがちな設計上の利点があります。各サブエージェントは<strong>独立したコンテキスト</strong>を持ちます。巨大なコードベースを一つのエージェントに丸ごと読み込ませるのではなく、「担当領域だけを深く読む」エージェントを複数立てることで、精度が上がり、コストも下がります。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="まとめ">まとめ</h2>
+        <p>Skills・MCP・サブエージェントの三つは、一体のゴーレムを「部隊」へと育て上げるための技術です。Skillsは繰り返す手技をMarkdownで定義してスラッシュコマンドとして再利用可能にし、チームで共有すれば全員の作業品質が均一に向上します。MCPは外部ツールやデータソースをプロトコルで接続することでAIの「見える世界」を広げ、DBや外部APIをエージェントが直接参照・操作できるようにします。</p>
+        <p>サブエージェントは複雑なタスクを専門部隊に分解・委譲する仕組みであり、並列実行でスピードを、専門化で精度を高めます。この三つを組み合わせると、エンジニアは「コードを書く人」から「AIの部隊を指揮する指揮官」へと役割が進化します。それは喪失ではなく、人間がより高次の設計・判断・評価に集中できるという解放です。</p>
+        <p>こうして第3章では、アルゴリズムの元素から制御構造・器の設計・品質評価・AIとの協働・パラダイムの多様性・並行処理・そしてレガシーとエージェント拡張まで、「術式を磨く」全技術を巡ってきました。続く<strong>第4章「無敵の軍団を作る」</strong>では、視点をコードの外に広げます。あなたの術式を守り、証明し、自動的に検証し続けるテストという「守護魔法」の体系を学んでいきましょう。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <section class="level3">
+          <h3 id="スキルの定義claude-code">スキルの定義（Claude Code）</h3>
+          <pre class="language-text"><code class="language-text">.claude/commands/add-tests.md を作成してください。
+
+このスキルは「指定されたPythonファイルの関数を読んで、
+pytestを使った包括的なテストを自動生成する」ものです。
+
+内容として以下を含めてください：
+- 対象ファイルを引数として受け取る方法（$ARGUMENTS の利用）
+- 正常系・異常系・境界値のテストケースを網羅する指示
+- テスト実行まで行うか、ファイル作成にとどめるかの選択</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="mcpサーバーの活用">MCPサーバーの活用</h3>
+          <pre class="language-text"><code class="language-text">MCPのgithubサーバーを使って、以下を行ってください：
+
+1. このリポジトリのオープンなPull Requestを一覧取得
+2. 最も古いPR（draft除く）のdiffを取得
+3. セキュリティ・パフォーマンス・コードスタイルの観点でレビューコメントを作成
+4. コメントをPRに投稿してください</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="サブエージェントによる並列分析">サブエージェントによる並列分析</h3>
+          <pre class="language-text"><code class="language-text">以下の3つのタスクをサブエージェントで並列に実行してください：
+
+1. sample-code/questforge/domain/ を分析して、
+   SOLID原則の違反箇所を列挙する（最大5件）
+
+2. sample-code/questforge/tests/ を分析して、
+   テストが不足している重要なシナリオを3つ特定する
+
+3. sample-code/questforge/infrastructure/ を分析して、
+   セキュリティ上の懸念点を優先度付きで挙げる
+
+3つの結果をまとめ、「今週取り組むべき改善タスク」として
+優先度・工数・期待効果の表を作成してください。</code></pre>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>🌐 <strong>公式ドキュメント</strong>: <a href="https://modelcontextprotocol.io/">Model Context Protocol</a>（MCPの仕様・サーバー一覧・実装ガイド。急速に拡充中）</li>
+          <li>🌐 <strong>公式ドキュメント</strong>: <a href="https://docs.anthropic.com/ja/docs/claude-code/slash-commands">Claude Code スラッシュコマンド</a>（カスタムスキルの定義方法の公式ガイド）</li>
+          <li>🌐 <strong>Web</strong>: <a href="https://github.com/modelcontextprotocol/servers">MCP Servers（GitHub）</a>（Anthropicが管理する公式MCPサーバー集。filesystem・github・postgres等のリファレンス実装）</li>
+        </ul>
+      </section>
+    </section>
+  
+
+</body></html>

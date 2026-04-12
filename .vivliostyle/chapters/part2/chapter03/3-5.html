@@ -305,6 +305,85 @@ RPG風タスク管理アプリ。Clean Architectureを採用。
         </section>
       </section>
       <section class="level2">
+        <h2 id="llmops人工生命の調律ホムンクルスチューニング">LLMOps：人工生命の調律（ホムンクルス・チューニング）</h2>
+        <p>ゴーレムを召喚して動かすことはできた——しかしその働きは、時間とともに質が変わっていきます。本番環境に投入したAI機能が、半年後も同じ精度を維持しているとは限りません。「人工生命の調律」——LLMOps（Large Language Model Operations）は、AIを一度作って終わりにしないための継続的な錬成術です。</p>
+        <section class="level3">
+          <h3 id="なぜ品質は劣化するのか">なぜ品質は劣化するのか</h3>
+          <p>LLMに接続されたアプリケーションが精度を落とす原因は複数あります。利用するLLM自体がモデルバージョンアップで挙動を変える「モデルドリフト」、時事ネタや新製品情報が古くなる「知識の陳腐化」、そしてユーザーが想定外の使い方をするにつれてプロンプトの適合性が下がる「ユーザー分布のシフト」です。</p>
+        </section>
+        <section class="level3">
+          <h3 id="評価パイプラインの構築">評価パイプラインの構築</h3>
+          <p>品質を継続的に保つ鍵は、<strong>評価の自動化</strong>です。</p>
+          <pre class="language-python"><code class="language-python"><span class="token comment"># QuestForge: クエスト推薦AIの評価ループ</span>
+<span class="token keyword">import</span> anthropic
+
+<span class="token keyword">def</span> <span class="token function">evaluate_recommendation</span><span class="token punctuation">(</span>question<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> answer<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> gold_answer<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">dict</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""AIが生成した推薦を、別のAIで採点する"""</span>
+    client <span class="token operator">=</span> anthropic<span class="token punctuation">.</span>Anthropic<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    prompt <span class="token operator">=</span> <span class="token string-interpolation"><span class="token string">f"""
+以下の推薦回答を評価してください。
+質問: </span><span class="token interpolation"><span class="token punctuation">{</span>question<span class="token punctuation">}</span></span><span class="token string">
+金回答: </span><span class="token interpolation"><span class="token punctuation">{</span>gold_answer<span class="token punctuation">}</span></span><span class="token string">
+推薦回答: </span><span class="token interpolation"><span class="token punctuation">{</span>answer<span class="token punctuation">}</span></span><span class="token string">
+
+以下の観点でJSON形式で採点してください：
+- relevance: 関連性 (0-1)
+- accuracy: 正確性 (0-1)  
+- helpfulness: 有用性 (0-1)
+"""</span></span>
+    response <span class="token operator">=</span> client<span class="token punctuation">.</span>messages<span class="token punctuation">.</span>create<span class="token punctuation">(</span>
+        model<span class="token operator">=</span><span class="token string">"claude-opus-4-6"</span><span class="token punctuation">,</span>
+        max_tokens<span class="token operator">=</span><span class="token number">256</span><span class="token punctuation">,</span>
+        messages<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">{</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> prompt<span class="token punctuation">}</span><span class="token punctuation">]</span>
+    <span class="token punctuation">)</span>
+    <span class="token keyword">return</span> response<span class="token punctuation">.</span>content<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>text
+
+<span class="token comment"># 毎晩、前日の推薦ログをサンプリングして評価する</span>
+<span class="token keyword">def</span> <span class="token function">nightly_eval_run</span><span class="token punctuation">(</span>log_path<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> sample_size<span class="token punctuation">:</span> <span class="token builtin">int</span> <span class="token operator">=</span> <span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">import</span> json<span class="token punctuation">,</span> random
+    <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span>log_path<span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
+        logs <span class="token operator">=</span> <span class="token punctuation">[</span>json<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>line<span class="token punctuation">)</span> <span class="token keyword">for</span> line <span class="token keyword">in</span> f<span class="token punctuation">]</span>
+    sample <span class="token operator">=</span> random<span class="token punctuation">.</span>sample<span class="token punctuation">(</span>logs<span class="token punctuation">,</span> <span class="token builtin">min</span><span class="token punctuation">(</span>sample_size<span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>logs<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    scores <span class="token operator">=</span> <span class="token punctuation">[</span>evaluate_recommendation<span class="token punctuation">(</span><span class="token operator">**</span>entry<span class="token punctuation">)</span> <span class="token keyword">for</span> entry <span class="token keyword">in</span> sample<span class="token punctuation">]</span>
+    <span class="token comment"># 閾値を下回ったらSlack通知・PagerDuty起動</span>
+    avg_relevance <span class="token operator">=</span> <span class="token builtin">sum</span><span class="token punctuation">(</span>s<span class="token punctuation">[</span><span class="token string">"relevance"</span><span class="token punctuation">]</span> <span class="token keyword">for</span> s <span class="token keyword">in</span> scores<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token builtin">len</span><span class="token punctuation">(</span>scores<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> avg_relevance <span class="token operator">&lt;</span> <span class="token number">0.7</span><span class="token punctuation">:</span>
+        alert_team<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"推薦精度が低下しています: relevance=</span><span class="token interpolation"><span class="token punctuation">{</span>avg_relevance<span class="token punctuation">:</span><span class="token format-spec">.2f</span><span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span></code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="フィードバックループの設計">フィードバックループの設計</h3>
+          <p>評価スコアだけでなく、ユーザーの暗黙のフィードバック（クリック率・完了率・レーティング）をモデル改善に繋げるループを設計することが重要です。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>シグナル</th>
+                <th>意味</th>
+                <th>活用方法</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>クエスト推薦のクリック率</td>
+                <td>推薦の関連性</td>
+                <td>低いと推薦プロンプトを調整</td>
+              </tr>
+              <tr>
+                <td>推薦後のクエスト完了率</td>
+                <td>推薦の適合度</td>
+                <td>完了率ランキングで学習データを強化</td>
+              </tr>
+              <tr>
+                <td>明示的な「役立った」評価</td>
+                <td>品質の直接指標</td>
+                <td>少数精鋭の「ゴールデンセット」として活用</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>QuestForgeでは「おすすめクエスト」機能のログを収集し、週次で評価パイプラインを回すことで、LLMのバージョンアップ時にも品質劣化を即座に検知できます。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
         <h2 id="まとめ">まとめ</h2>
         <p>自律型コーディングエージェントは、「手（ツール）」と「目（コンテキスト）」を持つことで、単なる質問応答AIとは一線を画します。ファイル操作とコマンド実行により、実装→テスト→修正のループを自律的に回せるエージェントは、まさに実体を持ったゴーレムです。しかしその能力を引き出す鍵は、<code>@</code>参照やルールファイルを使ってプロジェクトの文脈を正確に渡すことにあります。コンテキストなきエージェントは、地図なき冒険者と同じです。</p>
         <p>IDE統合型はその場でのコード補完に、CLI型は機能単位の大規模実装に、それぞれ強みがあります。そして人間の役割は、コードを書く作業者からエージェントへの要件定義とコンテキスト供給、最終品質の保証を担う監督者へと変化します。この分業によって、あなたはより本質的な「何を作るか」という問いに集中できるようになります。</p>

@@ -148,6 +148,67 @@
         <hr>
       </section>
       <section class="level2">
+        <h2 id="webassemblyブラウザ上に刻まれた汎用真理ルーン">WebAssembly：ブラウザ上に刻まれた汎用真理ルーン</h2>
+        <p>異なる言語パラダイムを学ぶことで「解決策の語彙」が増えると述べました。もう一つ、現代の言語の壁を超える技術として知っておくべきが <strong>WebAssembly（Wasm）</strong> です。Wasm は「ブラウザ上で動く低レベル命令セット」——あらゆる言語を翻訳できる汎用真理言語（ルーン）です。</p>
+        <section class="level3">
+          <h3 id="wasmとは何か">Wasmとは何か</h3>
+          <p>WebAssemblyは、ブラウザやエッジ環境でネイティブに近い速度でコードを実行するためのバイナリ形式の命令セットです。JavaScriptの代替ではなく、<strong>JavaScriptと共存する実行層</strong>です。</p>
+          <pre class="language-text"><code class="language-text">Python / Rust / C++ / Go
+        ↓ コンパイル
+  WebAssembly (.wasm)
+        ↓ 実行
+   ブラウザ / Node.js / エッジ</code></pre>
+          <p>C++で書いた物理シミュレーションを、PythonのバックエンドとJavaScriptのフロントエンドが混在する環境でも同じコードで動かせる——これがWasmの真価です。</p>
+        </section>
+        <section class="level3">
+          <h3 id="なぜ注目されるのか">なぜ注目されるのか</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>特徴</th>
+                <th>意味</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>言語非依存</strong></td>
+                <td>Rust・C/C++・Go・Pythonなど多言語からコンパイル可能</td>
+              </tr>
+              <tr>
+                <td><strong>高速</strong></td>
+                <td>JavaScriptよりネイティブに近い実行速度</td>
+              </tr>
+              <tr>
+                <td><strong>サンドボックス</strong></td>
+                <td>ホスト環境とのアクセスが制限された安全な実行環境</td>
+              </tr>
+              <tr>
+                <td><strong>ポータブル</strong></td>
+                <td>ブラウザ・サーバー・エッジ・IoTで同一バイナリが動く</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="level3">
+          <h3 id="questforgeでの活用シナリオ">QuestForgeでの活用シナリオ</h3>
+          <pre class="language-python"><code class="language-python"><span class="token comment"># Python側：Rustで書いたゲームロジックをWasm経由で呼び出す</span>
+<span class="token comment"># QuestForgeのダメージ計算をRustで高速化し、</span>
+<span class="token comment"># Python APIとブラウザの両方から利用する</span>
+
+<span class="token comment"># ブラウザ（JS側）：</span>
+<span class="token comment"># import init, { calculate_damage } from './questforge_engine.wasm';</span>
+<span class="token comment"># const damage = calculate_damage(attacker_stat, defender_stat, skill_id);</span>
+
+<span class="token comment"># Python（テスト側）：</span>
+<span class="token comment"># import wasmtime</span>
+<span class="token comment"># engine = wasmtime.Engine()</span>
+<span class="token comment"># module = wasmtime.Module.from_file(engine, "questforge_engine.wasm")</span>
+<span class="token comment"># damage = module.calculate_damage(100, 50, 3)</span></code></pre>
+          <p>Wasmはまだ「主戦力」ではなく、計算負荷の高い特定処理（物理演算・画像処理・暗号化・AI推論）を既存の言語資産を活かしたまま高速化したい場面で特に輝きます。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
         <h2 id="まとめ">まとめ</h2>
         <p>プログラミング言語は単なる記号の羅列ではなく、「世界をどう捉えるか」という哲学が込められた思考の枠組みです。オブジェクト指向・関数型・宣言型・並行計算型という四大学派を知ることで、問題の性質に応じて最適なアプローチを選び取る引き出しが増えます。一つの言語しか知らなければ、すべての問題が同じ形に見えてしまいます。</p>
         <p>AIはパラダイムの通訳者としても力を発揮します。「Idiomatic（その言語らしい）」という一言を添えた詠唱で、AIは出力言語の流儀に沿ったコードを生成してくれます。また、別の言語で学んだ美しい概念——関数型の不変性、Rustの所有権モデル——はメインの言語をより良く書くための「知恵の逆輸入」となります。</p>

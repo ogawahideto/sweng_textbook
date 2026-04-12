@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="ja"><head>
+    <meta charset="utf-8">
+    <title>2.8 どうデータを設計するか？——ERモデルとスキーマ設計</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+  </head>
+  <body>
+    <section class="level1">
+      <h1 id="28-どうデータを設計するかerモデルとスキーマ設計">2.8 どうデータを設計するか？——ERモデルとスキーマ設計</h1>
+      <p>コードは実行されると消えます。しかしデータは残ります。冒険者が積み上げた経験値も、ギルドの名声も、すべてデータとして永続します。どれほど美しいアーキテクチャを設計しても、その「記憶の形」が歪んでいれば、システムは長く健全に動き続けることができません。</p>
+      <p>クリーンアーキテクチャで「依存の方向」を設計し、SOLID原則で「変化への耐性」を身につけた今、次はデータの形——<strong>スキーマ</strong>——を設計する目を養いましょう。</p>
+      <hr>
+      <section class="level2">
+        <h2 id="エンティティ関係モデルerモデル">エンティティ関係モデル（ERモデル）</h2>
+        <section class="level3">
+          <h3 id="エンティティとリレーションシップ">エンティティとリレーションシップ</h3>
+          <p>データ設計の出発点は、システムに登場する「もの（エンティティ）」とその「関係（リレーションシップ）」を整理することです。</p>
+          <ul>
+            <li><strong>エンティティ</strong>: 独立して存在を持つ概念。QuestForgeでは <code>Hero</code>・<code>Quest</code>・<code>Guild</code> など。</li>
+            <li><strong>属性</strong>: エンティティが持つ特性。<code>Hero</code> なら <code>name</code>・<code>level</code>・<code>experience_points</code>。</li>
+            <li><strong>リレーションシップ</strong>: エンティティ間の関係。「勇者はギルドに所属する」「勇者はクエストを達成する」など。</li>
+          </ul>
+          <p>リレーションシップには<strong>多重度</strong>があります。</p>
+          <table>
+            <thead>
+              <tr>
+                <th align="center">多重度</th>
+                <th>意味</th>
+                <th>QuestForge例</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td align="center">1:1</td>
+                <td>一対一</td>
+                <td>勇者 ↔ キャラクタープロフィール</td>
+              </tr>
+              <tr>
+                <td align="center">1:N</td>
+                <td>一対多</td>
+                <td>ギルド ↔ 勇者（1つのギルドに複数の勇者）</td>
+              </tr>
+              <tr>
+                <td align="center">M:N</td>
+                <td>多対多</td>
+                <td>勇者 ↔ クエスト（一人の勇者が複数クエストを達成、1つのクエストを複数の勇者が達成）</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="level3">
+          <h3 id="questforgeのerd">QuestForgeのERD</h3>
+          <p>M:N関係はDBでは直接表現できないため、<strong>中間テーブル（ジャンクションテーブル）</strong>で解決します。QuestForgeでは <code>QuestCompletion</code> がこれにあたります。次の図は、QuestForgeの主要エンティティ（Hero・Quest・Guild・QuestCompletion）とそれらの関係・多重度を示したERダイアグラムです。</p>
+          <figure>
+            <img src="../../assets/diagrams/chapter02/2-8-erd-questforge.svg" alt="QuestForge ERダイアグラム">
+            <figcaption aria-hidden="true">QuestForge ERダイアグラム</figcaption>
+          </figure>
+          <p>ここで示された設計では、各テーブルが「自分の責任範囲の情報だけ」を持つという原則が貫かれています。勇者の名前やレベルは <code>Hero</code> テーブルにだけ存在し、クエスト達成の記録は <code>QuestCompletion</code> 中間テーブルに集約されます。こうすることで、勇者がレベルアップしても更新箇所は一か所に限定され、「同じ勇者なのにレコードによってデータが違う」という矛盾が構造的に生まれなくなります。</p>
+          <p>この設計のポイント：</p>
+          <ul>
+            <li><strong><code>Hero</code>と<code>Guild</code>は 1:N</strong>——一人の勇者は一つのギルドに所属し、一つのギルドに複数の勇者がいる</li>
+            <li><strong><code>Hero</code>と<code>Quest</code>は M:N</strong>——<code>QuestCompletion</code> 中間テーブルで解決。<code>completed_at</code> のような「達成という出来事」の属性をここに持たせる</li>
+            <li><strong><code>Quest</code>の <code>creator_id</code></strong>——どの勇者（またはギルドマスター）がクエストを作ったかを追跡する</li>
+          </ul>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="正規化データの重複を排除する">正規化：データの「重複」を排除する</h2>
+        <section class="level3">
+          <h3 id="なぜ正規化が必要か">なぜ正規化が必要か</h3>
+          <p>非正規化されたテーブルはこのような問題を生みます。</p>
+          <pre class="language-text"><code class="language-text"># 悪い例：一つのテーブルにすべてを詰め込む
+quest_completion:
+  id | hero_name | hero_level | guild_name | quest_title | completed_at
+   1 | アルス    |     12     | 銀の盾      | ゴブリン討伐  | 2024-01-10
+   2 | アルス    |     12     | 銀の盾      | 竜の洞窟     | 2024-01-15</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="3つの正規形">3つの正規形</h3>
+          <p><code>hero_name</code>・<code>hero_level</code>・<code>guild_name</code> が何度も重複すると、アルスがレベルアップすれば全行を更新しなければならず、更新漏れがあれば「同じ勇者なのにレコードによってレベルが違う」という矛盾が生まれます。これを防ぐのが正規化です。</p>
+          <p><strong>第1正規形（1NF）</strong>: 各列は原子値（分割できない値）を持つ</p>
+          <ul>
+            <li>❌ <code>tags = "戦士,魔法使い"</code> → ✅ <code>tag</code> テーブルを別に作る</li>
+          </ul>
+          <p><strong>第2正規形（2NF）</strong>: 主キーの一部にだけ依存する属性を排除（複合主キーの場合）</p>
+          <ul>
+            <li><code>(hero_id, quest_id)</code> が主キーなのに <code>hero_name</code> を持つのは NG → <code>Hero</code> テーブルに分離</li>
+          </ul>
+          <p><strong>第3正規形（3NF）</strong>: 主キー以外の列に依存する属性を排除（推移的関数従属を排除）</p>
+          <ul>
+            <li><code>guild_id</code> → <code>guild_name</code> という依存関係を <code>quest_completion</code> に持たせるのは NG → <code>Guild</code> テーブルに分離</li>
+          </ul>
+          <p>QuestForgeのERDはこの3NFを守っています。各テーブルは「自分の責任範囲の情報だけ」を持ちます。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="sql-vs-nosqlデータの形に合わせて選ぶ">SQL vs NoSQL：データの「形」に合わせて選ぶ</h2>
+        <p>データベースの選択は、アーキテクチャの選択と同じくトレードオフです。「どちらが優れているか」ではなく「何に向いているか」を問います。</p>
+        <table>
+          <thead>
+            <tr>
+              <th>観点</th>
+              <th>SQL（リレーショナルDB）</th>
+              <th>NoSQL（ドキュメント/KVS等）</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>データ構造</td>
+              <td>定まったスキーマ（テーブル）</td>
+              <td>柔軟なスキーマ（JSON等）</td>
+            </tr>
+            <tr>
+              <td>得意なこと</td>
+              <td>複雑な結合・集計・トランザクション</td>
+              <td>大規模な読み書き・スキーマ変更の頻度が高い場合</td>
+            </tr>
+            <tr>
+              <td>整合性</td>
+              <td>ACID特性で強い整合性を保証</td>
+              <td>結果整合性（最終的には一致）が多い</td>
+            </tr>
+            <tr>
+              <td>QuestForgeでの用途</td>
+              <td>勇者・クエスト・達成の主データ</td>
+              <td>セッションデータ・キャッシュ・リアルタイム通知</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>QuestForgeの核心データ（勇者、クエスト、達成記録）は<strong>関係が複雑</strong>で<strong>整合性が重要</strong>なため SQL が適しています。一方、セッション管理やランキングのキャッシュは Redis（KVS）が自然に映えます。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="スキーマ設計の実践">スキーマ設計の実践</h2>
+        <section class="level3">
+          <h3 id="命名規則">命名規則</h3>
+          <p>一貫した命名規則は、スキーマを「読める設計書」にします。</p>
+          <pre class="language-sql"><code class="language-sql"><span class="token comment">-- テーブル名: スネークケース、複数形</span>
+heroes<span class="token punctuation">,</span> quests<span class="token punctuation">,</span> quest_completions<span class="token punctuation">,</span> guilds
+
+<span class="token comment">-- カラム名: スネークケース</span>
+experience_points<span class="token punctuation">,</span> created_at<span class="token punctuation">,</span> guild_id
+
+<span class="token comment">-- 外部キー: 参照テーブル名_id</span>
+guild_id <span class="token punctuation">(</span>guildsテーブルのid<span class="token punctuation">)</span><span class="token punctuation">,</span> creator_id <span class="token punctuation">(</span>heroesテーブルのid<span class="token punctuation">)</span>
+
+<span class="token comment">-- 真偽値: is_ または has_ プレフィックス</span>
+is_active<span class="token punctuation">,</span> has_completed</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="インデックス設計">インデックス設計</h3>
+          <p>インデックスは「どのクエリが速い必要があるか」から設計します。</p>
+          <pre class="language-sql"><code class="language-sql"><span class="token comment">-- よく使うクエリ: あるギルドの全勇者を取得</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> heroes <span class="token keyword">WHERE</span> guild_id <span class="token operator">=</span> ?<span class="token punctuation">;</span>
+<span class="token comment">-- → guild_id にインデックスを張る</span>
+
+<span class="token comment">-- よく使うクエリ: ある勇者の達成済みクエストを取得</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> quest_completions <span class="token keyword">WHERE</span> hero_id <span class="token operator">=</span> ?<span class="token punctuation">;</span>
+<span class="token comment">-- → hero_id にインデックスを張る</span></code></pre>
+          <p>すべての列にインデックスを張ると、書き込みが遅くなります。「読み取りの速さ」と「書き込みのコスト」のバランスを意識した設計が重要です。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="スキーマ進化マイグレーション戦略">スキーマ進化：マイグレーション戦略</h2>
+        <p>設計は変わります。「勇者にアバター画像を追加したい」「クエストにタグ機能を追加したい」——こうした変更をDBに安全に反映する仕組みが<strong>マイグレーション</strong>です。</p>
+        <section class="level3">
+          <h3 id="マイグレーションの原則">マイグレーションの原則</h3>
+          <pre class="language-python"><code class="language-python"><span class="token comment"># マイグレーションの例（Alembicなどのツールで管理）</span>
+
+<span class="token keyword">def</span> <span class="token function">upgrade</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 新しい列を追加（既存データに影響しない安全な変更）</span>
+    op<span class="token punctuation">.</span>add_column<span class="token punctuation">(</span><span class="token string">'heroes'</span><span class="token punctuation">,</span>
+        sa<span class="token punctuation">.</span>Column<span class="token punctuation">(</span><span class="token string">'avatar_url'</span><span class="token punctuation">,</span> sa<span class="token punctuation">.</span>String<span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span> nullable<span class="token operator">=</span><span class="token boolean">True</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">downgrade</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># ロールバック（必ずペアで定義する）</span>
+    op<span class="token punctuation">.</span>drop_column<span class="token punctuation">(</span><span class="token string">'heroes'</span><span class="token punctuation">,</span> <span class="token string">'avatar_url'</span><span class="token punctuation">)</span></code></pre>
+          <p>マイグレーションの鉄則：</p>
+          <ol>
+            <li><strong>必ず <code>downgrade</code> を書く</strong>: 問題が起きたとき、前の状態に戻せる</li>
+            <li><strong>後方互換性を守る</strong>: 列を削除する前に、まずアプリ側の参照をなくす</li>
+            <li><strong>ゼロダウンタイム移行</strong>: <code>nullable=True</code> で追加してデータ移行 → <code>nullable=False</code> に変更、という2段階移行</li>
+          </ol>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="ai時代のデータ設計">AI時代のデータ設計</h2>
+        <section class="level3">
+          <h3 id="er図からddlを生成する">ER図からDDLを生成する</h3>
+          <p>AIはスキーマ設計とマイグレーションの強力な助手です。「このER図を元にSQLのDDL（テーブル定義）を生成して」と依頼することで、エンティティ設計からすぐに実装に移れます。</p>
+        </section>
+        <section class="level3">
+          <h3 id="マイグレーションのレビュー">マイグレーションのレビュー</h3>
+          <p>「このマイグレーションで既存データや本番環境に影響が出るリスクはあるか？」とAIに問えば、見落としがちな副作用（ロック時間・インデックス再構築のコストなど）を指摘してもらえます。</p>
+        </section>
+        <section class="level3">
+          <h3 id="正規化のチェック">正規化のチェック</h3>
+          <p>「このテーブル定義で正規化の違反（重複・推移的依存）がないかレビューして」と依頼すれば、設計の盲点を早期に発見できます。</p>
+          <hr>
+          <p>データの設計は、システムの「記憶の形」を決める仕事です。ERモデルでエンティティとその関係の地図を描き、正規化で重複と更新異常を排除することで、時間が経っても整合性を保てるスキーマが生まれます。SQLとNoSQLのどちらを選ぶかは、整合性と関係の複雑さを重視するかスケールと柔軟性を重視するかで決まりますが、現実のシステムはその両方を使い分けるハイブリッド構成が多数派です。そしてスキーマは静的なものではなく、マイグレーションという仕組みで継続的に進化させていくものです。コードと同様に、データの設計もまた生き続けます。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>📚 <strong>書籍</strong>: C.J.Date『<a href="https://www.oreilly.co.jp/books/9784873113685/">データベース・イン・デプス</a>』（リレーショナルモデルの理論的な基盤を学ぶ古典）</li>
+          <li>📚 <strong>書籍</strong>: 奥野 幹也『<a href="https://gihyo.jp/book/2015/978-4-7741-7197-5">理論から学ぶデータベース実践入門</a>』（SQLとリレーショナルモデルを実践的に理解する日本語入門書）</li>
+          <li>🌐 <strong>Web</strong>: <a href="https://flywaydb.org/">Flyway</a> / <a href="https://alembic.sqlalchemy.org/">Alembic</a>（マイグレーションツール。どちらも主要なWeb開発で広く使われています）</li>
+          <li>📚 <strong>書籍</strong>: Martin Fowler『<a href="https://www.databaserefactoring.com/">Refactoring Databases</a>』（DBのリファクタリング手法をカタログ形式でまとめた実践書）</li>
+        </ul>
+      </section>
+    </section>
+  
+
+</body></html>

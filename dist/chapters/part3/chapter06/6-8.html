@@ -193,6 +193,82 @@
         <hr>
       </section>
       <section class="level2">
+        <h2 id="エーテル節約術グリーンソフトウェアエンジニアリング">エーテル節約術——グリーン・ソフトウェア・エンジニアリング</h2>
+        <p>クラウドの「魔力（電力）」を節約することは、コスト削減と地球環境保護の両方に繋がります。<strong>グリーン・ソフトウェア・エンジニアリング（Green Software Engineering）</strong>は、ソフトウェアの設計・開発・運用においてカーボンフットプリントを最小化する技術体系です。</p>
+        <section class="level3">
+          <h3 id="カーボンアウェアネス">カーボン・アウェアネス</h3>
+          <p>データセンターへの電力供給は、時間帯や地域によって再生可能エネルギーの比率が変わります。「カーボン・アウェアネス（Carbon Awareness）」とは、その比率が高い時間・場所でバッチ処理を実行するという発想です。</p>
+          <pre class="language-python"><code class="language-python"><span class="token comment"># QuestForge: カーボン・アウェアなバッチ処理</span>
+<span class="token keyword">import</span> requests
+<span class="token keyword">from</span> datetime <span class="token keyword">import</span> datetime<span class="token punctuation">,</span> timezone
+
+<span class="token keyword">def</span> <span class="token function">get_carbon_intensity</span><span class="token punctuation">(</span>region<span class="token punctuation">:</span> <span class="token builtin">str</span> <span class="token operator">=</span> <span class="token string">"JP"</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">float</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""現在の電力グリッドのカーボン強度(gCO2/kWh)を取得"""</span>
+    <span class="token comment"># ElectricityMaps API などを活用</span>
+    resp <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"https://api.electricitymap.org/v3/carbon-intensity/latest?zone=</span><span class="token interpolation"><span class="token punctuation">{</span>region<span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">,</span>
+                        headers<span class="token operator">=</span><span class="token punctuation">{</span><span class="token string">"auth-token"</span><span class="token punctuation">:</span> <span class="token string">"YOUR_TOKEN"</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> resp<span class="token punctuation">.</span>json<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">[</span><span class="token string">"carbonIntensity"</span><span class="token punctuation">]</span>
+
+<span class="token keyword">def</span> <span class="token function">should_run_batch_now</span><span class="token punctuation">(</span>threshold_gco2_kwh<span class="token punctuation">:</span> <span class="token builtin">float</span> <span class="token operator">=</span> <span class="token number">200.0</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">bool</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""カーボン強度が閾値以下なら今すぐ実行、高ければ先送り"""</span>
+    intensity <span class="token operator">=</span> get_carbon_intensity<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> intensity <span class="token operator">&lt;</span> threshold_gco2_kwh
+
+<span class="token comment"># 夜間の統計集計バッチをカーボン・アウェアにスケジューリング</span>
+<span class="token keyword">if</span> should_run_batch_now<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    run_xp_aggregation_batch<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+    schedule_for_later<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 低強度時間帯に再スケジュール</span></code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="ソフトウェアカーボン強度sciスコア">ソフトウェアカーボン強度（SCI）スコア</h3>
+          <p>Green Software Foundation が標準化した <strong>SCI（Software Carbon Intensity）</strong> は、ソフトウェアが生み出す炭素排出量を定量化する指標です。</p>
+          <pre class="language-text"><code class="language-text">SCI = (E × I + M) / R
+
+E: 消費電力 (kWh)
+I: カーボン強度 (gCO2/kWh) — 地域・時間帯で変動
+M: 製造段階のエンボディドカーボン
+R: 機能単位 (ユーザー数・APIコール数・クエスト完了数など)</code></pre>
+          <p>QuestForgeで言えば「クエスト1件の完了あたりのgCO2」を継続的に測定し、最適化の目標値として活用できます。</p>
+        </section>
+        <section class="level3">
+          <h3 id="実践的な節約術">実践的な節約術</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>アプローチ</th>
+                <th>内容</th>
+                <th>効果</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>リクエストのバッチング</strong></td>
+                <td>個別API呼び出しをまとめてLLM利用を削減</td>
+                <td>LLM電力コスト↓</td>
+              </tr>
+              <tr>
+                <td><strong>キャッシュの活用</strong></td>
+                <td>同一クエリの結果を再利用</td>
+                <td>計算量↓</td>
+              </tr>
+              <tr>
+                <td><strong>モデルサイズの選択</strong></td>
+                <td>軽量タスクには小さいモデルを使う</td>
+                <td>推論コスト大幅↓</td>
+              </tr>
+              <tr>
+                <td><strong>リージョン選択</strong></td>
+                <td>再生可能エネルギー比率の高いリージョンを優先</td>
+                <td>カーボン直接削減</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>サーバーレスとグリーン設計は相性が良く、「使った分だけ課金」のサーバーレスモデルは自然にアイドル電力を排除します。コストを下げながら地球にも優しい設計——それが次世代の魔導師の心得です。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
         <h2 id="まとめ">まとめ</h2>
         <p>サーバーレスの本質は、サーバーという「モノ」への意識から解放され、「価値（コード）」の実行そのものに集中することにあります。FaaSは散発的・イベント駆動な処理と相性が良く、呼ばれた瞬間だけ顕現して役目を終えれば消える魔導城は、従来の常駐サーバーと比べてコストと運用の両方で大きな利点をもたらします。Cold Startという特性を理解し、Provisioned Concurrencyや設計上の工夫で対処できれば、その特性は弱点ではなく個性として扱えます。</p>
         <p>FinOpsの視点でクラウドコストを可視化し、適正サイジング・不要リソースの整理・リザーブドキャパシティを組み合わせることで、コストという「魔力の消費」を賢く統治できます。サーバーレスはあらゆる問題の答えではなく、コンテナ・サーバーレス・マネージドサービスを組み合わせた最適なアーキテクチャ選択こそが真の腕の見せどころです。浮かべる城の数と大きさを、コストという現実と向き合いながら統治する知恵——それが現代の魔導師に不可欠な資質なのです。</p>

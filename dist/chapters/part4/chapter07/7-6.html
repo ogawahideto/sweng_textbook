@@ -172,6 +172,73 @@
         <hr>
       </section>
       <section class="level2">
+        <h2 id="プラットフォームチームの社会技術的役割">プラットフォームチームの社会技術的役割</h2>
+        <p>チームトポロジーの4タイプの中で、現代において特に重要性を増しているのが<strong>プラットフォームチーム</strong>です。社会技術的システム（Sociotechnical System）の観点から見ると、プラットフォームチームは技術的な基盤を提供するだけでなく、組織全体の「働き方」を設計する存在です。</p>
+        <section class="level3">
+          <h3 id="内部開発者プラットフォームidp">内部開発者プラットフォーム（IDP）</h3>
+          <p>優れたプラットフォームチームが構築するのは、<strong>IDP（Internal Developer Platform）</strong>——社内の開発者がセルフサービスで必要なインフラを調達・設定できる「自動工房」です。</p>
+          <pre class="language-yaml"><code class="language-yaml"><span class="token comment"># QuestForge IDP: セルフサービスのサービス要求仕様 (例: Backstage)</span>
+<span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> scaffolder.backstage.io/v1beta3
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Template
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> questforge<span class="token punctuation">-</span>microservice
+  <span class="token key atrule">title</span><span class="token punctuation">:</span> QuestForge マイクロサービス雛形
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">parameters</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">title</span><span class="token punctuation">:</span> サービス設定
+      <span class="token key atrule">properties</span><span class="token punctuation">:</span>
+        <span class="token key atrule">serviceName</span><span class="token punctuation">:</span>
+          <span class="token key atrule">title</span><span class="token punctuation">:</span> サービス名
+          <span class="token key atrule">type</span><span class="token punctuation">:</span> string
+        <span class="token key atrule">owner</span><span class="token punctuation">:</span>
+          <span class="token key atrule">title</span><span class="token punctuation">:</span> オーナーチーム
+          <span class="token key atrule">type</span><span class="token punctuation">:</span> string
+  <span class="token key atrule">steps</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">id</span><span class="token punctuation">:</span> generate
+      <span class="token key atrule">action</span><span class="token punctuation">:</span> fetch<span class="token punctuation">:</span>template
+      <span class="token comment"># リポジトリ作成・CI/CD設定・Kubernetes名前空間・モニタリング設定を</span>
+      <span class="token comment"># すべて自動でプロビジョニングする</span></code></pre>
+          <p>IDPを持つ組織では、新しいマイクロサービスの立ち上げが「数日のチケット待ち」から「数分のセルフサービス」に変わります。これがストリームアラインドチームの認知的負荷を根本的に下げる仕組みです。</p>
+        </section>
+        <section class="level3">
+          <h3 id="開発者体験devexの設計">開発者体験（DevEx）の設計</h3>
+          <p>プラットフォームチームの成熟度は、提供する「ツール」ではなく開発者の「体験（DevEx）」で測られます。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>DevExの観点</th>
+                <th>測定指標</th>
+                <th>目標</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>フロー状態</strong></td>
+                <td>中断なく作業できる時間</td>
+                <td>75%以上のDev時間をコーディングに</td>
+              </tr>
+              <tr>
+                <td><strong>フィードバック速度</strong></td>
+                <td>PRから本番デプロイまでの時間</td>
+                <td>1日以内</td>
+              </tr>
+              <tr>
+                <td><strong>認知的負荷</strong></td>
+                <td>オンボーディング時間</td>
+                <td>初日からコミット可能</td>
+              </tr>
+              <tr>
+                <td><strong>満足度</strong></td>
+                <td>開発者NPS</td>
+                <td>四半期ごとに測定・改善</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>プラットフォームチームは自分たちの「顧客」である開発者にインタビューし、ボトルネックを継続的に解消することで、組織全体のアウトプット速度を向上させます。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
         <h2 id="ai時代のチーム設計">AI時代のチーム設計</h2>
         <p>AIツールは、チームの認知的負荷を変えつつあります。</p>
         <p><strong>コードの「理解コスト」を下げる</strong>: 「このモジュールが何をしているか、3行で説明して」とAIに問えば、コードリーディングの時間が大幅に短縮されます。これにより、一人の開発者が把握できる領域が広がり、チームの最適なサイズや境界の引き方が変わる可能性があります。</p>

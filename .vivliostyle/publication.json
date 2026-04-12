@@ -8,7 +8,7 @@
   "name": "「楽しい」ソフトウェアエンジニアリングの攻略本 —— デジタル・アルケミー",
   "author": "小川 秀人 & AI Familiar",
   "inLanguage": "ja",
-  "dateModified": "2026-04-04T08:35:06.779Z",
+  "dateModified": "2026-04-12T12:55:24.206Z",
   "readingOrder": [
     {
       "url": "COVER.html",
@@ -79,6 +79,18 @@
       "name": "2.6 【外伝】二つの聖域——エンタープライズと組み込み"
     },
     {
+      "url": "chapters/part1/chapter02/2-7.html",
+      "name": "2.7 【外伝】システムエンジニアリングの視点——FTA・FMEA・STAMP"
+    },
+    {
+      "url": "chapters/part1/chapter02/2-8.html",
+      "name": "2.8 どうデータを設計するか？——ERモデルとスキーマ設計"
+    },
+    {
+      "url": "chapters/part1/chapter02/2-9.html",
+      "name": "2.9 深淵の記憶術——RAGとベクトルデータベース"
+    },
+    {
       "url": "chapters/part2/chapter03/chapter03.html",
       "name": "第3章 モダン・アルケミー——論理を具現化する実装の技法"
     },
@@ -113,6 +125,10 @@
     {
       "url": "chapters/part2/chapter03/3-8.html",
       "name": "3.8 【外伝】失われた古代技術——レガシーコードの考古学"
+    },
+    {
+      "url": "chapters/part2/chapter03/3-9.html",
+      "name": "3.9 【外伝】手技の工房——Skills・MCP・サブエージェントでゴーレムを拡張する"
     },
     {
       "url": "chapters/part2/chapter04/chapter04.html",
@@ -201,6 +217,10 @@
     {
       "url": "chapters/part3/chapter06/6-8.html",
       "name": "6.8 【外伝】浮遊する魔導城——サーバーレスとクラウドの経済学"
+    },
+    {
+      "url": "chapters/part3/chapter06/6-9.html",
+      "name": "6.9 賢者の工房——プラットフォーム・エンジニアリングとDevEx"
     },
     {
       "url": "chapters/part4/chapter07/chapter07.html",
