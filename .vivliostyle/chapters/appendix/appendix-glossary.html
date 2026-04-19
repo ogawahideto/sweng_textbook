@@ -1,0 +1,514 @@
+<!DOCTYPE html><html lang="ja"><head>
+    <meta charset="utf-8">
+    <title>付録B：錬金術師の辞典——用語集</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../assets/styles/print.css">
+  </head>
+  <body>
+    <section class="level1">
+      <h1 id="付録b錬金術師の辞典用語集">付録B：錬金術師の辞典——用語集</h1>
+      <p>
+        本書に登場する技術用語と、本書独自の比喩表現を一覧にまとめました。
+        各項目の末尾には、詳しく解説している節を示しています。
+      </p>
+      <hr>
+      <section class="level2">
+        <h2 id="第一部技術用語集">第一部：技術用語集</h2>
+        <section class="level3">
+          <h3 id="アルファベット順">アルファベット順</h3>
+          <hr>
+          <p>
+            <strong>A/B テスト</strong>
+            同じ機能の2つのバリアントをユーザーに振り分け、指標（クリック率・完了率など）を比較して優れた方を採用する実験手法。→ 6.6節
+          </p>
+          <p>
+            <strong>Actor モデル</strong>
+            並行処理を「アクター」という独立した処理単位で構成する計算モデル。アクター同士はメッセージのみでやり取りし、共有メモリを持たないためデッドロックが起きにくい。→ 3.7節
+          </p>
+          <p>
+            <strong>API（Application Programming Interface）</strong>
+            ソフトウェアコンポーネント同士が通信するための「窓口」の仕様。エンドポイント・リクエスト形式・レスポンス形式を定める。→ 2.3節、6.2節
+          </p>
+          <p>
+            <strong>async/await</strong>
+            非同期処理を「待つ（await）」という直感的な書き方で記述できる構文糖衣。イベントループをブロックせずにI/Oを待機できる。→ 3.7節
+          </p>
+          <p>
+            <strong>BDD（Behavior-Driven Development／振る舞い駆動開発）</strong>
+            Given–When–Then 形式でテストを記述し、仕様書とテストコードを一致させる開発手法。エンジニア以外との共通言語にもなる。→ 4.2節
+          </p>
+          <p><strong>Big O 記法</strong> → 「O記法」参照</p>
+          <p>
+            <strong>Blue/Green デプロイメント</strong>
+            本番環境を「Blue（現行）」と「Green（新版）」の2系統に保ち、ルーターの切り替えだけで瞬時にリリースとロールバックを行う戦略。→ 6.1節
+          </p>
+          <p><strong>Canary リリース</strong> → 「カナリアリリース」参照</p>
+          <p>
+            <strong>CI（Continuous Integration／継続的インテグレーション）</strong>
+            コードがリポジトリにプッシュされるたびに自動でビルド・テストを実行し、統合の健全性を常時確認する実践。→ 4.5節、6.2節
+          </p>
+          <p>
+            <strong>CD（Continuous Delivery／Deployment）</strong>
+            CI の後段で、テストを通過したコードを自動的にステージング・本番環境へ届ける仕組み。→ 6.2節
+          </p>
+          <p>
+            <strong>Circuit Breaker（サーキットブレーカー）</strong>
+            依存サービスの連続失敗を検知し、一定時間リクエストをブロックして障害の連鎖を防ぐパターン。電気回路の遮断器に由来。→ 6.5節
+          </p>
+          <p>
+            <strong>CSP（Communicating Sequential Processes）</strong>
+            並行プロセスがチャネル（pipe）を介してメッセージを交換するモデル。Go 言語の goroutine + channel はこの思想に基づく。→ 3.7節
+          </p>
+          <p>
+            <strong>DDD（Domain-Driven Design／ドメイン駆動設計）</strong>
+            業務領域（ドメイン）のモデルをソフトウェアの中心に据え、エンジニアとドメインエキスパートが共通言語（ユビキタス言語）で協働する設計アプローチ。→ 2.5節
+          </p>
+          <p>
+            <strong>DevOps</strong>
+            開発（Development）と運用（Operations）の壁をなくし、素早く高品質なリリースを継続するための文化・実践・ツールの総称。→ 6.2節
+          </p>
+          <p>
+            <strong>DevSecOps</strong>
+            DevOps のサイクルにセキュリティ（Sec）を組み込み、開発初期から脆弱性対策を行う考え方。→ 6.3節
+          </p>
+          <p>
+            <strong>DI（Dependency Injection／依存性注入）</strong>
+            オブジェクトが自分で依存オブジェクトを生成するのではなく、外部から注入してもらう設計パターン。テスト時の差し替えが容易になる。→ 2.5節
+          </p>
+          <p><strong>DIP（Dependency Inversion Principle）</strong> → 「SOLID 原則」参照</p>
+          <p>
+            <strong>Docker</strong>
+            アプリケーションとその動作に必要な環境をコンテナイメージとして封印し、どの環境でも同一の状態で起動できるようにするツール。→ 6.1節
+          </p>
+          <p>
+            <strong>DORA メトリクス</strong>
+            DevOps Research and Assessment が提唱する4指標（デプロイ頻度・変更リードタイム・変更障害率・平均復旧時間）。チームのデリバリー能力を測る標準指標。→ 6.2節
+          </p>
+          <p>
+            <strong>DRY（Don't Repeat Yourself）</strong>
+            「同じ知識を二箇所に持つな」という原則。重複を排除することで変更コストを下げる。→ 2.3節
+          </p>
+          <p>
+            <strong>FaaS（Function as a Service）</strong>
+            関数単位でコードをクラウドにデプロイし、リクエストに応じてサーバーレスで実行するモデル。AWS Lambda が代表例。→ 6.1節
+          </p>
+          <p><strong>Feature Flags（機能フラグ）</strong> → 「フィーチャーフラグ」参照</p>
+          <p>
+            <strong>FinOps</strong>
+            Finance と DevOps を組み合わせた言葉。技術・財務・ビジネスが連携し、クラウドコストを可視化・最適化する文化と実践。→ 6.8節
+          </p>
+          <p>
+            <strong>Git</strong>
+            分散型バージョン管理システム。コードの変更履歴を記録し、ブランチ・マージ・差分確認などを可能にする。→ 7.2節
+          </p>
+          <p>
+            <strong>GitHub Actions</strong>
+            GitHub に統合された CI/CD プラットフォーム。YAML でワークフローを定義し、push や pull request をトリガーに自動処理を実行する。→ 4.5節、6.2節
+          </p>
+          <p>
+            <strong>IaC（Infrastructure as Code）</strong>
+            サーバー・ネットワーク・クラウドリソースなどのインフラをコード（YAML・HCL など）で宣言し、バージョン管理・自動適用できるようにする実践。→ 6.1節
+          </p>
+          <p>
+            <strong>IDP（Internal Developer Platform／内部開発者プラットフォーム）</strong>
+            Platform Engineering チームが提供する、開発者がセルフサービスでインフラ・ツール・テンプレートを利用できる統合基盤。→ 6.9節
+          </p>
+          <p><strong>ISP（Interface Segregation Principle）</strong> → 「SOLID 原則」参照</p>
+          <p>
+            <strong>KISS（Keep It Simple, Stupid）</strong>
+            シンプルに保つことを最優先とする設計原則。不必要な複雑さを避け、読みやすく変更しやすいコードを目指す。→ 2.3節
+          </p>
+          <p>
+            <strong>Kubernetes（k8s）</strong>
+            コンテナのデプロイ・スケーリング・復旧を自動管理するオーケストレーションシステム。→ 6.1節
+          </p>
+          <p>
+            <strong>LLM（Large Language Model／大規模言語モデル）</strong>
+            大量のテキストデータで事前学習された、高度な自然言語処理能力を持つ機械学習モデル。GPT-4・Claude・Gemini など。→ 3.5節
+          </p>
+          <p>
+            <strong>LLMOps</strong>
+            LLM を用いたシステムの開発・運用・評価・改善のライフサイクル全体を管理する実践。ファインチューニング管理やハルシネーション評価も含む。→ 3.5節
+          </p>
+          <p><strong>LSP（Liskov Substitution Principle）</strong> → 「SOLID 原則」参照</p>
+          <p>
+            <strong>MCP（Model Context Protocol）</strong>
+            AIエージェントがツール・リソース・プロンプトを標準化された方法で呼び出すためのオープンプロトコル。異なるAIシステム間の相互運用性を高める。→ 3.9節
+          </p>
+          <p>
+            <strong>MVP（Minimum Viable Product）</strong>
+            学習に必要な最低限の機能だけを備えた初期製品。仮説を最短で検証し、フィードバックを得ることを目的とする。→ 1.1節
+          </p>
+          <p>
+            <strong>O記法（Big O Notation）</strong>
+            アルゴリズムの計算量（時間・空間）をデータ数 N の増加に対する関数で表す表記法。O(1)・O(log N)・O(N)・O(N²) などがある。→ 3.1節
+          </p>
+          <p><strong>OCP（Open/Closed Principle）</strong> → 「SOLID 原則」参照</p>
+          <p>
+            <strong>OWASP Top 10</strong>
+            Open Worldwide Application Security Project が公開する「Webアプリで最も頻繁に見られる10種のセキュリティリスク」一覧。SQLインジェクション・XSS・認証不備などを含む（2021年版）。→ 6.3節
+          </p>
+          <p>
+            <strong>Platform Engineering</strong>
+            開発者の生産性を高める内部プラットフォーム（IDP）を構築・運営する工学分野。「組織の組織」として全チームを支える。→ 6.9節
+          </p>
+          <p>
+            <strong>RAG（Retrieval-Augmented Generation／検索拡張生成）</strong>
+            LLM の回答生成時に外部知識ベースを検索し、関連情報をコンテキストとして付与することで精度・最新性を高める手法。→ 2.9節
+          </p>
+          <p>
+            <strong>SOLID 原則</strong>
+            オブジェクト指向設計の5原則の頭文字をとったもの。いずれも「変更に強く、読みやすいコード」を目指す。→ 2.3節
+          </p>
+          <ul>
+            <li><strong>SRP（Single Responsibility Principle）</strong>: クラスを変更する理由は一つだけにする</li>
+            <li><strong>OCP（Open/Closed Principle）</strong>: 拡張に開き、修正に閉じる</li>
+            <li><strong>LSP（Liskov Substitution Principle）</strong>: 派生クラスは基底クラスの代わりに使えなければならない</li>
+            <li><strong>ISP（Interface Segregation Principle）</strong>: 使わないインターフェースに依存させない</li>
+            <li><strong>DIP（Dependency Inversion Principle）</strong>: 具体ではなく抽象に依存する</li>
+          </ul>
+          <p>
+            <strong>SRE（Site Reliability Engineering）</strong>
+            信頼性を「エンジニアリングの問題」として扱い、自動化・SLO・エラーバジェットで安定した運用を実現するGoogleが提唱した手法。→ 6.4節
+          </p>
+          <p>
+            <strong>STAMP（System-Theoretic Accident Model and Processes）</strong>
+            事故を「制御システムの失敗」として分析するフレームワーク。損失→ハザード→安全制約→制御構造の順に分析する。→ 1.4節（付録）
+          </p>
+          <p>
+            <strong>TDD（Test-Driven Development／テスト駆動開発）</strong>
+            「テストを先に書き、そのテストをパスするコードを書く」というRed–Green–Refactorサイクルで開発する手法。→ 4.3節
+          </p>
+          <p>
+            <strong>UML（Unified Modeling Language）</strong>
+            ソフトウェアの設計・要求を図で表現する標準記法。ユースケース図・クラス図・シーケンス図・アクティビティ図などを含む。→ 1.5節、2.2節
+          </p>
+          <p>
+            <strong>YAGNI（You Aren't Gonna Need It）</strong>
+            「今必要でない機能は作るな」という原則。過剰設計を避け、実際に必要になった時点で実装する。→ 2.3節
+          </p>
+          <hr>
+        </section>
+        <section class="level3">
+          <h3 id="五十音順">五十音順</h3>
+          <hr>
+          <p>
+            <strong>アクティビティ図</strong>
+            UML の図の一種。処理の流れ・分岐・並行実行をフローチャート状に表現する。要求定義から詳細設計まで幅広く活用できる。→ 1.5節
+          </p>
+          <p>
+            <strong>アクティブ・リスニング（Active Listening）</strong>
+            話し手の言葉を傾聴し、言外の意図まで引き出す対話技法。要求収集や1on1で活きる。→ 1.2節
+          </p>
+          <p>
+            <strong>アジャイル開発</strong>
+            短いイテレーション（スプリント）を繰り返し、フィードバックを取り込みながら漸進的に開発する手法の総称。スクラム・XP などが含まれる。→ 7.1節
+          </p>
+          <p><strong>依存性注入</strong> → 「DI」参照</p>
+          <p>
+            <strong>イベント駆動アーキテクチャ</strong>
+            システムの状態変化を「イベント」として発行し、関心を持つ側が非同期に処理するアーキテクチャスタイル。疎結合なシステム連携が実現できる。→ 2.4節
+          </p>
+          <p>
+            <strong>インターフェース</strong>
+            クラスが実装すべきメソッドの仕様を定める抽象定義。ポリモーフィズムの土台となり、依存性逆転を実現する。→ 2.1節、2.3節
+          </p>
+          <p>
+            <strong>エンベディング（Embedding）</strong>
+            テキスト・画像などをベクトル空間に変換した数値表現。意味的な近さをベクトル距離で計算できるため、RAGやセマンティック検索に使われる。→ 2.9節
+          </p>
+          <p>
+            <strong>オブザーバビリティ（Observability）</strong>
+            ログ・メトリクス・トレースの「三種の神器」を通じてシステムの内部状態を外側から推測・把握できる性質。→ 6.4節
+          </p>
+          <p>
+            <strong>オブジェクト指向プログラミング（OOP）</strong>
+            データと振る舞いを「オブジェクト」にまとめる設計パラダイム。カプセル化・継承・ポリモーフィズムが三本柱。→ 2.1節
+          </p>
+          <p>
+            <strong>カオスエンジニアリング</strong>
+            本番相当の環境に意図的に障害を注入し、システムのレジリエンスを事前に検証する実践。→ 4.5節、6.5節
+          </p>
+          <p>
+            <strong>カナリアリリース</strong>
+            新バージョンを全体の一部（数%）のユーザーだけに段階的に公開し、問題がなければ徐々に展開する戦略。炭鉱のカナリアに由来。→ 6.1節
+          </p>
+          <p>
+            <strong>カプセル化</strong>
+            オブジェクトの内部データと実装を外部から隠蔽し、公開インターフェースを通じてのみ操作させる原則。→ 2.1節
+          </p>
+          <p><strong>カバレッジ</strong> → 「コードカバレッジ」参照</p>
+          <p>
+            <strong>継承（Inheritance）</strong>
+            既存のクラスの属性・メソッドを引き継いで新しいクラスを定義する機構。過剰な継承は密結合を生むため、コンポジションとのバランスが重要。→ 2.1節
+          </p>
+          <p>
+            <strong>境界づけられたコンテキスト（Bounded Context）</strong>
+            DDD の概念。特定のドメインモデルが有効に適用される範囲。大きなシステムを複数の境界に分け、それぞれで独立したモデルを持つ。→ 2.5節
+          </p>
+          <p>
+            <strong>クリーンアーキテクチャ</strong>
+            Robert C. Martin が提唱したアーキテクチャ。依存の方向を内側（ビジネスロジック）に向け、外側の変化（DBやフレームワーク）に強い設計を実現する。→ 2.5節
+          </p>
+          <p>
+            <strong>コードカバレッジ</strong>
+            テストがソースコードのどれだけの割合を実行したかを示す指標。行・分岐・条件など複数の粒度がある。→ 4.2節
+          </p>
+          <p>
+            <strong>コードスメル（Code Smell）</strong>
+            コードに問題が潜む「臭い」——深いネスト・巨大クラス・重複ロジックなど。直接の不具合ではないが、将来の変更を困難にする。→ 5.1節
+          </p>
+          <p>
+            <strong>コンテナ</strong>
+            アプリケーションとその依存関係を軽量な実行単位として隔離する技術。VM より起動が速く、ポータビリティが高い。Docker が代表的実装。→ 6.1節
+          </p>
+          <p>
+            <strong>ゴール指向要求分析（Goal-Oriented Requirements Analysis）</strong>
+            「なぜ作るのか」から出発し、ゴールをAND/OR分解してシステム要求へ落とし込む分析手法。→ 1.4節
+          </p>
+          <p><strong>サーキットブレーカー</strong> → 「Circuit Breaker」参照</p>
+          <p>
+            <strong>スクラム（Scrum）</strong>
+            アジャイル開発のフレームワーク。スプリント・デイリースクラム・スプリントレビューなどの儀式と、プロダクトオーナー・スクラムマスター・開発チームの役割で構成される。→ 7.1節
+          </p>
+          <p>
+            <strong>静的解析（Static Analysis）</strong>
+            コードを実行せずに構文・型・スタイルの問題を検出するツールの総称。Linter・型チェッカー・セキュリティスキャナが含まれる。→ 3.4節
+          </p>
+          <p>
+            <strong>セキュアコーディング</strong>
+            脆弱性を作り込まないためのコーディング実践。入力検証・出力エスケープ・最小権限の原則などが基本。→ 6.3節
+          </p>
+          <p>
+            <strong>技術負債（Technical Debt）</strong>
+            速度優先で行った設計上の妥協が将来の開発コストを増やす現象を借金に喩えた概念。定期的な返済（リファクタリング）が健全性を保つ。→ 2.5節、5.3節
+          </p>
+          <p>
+            <strong>テストダブル（Test Double）</strong>
+            テスト時に本物の依存を置き換える代替物の総称。スタブ（固定値返却）・モック（呼び出し検証）・フェイク（軽量実装）などがある。→ 4.1節
+          </p>
+          <p>
+            <strong>テストピラミッド</strong>
+            単体テストを底辺に、結合テスト・E2Eテストを上段に積んだ三角形モデル。底辺（数が多く速い）を厚く保つことがコスト効率の基本。→ 4.1節
+          </p>
+          <p>
+            <strong>デザインパターン（Design Patterns）</strong>
+            GoFをはじめとする先人が整理した再利用可能な設計の定石集。Strategy・Observer・Repository・Factory など。→ 2.4節
+          </p>
+          <p>
+            <strong>同値分割・境界値分析</strong>
+            入力値をグループ（同値クラス）に分け、各グループの代表値と境界値をテストするブラックボックステスト技法。→ 4.2節
+          </p>
+          <p><strong>ドメイン駆動設計</strong> → 「DDD」参照</p>
+          <p>
+            <strong>バックログ（Product Backlog）</strong>
+            スクラムにおける優先順位付きの要求一覧。プロダクトオーナーが管理し、スプリントごとに上位から取り出して実装する。→ 7.1節
+          </p>
+          <p>
+            <strong>バーンダウンチャート</strong>
+            スプリントの残ストーリーポイントを時間軸でプロットした進捗グラフ。理想線と実績線のずれがボトルネックを示す。→ 7.1節
+          </p>
+          <p>
+            <strong>ハルシネーション（Hallucination）</strong>
+            LLM が事実に基づかない内容を自信満々に生成する現象。RAGや検証フローで軽減できる。→ 2.9節、3.5節
+          </p>
+          <p>
+            <strong>フィーチャーフラグ（Feature Flags）</strong>
+            コードのデプロイと機能のリリースを分離するトグルスイッチ。A/Bテストや段階ロールアウトに活用できる。→ 6.6節
+          </p>
+          <p>
+            <strong>ペアプログラミング（Pair Programming）</strong>
+            2人が1台のマシンを共有し、ドライバー（コードを書く）とナビゲーター（俯瞰する）を交互に務める開発手法。設計品質とナレッジ共有が向上する。→ 7.3節
+          </p>
+          <p>
+            <strong>ベクトルデータベース</strong>
+            エンベディングベクトルを高速に格納・近傍検索できる専用データベース。RAG システムの知識ストアとして使われる。Chroma・pgvector・Pinecone などが代表例。→ 2.9節
+          </p>
+          <p>
+            <strong>ポリモーフィズム（Polymorphism）</strong>
+            異なる型のオブジェクトを同一のインターフェースで扱える性質。条件分岐を排除し、拡張性の高いコードを実現する。→ 2.1節
+          </p>
+          <p>
+            <strong>マイクロサービス（Microservices）</strong>
+            システムを独立してデプロイ可能な小さなサービスに分割するアーキテクチャスタイル。各サービスは自律的にデプロイ・スケールできる。→ 2.5節
+          </p>
+          <p>
+            <strong>ミューテーションテスト（Mutation Testing）</strong>
+            コードに小さな変異（ミュータント）を注入し、テストがその変異を検知できるかでテストスイートの品質を評価する技法。→ 4.4節
+          </p>
+          <p>
+            <strong>モブプログラミング（Mob Programming）</strong>
+            チーム全員が1台のマシンに集まって同時に作業する開発手法。ペアプログラミングの拡張版。→ 7.3節
+          </p>
+          <p>
+            <strong>ユースケース図</strong>
+            UML の図の一種。アクター（利用者・外部システム）とシステムが提供する機能（ユースケース）の関係を楕円と線で表現する。→ 1.5節
+          </p>
+          <p>
+            <strong>リファクタリング（Refactoring）</strong>
+            外部から見た振る舞いを変えずに、コードの内部構造を整理・改善する作業。テストがあることで安全に実施できる。→ 5.1節〜5.3節
+          </p>
+          <p>
+            <strong>レジリエンス（Resilience）</strong>
+            障害が発生してもシステムが機能し続け、自己回復できる性質。Circuit Breaker・リトライ・タイムアウトが主要な実装パターン。→ 6.5節
+          </p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="第二部本書の比喩と技術用語-対応表">第二部：本書の比喩と技術用語 対応表</h2>
+        <p>
+          本書はRPG・錬金術・魔法などの比喩を通じて技術概念を語っています。
+          以下の対応表で「本書の言葉」と「技術の言葉」を相互に参照できます。
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>本書の比喩</th>
+              <th>技術用語</th>
+              <th>解説</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>詠唱（えいしょう）</strong></td>
+              <td>プロンプト</td>
+              <td>AIへの指示・問いかけ。言葉の選び方が出力品質を左右する</td>
+            </tr>
+            <tr>
+              <td><strong>詠唱汚染</strong></td>
+              <td>プロンプト・インジェクション</td>
+              <td>悪意ある入力によってAIへの指示を乗っ取る攻撃手法 → 6.3節</td>
+            </tr>
+            <tr>
+              <td><strong>ゴーレム</strong></td>
+              <td>AIエージェント</td>
+              <td>自律的にタスクを実行するAIシステム → 3.5節、3.9節</td>
+            </tr>
+            <tr>
+              <td><strong>魔法陣</strong></td>
+              <td>UML図 / アーキテクチャ図</td>
+              <td>設計を可視化する図式表現 → 1.5節、2.2節</td>
+            </tr>
+            <tr>
+              <td><strong>黄金律</strong></td>
+              <td>SOLID原則</td>
+              <td>美しい構造を作るための5つの設計原則 → 2.3節</td>
+            </tr>
+            <tr>
+              <td><strong>錬金術師 / アルケミスト</strong></td>
+              <td>ソフトウェアエンジニア</td>
+              <td>論理と創造で世界に価値をもたらす職人</td>
+            </tr>
+            <tr>
+              <td><strong>守護魔法</strong></td>
+              <td>テスト</td>
+              <td>コードの正しさを守る自動検証の仕組み → 第4章</td>
+            </tr>
+            <tr>
+              <td><strong>守護魔法の軍団</strong></td>
+              <td>テストスイート</td>
+              <td>複数のテストを組み合わせた防衛網 → 4.1節</td>
+            </tr>
+            <tr>
+              <td><strong>鑑定術</strong></td>
+              <td>テスト技法</td>
+              <td>カバレッジ・同値分割など、品質を測る技 → 4.2節</td>
+            </tr>
+            <tr>
+              <td><strong>刺客</strong></td>
+              <td>AIテスト生成</td>
+              <td>AIが自動でテストケースを生成・攻撃する仕組み → 4.4節</td>
+            </tr>
+            <tr>
+              <td><strong>結界</strong></td>
+              <td>セキュリティ機能</td>
+              <td>システムを外敵から守る防衛機構 → 6.3節</td>
+            </tr>
+            <tr>
+              <td><strong>脈動</strong></td>
+              <td>オブザーバビリティ</td>
+              <td>ログ・メトリクス・トレースでシステムの鼓動を感じる → 6.4節</td>
+            </tr>
+            <tr>
+              <td><strong>ホムンクルス</strong></td>
+              <td>ファインチューニング済みLLM</td>
+              <td>特定ドメインに特化して再学習させたAIモデル → 3.5節</td>
+            </tr>
+            <tr>
+              <td><strong>汎用真理ルーン</strong></td>
+              <td>WebAssembly（Wasm）</td>
+              <td>どの環境でも動く「普遍の言語」 → 3.6節</td>
+            </tr>
+            <tr>
+              <td><strong>深淵の記憶術</strong></td>
+              <td>RAG（検索拡張生成）</td>
+              <td>外部知識を検索してAIの回答精度を高める技法 → 2.9節</td>
+            </tr>
+            <tr>
+              <td><strong>賢者の工房</strong></td>
+              <td>Platform Engineering</td>
+              <td>開発者が使う道具・基盤を作り続けるチームの営み → 6.9節</td>
+            </tr>
+            <tr>
+              <td><strong>冒険パーティ</strong></td>
+              <td>開発チーム</td>
+              <td>多様なスキルを持つメンバーが協働する集団 → 第7章</td>
+            </tr>
+            <tr>
+              <td><strong>朝の作戦会議</strong></td>
+              <td>デイリースクラム</td>
+              <td>毎朝15分の同期ミーティング → 7.1節</td>
+            </tr>
+            <tr>
+              <td><strong>焚き火を囲んだ語らい</strong></td>
+              <td>スプリントレトロスペクティブ</td>
+              <td>チームが改善を話し合う振り返りの場 → 7.1節</td>
+            </tr>
+            <tr>
+              <td><strong>戦利品の披露</strong></td>
+              <td>スプリントレビュー</td>
+              <td>完成物をステークホルダーに見せるデモ → 7.1節</td>
+            </tr>
+            <tr>
+              <td><strong>二重詠唱</strong></td>
+              <td>ペア / モブプログラミング</td>
+              <td>複数人で同時にコードを書く協調開発手法 → 7.3節</td>
+            </tr>
+            <tr>
+              <td><strong>命を吹き込む儀式</strong></td>
+              <td>デプロイメント</td>
+              <td>コードを本番環境に届け、ユーザーへ届ける行為 → 6.1節</td>
+            </tr>
+            <tr>
+              <td><strong>術式の不調を探る</strong></td>
+              <td>デバッグ</td>
+              <td>バグの原因を特定し修正する推理の過程 → 4.6節</td>
+            </tr>
+            <tr>
+              <td><strong>彫刻を磨く喜び</strong></td>
+              <td>リファクタリング</td>
+              <td>コードの外見は変えずに内部構造を美しく整える作業 → 第5章</td>
+            </tr>
+            <tr>
+              <td><strong>古代技術の考古学</strong></td>
+              <td>レガシーコードの調査・改善</td>
+              <td>文書のない古いコードを読み解き、安全に扱う技術 → 3.8節</td>
+            </tr>
+            <tr>
+              <td><strong>異世界探検</strong></td>
+              <td>要求工学</td>
+              <td>ユーザーのドメインに飛び込み、真のニーズを掘り起こす活動 → 第1章</td>
+            </tr>
+            <tr>
+              <td><strong>魔法の地図</strong></td>
+              <td>ソフトウェアエンジニアリング全体</td>
+              <td>複雑な世界を論理で再構築するための知識体系</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </section>
+  
+
+</body></html>

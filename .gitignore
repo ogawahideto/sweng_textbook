@@ -23,6 +23,11 @@ Thumbs.db
 *.bak
 *.log
 
+# Internal working documents (not for publication)
+.ai/reviews/
+*_audit_report_*.md
+modernization_plan_*.md
+
 # Personal notes (if you want to keep them private)
 # personal-notes/
 # drafts/
