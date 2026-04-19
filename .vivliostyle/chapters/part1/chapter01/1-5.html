@@ -1,0 +1,430 @@
+<!DOCTYPE html><html lang="ja"><head>
+    <meta charset="utf-8">
+    <title>1.5 どう描くか？——要求を描く魔法陣（UML前編）</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+  </head>
+  <body>
+    <section class="level1">
+      <h1 id="15-どう描くか要求を描く魔法陣uml前編">1.5 どう描くか？——要求を描く魔法陣（UML前編）</h1>
+      <figure>
+        <img src="../../assets/diagrams/chapter01/1-5-usecase.svg" alt="ユースケース図">
+        <figcaption aria-hidden="true">ユースケース図</figcaption>
+      </figure>
+      <p>声を聴き、対話し、整理する。その次は「伝える」段階です。どれほど精巧な要求も、相手に正確に伝わらなければ形になりません。<strong>図を使えば、認識をより正確に揃える</strong>ことができます。</p>
+      <blockquote>
+        <p>「ユーザーがログインして、タスクを追加できる」</p>
+      </blockquote>
+      <p>この一文を読んで、あなたは何を想像しますか？</p>
+      <ul>
+        <li>ログイン画面は独立したページ？ モーダル？</li>
+        <li>タスク追加はボタンをクリック？ エンターキーで？</li>
+        <li>追加後、リストは自動更新される？ 手動リロード？</li>
+      </ul>
+      <p>同じ言葉を読んでも、人によって想像する「絵」は違います。</p>
+      <p>そこで登場するのが<strong>UML（Unified Modeling Language）</strong>——ソフトウェアの世界で長く使われてきた「共通の魔法陣」です。</p>
+      <hr>
+      <section class="level2">
+        <h2 id="umlとは何か">UMLとは何か</h2>
+        <p>次の図は、UMLのアクティビティ図でQuestForgeのクエスト完了フローを描いた例を示しています。</p>
+        <figure>
+          <img src="../../assets/diagrams/chapter01/1-5-activity.svg" alt="アクティビティ図（クエスト完了フロー）">
+          <figcaption aria-hidden="true">アクティビティ図（クエスト完了フロー）</figcaption>
+        </figure>
+        <p>ここでは冒険者がクエストを選択し、完了ボタンを押すと経験値が付与され、条件を満たせばレベルアップが発生するという一連の流れが、誰が見ても同じ意味に読み取れる「共通の魔法陣」として表現されています。このような標準化された図法こそが、チーム全員の認識を揃えるUMLの力です。</p>
+        <section class="level3">
+          <h3 id="統一された図の言語">統一された「図の言語」</h3>
+          <p>UMLがどのように誕生したのかを知ると、この魔法陣への理解がさらに深まります。UMLは1990年代に、複数のモデリング手法を統合して生まれました。「Unified（統一された）」の名が示すように、異なる流派の図法を一つにまとめたものです。</p>
+          <p>かつて、ソフトウェアの世界には多くの「賢者（メソッド・エンジニア）」たちが存在し、それぞれが独自の図法を提唱していました。有名なものでは、グラディ・ブーチによる「Booch法」、ジェームズ・ランボーによる「OMT（オブジェクトモデル技術）」、そしてイヴァ・ヤコブソンによる「OOSE（オブジェクト指向ソフトウェアエンジニアリング）」などがあります。これらは「メソッド戦争」と呼ばれるほど、どの手法が優れているかを競い合っていました。</p>
+          <p>しかし、1990年代半ば、これら3つの手法の提唱者たちは「協力して、より強力で共通の魔法陣を作ろう」と手を取り合いました。彼らは<strong>スリーアミーゴス</strong>（Three Amigos）と呼ばれ、彼らがまとめ上げた知恵の結晶こそがUMLなのです。</p>
+          <p>いわば、古のグリモワール（魔導書）に記された「火」や「水」の紋章のように、誰が見てもその意味が伝わるように約束された「共通言語」なのです。私たちアルケミストにとっては、論理を具現化するための「共通の魔法陣」と言えるでしょう。</p>
+          <p>UMLには14種類もの図がありますが、すべてを覚える必要はありません。本章では、<strong>要求を可視化する</strong>ための2つの図に絞ります。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>図の種類</th>
+                <th>目的</th>
+                <th>問いかけ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>ユースケース図</strong></td>
+                <td>システムと利用者の関係を俯瞰する</td>
+                <td>「誰が何をするのか？」</td>
+              </tr>
+              <tr>
+                <td><strong>アクティビティ図</strong></td>
+                <td>処理の流れを詳細に描く</td>
+                <td>「どんな順序で進むのか？」</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="level3">
+          <h3 id="なぜ要求と設計でumlを分けるのか">なぜ「要求」と「設計」でUMLを分けるのか</h3>
+          <p>この2種類の図を学ぶ前に、大切な視点を確認しておきましょう——UMLはフェーズによって描く粒度が変わります。UMLは要求分析にも設計にも使えますが、<strong>同じ図法でも、フェーズによって描く粒度が違います</strong>。</p>
+          <ul>
+            <li><strong>要求フェーズ（本章）</strong>: 「何をするか」を描く。技術的な詳細は含まない。</li>
+            <li><strong>設計フェーズ（2.1節）</strong>: 「どう作るか」を描く。クラス構造やシーケンスを含む。</li>
+          </ul>
+          <p>本章では「要求の可視化」に集中し、設計レベルのUML（クラス図、シーケンス図）は第2章で扱います。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="ユースケース図-誰が何をするかの魔法陣">ユースケース図: 「誰が何をするか」の魔法陣</h2>
+        <p>まずは、システムの全体像を「外側から」俯瞰するユースケース図から始めましょう。</p>
+        <p>
+          <strong>ユースケース図の基本要素</strong>
+          ユースケース図は、システムの「外側」から見た機能を描きます。次の図は、ユースケース図の基本構造——アクター・ユースケース・システム境界・関連の4要素を示しています。
+        </p>
+        <figure>
+          <img src="../../assets/diagrams/chapter01/1-5-usecase-basic.svg" alt="ユースケース図の基本構造">
+          <figcaption aria-hidden="true">ユースケース図の基本構造</figcaption>
+        </figure>
+        <p>ここで大切なのは「システム境界の内側と外側」という視点です。境界の外にいるアクター（人や外部システム）が、境界の内側のユースケース（楕円）と線でつながることで、「誰が何を使うか」が一目で把握できます。</p>
+        <p><strong>構成要素:</strong></p>
+        <ul>
+          <li><strong>アクター</strong> (人型の記号): システムを利用する人や外部システム</li>
+          <li><strong>ユースケース</strong> (楕円): システムが提供する機能（「〜する」という動詞形で記述）</li>
+          <li><strong>システム境界</strong> (四角形): システムの範囲</li>
+          <li><strong>関連</strong> (線): アクターとユースケースの結びつき</li>
+        </ul>
+        <p>
+          <strong>QuestForgeのユースケース図</strong>
+          QuestForgeのユースケースを整理してみましょう。
+        </p>
+        <figure>
+          <img src="../../assets/diagrams/chapter01/1-5-usecase-questforge.svg" alt="QuestForge ユースケース図">
+          <figcaption aria-hidden="true">QuestForge ユースケース図</figcaption>
+        </figure>
+        <p>ここでは「勇者」と「ギルドマスター」という2種類のアクターが登場し、それぞれが使えるユースケースの範囲がシステム境界によって明確に示されています。ユースケース間には包含（include）や拡張（extend）の関係があり、処理の共通化とオプション機能の区別が視覚的に伝わります。</p>
+        <ul>
+          <li><strong>include</strong> (&lt;
+            <include>&gt;): 必ず含まれる処理（共通処理の抽出）</include>
+          </li>
+          <li><strong>extend</strong> (&lt;
+            <extend>&gt;): 条件によって追加される処理（オプション）</extend>
+          </li>
+        </ul>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="アクティビティ図-どう流れるかの道筋">アクティビティ図: 「どう流れるか」の道筋</h2>
+        <p>ユースケース図で「誰が何をするか」の全体像を描いたら、次は個々の処理が「どのような流れで進むか」を詳細に追うアクティビティ図の出番です。</p>
+        <p>
+          <strong>アクティビティ図の基本要素</strong>
+          アクティビティ図は、処理の<strong>流れ</strong>を描きます。フローチャートに似ていますが、並行処理も表現できます。次の図は、アクティビティ図を構成する基本要素——開始・終了ノード、アクション、分岐、フローを示しています。
+        </p>
+        <figure>
+          <img src="../../assets/diagrams/chapter01/1-5-activity-basic.svg" alt="アクティビティ図の基本要素">
+          <figcaption aria-hidden="true">アクティビティ図の基本要素</figcaption>
+        </figure>
+        <p>ここで示されているのは、処理の「始まりから終わりまでの道筋」を視覚的に追える仕組みです。</p>
+        <p><strong>構成要素:</strong></p>
+        <ul>
+          <li><strong>開始ノード</strong> (●): 処理の開始点</li>
+          <li><strong>終了ノード</strong> (◎): 処理の終了点</li>
+          <li><strong>アクション</strong> (角丸四角形): 具体的な処理</li>
+          <li><strong>分岐</strong> (◇): 条件による分岐</li>
+          <li><strong>フロー</strong> (矢印): 処理の流れ</li>
+        </ul>
+        <p>
+          <strong>スイムレーンで責任を明確に</strong>
+          複数のアクターが関わる場合、「誰がこの処理を担当するのか」を明確にする必要があります。スイムレーンはその強力な技法です。
+        </p>
+        <figure>
+          <img src="../../assets/diagrams/chapter01/1-5-activity-swimlane.svg" alt="スイムレーンによる責任の分担">
+          <figcaption aria-hidden="true">スイムレーンによる責任の分担</figcaption>
+        </figure>
+        <p>
+          <strong>QuestForgeのアクティビティ図: クエスト完了フロー</strong>
+          次の図は、QuestForgeにおけるクエスト完了フロー——冒険者がクエストを完了してから経験値獲得・レベルアップ判定までの処理の流れを示しています。
+        </p>
+        <figure>
+          <img src="../../assets/diagrams/chapter01/1-5-activity-questforge.svg" alt="QuestForge アクティビティ図：クエスト完了フロー">
+          <figcaption aria-hidden="true">QuestForge アクティビティ図：クエスト完了フロー</figcaption>
+        </figure>
+        <p>ここでは冒険者（ユーザー）とシステムの役割がスイムレーンで分離されており、「どこまでが操作でどこからがシステムの自動処理か」が一目でわかります。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="ai時代のアプローチ-図を描く相棒">AI時代のアプローチ: 図を描く相棒</h2>
+        <p>UMLの基本を習得したら、AIを「共同製図者」として活用することで、図の作成を劇的に加速できます。</p>
+        <section class="level3">
+          <h3 id="aiにuml図を生成させる">AIにUML図を生成させる</h3>
+          <p>テキストで要求を伝え、AIにUML図を生成させることができます。</p>
+          <p>
+            <strong>プロンプト例:</strong>
+            ```text
+            以下の機能要求から、PlantUML形式でユースケース図を生成してください。
+          </p>
+          <p><strong>機能要求</strong>:</p>
+          <ul>
+            <li>勇者はクエストを作成できる</li>
+            <li>勇者はクエストを完了できる</li>
+            <li>クエスト完了時に経験値を獲得する</li>
+            <li>経験値が閾値を超えるとレベルアップする</li>
+            <li>
+              ギルドマスターは全員の進捗を確認できる
+              ```
+            </li>
+          </ul>
+        </section>
+        <section class="level3">
+          <h3 id="plantumlによるテキストベースの図">PlantUMLによるテキストベースの図</h3>
+          <p>UMLはグラフィカルなツールで描くこともできますが、<strong>PlantUML</strong>というテキストベースの記法を使えば、コードのようにバージョン管理できます。</p>
+          <pre class="language-plantuml"><code class="language-plantuml">@startuml
+left to right direction
+
+actor 勇者
+actor ギルドマスター
+
+rectangle QuestForge {
+  usecase "クエストを作成する" as UC1
+  usecase "クエストを完了する" as UC2
+  usecase "経験値を獲得する" as UC3
+  usecase "レベルアップする" as UC4
+  usecase "進捗を確認する" as UC5
+}
+
+勇者 --&gt; UC1
+勇者 --&gt; UC2
+UC2 ..&gt; UC3 : &lt;&lt;include&gt;&gt;
+UC3 ..&gt; UC4 : &lt;&lt;extend&gt;&gt;
+ギルドマスター --&gt; UC5
+
+@enduml</code></pre>
+          <p>このテキストをPlantUMLツールに通すと、自動的に図が生成されます。</p>
+        </section>
+        <section class="level3">
+          <h3 id="aiとの図のレビュー">AIとの図のレビュー</h3>
+          <p>生成した図はそのまま完成とするのではなく、AIに批評役を務めてもらうことで精度をさらに高められます。描いた図をAIにレビューしてもらいましょう。</p>
+          <p>
+            <strong>プロンプト例:</strong>
+            ```text
+            以下のユースケース図をレビューしてください。
+          </p>
+          <ul>
+            <li>追加すると良いユースケースはあるか？</li>
+            <li>アクターの分類は適切か？</li>
+            <li>include/extendの使い方は正しいか？</li>
+          </ul>
+          <p>
+            [PlantUMLコードをここに貼り付ける]
+            ```
+          </p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="ハンズオン-questforgeの図を描いてみよう">ハンズオン: QuestForgeの図を描いてみよう</h2>
+        <p>ツールと技法を手に入れたら、実際に自分で図を描く番です。手を動かすことで、理解はさらに深まります。</p>
+        <section class="level3">
+          <h3 id="ステップ1-アクターを洗い出す">ステップ1: アクターを洗い出す</h3>
+          <p>QuestForgeを使う「人」や「外部システム」を列挙しましょう。</p>
+          <ul>
+            <li>勇者（一般ユーザー）</li>
+            <li>ギルドマスター（管理者）</li>
+            <li>通知システム（外部連携）？</li>
+          </ul>
+        </section>
+        <section class="level3">
+          <h3 id="ステップ2-ユースケースを列挙する">ステップ2: ユースケースを列挙する</h3>
+          <p>アクターが洗い出せたら、次はゴールツリーを手がかりに「機能」を書き出します。1.4節のゴールツリーを参考に、システムが提供する機能を動詞形で書き出します。</p>
+          <ul>
+            <li>クエストを作成する</li>
+            <li>クエストを完了する</li>
+            <li>経験値を獲得する</li>
+            <li>レベルアップする</li>
+            <li>バッジを獲得する</li>
+            <li>ストリークを確認する</li>
+            <li>進捗を振り返る</li>
+          </ul>
+        </section>
+        <section class="level3">
+          <h3 id="ステップ3-関係を整理する">ステップ3: 関係を整理する</h3>
+          <p>ユースケースが揃ったら、アクターとの関係やユースケース間のつながりを整理していきます。</p>
+          <ul>
+            <li>どのアクターがどのユースケースを使うか？</li>
+            <li>include/extendの関係はあるか？</li>
+          </ul>
+        </section>
+        <section class="level3">
+          <h3 id="ステップ4-aiで図を生成する">ステップ4: AIで図を生成する</h3>
+          <p>関係が整理できたら、AIを使って一気に図として出力してみましょう。</p>
+          <pre class="language-text"><code class="language-text">以下のユースケース一覧から、PlantUML形式のユースケース図を生成してください。
+アクターとユースケースの関係も適切に設定してください。
+
+**アクター**: 勇者、ギルドマスター
+**ユースケース**: [ステップ2で列挙したもの]</code></pre>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="ユースケース記述-図を補完する文書">ユースケース記述: 図を補完する文書</h2>
+        <p>図が完成したら、それだけで要求の伝達が終わるわけではありません——図で表現しきれない細部を言葉で補う「ユースケース記述」が必要です。</p>
+        <section class="level3">
+          <h3 id="図だけでは足りない">図だけでは足りない</h3>
+          <p>ユースケース図は「何があるか」を俯瞰できますが、<strong>詳細な振る舞い</strong>は表現できません。そこで、各ユースケースに対して<strong>ユースケース記述</strong>を書きます。</p>
+        </section>
+        <section class="level3">
+          <h3 id="ユースケース記述のテンプレート">ユースケース記述のテンプレート</h3>
+          <p>以下のテンプレートを使うことで、事前条件から例外フローまで漏れなく記述できます。</p>
+          <pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">##</span> ユースケース: クエストを完了する</span>
+
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">アクター</span><span class="token punctuation">**</span></span>: 勇者
+
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">事前条件</span><span class="token punctuation">**</span></span>:
+<span class="token list punctuation">-</span> 勇者がログインしている
+<span class="token list punctuation">-</span> 未完了のクエストが1つ以上存在する
+
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">基本フロー</span><span class="token punctuation">**</span></span>:
+<span class="token list punctuation">1.</span> 勇者がクエスト一覧を表示する
+<span class="token list punctuation">2.</span> 勇者が完了するクエストを選択する
+<span class="token list punctuation">3.</span> 勇者が「完了」ボタンを押す
+<span class="token list punctuation">4.</span> システムが経験値を計算する
+<span class="token list punctuation">5.</span> システムが勇者の経験値を更新する
+<span class="token list punctuation">6.</span> システムが完了メッセージを表示する
+
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">代替フロー</span><span class="token punctuation">**</span></span>:
+<span class="token list punctuation">-</span> 4a. レベルアップ条件を満たす場合
+  <span class="token list punctuation">-</span> 4a1. システムがレベルアップ演出を表示する
+  <span class="token list punctuation">-</span> 4a2. システムが勇者のレベルを更新する
+
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">事後条件</span><span class="token punctuation">**</span></span>:
+<span class="token list punctuation">-</span> クエストが「完了」状態になっている
+<span class="token list punctuation">-</span> 勇者の経験値が増加している</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="aiにユースケース記述を生成させる">AIにユースケース記述を生成させる</h3>
+          <p>テンプレートの使い方が分かったら、AIにたたき台を生成させてそこから磨き上げるアプローチも効果的です。</p>
+          <pre class="language-text"><code class="language-text">以下のユースケースについて、ユースケース記述を生成してください。
+事前条件、基本フロー、代替フロー、事後条件を含めてください。
+
+**ユースケース名**: クエストを作成する
+**アクター**: 勇者
+**概要**: 勇者が新しいクエスト（タスク）を作成する</code></pre>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="設計フェーズへの橋渡し">設計フェーズへの橋渡し</h2>
+        <p>ユースケース図・アクティビティ図・ユースケース記述の三つが揃ったところで、要求フェーズのゴールを振り返りつつ、次の扉を開く準備をしましょう。</p>
+        <section class="level3">
+          <h3 id="要求と設計の境界">要求と設計の境界</h3>
+          <p>本章で描いたUML図は、<strong>「何をするか」を明確にする</strong>ためのものでした。</p>
+          <ul>
+            <li>ユースケース図: システムの機能の全体像</li>
+            <li>アクティビティ図: 処理の流れ</li>
+            <li>ユースケース記述: 詳細な振る舞い</li>
+          </ul>
+          <p>これらは<strong>技術的な実装方法には言及していません</strong>。データベースの構造も、クラスの設計も、まだ決めていないのです。</p>
+        </section>
+        <section class="level3">
+          <h3 id="第2章への予告">第2章への予告</h3>
+          <p>この「何をするか」の地図を持って、いよいよ「どう作るか」の世界へ踏み込んでいきましょう。第2章では、「<strong>どう作るか</strong>」を設計するためのUMLを学びます。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>図の種類</th>
+                <th>目的</th>
+                <th>本書での位置づけ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>ユースケース図</td>
+                <td>何をするか</td>
+                <td>1.5節（本章）</td>
+              </tr>
+              <tr>
+                <td>アクティビティ図</td>
+                <td>どう流れるか</td>
+                <td>1.5節（本章）</td>
+              </tr>
+              <tr>
+                <td>クラス図</td>
+                <td>どんな構造か</td>
+                <td>2.2節</td>
+              </tr>
+              <tr>
+                <td>シーケンス図</td>
+                <td>どう連携するか</td>
+                <td>2.2節</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>要求フェーズで描いた図が、設計フェーズでどのように具体化されていくのか——その過程を楽しみにしていてください。</p>
+          <hr>
+          <p>「同じ文章を読んでも、人によって想像する絵は違う」——この現実に、UMLは答えを持っています。ユースケース図が「誰が何をするか」という全体の俯瞰を与え、アクティビティ図が「どんな順序で動くか」というフローを描きます。そしてユースケース記述が、図では表現しきれない条件分岐や例外をテキストで補完します。三者が揃って初めて、チームの頭の中の「絵」が一致するのです。</p>
+          <p>AIはこの図法でも頼もしい相棒です。対話の内容からPlantUMLのコードを生成し、「Aさんが想定するシステムの範囲はこれで合っていますか？」と可視化した瞬間に確認できます。図が「違います」という指摘を引き出し、要求は精度を増していきます。</p>
+          <p>聴き、対話し、整理し、描く——要求工学の一連の技術を手に入れた今、次の扉が開きます。「何を作るか」という地図は揃いました。第2章では、この地図を手に、いよいよ「どう設計するか」という世界へと踏み込みます。悠久の時を経て磨かれてきたアーキテクチャの知恵が、あなたを待っています。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>📚 <strong>書籍</strong>: マーチン・ファウラー『<a href="https://www.shoeisha.co.jp/book/detail/9784798107950">UMLモデリングのエッセンス 第3版</a>』（UMLのエッセンスを凝縮した定番入門書）</li>
+          <li>📚 <strong>書籍</strong>: アリスター・コーバーン『<a href="https://www.amazon.co.jp/dp/489471415X">ユースケース実践ガイド</a>』（ユースケース記述の書き方を深く学びたい方向けのバイブル）</li>
+          <li>🌐 <strong>ツール</strong>: <a href="https://plantuml.com/ja/">PlantUML</a>（テキストからUML図を生成する強力なツール。プロフェッショナルのデファクトスタンダード）</li>
+          <li>🌐 <strong>ツール</strong>: <a href="https://mermaid.js.org/">Mermaid</a>（Markdown内で図を描くための、GitHub等でも標準採用されているライブラリ）</li>
+        </ul>
+        <p>ム名<strong>: QuestForge
+</strong>機能一覧**:</p>
+        <ul>
+          <li>ユーザー登録</li>
+          <li>ログイン</li>
+          <li>クエスト作成</li>
+          <li>クエスト完了</li>
+          <li>経験値獲得</li>
+          <li>レベルアップ</li>
+          <li>バッジ獲得</li>
+          <li>
+            進捗確認（管理者のみ）
+            ```
+          </li>
+        </ul>
+        <pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> アクティビティ図の生成</span>
+以下の処理フローを、PlantUML形式のアクティビティ図で表現してください。
+スイムレーンを使って、勇者とシステムの責任を分けてください。
+
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">処理名</span><span class="token punctuation">**</span></span>: クエスト作成フロー
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">フロー</span><span class="token punctuation">**</span></span>:
+<span class="token list punctuation">1.</span> 勇者がクエスト名を入力
+<span class="token list punctuation">2.</span> 勇者が難易度を選択
+<span class="token list punctuation">3.</span> システムが入力を検証
+<span class="token list punctuation">4.</span> 入力に不足がある場合、案内メッセージを表示して1に戻る
+<span class="token list punctuation">5.</span> システムがクエストを保存
+<span class="token list punctuation">6.</span> システムが完了メッセージを表示</code></pre>
+        <pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> ユースケース記述の生成</span>
+以下のユースケースについて、詳細なユースケース記述を作成してください。
+
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">ユースケース名</span><span class="token punctuation">**</span></span>: レベルアップする
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">アクター</span><span class="token punctuation">**</span></span>: 勇者（システムが自動実行）
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">トリガー</span><span class="token punctuation">**</span></span>: 経験値が次のレベルの閾値を超えた時
+
+以下の項目を含めてください：
+<span class="token list punctuation">-</span> 事前条件
+<span class="token list punctuation">-</span> 基本フロー（5〜8ステップ）
+<span class="token list punctuation">-</span> 代替フロー（2つ以上）
+<span class="token list punctuation">-</span> 例外フロー
+<span class="token list punctuation">-</span> 事後条件
+<span class="token list punctuation">-</span> ビジネスルール</code></pre>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース-1">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>📚 <strong>書籍</strong>: マーチン・ファウラー『<a href="https://www.shoeisha.co.jp/book/detail/9784798107950">UMLモデリングのエッセンス 第3版</a>』（UMLのエッセンスを凝縮した定番入門書）</li>
+          <li>📚 <strong>書籍</strong>: アリスター・コーバーン『<a href="https://www.amazon.co.jp/dp/489471415X">ユースケース実践ガイド</a>』（ユースケース記述の書き方を深く学びたい方向けのバイブル）</li>
+          <li>🌐 <strong>ツール</strong>: <a href="https://plantuml.com/ja/">PlantUML</a>（テキストからUML図を生成する強力なツール。プロフェッショナルのデファクトスタンダード）</li>
+          <li>🌐 <strong>ツール</strong>: <a href="https://mermaid.js.org/">Mermaid</a>（Markdown内で図を描くための、GitHub等でも標準採用されているライブラリ）</li>
+        </ul>
+      </section>
+    </section>
+  
+
+</body></html>

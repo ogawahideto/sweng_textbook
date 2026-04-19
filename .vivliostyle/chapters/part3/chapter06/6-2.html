@@ -1,0 +1,167 @@
+<!DOCTYPE html><html lang="ja"><head>
+    <meta charset="utf-8">
+    <title>6.2 絶え間なき循環——CI/CDパイプライン</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+  </head>
+  <body>
+    <section class="level1">
+      <h1 id="62-絶え間なき循環cicdパイプライン">6.2 絶え間なき循環——CI/CDパイプライン</h1>
+      <p>4.5節では、テストの自動実行という観点からCIの基礎を学びました。この節では、その視野をさらに広げ、コードがリポジトリに入ってからユーザーの手に届くまでの<strong>流れ全体</strong>——CI/CDパイプライン——を俯瞰します。</p>
+      <p>生きている動物の体内では、心臓が絶えず血液を送り出し、酸素と栄養を全身の細胞へと届けています。ソフトウェアという生命体も、これと全く同じ仕組みを必要とします。</p>
+      <p>新しく紡がれたコードという名の「酸素」は、速やかにテストされ、ビルドされ、そしてユーザーの手元という「全身」へ届けられなければなりません。もしこの循環がどこかで滞れば、ソフトウェアは瞬く間に鮮度を失い、古びたロジックの重みで腐敗してしまいます。</p>
+      <p>この循環を自動化し、止まることなく回し続けるための魔法の仕掛け。それが<strong>CI/CDパイプライン</strong>です。これは単なる便利ツールではありません。開発チームに心地よいリズムを与え、ソフトウェアに絶え間ない「命」を吹き込み続けるための、まさにプロジェクトの心臓部なのです。</p>
+      <p>次の図は、CI/CDパイプラインがソフトウェアにとっての「血液循環」として機能する全体の流れを示しています。</p>
+      <figure>
+        <img src="../../assets/diagrams/chapter06/6.2-cicd-loop.svg" alt="ソフトウェアの血液循環">
+        <figcaption aria-hidden="true">ソフトウェアの血液循環</figcaption>
+      </figure>
+      <p>ここで示されているのは、コードの変更（酸素）がリポジトリへのプッシュを起点に、テスト・ビルド・デプロイという一連の工程を経てユーザーに届くまでの循環です。この流れが止まることなく自動で回り続けることで、ソフトウェアは常に新鮮な状態を保ちます。パイプラインが整った環境は、開発者に「何度でもやり直せる究極のセーブポイント」という安心感を与えます。</p>
+      <hr>
+      <section class="level2">
+        <h2 id="ci-継続的インテグレーション統合の洗礼">CI: 継続的インテグレーション（統合の洗礼）</h2>
+        <p>「インテグレーション（統合）」とは、あなたが丹精込めて書いたコードを、チームの共有資産であるメインブランチ、いわば「真実の泉」へと合流させる儀式を指します。</p>
+        <p>かつて、開発者たちは数週間、時には数ヶ月もの間、自分の手元だけでコードを書き溜めていました。しかし、いざ全員のコードを一つにまとめようとした瞬間、無数のロジックの衝突や予期せぬ不具合が爆発的に発生し、開発現場は阿鼻叫喚の修羅場へと化しました。これがソフトウェアエンジニアリングの歴史に刻まれた<strong>「統合地獄（Integration Hell）」</strong>の正体です。</p>
+        <p>CI（継続的インテグレーション）の哲学は、この巨大な災厄を<strong>「日々の小さな洗礼」</strong>へと変えることにあります。</p>
+        <p>私たちは、一度に大量のコードを合流させるのではなく、毎日、あるいは毎時間、小さな変更を頻繁に泉へと戻します。そのたびに、クラウド上で自動化された「守護魔法（テスト）」が即座に発動し、新しく加わったコードが既存の機能を壊していないか、あるいは魔法の形式（構文）が乱れていないかを厳格に鑑定します。</p>
+        <p>バグは、生まれた瞬間に発見されればただの「書き間違い」に過ぎませんが、数週間放置されれば複雑に絡み合った「解けない呪い」へと進化してしまいます。CIは、この進化の芽を摘み取り、常に泉の水を清らかに保ち続けるための知恵なのです。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="cd-継続的デリバリー価値の送り出し">CD: 継続的デリバリー（価値の送り出し）</h2>
+        <p>CIによって清められ、品質が保証された「健全なコード」を、いつでも世界へ解き放てる状態に保つこと。そして、最終的には本番環境への展開までをも自動化の力で成し遂げること。それがCD（継続的デリバリー／デプロイメント）の役割です。</p>
+        <p>ここで、二つの異なる送り出しのスタイルについて理解しておきましょう。</p>
+        <p>一つは<strong>継続的デリバリー（Continuous Delivery）</strong>です。これは、完成した魔法の薬を丁寧に瓶に詰め、ラベルを貼り、いつでも出荷できる状態で棚に並べておくようなものです。本番環境へ送り出すための最後の「ボタン」は人間が押しますが、そこに至るまでの複雑な準備作業はすべて自動化されています。</p>
+        <p>もう一つは、さらに踏み込んだ<strong>継続的デプロイメント（Continuous Deployment）</strong>です。これは、魔法の薬が完成し、テストという鑑定をパスした瞬間に、それを必要としている人々の元へと自動的に転送される究極の形態です。人間による承認すら介さず、価値が瞬時に世界へと行き渡ります。</p>
+        <p>どちらのスタイルを選ぶにせよ、私たちの目的は「リリースという儀式のコスト」を限りなくゼロに近づけることにあります。リリースが日常の些細な出来事になれば、私たちは「失敗を恐れて半年に一度だけ行う大規模な博打」を捨て、「一日に何度も小さな改善を積み重ねる進化」を選ぶことができるようになるのです。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="github-actions雲上の自動人形オートマタ">GitHub Actions：雲上の自動人形（オートマタ）</h2>
+        <p>現代のアルケミストたちが、この絶え間ない循環を実現するために使役するのが、<strong>GitHub Actions</strong> という名の「雲上の自動人形」です。これはGitHubの背後にある広大なクラウド空間で、あなたの指示通りに動く自動工房です。</p>
+        <p>この工房を動かすには、まず<strong>ワークフロー（Workflow）</strong>という詳細な指示書を書き記す必要があります。この指示書は、コードのリポジトリ内にYAML形式のファイルとして保管され、特定の<strong>イベント（Event）</strong>、例えば「コードが泉にPushされた」という合図とともに自動的に読み上げられます。</p>
+        <p>合図を受け取ると、<strong>ランナー（Runner）</strong>と呼ばれる「使い魔（ホムンクルス）」が召喚されます。この使い魔は、クラウド上に用意された真っさらな作業机（仮想マシン）の前に座り、指示書に従って一つひとつ<strong>ジョブ（Job）</strong>をこなしていきます。</p>
+        <p>ジョブの中身は、さらに細かな<strong>ステップ（Step）</strong>に分かれています。コードを机の上に広げる（Checkout）、適切な魔法の杖（Pythonなどの環境設定）を用意する、そしてテストという名の鑑定を行う。これらの定型的な作業には、世界中の先達たちが公開している<strong>アクション（Action）</strong>という再利用可能なパーツを組み込むことができます。これにより、あなたは複雑な構築手順を一から記述することなく、洗練された自動化の恩恵に預かれるのです。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="実践-questforgeの自動化の書yaml">実践: QuestForgeの自動化の書（YAML）</h2>
+        <p>以下に、QuestForgeのテストとデプロイの流れを定義した「自動化の書」の例を示します。</p>
+        <pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">name</span><span class="token punctuation">:</span> QuestForge CI/CD
+
+<span class="token key atrule">on</span><span class="token punctuation">:</span>
+  <span class="token key atrule">push</span><span class="token punctuation">:</span>
+    <span class="token key atrule">branches</span><span class="token punctuation">:</span> <span class="token punctuation">[</span> main <span class="token punctuation">]</span>  <span class="token comment"># メインブランチにPushされた瞬間に起動</span>
+  <span class="token key atrule">pull_request</span><span class="token punctuation">:</span>
+    <span class="token key atrule">branches</span><span class="token punctuation">:</span> <span class="token punctuation">[</span> main <span class="token punctuation">]</span>  <span class="token comment"># プルリクエストが作成された際も鑑定を行う</span>
+
+<span class="token key atrule">jobs</span><span class="token punctuation">:</span>
+  <span class="token comment"># 第一のジョブ: 鑑定（テスト）</span>
+  <span class="token key atrule">test</span><span class="token punctuation">:</span>
+    <span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span>latest
+    <span class="token key atrule">steps</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/checkout@v4       <span class="token comment"># 1. 工房にコードを持ち込む</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Setup Python
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/setup<span class="token punctuation">-</span>python@v5   <span class="token comment"># 2. Pythonの環境を整える</span>
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token key atrule">python-version</span><span class="token punctuation">:</span> <span class="token string">'3.11'</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Install dependencies      <span class="token comment"># 3. 必要な素材（ライブラリ）を揃える</span>
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> pip install <span class="token punctuation">-</span>r requirements.txt
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Run Unit Tests            <span class="token comment"># 4. 鑑定魔法を実行</span>
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> python <span class="token punctuation">-</span>m unittest discover tests
+
+  <span class="token comment"># 第二のジョブ: 納品（デプロイ）</span>
+  <span class="token key atrule">deploy</span><span class="token punctuation">:</span>
+    <span class="token key atrule">needs</span><span class="token punctuation">:</span> test                        <span class="token comment"># 鑑定（テスト）が成功した場合のみ実行</span>
+    <span class="token key atrule">if</span><span class="token punctuation">:</span> github.ref == 'refs/heads/main' <span class="token comment"># かつ、メインブランチの変更であること</span>
+    <span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span>latest
+    <span class="token key atrule">steps</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Deploy to Cloud
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> echo "Deploying to production server<span class="token punctuation">...</span>" <span class="token comment"># 実際にはここで本番への転送を行う</span></code></pre>
+        <hr>
+        <blockquote>
+          <p>
+            [!TIP]
+            <strong>Pipeline as Code：自動化の手順を資産にする</strong>
+            このYAMLファイルのように、CI/CDの設定そのものをコードとしてリポジトリに含める手法を <strong>Pipeline as Code</strong> と呼びます。
+          </p>
+          <p>これには大きな意味があります。自動化の手順自体が「バージョン管理」の対象となるため、「誰がいつパイプラインの動きを変えたのか」を正確に追跡できるようになります。また、万が一設定を誤ってパイプラインが壊れてしまったとしても、Gitの歴史を遡るだけで、一瞬にして以前の正常な状態へと復旧できるのです。自動化という「仕組み」そのものも、あなたが守るべき大切な知的資産の一部であることを忘れないでください。</p>
+        </blockquote>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="まとめ">まとめ</h2>
+        <p>ソフトウェアが真に生きていると言えるのは、常に変化し価値を届け続けている間だけです。CIによって日々の統合を「清らかな洗礼」に変え、CDによって世界への送り出しを「軽やかな呼吸」に変える——この連鎖こそが、CI/CDパイプラインの本質です。GitHub Actionsという自動人形を賢く使いこなすことで、「手作業による間違い」という呪いから解放され、設定ファイル自体もコードとして管理・バージョン管理できる知的資産へと昇華します。</p>
+        <p>パイプラインが整った環境でコードを書くとき、何度でもやり直しができる「究極のセーブポイント」を手に入れたRPGのプレイヤーのような揺るぎない安心感の中で、最高のパフォーマンスを発揮できます。自動化の仕組みそのものを守るべき資産と捉えること——それが成熟した開発チームの証です。</p>
+        <p>6.3節では、この循環を守る「結界」に目を向けます。セキュリティという観点から、エンジニアリングの各フェーズを貫くDevSecOpsの思想と、実践的な防衛術を学びましょう。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <pre class="language-prompt"><code class="language-prompt">GitHub Actionsのワークフローを作成してください。
+要件：
+1. mainブランチへのPR作成時にテスト（pytest）を実行する。
+2. テストが失敗した場合は、開発者に通知を送る。
+3. テストが成功し、mainにマージされた場合のみ、ビルド成果物を生成して保存する。</code></pre>
+        <section class="level3">
+          <h3 id="cliエージェント型パイプライン全体をエージェントに生成させるclaude-code">CLIエージェント型：パイプライン全体をエージェントに生成させる（Claude Code）</h3>
+          <pre class="language-text"><code class="language-text">このプロジェクト（pyproject.toml / requirements.txt を参照）の構成を読んで、
+QuestForge 用の完全な CI/CD パイプラインを設計・生成してください。
+
+生成するファイル：
+1. .github/workflows/ci.yml
+   - プッシュ・PR時にテスト（pytest, カバレッジ80%以上）・Lint（ruff）・型チェック（mypy）
+   - テストジョブを unit / integration / e2e の3並列で実行
+
+2. .github/workflows/cd.yml
+   - main ブランチへのマージ後に Docker イメージをビルドして GHCR にプッシュ
+   - ステージング環境へ自動デプロイ（カナリア10%から開始）
+
+3. scripts/quality-gate.sh
+   - ローカルで CI と同じチェックを実行するスクリプト
+
+生成後、各ファイルの意図とトレードオフを説明してください。</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="claude-code-hooksコミット前の自動品質チェック">Claude Code Hooks：コミット前の自動品質チェック</h3>
+          <p>CI/CDはリモートの「城壁」ですが、<strong>Hooks</strong> を使うとローカルの「城門」でも同じ守護魔法を発動できます。コミットを試みた瞬間にテストとLintが走り、パイプラインに届く前に問題を遮断します。</p>
+          <pre class="language-json"><code class="language-json"><span class="token comment">// .claude/settings.json</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"hooks"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"PreToolUse"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"matcher"</span><span class="token operator">:</span> <span class="token string">"Bash"</span><span class="token punctuation">,</span>
+        <span class="token property">"hooks"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+          <span class="token punctuation">{</span>
+            <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"command"</span><span class="token punctuation">,</span>
+            <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"bash -c \"echo '$CLAUDE_TOOL_INPUT' | grep -q 'git commit' &amp;&amp; ruff check src/ &amp;&amp; pytest tests/unit/ -q --tb=no || true\""</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+          <p>このHookが設定された環境では、Claude Codeが <code>git commit</code> コマンドを実行しようとするたびに、自動的にLintとユニットテストが先行して走ります。テストが失敗すればコミットは実行されず、Claude Codeが修正を試みます——まさに「城門で衛兵が自動審査する」仕組みです。</p>
+          <blockquote>
+            <p>
+              <strong>コラム: ローカルHookとリモートCIの使い分け</strong>
+              Claude Code Hooksはエージェントのツール実行に割り込む仕組みなので、人間が直接 <code>git commit</code> するケースには反応しません。チーム全体への適用には、従来の git hooks（<code>pre-commit</code>フレームワーク）と組み合わせるのが効果的です。エージェント向けにはClaude Code Hooks、人間向けには<code>pre-commit</code>——両方を整備することで、品質の城壁は完璧になります。
+            </p>
+          </blockquote>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>🌐 <strong>ドキュメント</strong>: <a href="https://docs.docker.com/">Docker Documentation</a>（コンテナ化のデファクトスタンダード。チュートリアルから運用まで網羅されています）</li>
+          <li>🌐 <strong>ドキュメント</strong>: <a href="https://kubernetes.io/docs/home/">Kubernetes Documentation</a>（コンテナオーケストレーションの公式ガイド。大規模システムの管理には必須です）</li>
+          <li>📚 <strong>書籍</strong>: 仲山昌宏『<a href="https://www.gihyo.co.jp/book/2020/978-4-297-11354-4">Docker/Kubernetesの実践コンテナ開発入門</a>』（コンテナの基礎から、Kubernetesによる運用までを体系的に学べる一冊）</li>
+          <li>📄 <strong>論文</strong>: B. Burns et al. "<a href="https://dl.acm.org/doi/10.1145/2890735.2890736">Borg, Omega, and Kubernetes</a>" (2016)（Googleの内部システムBorgからKubernetesへと受け継がれた、大規模クラスター管理の設計思想を解説した論文）</li>
+          <li>🌐 <strong>Web</strong>: <a href="https://www.cncf.io/">CNCF (Cloud Native Computing Foundation)</a>（クラウドネイティブ技術のハブ。最新のツールやプロジェクトの動向を確認できます）</li>
+        </ul>
+      </section>
+    </section>
+  
+
+</body></html>

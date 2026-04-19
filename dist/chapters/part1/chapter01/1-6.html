@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>1.6 【外伝】言葉の壁を越えて——ドメイン翻訳とバベルの塔</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+    <style>
+        body { max-width: 900px; margin: 0 auto; background: white; }
+        section { padding: 20px; }
+        img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body style="margin:0; padding:0;">
+
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part1/chapter01/1-5.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part1/chapter02/chapter02.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    <main>
+    <section class="level1">
+      <h1 id="16-外伝言葉の壁を越えてドメイン翻訳とバベルの塔">1.6 【外伝】言葉の壁を越えて——ドメイン翻訳とバベルの塔</h1>
+      <figure>
+        <img src="../../../assets/images/chapter_covers/Gaiden_Babel.png" alt="扉絵: バベルの塔">
+        <figcaption aria-hidden="true">扉絵: バベルの塔</figcaption>
+      </figure>
+      <p>「クエストのステータスを更新しました」</p>
+      <p>開発者がそう言ったとき、受付の職員（営業担当）は「報酬の支払いが完了した」と思い、冒険者（ユーザー）は「次の目的地が表示された」と思い、データベース管理者（DBA）は「行の更新フラグが立った」と思います。</p>
+      <p>一つの言葉が、立場によって異なる魔法の効果を持ってしまう——。これは現代のプロジェクトにおいて、混乱と失敗を招く「バベルの塔」の呪いです。本節では、ドメイン駆動設計（DDD）の重要な知恵である<strong>「ユビキタス言語」</strong>を使い、この呪いを解く翻訳の技術を学びます。</p>
+      <hr>
+      <section class="level2">
+        <h2 id="共通言語の錬成ユビキタス言語">共通言語の錬成：ユビキタス言語</h2>
+        <p>私たちは、技術用語だけで世界を語ろうとしてはいけません。また、ユーザーの言葉を鵜呑みにしてそのままコードに反映させるのも危険です。</p>
+        <p>大切なのは、開発者とドメインエキスパート（現場の専門家）が、対話を重ねて<strong>「共通の魔法言語（ユビキタス言語）」</strong>を錬成することです。</p>
+        <ul>
+          <li><strong>不適切な言葉</strong>: <code>UpdateStatusRequest</code>, <code>process_flag</code></li>
+          <li><strong>ユビキタス言語</strong>: <code>クエスト受注</code>, <code>報酬確定</code>, <code>冒険失敗</code></li>
+        </ul>
+        <p>コードの中に、現場のプロが使う言葉がそのまま息づいている状態。それが、認識のズレという魔物を寄せ付けない最強の結界になります。</p>
+      </section>
+      <section class="level2">
+        <h2 id="境界を引く限定されたコンテキスト">境界を引く：限定されたコンテキスト</h2>
+        <p>プロジェクトが大きくなるにつれて、一つの共通言語だけでは追いきれない複雑さが生まれます。その解として、一つの巨大な塔を建てるのではなく、役割ごとに「領地（コンテキスト）」を分けることも重要です。</p>
+        <figure>
+          <img src="../../../assets/diagrams/chapter01/1-6-bounded-context.svg" alt="境界づけられたコンテキスト">
+          <figcaption aria-hidden="true">境界づけられたコンテキスト</figcaption>
+        </figure>
+        <p>この図では、同じ「クエスト」という概念が、二つの異なる領地でまったく異なる役割を担っています。</p>
+        <ul>
+          <li><strong>受注コンテキスト</strong>: 「クエスト」は、契約と条件の象徴。</li>
+          <li><strong>戦闘コンテキスト</strong>: 「クエスト」は、敵と報酬の象徴。</li>
+        </ul>
+        <p>同じ言葉でも、コンテキスト（文脈）が変われば、その役割も変わります。これを無理に一つにまとめようとせず、<strong>「境界づけられたコンテキスト（Bounded Context）」</strong>として整理することで、大規模なシステムの複雑さを制御できます。</p>
+        <hr>
+        <p>技術用語の陰に逃げ込まず、ドメインの言葉で語ること。言葉の定義を曖昧にせず、チーム全員が合意を取り続けること。境界づけられたコンテキストを引くことで、「同じ言葉、違う意味」という混乱を防ぐこと——これらは地味に見えて、プロジェクトの成否を分ける根本的な技術です。</p>
+        <p>正しい言葉は、正しい設計を導きます。バベルの塔が崩れたのは言葉の混乱が原因でした。逆に言えば、チームが同じ言語を共有できたとき、設計は驚くほどシンプルになります。あなたのチームだけの「聖なる辞書」——ユビキタス言語——を丁寧に編み上げていきましょう。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <pre class="language-prompt"><code class="language-prompt">私たちのプロジェクトには「[役割A]」と「[役割B]」という2つのステークホルダーがいます。
+「[特定の用語]」という言葉について、それぞれの立場から見た定義と期待する挙動の違いを分析し、
+全員が納得できる「共通言語」の案を提示してください。</code></pre>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>📚 <strong>書籍</strong>: エリック・エヴァンス『<a href="https://www.shoeisha.co.jp/book/detail/9784798121963">ドメイン駆動設計</a>』（ユビキタス言語や境界づけられたコンテキストの原典）</li>
+          <li>📚 <strong>書籍</strong>: ヴォーン・ヴァーノン『<a href="https://www.shoeisha.co.jp/book/detail/9784798131610">実践ドメイン駆動設計</a>』（DDDをより実践的に適用するためのガイド）</li>
+          <li>📄 <strong>論文</strong>: Eric Evans "<a href="https://domainlanguage.com/ddd/ubiquitous-language/">Ubiquitous Language</a>"（提唱者によるユビキタス言語の解説）</li>
+        </ul>
+        <hr>
+      </section>
+    </section>
+  
+
+</main>
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part1/chapter01/1-5.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part1/chapter02/chapter02.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    </body></html>

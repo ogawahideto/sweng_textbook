@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 350" width="600" height="350">
+  <defs>
+    <style>
+      .pillar-rect { stroke: #FFF; stroke-width: 2; rx: 10; ry: 10; filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.2)); }
+      .pillar-1 { fill: #FFF9C4; stroke: #FBC02D; } /* Encapsulation - Yellow */
+      .pillar-2 { fill: #E1F5FE; stroke: #039BE5; } /* Inheritance - Blue */
+      .pillar-3 { fill: #E8F5E9; stroke: #43A047; } /* Polymorphism - Green */
+      .title { font-family: 'Noto Sans JP', sans-serif; font-size: 18px; font-weight: bold; fill: #333; text-anchor: middle; }
+      .desc { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; fill: #555; text-anchor: middle; }
+      .icon { fill: #333; opacity: 0.8; }
+    </style>
+  </defs>
+
+  <title>オブジェクト指向の三本柱</title>
+
+  <!-- カプセル化 (左) -->
+  <g transform="translate(50, 50)">
+    <rect x="0" y="0" width="150" height="250" class="pillar-rect pillar-1" />
+    <text x="75" y="40" class="title">カプセル化</text>
+    <text x="75" y="220" class="desc">隠蔽と保護</text>
+    <!-- Icon: Capsule -->
+    <rect x="55" y="90" width="40" height="80" rx="20" ry="20" fill="none" stroke="#FBC02D" stroke-width="4"/>
+    <line x1="55" y1="130" x2="95" y2="130" stroke="#FBC02D" stroke-width="4"/>
+  </g>
+
+  <!-- 継承 (中央) -->
+  <g transform="translate(225, 50)">
+    <rect x="0" y="0" width="150" height="250" class="pillar-rect pillar-2" />
+    <text x="75" y="40" class="title">継承</text>
+    <text x="75" y="220" class="desc">再利用と進化</text>
+    <!-- Icon: Tree Structure -->
+    <circle cx="75" cy="80" r="10" fill="#039BE5"/>
+    <line x1="75" y1="90" x2="55" y2="130" stroke="#039BE5" stroke-width="3"/>
+    <line x1="75" y1="90" x2="95" y2="130" stroke="#039BE5" stroke-width="3"/>
+    <circle cx="55" cy="140" r="10" fill="#039BE5"/>
+    <circle cx="95" cy="140" r="10" fill="#039BE5"/>
+  </g>
+
+  <!-- ポリモーフィズム (右) -->
+  <g transform="translate(400, 50)">
+    <rect x="0" y="0" width="150" height="250" class="pillar-rect pillar-3" />
+    <text x="75" y="40" class="title">ポリモーフィズム</text>
+    <text x="75" y="220" class="desc">多様な振る舞い</text>
+    <!-- Icon: Shapes -->
+    <rect x="40" y="100" width="20" height="20" fill="#43A047"/>
+    <circle cx="85" cy="110" r="10" fill="#43A047"/>
+    <polygon points="120,100 130,120 110,120" fill="#43A047"/>
+  </g>
+
+</svg>

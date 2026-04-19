@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>5.1 コードの「匂い」を嗅ぎ分ける（The Art of Sensing）</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+    <style>
+        body { max-width: 900px; margin: 0 auto; background: white; }
+        section { padding: 20px; }
+        img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body style="margin:0; padding:0;">
+
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part3/chapter05/chapter05.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part3/chapter05/5-2.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    <main>
+    <section class="level1">
+      <h1 id="51-コードの匂いを嗅ぎ分けるthe-art-of-sensing">5.1 コードの「匂い」を嗅ぎ分ける（The Art of Sensing）</h1>
+      <p>美しいコードを書くための第一歩は、まず「美しくないもの」に気づくことです。熟練したエンジニアは、悪いコードを見た瞬間に、理屈よりも先に「嫌な予感」や「生理的な不快感」を覚えます。</p>
+      <p>リファクタリングの提唱者であるMartin Fowlerは、この兆候を<strong>「コードの匂い（Code Smells）」</strong>と名付けました。</p>
+      <p>これはバグ（欠陥）ではありません。コンパイラは文句を言わず、プログラムは正常に動きます。しかし、そこからは「将来トラブルを起こしそうな気配」——魔法の回路における「マナの淀み」のようなもの——が漂っています。</p>
+      <p>このセクションでは、その「匂い」の正体を突き止め、言語化する訓練を行います。「なんとなく汚い」を「このメソッドはデータ泥棒をしている」と言い換えられるようになった時、あなたは真の錬金術師への階段を登り始めます。</p>
+      <hr>
+      <section class="level2">
+        <h2 id="理論的背景-代表的な匂いのカタログ">理論的背景: 代表的な「匂い」のカタログ</h2>
+        <p>数ある匂いの中から、特に遭遇頻度が高く、早めに気づくほど効果が大きいものを紹介します。</p>
+        <section class="level3">
+          <h3 id="1-長すぎる関数-long-function">1. 長すぎる関数 (Long Function)</h3>
+          <ul>
+            <li><strong>症状</strong>: 画面をスクロールしないと全体が見えない関数。</li>
+            <li><strong>なぜ悪いか</strong>: 「複数のこと」をやっている可能性が高く、理解も修正も困難。コンテキストの切り替えが脳のメモリを圧迫します。</li>
+            <li><strong>対処法</strong>: <strong>「メソッドの抽出」</strong>。意味のあるまとまりごとに切り出し、適切な名前をつけます。</li>
+          </ul>
+        </section>
+        <section class="level3">
+          <h3 id="2-巨大なクラス-large-class--god-class">2. 巨大なクラス (Large Class / God Class)</h3>
+          <ul>
+            <li><strong>症状</strong>: メソッドやフィールドが数十個あり、何でも知っているクラス。</li>
+            <li><strong>なぜ悪いか</strong>: 単一責任の原則（SRP）違反。変更の影響範囲が予測不能になります。「神」は全知全能であるがゆえに、少し触れただけで世界（システム全体）を壊しかねません。</li>
+            <li><strong>対処法</strong>: <strong>「クラスの抽出」</strong>。役割ごとに別のクラス（従者たち）に分権します。</li>
+          </ul>
+        </section>
+        <section class="level3">
+          <h3 id="3-重複したコード-duplicated-code">3. 重複したコード (Duplicated Code)</h3>
+          <ul>
+            <li><strong>症状</strong>: 「コピペして少し変えた」だけのコードが散見される。</li>
+            <li><strong>なぜ悪いか</strong>: <strong>諸悪の根源</strong>。修正漏れの温床となります。一箇所直しても、他がバグったままになるリスクがあります。</li>
+            <li><strong>対処法</strong>: 共通部分をメソッドや親クラスにまとめる（DRY原則）。</li>
+          </ul>
+        </section>
+        <section class="level3">
+          <h3 id="4-データ泥棒-feature-envy">4. データ泥棒 (Feature Envy)</h3>
+          <ul>
+            <li><strong>症状</strong>: 他のオブジェクトのゲッターばかりを呼び出し、自分のデータのように計算しているメソッド。</li>
+            <li><strong>なぜ悪いか</strong>: 「データを持っている場所」と「計算する場所」が離れている（密結合）。オブジェクト指向の「データと振る舞いのカプセル化」に反します。</li>
+            <li><strong>対処法</strong>: <strong>「メソッドの移動」</strong>。その計算ロジックを、データを持っているクラスへ引越しさせます。</li>
+          </ul>
+        </section>
+        <section class="level3">
+          <h3 id="5-意外な振る舞いをするデフォルト引数-mutable-default-arguments---python特有のポイント">5. 意外な振る舞いをするデフォルト引数 (Mutable Default Arguments) - Python特有のポイント</h3>
+          <ul>
+            <li><strong>症状</strong>: <code>def add_item(item, list=[]):</code> のように、リストや辞書をデフォルト引数にしている。</li>
+            <li><strong>なぜ悪いか</strong>: Pythonではデフォルト引数は<strong>一度だけ生成され、使い回されます</strong>。ある呼び出しでリストに追加した内容が、次の呼び出しにも残ってしまいます（幽霊のようなバグ）。</li>
+            <li><strong>対処法</strong>: デフォルト値を <code>None</code> にし、内部で初期化する。</li>
+          </ul>
+          <p>次の図は、代表的なコードの匂いを一覧で示しています。</p>
+          <figure>
+            <img src="../../assets/diagrams/chapter05/5.1-code-smells.svg" alt="代表的なコードの匂い">
+            <figcaption aria-hidden="true">代表的なコードの匂い</figcaption>
+          </figure>
+          <p>ここで示された5つの匂いは、いずれも「コードが将来の変更を拒んでいるサイン」として読み取ることができます。長すぎる関数は理解コストを、巨大なクラスは変更の影響範囲を、重複コードは修正漏れのリスクをそれぞれ生み出します。まずこれらの匂いに名前をつけて認識できるようになることが、リファクタリングの第一歩です。</p>
+          <blockquote>
+            <p>
+              [!TIP]
+              <strong>「論理の目」としての静的解析ツール</strong>
+              あなたの嗅覚（直感）を養うのも重要ですが、機械に任せられる部分は任せましょう。
+              <strong>Linter</strong>（Flake8, Pylintなど）や<strong>静的解析ツール</strong>（SonarQube, CodeClimateなど）は、長すぎる関数や複雑な分岐、Python特有の注意点などを自動的に検知してくれます。
+            </p>
+            <p>
+              これらは、いわば「マナの乱れを検知する探知機」です。まずツールで機械的に「明らかな淀み」を解消してから、人間の嗅覚でより深い「設計の歪み」に挑む。これが現代のアルケミストの賢い戦い方です。
+              （静的解析の具体的な設定については3.4節を参照してください）
+            </p>
+          </blockquote>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="実践-questforgeの神を解体する">実践: QuestForgeの「神」を解体する</h2>
+        <p>QuestForgeの開発が進むにつれ、主人公を表す <code>Hero</code> クラスが肥大化してしまいました。実際のコードを見て、匂いを嗅ぎ取ってみましょう。</p>
+        <section class="level3">
+          <h3 id="before-淀んだマナgod-class">Before: 淀んだマナ（God Class）</h3>
+          <pre class="language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Hero</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>name <span class="token operator">=</span> name
+        self<span class="token punctuation">.</span>hp <span class="token operator">=</span> <span class="token number">100</span>
+        self<span class="token punctuation">.</span>inventory <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>  <span class="token comment"># アイテム管理</span>
+        self<span class="token punctuation">.</span>quests <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>     <span class="token comment"># クエスト管理</span>
+        self<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">0</span>           <span class="token comment"># 位置情報</span>
+        self<span class="token punctuation">.</span>y <span class="token operator">=</span> <span class="token number">0</span>
+    
+    <span class="token keyword">def</span> <span class="token function">take_damage</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> amount<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>hp <span class="token operator">-=</span> amount
+        <span class="token keyword">if</span> self<span class="token punctuation">.</span>hp <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">:</span> self<span class="token punctuation">.</span>hp <span class="token operator">=</span> <span class="token number">0</span>
+        
+    <span class="token keyword">def</span> <span class="token function">add_item</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> item<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># アイテム管理ロジック</span>
+        <span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>self<span class="token punctuation">.</span>inventory<span class="token punctuation">)</span> <span class="token operator">&gt;=</span> <span class="token number">20</span><span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"Inventory full!"</span><span class="token punctuation">)</span>
+            <span class="token keyword">return</span>
+        self<span class="token punctuation">.</span>inventory<span class="token punctuation">.</span>append<span class="token punctuation">(</span>item<span class="token punctuation">)</span>
+        
+    <span class="token keyword">def</span> <span class="token function">move</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> direction<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># 移動ロジック</span>
+        <span class="token keyword">if</span> direction <span class="token operator">==</span> <span class="token string">'NORTH'</span><span class="token punctuation">:</span> self<span class="token punctuation">.</span>y <span class="token operator">+=</span> <span class="token number">1</span>
+        <span class="token comment"># ... (延々と続く移動コード)</span>
+        
+    <span class="token keyword">def</span> <span class="token function">save_to_db</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># インフラストラクチャのロジックまで混入！</span>
+        <span class="token keyword">import</span> sqlite3
+        conn <span class="token operator">=</span> sqlite3<span class="token punctuation">.</span>connect<span class="token punctuation">(</span><span class="token string">'game.db'</span><span class="token punctuation">)</span>
+        <span class="token comment"># ... (SQLの発行)</span></code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="匂いの分析">匂いの分析</h3>
+          <ol>
+            <li><strong>巨大なクラス</strong>: 戦闘、アイテム、移動、保存...あまりにも多くの責務を負っています。</li>
+            <li><strong>抽象度の混在</strong>: ゲームのルール（HP計算）と、低レベルな実装詳細（SQL発行）が同じ場所にあります。</li>
+            <li><strong>認知的負荷が高い</strong>: <code>Hero</code> を修正しようとすると、アイテムやDBのことまで気にしなければなりません。</li>
+          </ol>
+          <p>匂いを正確に名付けられたところで、いよいよ「解体と再建」の術式を施しましょう。</p>
+        </section>
+        <section class="level3">
+          <h3 id="after-権限の委譲refactoring">After: 権限の委譲（Refactoring）</h3>
+          <p>このクラスを「統治者」としての役割に特化させ、実務を専門家に委譲します。</p>
+          <p>次の図は、Heroクラスを分解して各責務を専門クラスに分散させた構造を示しています。</p>
+          <figure>
+            <img src="../../assets/diagrams/chapter05/5-1-hero-decomposition.svg" alt="Heroクラスの解体と責務の分散">
+            <figcaption aria-hidden="true">Heroクラスの解体と責務の分散</figcaption>
+          </figure>
+          <p>この再構築により、各クラスは単一の責任を持つようになります。</p>
+          <pre class="language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">Hero</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">,</span> repository<span class="token punctuation">:</span> HeroRepository<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>name <span class="token operator">=</span> name
+        self<span class="token punctuation">.</span>status <span class="token operator">=</span> HeroStatus<span class="token punctuation">(</span><span class="token punctuation">)</span>       <span class="token comment"># 戦闘・ステータス管理</span>
+        self<span class="token punctuation">.</span>inventory <span class="token operator">=</span> Inventory<span class="token punctuation">(</span><span class="token punctuation">)</span>     <span class="token comment"># アイテム管理</span>
+        self<span class="token punctuation">.</span>location <span class="token operator">=</span> Location<span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>   <span class="token comment"># 位置情報</span>
+        self<span class="token punctuation">.</span>repository <span class="token operator">=</span> repository     <span class="token comment"># 保存担当（依存性の注入）</span>
+        
+    <span class="token comment"># Heroは「司令塔」になり、詳細は各クラスに任せる</span>
+    <span class="token keyword">def</span> <span class="token function">take_damage</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> amount<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>status<span class="token punctuation">.</span>damage<span class="token punctuation">(</span>amount<span class="token punctuation">)</span>
+        
+    <span class="token keyword">def</span> <span class="token function">add_item</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> item<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>inventory<span class="token punctuation">.</span>add<span class="token punctuation">(</span>item<span class="token punctuation">)</span>
+        
+    <span class="token keyword">def</span> <span class="token function">save</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># 保存の詳細はRepositoryが知っている</span>
+        self<span class="token punctuation">.</span>repository<span class="token punctuation">.</span>save<span class="token punctuation">(</span>self<span class="token punctuation">)</span></code></pre>
+          <p><strong>変化のポイント</strong>:</p>
+          <ul>
+            <li><strong>Inventoryクラス</strong>: アイテム数の上限チェックなどをカプセル化。</li>
+            <li><strong>HeroStatusクラス</strong>: HPやMPの計算ロジックを集約。</li>
+            <li><strong>Repositoryパターン</strong>: DB操作を完全に分離（第2章の復習）。</li>
+          </ul>
+          <p>これにより、<code>Hero</code> クラスは見通しが良くなり、各パーツを単体でテストできるようになりました。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="ai時代のアプローチ-嗅覚の拡張">AI時代のアプローチ: 嗅覚の拡張</h2>
+        <p>人間が匂いに気づくのが理想ですが、AIに「検知」を手伝わせることもできます。特に、自分が書いたコードの匂いには気づきにくいものです。</p>
+        <section class="level3">
+          <h3 id="プロンプト例検知の依頼">プロンプト例：検知の依頼</h3>
+          <blockquote>
+            <p>「このコードの中で、SRP（単一責任の原則）に違反している可能性がある部分や、可読性を下げている『コードの匂い』を指摘してください。特に『変更のしやすさ』の観点から分析してください。」</p>
+          </blockquote>
+          <p>AIは感情を持たないため、遠慮なく「このクラスは大きすぎます」「この条件分岐は複雑すぎます」と指摘してくれます。これを<strong>「静的な壁打ち相手」</strong>として使うのがコツです。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="まとめ">まとめ</h2>
+        <ol>
+          <li><strong>直感を信じる</strong>: 「なんとなく読みづらい」は、改善が必要なシグナル。</li>
+          <li><strong>名前を知る</strong>: 「データ泥棒」「神クラス」などの名前を知ることで、問題を認識・共有しやすくなる。</li>
+          <li><strong>役割を分ける</strong>: 巨大なものは分割し、適切な場所に責務を割り振るのがリファクタリングの基本。</li>
+        </ol>
+        <p>次は、この「匂い」の解消作業を、AIという強力なパートナーと共に行う方法——<strong>「AIペアプログラミング」</strong>について学びます。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <pre class="language-text"><code class="language-text">以下のPythonコードを分析し、「コードの匂い（Code Smells）」があれば指摘してください。
+特に以下の観点でチェックしてください：
+1. 長すぎる関数がないか
+2. ネストが深すぎていないか
+3. 変数名が意図を表しているか</code></pre>
+        <section class="level3">
+          <h3 id="cliエージェント型プロジェクト全体のスメル地図を作るclaude-code">CLIエージェント型：プロジェクト全体のスメル地図を作る（Claude Code）</h3>
+          <p>一つのファイルを貼り付ける従来の方法では、コードベース全体の「匂いの濃度分布」は見えません。Claude Codeはプロジェクトを自律走査して、スメルの「ヒートマップ」を描けます。</p>
+          <pre class="language-text"><code class="language-text">sample-code/questforge/ 全体を走査して、
+コードスメルの深刻度マップを作成してください。
+
+各ファイルについて以下を計測し、表形式で出力してください：
+- 最長関数の行数（目安：20行超で要注意）
+- クラスのメソッド数（目安：10個超で要注意）
+- 重複コードの有無（類似ブロックが2箇所以上）
+- ネストの最大深さ（目安：4段超で要注意）
+
+深刻度が「高」のファイルを上位3件選び、
+それぞれリファクタリングの第一手を提案してください。</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="cliエージェント型スメル検出スキルの定義">CLIエージェント型：スメル検出スキルの定義</h3>
+          <p>繰り返し行うスメル検出は、Claude Code のカスタムスキル（<code>/smell-check</code>）として定義しておくと、ワンコマンドで常に同じ品質の検査が実行できます。</p>
+          <pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> .claude/commands/smell-check.md</span>
+<span class="token title important"><span class="token punctuation">#</span> 使い方: /smell-check [対象ディレクトリ]</span>
+
+$ARGUMENTS で指定されたディレクトリ（省略時は src/）を走査して、
+以下の観点でコードスメルを検出してください。
+
+<span class="token list punctuation">1.</span> <span class="token bold"><span class="token punctuation">**</span><span class="token content">Long Function</span><span class="token punctuation">**</span></span>: 25行を超える関数を列挙
+<span class="token list punctuation">2.</span> <span class="token bold"><span class="token punctuation">**</span><span class="token content">God Class</span><span class="token punctuation">**</span></span>: メソッドが10個を超えるクラスを列挙
+<span class="token list punctuation">3.</span> <span class="token bold"><span class="token punctuation">**</span><span class="token content">Duplicated Code</span><span class="token punctuation">**</span></span>: 5行以上の類似ブロックが複数箇所にあるものを列挙
+<span class="token list punctuation">4.</span> <span class="token bold"><span class="token punctuation">**</span><span class="token content">Deep Nesting</span><span class="token punctuation">**</span></span>: ネストが4段を超える箇所を列挙
+
+各スメルについて：
+<span class="token list punctuation">-</span> ファイル名・行番号
+<span class="token list punctuation">-</span> 深刻度（高・中・低）
+<span class="token list punctuation">-</span> リファクタリングの第一手（メソッド抽出・クラス分割など）
+
+最後に「今週中に対処すべきスメル TOP3」をまとめてください。</code></pre>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>📚 <strong>書籍</strong>: マーチン・ファウラー『<a href="https://www.ohmsha.co.jp/book/9784274224546/">リファクタリング 第2版 ―既存のコードを安全に改善する</a>』（リファクタリングのバイブル。JavaScriptを例に、カタログ形式で技法を学べます）</li>
+          <li>📚 <strong>書籍</strong>: Michael Feathers『<a href="https://www.shoeisha.co.jp/book/detail/9784798116839">レガシーコード改善ガイド</a>』（テストがないコードに対して、どう安全にリファクタリングを適用するかを説く実践書）</li>
+          <li>🌐 <strong>Web</strong>: <a href="https://refactoring.guru/ja/refactoring">Refactoring.Guru</a>（リファクタリングのカタログを、豊富な図解と多言語のサンプルコードで学べる素晴らしいサイト）</li>
+          <li>📄 <strong>論文</strong>: William F. Opdyke "<a href="http://www.laputan.org/pub/papers/opdyke-thesis.pdf">Refactoring Object-Oriented Frameworks</a>" (1992)（リファクタリングという用語を定義し、その体系化の先駆けとなった歴史的論文）</li>
+        </ul>
+        <hr>
+      </section>
+    </section>
+  
+
+</main>
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part3/chapter05/chapter05.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part3/chapter05/5-2.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    </body></html>

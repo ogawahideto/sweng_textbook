@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" width="500" height="400">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .bar-horizontal { fill: #E3F2FD; stroke: #1E88E5; stroke-width: 2; }
+      .bar-vertical { fill: #E8F5E9; stroke: #43A047; stroke-width: 2; }
+      .text-main { font-family: 'Noto Sans JP', sans-serif; font-size: 16px; font-weight: bold; fill: #333; text-anchor: middle; }
+      .text-sub { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; fill: #666; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="500" height="400" class="bg"/>
+  <title>π型アルケミスト</title>
+
+  <!-- 水平方向: 広い知識 -->
+  <rect x="50" y="80" width="400" height="50" rx="10" class="bar-horizontal" />
+  <text x="250" y="110" class="text-main">広い知識と共通言語</text>
+  <text x="250" y="70" class="text-sub">ソフトウェアエンジニアリング全般 / 他分野への理解</text>
+
+  <!-- 垂直方向1: 第一の専門 -->
+  <rect x="120" y="130" width="60" height="200" rx="5" class="bar-vertical" />
+  <text x="150" y="350" class="text-main">専門性 A</text>
+  <text x="150" y="370" class="text-sub">(例: Backend)</text>
+
+  <!-- 垂直方向2: 第二の専門 -->
+  <rect x="320" y="130" width="60" height="200" rx="5" class="bar-vertical" style="fill: #F3E5F5; stroke: #8E24AA;" />
+  <text x="350" y="350" class="text-main">専門性 B</text>
+  <text x="350" y="370" class="text-sub">(例: AI / UX)</text>
+
+  <!-- ラベル -->
+  <text x="250" y="230" class="text-main" font-size="30" opacity="0.2">π</text>
+  <text x="250" y="40" class="text-main" font-size="20">一生遊べるゲームの歩き方</text>
+</svg>

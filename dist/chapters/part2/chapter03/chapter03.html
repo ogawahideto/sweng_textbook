@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>第3章 モダン・アルケミー——論理を具現化する実装の技法</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+    <style>
+        body { max-width: 900px; margin: 0 auto; background: white; }
+        section { padding: 20px; }
+        img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body style="margin:0; padding:0;">
+
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part1/chapter02/2-6.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part2/chapter03/3-1.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    <main>
+    <section class="level1">
+      <h1 id="第3章-モダンアルケミー論理を具現化する実装の技法">第3章 モダン・アルケミー——論理を具現化する実装の技法</h1>
+      <figure>
+        <img src="../../assets/images/chapter_covers/Chapter3.png" alt="扉絵: モダン・アルケミー">
+        <figcaption aria-hidden="true">扉絵: モダン・アルケミー</figcaption>
+      </figure>
+      <section class="level2">
+        <h2 id="この章で手に入れる力">この章で手に入れる力</h2>
+        <p>第2章で「城の設計図（アーキテクチャ）」を描き終えたあなたは、ついに現場での「建築（実装）」に取り組む準備が整いました。</p>
+        <p>実装とは、抽象的な設計という「魂」を、具象的なコードという「肉体」に宿らせる儀式です。現代のアルケミスト（エンジニア）には、伝統的な計算機科学の知識に加え、AIという強力な「精霊」と共鳴し、爆速で高品質なコードを生み出す技術が求められます。</p>
+        <p>この章では、<strong>AI駆動の実装技法（Modern Implementation）</strong>を学びます。アルゴリズムという最小単位から、美しく淀みのないロジック、そしてAIへの「詠唱（プロンプト）」による自動生成まで——設計図を動くソフトウェアへと昇華させる力を身につけましょう。</p>
+      </section>
+      <section class="level2">
+        <h2 id="冒険の地図">冒険の地図</h2>
+        <figure>
+          <img src="../../assets/diagrams/chapter03/chapter03-map.svg" alt="第3章：冒険の地図">
+          <figcaption aria-hidden="true">第3章：冒険の地図</figcaption>
+        </figure>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="本章の構成">本章の構成</h2>
+        <ul>
+          <li><strong>3.1 魔導の元素</strong>：アルゴリズムとデータ構造の本質。</li>
+          <li><strong>3.2 術式の構築</strong>：制御構造と論理の美学、読みやすいコードの紡ぎ方。</li>
+          <li><strong>3.3 術式の器</strong>：関数・クラス・モジュールによる構造化とスコープ管理。</li>
+          <li><strong>3.4 審美眼の錬磨</strong>：メトリクスと静的解析によるコード品質の数値化。</li>
+          <li><strong>3.5 詠唱による具現化</strong>：自律型エージェント（Cline/Gemini等）との共闘作法。</li>
+          <li><strong>3.6 多彩なる魔導体系</strong>：言語の壁を超え、パラダイムの真髄に触れる。</li>
+          <li><strong>3.7 並列詠唱の奥義</strong>：非同期・並行プログラミングで時間の流れを操る。</li>
+          <li><strong>3.8 【外伝】失われた古代技術</strong>：レガシーコードの考古学と解読術。</li>
+          <li><strong>3.9 【外伝】手技の工房</strong>：Skills・MCP・サブエージェントによる使役の拡張。</li>
+        </ul>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="読了後のあなた">読了後のあなた</h2>
+        <p>この章を読み終えると、あなたは以下のことができるようになります。</p>
+        <ul>
+          <li><strong>選ぶ</strong>: 目的に応じて最適なアルゴリズムとデータ構造を選択できる</li>
+          <li><strong>書く</strong>: ネストが浅く、誰が見ても意図が伝わる美しい術式を構築できる</li>
+          <li><strong>まとめる</strong>: 関数・クラス・モジュールで処理を適切な粒度に構造化できる</li>
+          <li><strong>評価する</strong>: AIが出力したコードの品質や効率を正しく判断できる</li>
+          <li><strong>使役する</strong>: AIに的確な指示を出し、設計に忠実なコードを生成させられる</li>
+          <li><strong>広げる</strong>: 一つの言語に縛られず、パラダイムを意識した開発ができる</li>
+          <li><strong>操る</strong>: 非同期処理や並行プログラミングで、複数の処理を同時に進められる</li>
+        </ul>
+        <p>設計図に命を吹き込み、動く魔法（ソフトウェア）を創造する旅を始めましょう。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース章全体">さらに学ぶためのリソース（章全体）</h2>
+        <p>この章のテーマである「実装」という儀式を、一生の仕事として楽しむための心構えと技法が詰まった一冊です。</p>
+        <ul>
+          <li>📚 <strong>書籍</strong>: Andrew Hunt, David Thomas『<a href="https://www.ohmsha.co.jp/book/9784274226298/">達人プログラマー 第2版 ―熟達に向けたあなたの旅</a>』（エンジニアの心構え、技術の習得、そして日々の研鑽。すべてのアルケミストにとっての「北極星」となる名著です）</li>
+        </ul>
+        <section class="level3">
+          <h3 id="-賢者伝説学術論文">📜 賢者伝説（学術論文）</h3>
+          <ul>
+            <li>📄 <strong>80s</strong>: Frederick P. Brooks Jr. "<a href="https://ieeexplore.ieee.org/document/1663530">No Silver Bullet — Essence and Accident in Software Engineering</a>" (1987)（ソフトウェア開発の困難さの本質を説き、「銀の弾丸はない」と断じた必読論文）</li>
+            <li>📄 <strong>10s</strong>: M. Allamanis, E. T. Barr, P. Devanbu, and C. Sutton "<a href="https://dl.acm.org/doi/10.1145/3212695">A Survey of Machine Learning for Big Code and Naturalness</a>" (2018)（現代のAI駆動開発の技術的背景を整理した重要論文）</li>
+            <li>📄 <strong>20s</strong>: M. Chen et al. "<a href="https://arxiv.org/abs/2107.03374">Evaluating Large Language Models Trained on Code</a>" (2021)（GitHub Copilotのモデルとなった<strong>OpenAI Codex</strong>の原典論文）</li>
+          </ul>
+        </section>
+      </section>
+    </section>
+  
+
+</main>
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part1/chapter02/2-6.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part2/chapter03/3-1.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    </body></html>

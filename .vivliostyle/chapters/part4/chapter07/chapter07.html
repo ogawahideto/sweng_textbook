@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="ja"><head>
+    <meta charset="utf-8">
+    <title>第7章 冒険者パーティのチーミング——開発プロセスとチーム設計</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+  </head>
+  <body>
+    <section class="level1">
+      <h1 id="第7章-冒険者パーティのチーミング開発プロセスとチーム設計">第7章 冒険者パーティのチーミング——開発プロセスとチーム設計</h1>
+      <figure>
+        <img src="../../assets/images/chapter_covers/Chapter7.png" alt="扉絵: アジャイルという名の冒険パーティ">
+        <figcaption aria-hidden="true">扉絵: アジャイルという名の冒険パーティ</figcaption>
+      </figure>
+      <section class="level2">
+        <h2 id="この章で手に入れる力">この章で手に入れる力</h2>
+        <p>ここまでの旅で、あなたは要求を聴き取り、設計し、実装し、テストで守り、磨き上げ、本番環境へ送り出す力を身につけました。一人の冒険者として、十分な実力を備えたと言えるでしょう。</p>
+        <p>しかし、現実のソフトウェア開発は、一人では完結しません。仲間と共に走り、互いの強みを活かし、チームとして価値を生み出す——そこに新たな喜びと、一人では到達できない高みがあります。</p>
+        <p>この章では、<strong>アジャイル開発</strong>の心臓部であるスクラムのリズム、Gitを使ったコードの知の交流、ペアプログラミングやモブプログラミングによるリアルタイムの「思考の同期」を学びます。さらに、プロジェクト全体の旅路を設計するプロジェクト管理の技法と、<strong>コンウェイの法則</strong>・<strong>チームトポロジー</strong>が教える「パーティの形がコードの形を決める」という深い真理まで、冒険者パーティを率いるために必要な知恵を総ざらいします。</p>
+      </section>
+      <section class="level2">
+        <h2 id="冒険の地図">冒険の地図</h2>
+        <figure>
+          <img src="../../assets/diagrams/chapter07/chapter07-map.svg" alt="第7章：冒険の地図">
+          <figcaption aria-hidden="true">第7章：冒険の地図</figcaption>
+        </figure>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="本章の構成">本章の構成</h2>
+        <ul>
+          <li><strong>7.1 スクラムの祝祭</strong>：スプリント、セレモニー、チームのリズム。</li>
+          <li><strong>7.2 Git/GitHubを通じた知の交流</strong>：プルリクエストとコードレビューの作法。</li>
+          <li><strong>7.3 共鳴する魂</strong>：ペアプログラミングとモブプログラミングの威力。</li>
+          <li><strong>7.4 【外伝】冒険者のギルド</strong>：知の共有、オープンソース、コミュニティ。</li>
+          <li><strong>7.5 冒険パーティを率いる</strong>：ストーリーポイントとベロシティ、プロジェクト管理の実践。</li>
+          <li><strong>7.6 パーティの形が魔法を決める</strong>：チームトポロジーとコンウェイの法則。</li>
+          <li><strong>7.7 仮説の具現化</strong>：プロトタイピングとスパイクによる高速検証。</li>
+        </ul>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="読了後のあなた">読了後のあなた</h2>
+        <p>この章を読み終えると、あなたは以下のことができるようになります。</p>
+        <ul>
+          <li><strong>リズムを刻む</strong>: スプリントとセレモニーで、チーム開発にリズムと祝祭を生み出せる</li>
+          <li><strong>交流する</strong>: プルリクエストとコードレビューで、互いの知恵をコードに込められる</li>
+          <li><strong>共鳴する</strong>: ペアプログラミングで、一人では思いつかない発想をリアルタイムに引き出せる</li>
+          <li><strong>調和する</strong>: チーム全体でモブプログラミングを実践し、知識の属人化を解消できる</li>
+          <li><strong>旅路を設計する</strong>: ストーリーポイントとバーンダウンチャートで、プロジェクトの今を可視化できる</li>
+          <li><strong>パーティを設計する</strong>: コンウェイの法則とチームトポロジーで、組織とアーキテクチャを意識的に整合させられる</li>
+          <li><strong>仮説を検証する</strong>: プロトタイプとスパイクで、本格実装の前に方向性の正しさを確かめられる</li>
+        </ul>
+        <p>一人の冒険者から、最強の冒険パーティへ。仲間と共に、新たなステージへ踏み出しましょう。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース章全体">さらに学ぶためのリソース（章全体）</h2>
+        <p>この章のテーマである「アジャイルなチーミング」の原点となるガイドラインです。</p>
+        <ul>
+          <li>📚 <strong>ガイド</strong>: Ken Schwaber, Jeff Sutherland『<a href="https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-Japanese.pdf">スクラムガイド</a>』（すべてのスクラム実践者の出発点。チームのリズムを生み出すための本質的なルールが記されています）</li>
+        </ul>
+        <section class="level3">
+          <h3 id="-賢者伝説学術論文">📜 賢者伝説（学術論文）</h3>
+          <ul>
+            <li>📄 <strong>60s</strong>: Melvin E. Conway "<a href="http://www.melconway.com/Home/Committees_Paper.html">How Do Committees Invent?</a>" (1968)（コンウェイの法則の原典。わずか数ページで、半世紀後も有効な洞察を与える）</li>
+            <li>📄 <strong>80s</strong>: Hirotaka Takeuchi and Ikujiro Nonaka "<a href="https://hbr.org/1986/01/the-new-new-product-development-game">The New New Product Development Game</a>" (1986)（スクラムの名称と概念の源流となった、日本発の画期的な経営学論文）</li>
+            <li>📄 <strong>90s</strong>: Kent Beck "<a href="https://ieeexplore.ieee.org/document/774350">Embracing Change with Extreme Programming</a>" (1999)（XPの宣言書）</li>
+            <li>📄 <strong>10s</strong>: Google re:Work "<a href="https://rework.withgoogle.com/print/guides/5721312655835136/">Project Aristotle</a>"（心理的安全性が高パフォーマンスチームの最大の予測因子であることを示したGoogleの大規模研究）</li>
+            <li>📄 <strong>20s</strong>: A. Ziegler et al. "<a href="https://arxiv.org/abs/2205.06537">Productivity assessment of neural code completion</a>" (2022)（GitHub Copilot等のAI補完が、開発者の生産性と幸福度にどう寄与するかを定量的・定性的に示した先駆的調査）</li>
+          </ul>
+        </section>
+      </section>
+    </section>
+  
+
+</body></html>

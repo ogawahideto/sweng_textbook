@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 250" width="500" height="250">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .class-box { fill: #FFF; stroke: #333; stroke-width: 2; }
+      .text-title { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: bold; fill: #333; text-anchor: middle; }
+      .text-attr { font-family: 'monospace'; font-size: 12px; fill: #333; }
+      .arrow-gen { stroke: #333; stroke-width: 1.5; fill: none; marker-end: url(#arrow-tri); }
+    </style>
+    <marker id="arrow-tri" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+      <polygon fill="none" stroke="#333" points="0 0, 10 5, 0 10" />
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="500" height="250" class="bg"/>
+
+  <!-- Context: Quest -->
+  <rect x="30" y="50" width="120" height="60" class="class-box" />
+  <text x="90" y="85" class="text-title">Quest</text>
+
+  <!-- Strategy Interface -->
+  <rect x="250" y="50" width="150" height="60" class="class-box" style="stroke-dasharray: 4;" />
+  <text x="325" y="85" class="text-title">«interface»<br/>ExpStrategy</text>
+
+  <!-- Concrete Strategies -->
+  <rect x="200" y="160" width="120" height="40" class="class-box" />
+  <text x="260" y="185" class="text-title">NormalExp</text>
+
+  <rect x="350" y="160" width="120" height="40" class="class-box" />
+  <text x="410" y="185" class="text-title">CampaignExp</text>
+
+  <!-- Relations -->
+  <line x1="150" y1="80" x2="250" y2="80" stroke="#333" stroke-width="1.5" />
+  <circle cx="245" cy="80" r="3" fill="#333" />
+  <text x="200" y="75" font-size="10">strategy</text>
+
+  <path d="M 260,160 L 325,110" class="arrow-gen" style="stroke-dasharray: 2;" />
+  <path d="M 410,160 L 325,110" class="arrow-gen" style="stroke-dasharray: 2;" />
+</svg>

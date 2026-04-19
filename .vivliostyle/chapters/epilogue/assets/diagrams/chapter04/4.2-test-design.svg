@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 350" width="500" height="350">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .box { stroke-width: 2; rx: 10; ry: 10; }
+      .box-1 { fill: #E3F2FD; stroke: #1E88E5; }
+      .box-2 { fill: #E8F5E9; stroke: #43A047; }
+      .box-3 { fill: #FFF3E0; stroke: #FB8C00; }
+      .box-4 { fill: #F3E5F5; stroke: #8E24AA; }
+      .text-main { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: bold; fill: #333; text-anchor: middle; }
+      .text-sub { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; fill: #666; text-anchor: middle; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="500" height="350" class="bg"/>
+  <title>テスト設計の4つの流派</title>
+
+  <!-- 1. コードベース -->
+  <rect x="40" y="40" width="200" height="120" class="box box-1" />
+  <text x="140" y="80" class="text-main">1. コードベース</text>
+  <text x="140" y="105" class="text-sub">ホワイトボックス / カバレッジ</text>
+  <text x="140" y="125" class="text-sub">内部構造の漏れを防ぐ</text>
+
+  <!-- 2. 仕様ベース -->
+  <rect x="260" y="40" width="200" height="120" class="box box-2" />
+  <text x="360" y="80" class="text-main">2. 仕様ベース</text>
+  <text x="360" y="105" class="text-sub">ブラックボックス / 同値・境界</text>
+  <text x="360" y="125" class="text-sub">入力パターンを網羅する</text>
+
+  <!-- 3. シナリオベース -->
+  <rect x="40" y="180" width="200" height="120" class="box box-3" />
+  <text x="140" y="220" class="text-main">3. シナリオベース</text>
+  <text x="140" y="245" class="text-sub">ユーザー物語 / BDD</text>
+  <text x="140" y="265" class="text-sub">一連の流れで価値を保証</text>
+
+  <!-- 4. 探索的テスト -->
+  <rect x="260" y="180" width="200" height="120" class="box box-4" />
+  <text x="360" y="220" class="text-main">4. 探索的テスト</text>
+  <text x="360" y="245" class="text-sub">即興 / 学習と発見</text>
+  <text x="360" y="265" class="text-sub">想定外のバグを突く</text>
+</svg>

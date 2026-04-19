@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>3.2 術式の構築——制御構造と論理の美学</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+    <style>
+        body { max-width: 900px; margin: 0 auto; background: white; }
+        section { padding: 20px; }
+        img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body style="margin:0; padding:0;">
+
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part2/chapter03/3-1.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part2/chapter03/3-3.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    <main>
+    <section class="level1">
+      <h1 id="32-術式の構築制御構造と論理の美学">3.2 術式の構築——制御構造と論理の美学</h1>
+      <p>「元素（アルゴリズムとデータ構造）」が魔法の材料だとしたら、それらをどのように組み合わせ、どのような順序で発動させるかを決める手順が「術式（制御構造）」です。</p>
+      <p>すべてのプログラムは、たった3つの基本構造の組み合わせで表現できます。</p>
+      <ul>
+        <li><strong>順次（Sequence）</strong>: 上から下へ順番に実行する</li>
+        <li><strong>分岐（Selection）</strong>: 条件によって道を変える（<code>if</code>, <code>switch</code>など）</li>
+        <li><strong>反復（Iteration）</strong>: 条件を満たすまで繰り返す（<code>for</code>, <code>while</code>など）</li>
+      </ul>
+      <p>シンプルな原理ですが、これらを組み合わせると無限の複雑さが生まれます。本節では、複雑さを手なずけ、美しく読みやすい術式を構築する技法を学びます。</p>
+      <p>次の図は、順次・分岐・反復という三つの基本構造が組み合わさった制御フローの全体像を示しています。</p>
+      <figure>
+        <img src="../../assets/diagrams/chapter03/3-2-control-flow.svg" alt="淀みのない術式">
+        <figcaption aria-hidden="true">淀みのない術式</figcaption>
+      </figure>
+      <p>ここで確認できるのは、どれほど複雑に見えるプログラムも、この三つの要素に還元できるという構造的な美しさです。正常系（ハッピーパス）は左端の幹として流れ、異常系は枝として早期に弾かれます。この「幹と枝」の分離こそが、本節を通して磨いていく読みやすい術式の基本的な形です。</p>
+      <hr>
+      <section class="level2">
+        <h2 id="1-どう設計するか思考編">1. どう設計するか（思考編）</h2>
+        <p>コードを書き始める前に、制御フローを頭の中で（あるいは紙の上で）設計します。設計には三つのステップがあります。</p>
+        <p>
+          <strong>正常系（ハッピーパス）を先に描く</strong>
+          まず「すべてがうまくいった場合」の流れを明確にします。
+        </p>
+        <pre class="language-text"><code class="language-text">クエスト完了の正常系:
+1. クエストがアクティブである
+2. 英雄のレベルが足りている
+3. 期限内である
+4. → クエスト完了、経験値付与</code></pre>
+        <p>正常系が明確になれば、それが術式の「幹」になります。</p>
+        <p>
+          <strong>異常系を列挙する</strong>
+          幹が定まれば、次は「枝」——すなわち異常系に目を向けます。「何が失敗しうるか」を洗い出していきましょう。異常系は正常系の「枝」として扱います。幹と枝を分離することで、術式の見通しが良くなります。
+        </p>
+        <p>
+          <strong>制御フローを図式化する</strong>
+          構造が整ったら、図に落とし込んで全体を俯瞰する習慣をつけましょう。複雑な処理は、書く前に図にすると整理できます。
+        </p>
+        <pre class="language-text"><code class="language-text">[開始]
+   │
+   ▼
+[アクティブ?]──No──→[エラー: 非アクティブ]
+   │Yes
+   ▼
+[レベル足りる?]──No──→[エラー: レベル不足]
+   │Yes
+   ▼
+[期限内?]──No──→[エラー: 期限切れ]
+   │Yes
+   ▼
+[クエスト完了処理]
+   │
+   ▼
+[終了]</code></pre>
+        <p>この図を見れば、コードの構造が自然と浮かび上がります。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="2-どう表現するか実装編">2. どう表現するか（実装編）</h2>
+        <p>設計した制御フローを、読みやすいコードとして表現する技法を学びます。</p>
+        <p>
+          <strong>分岐の技法</strong>
+          条件分岐は術式の基本ですが、最も複雑さが生まれやすい場所でもあります。
+        </p>
+        <ul>
+          <li><strong>ガード節（早期リターン）</strong>: 異常系を関数の冒頭で弾き、正常系をメインの流れとして残す技法です。正常系がネストせず、左端に揃うため、見通しが劇的に良くなります。</li>
+          <li><strong>肯定形を優先する</strong>: 人間の脳は否定より肯定を処理しやすいです。<code>if not user.is_inactive():</code> よりも <code>if user.is_active():</code> と書きましょう。</li>
+          <li><strong>複雑な条件は名前をつける</strong>: 条件式が長くなったら、<code>is_eligible</code> のように意図を表す名前を変数やメソッドに抽出します。</li>
+          <li><strong>switch/match の活用</strong>: 分岐先が3つ以上あり、同じ変数を比較する場合は Python の <code>match</code> 文などが適しています。</li>
+        </ul>
+        <pre class="language-python"><code class="language-python"><span class="token comment"># if-elseの連鎖（冗長）</span>
+<span class="token keyword">if</span> status <span class="token operator">==</span> <span class="token string">"PENDING"</span><span class="token punctuation">:</span>
+    handle_pending<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">elif</span> status <span class="token operator">==</span> <span class="token string">"ACTIVE"</span><span class="token punctuation">:</span>
+    handle_active<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">elif</span> status <span class="token operator">==</span> <span class="token string">"COMPLETED"</span><span class="token punctuation">:</span>
+    handle_completed<span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">elif</span> status <span class="token operator">==</span> <span class="token string">"CANCELLED"</span><span class="token punctuation">:</span>
+    handle_cancelled<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># match文（Python 3.10+）</span>
+<span class="token keyword">match</span> status<span class="token punctuation">:</span>
+    <span class="token keyword">case</span> <span class="token string">"PENDING"</span><span class="token punctuation">:</span>
+        handle_pending<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">case</span> <span class="token string">"ACTIVE"</span><span class="token punctuation">:</span>
+        handle_active<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">case</span> <span class="token string">"COMPLETED"</span><span class="token punctuation">:</span>
+        handle_completed<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">case</span> <span class="token string">"CANCELLED"</span><span class="token punctuation">:</span>
+        handle_cancelled<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+        <section class="level3">
+          <h3 id="22-ループの技法">2.2 ループの技法</h3>
+          <p>分岐の技法に続き、コードを繰り返し実行させる「ループ」の使い分けを見ていきます。</p>
+          <section class="level4">
+            <h4 id="for-vs-while-の選択基準">for vs while の選択基準</h4>
+            <table>
+              <thead>
+                <tr>
+                  <th>使い分け</th>
+                  <th>for</th>
+                  <th>while</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>回数が決まっている</td>
+                  <td>✅</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>コレクションを走査</td>
+                  <td>✅</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>終了条件が動的</td>
+                  <td></td>
+                  <td>✅</td>
+                </tr>
+                <tr>
+                  <td>無限ループ</td>
+                  <td></td>
+                  <td>✅</td>
+                </tr>
+              </tbody>
+            </table>
+            <pre class="language-python"><code class="language-python"><span class="token comment"># 回数が決まっている → for</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+
+<span class="token comment"># コレクションを走査 → for</span>
+<span class="token keyword">for</span> quest <span class="token keyword">in</span> active_quests<span class="token punctuation">:</span>
+    quest<span class="token punctuation">.</span>check_deadline<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 終了条件が動的 → while</span>
+<span class="token keyword">while</span> <span class="token keyword">not</span> queue<span class="token punctuation">.</span>is_empty<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    process<span class="token punctuation">(</span>queue<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+          </section>
+          <section class="level4">
+            <h4 id="無限ループの安全な書き方">無限ループの安全な書き方</h4>
+            <p>無限ループは意図的に使う場面があります。必ず脱出条件を明示します。</p>
+            <pre class="language-python"><code class="language-python"><span class="token comment"># ゲームループの例</span>
+<span class="token keyword">while</span> <span class="token boolean">True</span><span class="token punctuation">:</span>
+    event <span class="token operator">=</span> get_input<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">if</span> event <span class="token operator">==</span> <span class="token string">"QUIT"</span><span class="token punctuation">:</span>
+        <span class="token keyword">break</span>  <span class="token comment"># 明確な脱出条件</span>
+
+    update_game_state<span class="token punctuation">(</span>event<span class="token punctuation">)</span>
+    render<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+          </section>
+          <section class="level4">
+            <h4 id="break-と-continue">break と continue</h4>
+            <ul>
+              <li><strong>break</strong>: ループを完全に抜ける</li>
+              <li><strong>continue</strong>: 今回のイテレーションをスキップし、次へ進む</li>
+            </ul>
+            <pre class="language-python"><code class="language-python"><span class="token comment"># continueで不要な処理をスキップ</span>
+<span class="token keyword">for</span> quest <span class="token keyword">in</span> all_quests<span class="token punctuation">:</span>
+    <span class="token keyword">if</span> quest<span class="token punctuation">.</span>is_completed<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">continue</span>  <span class="token comment"># 完了済みはスキップ</span>
+
+    <span class="token comment"># 未完了クエストの処理</span>
+    check_deadline<span class="token punctuation">(</span>quest<span class="token punctuation">)</span>
+    notify_hero<span class="token punctuation">(</span>quest<span class="token punctuation">)</span></code></pre>
+          </section>
+          <section class="level4">
+            <h4 id="再帰という選択肢">再帰という選択肢</h4>
+            <p>木構造やグラフの探索など、自己相似的なデータには再帰が自然です。</p>
+            <pre class="language-python"><code class="language-python"><span class="token comment"># ディレクトリ内のファイルを再帰的に取得</span>
+<span class="token keyword">def</span> <span class="token function">find_all_files</span><span class="token punctuation">(</span>directory<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    files <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token keyword">for</span> item <span class="token keyword">in</span> directory<span class="token punctuation">.</span>contents<span class="token punctuation">:</span>
+        <span class="token keyword">if</span> item<span class="token punctuation">.</span>is_file<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            files<span class="token punctuation">.</span>append<span class="token punctuation">(</span>item<span class="token punctuation">)</span>
+        <span class="token keyword">elif</span> item<span class="token punctuation">.</span>is_directory<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            files<span class="token punctuation">.</span>extend<span class="token punctuation">(</span>find_all_files<span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token comment"># 再帰呼び出し</span>
+    <span class="token keyword">return</span> files</code></pre>
+            <p>ただし、再帰はスタックオーバーフローのリスクがあります。深さが不明な場合はループに変換するか、末尾再帰最適化を意識します。</p>
+          </section>
+        </section>
+        <section class="level3">
+          <h3 id="23-例外処理の技法">2.3 例外処理の技法</h3>
+          <p>分岐とループで「通常の流れ」を制御できるようになれば、次に備えるべきは想定外の事態——例外——への対処です。プログラムの実行中に異常が発生したとき、どのように対処するかを決める仕組みが例外処理です。例外処理を理解するには、<strong>制御の流れ</strong>（どこで・どう対処するか）と<strong>エラー情報の渡し方</strong>（何を使って伝えるか）の2つの軸で整理すると見通しが良くなります。</p>
+          <section class="level4">
+            <h4 id="制御の流れの三つの型">制御の流れの三つの型</h4>
+            <p>エラーが発生したとき、プログラムの制御がどう動くかは大きく3つに分類できます。</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>型</th>
+                  <th>仕組み</th>
+                  <th>代表例</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>例外機構によるジャンプ</strong></td>
+                  <td>エラー発生地点から、あらかじめ登録されたハンドラへ制御が飛ぶ</td>
+                  <td><code>try-catch</code>（Java, Python, C#）</td>
+                </tr>
+                <tr>
+                  <td><strong>条件分岐による局所判定</strong></td>
+                  <td>戻り値やフラグを <code>if</code> 文等でチェックし、その場で分岐する</td>
+                  <td>C言語のエラーコード判定、Goの <code>if err != nil</code></td>
+                </tr>
+                <tr>
+                  <td><strong>呼び出し元への委譲</strong></td>
+                  <td>関数内では対処せず、エラー情報を戻り値として返して判断を委ねる</td>
+                  <td>Rustの <code>Result&lt;T, E&gt;</code> + <code>?</code> 演算子</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>それぞれの制御フローを図で見てみましょう。</p>
+            <p><strong>型1: 例外機構によるジャンプ</strong></p>
+            <pre class="language-text"><code class="language-text">呼び出し元                    呼び出し先
+┌──────────────┐          ┌──────────────┐
+│ try:         │          │              │
+│   func() ───────────→   │  処理実行     │
+│ except:      │  ←─────── │  raise Error │（ジャンプ！）
+│   回復処理    │          └──────────────┘
+└──────────────┘</code></pre>
+            <p>エラーが起きると、通常の実行順序を飛び越えて <code>catch</code>/<code>except</code> ブロックに制御が移ります。関数の呼び出し階層を何段でも遡れるのが特徴です。</p>
+            <pre class="language-python"><code class="language-python"><span class="token comment"># Python: 例外機構によるジャンプ</span>
+<span class="token keyword">def</span> <span class="token function">connect_database</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> Database<span class="token punctuation">.</span>connect<span class="token punctuation">(</span>config<span class="token punctuation">)</span>
+    <span class="token keyword">except</span> ConnectionError <span class="token keyword">as</span> e<span class="token punctuation">:</span>
+        <span class="token comment"># ここに制御がジャンプする</span>
+        <span class="token keyword">raise</span> DatabaseUnavailable<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Cannot connect: </span><span class="token interpolation"><span class="token punctuation">{</span>e<span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span></code></pre>
+            <p><strong>型2: 条件分岐による局所判定</strong></p>
+            <pre class="language-text"><code class="language-text">┌──────────────────────────┐
+│ result = func()          │
+│ if result == ERROR:      │──→ エラー処理
+│   ...                    │
+│ else:                    │──→ 正常処理
+│   ...                    │
+└──────────────────────────┘</code></pre>
+            <p>呼び出し直後にその場でチェックします。制御のジャンプは起きず、通常の順次実行の中で分岐するだけです。</p>
+            <pre class="language-c"><code class="language-c"><span class="token comment">// C言語: エラーコードを条件分岐で判定</span>
+<span class="token keyword">int</span> result <span class="token operator">=</span> <span class="token function">open_file</span><span class="token punctuation">(</span><span class="token string">"data.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>result <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Failed to open file\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> EXIT_FAILURE<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// 正常処理を続行</span></code></pre>
+            <p><strong>型3: 呼び出し元への委譲</strong></p>
+            <pre class="language-text"><code class="language-text">関数A                  関数B                  関数C
+┌────────────┐    ┌────────────┐    ┌────────────┐
+│ B()を呼ぶ   │    │ C()を呼ぶ   │    │ エラー発生   │
+│ Err→処理    │←── │ Err→そのまま │←── │ Err を返す   │
+│            │    │   返す      │    │             │
+└────────────┘    └────────────┘    └────────────┘</code></pre>
+            <p>関数Cはエラーを返すだけ。関数Bも自分では処理せずそのまま返す。最終的に関数Aが判断します。「誰が責任を持つか」を呼び出し階層の中で選べる柔軟な方式です。</p>
+            <pre class="language-rust"><code class="language-rust"><span class="token comment">// Rust: Result型 + ?演算子で呼び出し元に委譲</span>
+<span class="token keyword">fn</span> <span class="token function-definition function">load_quest</span><span class="token punctuation">(</span>id<span class="token punctuation">:</span> <span class="token keyword">u32</span><span class="token punctuation">)</span> <span class="token punctuation">-&gt;</span> <span class="token class-name">Result</span><span class="token operator">&lt;</span><span class="token class-name">Quest</span><span class="token punctuation">,</span> <span class="token class-name">QuestError</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token function">read_file</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token operator">?</span><span class="token punctuation">;</span>   <span class="token comment">// エラーなら即座に返す（?演算子）</span>
+    <span class="token keyword">let</span> quest <span class="token operator">=</span> <span class="token function">parse</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token operator">?</span><span class="token punctuation">;</span>    <span class="token comment">// ここも同様</span>
+    <span class="token class-name">Ok</span><span class="token punctuation">(</span>quest<span class="token punctuation">)</span>                    <span class="token comment">// 成功時のみここに到達</span>
+<span class="token punctuation">}</span></code></pre>
+          </section>
+          <section class="level4">
+            <h4 id="エラー情報の伝え方">エラー情報の伝え方</h4>
+            <p>制御の流れとは別に、「エラーの内容をどのような形で伝えるか」にも複数の方法があります。</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>方法</th>
+                  <th>仕組み</th>
+                  <th>言語例</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>例外オブジェクト</strong></td>
+                  <td>エラーの種類・メッセージ・スタックトレースをオブジェクトに格納して <code>throw</code>/<code>raise</code> する</td>
+                  <td>Java, Python, C#</td>
+                </tr>
+                <tr>
+                  <td><strong>Result / Either 型</strong></td>
+                  <td>成功値とエラー値のどちらかを保持する型で返す。型システムが処理漏れを検出できる</td>
+                  <td>Rust (<code>Result&lt;T, E&gt;</code>), Haskell (<code>Either</code>)</td>
+                </tr>
+                <tr>
+                  <td><strong>エラーコード（整数値）</strong></td>
+                  <td>関数の戻り値として整数を返し、0 なら成功、それ以外はエラー番号を示す</td>
+                  <td>C, POSIX API</td>
+                </tr>
+                <tr>
+                  <td><strong>複数戻り値</strong></td>
+                  <td>正常値とエラー値をタプルや多値で同時に返す</td>
+                  <td>Go (<code>value, err</code>)</td>
+                </tr>
+                <tr>
+                  <td><strong>Option / Maybe 型</strong></td>
+                  <td>「値がある（Some）」か「ない（None）」かだけを表現する。エラーの詳細は持たない</td>
+                  <td>Rust (<code>Option&lt;T&gt;</code>), Haskell (<code>Maybe</code>)</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>それぞれの方法を具体的なコードで見てみましょう。</p>
+            <pre class="language-python"><code class="language-python"><span class="token comment"># 例外オブジェクト（Python）</span>
+<span class="token comment"># → エラーの種類を型で、詳細をメッセージで伝える</span>
+<span class="token keyword">raise</span> QuestNotFound<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Quest </span><span class="token interpolation"><span class="token punctuation">{</span>quest_id<span class="token punctuation">}</span></span><span class="token string"> does not exist"</span></span><span class="token punctuation">)</span></code></pre>
+            <pre class="language-rust"><code class="language-rust"><span class="token comment">// Result型（Rust）</span>
+<span class="token comment">// → 成功(Ok)かエラー(Err)かを型で保証。処理し忘れるとコンパイル警告</span>
+<span class="token keyword">fn</span> <span class="token function-definition function">find_user</span><span class="token punctuation">(</span>id<span class="token punctuation">:</span> <span class="token keyword">u32</span><span class="token punctuation">)</span> <span class="token punctuation">-&gt;</span> <span class="token class-name">Result</span><span class="token operator">&lt;</span><span class="token class-name">User</span><span class="token punctuation">,</span> <span class="token class-name">UserError</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+    <span class="token keyword">match</span> database<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token class-name">Some</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token class-name">Ok</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token class-name">None</span> <span class="token operator">=&gt;</span> <span class="token class-name">Err</span><span class="token punctuation">(</span><span class="token class-name">UserError</span><span class="token punctuation">::</span><span class="token class-name">NotFound</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+            <pre class="language-go"><code class="language-go"><span class="token comment">// 複数戻り値（Go）</span>
+<span class="token comment">// → 値とエラーを同時に返す。慣習的にerrをチェックしてから値を使う</span>
+<span class="token keyword">func</span> <span class="token function">findUser</span><span class="token punctuation">(</span>id <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>User<span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    user<span class="token punctuation">,</span> err <span class="token operator">:=</span> database<span class="token punctuation">.</span><span class="token function">Query</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token boolean">nil</span><span class="token punctuation">,</span> fmt<span class="token punctuation">.</span><span class="token function">Errorf</span><span class="token punctuation">(</span><span class="token string">"user %d not found: %w"</span><span class="token punctuation">,</span> id<span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> user<span class="token punctuation">,</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span></code></pre>
+            <pre class="language-c"><code class="language-c"><span class="token comment">// エラーコード（C）</span>
+<span class="token comment">// → 整数値で成否を返す。詳細はグローバル変数errnoに格納される</span>
+<span class="token keyword">int</span> fd <span class="token operator">=</span> <span class="token function">open</span><span class="token punctuation">(</span><span class="token string">"quest.dat"</span><span class="token punctuation">,</span> O_RDONLY<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>fd <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"open failed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// errnoから詳細メッセージを表示</span>
+<span class="token punctuation">}</span></code></pre>
+            <p>どの方法にも一長一短があり、「これが唯一の正解」というものはありません。使用する言語の慣習やチームの方針に沿って選ぶことが大切です。</p>
+          </section>
+          <section class="level4">
+            <h4 id="例外処理の実践的なコツ">例外処理の実践的なコツ</h4>
+            <p>ここからは、特に例外機構（<code>try-catch</code>）を使う場合の実践的な技法を紹介します。</p>
+            <p><strong>try-catch は回復できる場所に書く</strong></p>
+            <p>例外をキャッチするのは、そのエラーに対して意味のある回復処理を行える場所に限ります。</p>
+            <pre class="language-python"><code class="language-python"><span class="token comment"># 改善前: 例外の握りつぶし（何が起きたかわからない）</span>
+<span class="token keyword">def</span> <span class="token function">process_quest</span><span class="token punctuation">(</span>quest_id<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        quest <span class="token operator">=</span> load_quest<span class="token punctuation">(</span>quest_id<span class="token punctuation">)</span>
+        execute<span class="token punctuation">(</span>quest<span class="token punctuation">)</span>
+    <span class="token keyword">except</span> Exception<span class="token punctuation">:</span>
+        <span class="token keyword">pass</span>
+
+<span class="token comment"># 改善後: 回復できるエラーだけをキャッチし、それ以外は上位に伝播</span>
+<span class="token keyword">def</span> <span class="token function">process_quest</span><span class="token punctuation">(</span>quest_id<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">try</span><span class="token punctuation">:</span>
+        quest <span class="token operator">=</span> load_quest<span class="token punctuation">(</span>quest_id<span class="token punctuation">)</span>
+    <span class="token keyword">except</span> QuestNotFound<span class="token punctuation">:</span>
+        logger<span class="token punctuation">.</span>warning<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Quest </span><span class="token interpolation"><span class="token punctuation">{</span>quest_id<span class="token punctuation">}</span></span><span class="token string"> not found, skipping"</span></span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span>
+
+    execute<span class="token punctuation">(</span>quest<span class="token punctuation">)</span>  <span class="token comment"># ここで発生した例外は上位に伝播する</span></code></pre>
+            <p><strong>早期失敗（Fail Fast）で原因を特定しやすくする</strong></p>
+            <p>入力の検証は関数の冒頭で行い、おかしな値を早い段階で検出します。処理が進んでから発覚するほど、原因の特定に手間がかかります。</p>
+            <pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">create_hero</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> level<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># 入力検証を最初に行う（早期失敗）</span>
+    <span class="token keyword">if</span> <span class="token keyword">not</span> name<span class="token punctuation">:</span>
+        <span class="token keyword">raise</span> ValueError<span class="token punctuation">(</span><span class="token string">"Name cannot be empty"</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> level <span class="token operator">&lt;</span> <span class="token number">1</span> <span class="token keyword">or</span> level <span class="token operator">&gt;</span> <span class="token number">100</span><span class="token punctuation">:</span>
+        <span class="token keyword">raise</span> ValueError<span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"Level must be 1-100, got </span><span class="token interpolation"><span class="token punctuation">{</span>level<span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">)</span>
+
+    <span class="token comment"># 検証を通過したら本処理</span>
+    <span class="token keyword">return</span> Hero<span class="token punctuation">(</span>name<span class="token operator">=</span>name<span class="token punctuation">,</span> level<span class="token operator">=</span>level<span class="token punctuation">)</span></code></pre>
+            <hr>
+          </section>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="3-questforgeで実践">3. QuestForgeで実践</h2>
+        <p>これまで学んだ技法を、QuestForgeのアイテム取得処理で実践してみましょう。</p>
+        <section class="level3">
+          <h3 id="before-ネストの深い術式">Before: ネストの深い術式</h3>
+          <pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">pickup_item</span><span class="token punctuation">(</span>hero<span class="token punctuation">,</span> item<span class="token punctuation">,</span> area<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> area<span class="token punctuation">.</span>is_safe<span class="token punctuation">:</span>
+        <span class="token keyword">if</span> hero<span class="token punctuation">.</span>inventory<span class="token punctuation">.</span>has_space<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> item<span class="token punctuation">.</span>is_pickable<span class="token punctuation">:</span>
+                <span class="token keyword">if</span> hero<span class="token punctuation">.</span>can_carry<span class="token punctuation">(</span>item<span class="token punctuation">.</span>weight<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                    hero<span class="token punctuation">.</span>inventory<span class="token punctuation">.</span>add<span class="token punctuation">(</span>item<span class="token punctuation">)</span>
+                    <span class="token keyword">return</span> <span class="token string">"Picked up!"</span>
+                <span class="token keyword">else</span><span class="token punctuation">:</span>
+                    <span class="token keyword">return</span> <span class="token string">"Too heavy"</span>
+            <span class="token keyword">else</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span> <span class="token string">"Cannot pick this up"</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token string">"Inventory full"</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token string">"Area is dangerous"</span></code></pre>
+          <p>改善の余地:</p>
+          <ul>
+            <li>正常系が最も深いネストに埋もれている</li>
+            <li>条件の対応関係が追いにくい</li>
+            <li>新しい条件を追加しにくい</li>
+          </ul>
+        </section>
+        <section class="level3">
+          <h3 id="after-ガード節による再構築">After: ガード節による再構築</h3>
+          <pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">pickup_item</span><span class="token punctuation">(</span>hero<span class="token punctuation">,</span> item<span class="token punctuation">,</span> area<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># ガード節: 異常系を先に弾く</span>
+    <span class="token keyword">if</span> <span class="token keyword">not</span> area<span class="token punctuation">.</span>is_safe<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token string">"Area is dangerous"</span>
+
+    <span class="token keyword">if</span> <span class="token keyword">not</span> hero<span class="token punctuation">.</span>inventory<span class="token punctuation">.</span>has_space<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token string">"Inventory full"</span>
+
+    <span class="token keyword">if</span> <span class="token keyword">not</span> item<span class="token punctuation">.</span>is_pickable<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token string">"Cannot pick this up"</span>
+
+    <span class="token keyword">if</span> <span class="token keyword">not</span> hero<span class="token punctuation">.</span>can_carry<span class="token punctuation">(</span>item<span class="token punctuation">.</span>weight<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token string">"Too heavy"</span>
+
+    <span class="token comment"># 正常系: ハッピーパス</span>
+    hero<span class="token punctuation">.</span>inventory<span class="token punctuation">.</span>add<span class="token punctuation">(</span>item<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token string">"Picked up!"</span></code></pre>
+          <p>改善点:</p>
+          <ul>
+            <li>正常系が最も浅い階層に</li>
+            <li>各条件が独立して読める</li>
+            <li>新しい条件の追加が容易（ガード節を1つ追加するだけ）</li>
+          </ul>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="まとめ">まとめ</h2>
+        <p>制御構造は、プログラムが「どう動くか」を決める骨格です。正常系（ハッピーパス）を先に描いてから異常系を列挙するという設計の順序を守ることで、コードは自然と読みやすい形に整います。ガード節で異常系を早期に弾き、条件式に意図を表す名前をつけることで、術式は魔法の呪文ではなく語りかける散文のように読めるものになります。</p>
+        <p>ループはその目的に応じて選び分け、例外処理は「回復できる場所」でのみ使う。この2つの判断軸を持つだけで、制御フローの複雑さをぐっと手なずけることができます。また、早期失敗（フェイルファスト）の姿勢は、バグの原因をその発生源で捕まえ、デバッグを大幅に楽にしてくれます。</p>
+        <p>次の3.3節では、術式を収める「器（関数・クラス・モジュール）」の設計に目を向けます。個々の術式がいかに美しくても、それを収める器が設計されていなければ、魔法は霧散してしまいます。構造化の技法を通じて、術式を意味のある単位へとまとめ上げていきましょう。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <pre class="language-text"><code class="language-text">@application/use_cases/complete_quest.py を読んで、
+ネストを解消し、ガード節を使ってリファクタリングしてください。
+正常系（ハッピーパス）が最も浅い階層に来るようにしてください。</code></pre>
+        <pre class="language-text"><code class="language-text">以下の条件式に意図を表す名前をつけて、読みやすくリファクタリングしてください。
+`if user.age &gt;= 18 and user.has_license and not user.is_suspended:`</code></pre>
+        <pre class="language-text"><code class="language-text">@infrastructure/repositories/quest_repository.py を読んで、
+例外処理を見直してください。
+握りつぶしている箇所があれば指摘し、適切な処理方法を提案してください。</code></pre>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>📚 <strong>書籍</strong>: Dustin Boswell, Trevor Foucher『<a href="https://www.oreilly.co.jp/books/9784873115658/">リーダブルコード ―より良いコードを書くためのシンプルで実践的なテクニック</a>』（可読性の高いコードを書くための現代の必読書）</li>
+          <li>📚 <strong>書籍</strong>: Edsger W. Dijkstra他『<a href="https://www.saiensu.co.jp/search/?isbn=978-4-7819-0260-8">構造化プログラミング</a>』（制御構造の整理と抽象化に関する古典的名著）</li>
+          <li>🌐 <strong>Web</strong>: Python 公式ドキュメント "<a href="https://docs.python.org/ja/3/tutorial/controlflow.html">制御構造ツール</a>"（Python特有の制御構文（for-else, match等）の公式ガイド）</li>
+          <li>📄 <strong>論文</strong>: Edsger W. Dijkstra "<a href="https://dl.acm.org/doi/10.1145/362929.362947">Go To Statement Considered Harmful</a>" (1968)（構造化プログラミングの出発点となった歴史的書簡）</li>
+        </ul>
+        <hr>
+        <p><strong>執筆メモ</strong>:</p>
+        <ul>
+          <li>執筆日時: 2026-01-28</li>
+          <li>構成変更: 「設計→実装」の流れで再構成、評価は別節へ分離</li>
+          <li>実装技法: 分岐・ループ・例外処理の3カテゴリで整理</li>
+        </ul>
+      </section>
+    </section>
+  
+
+</main>
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part2/chapter03/3-1.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part2/chapter03/3-3.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    </body></html>

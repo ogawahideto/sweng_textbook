@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" width="500" height="300">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .pot { fill: #FFF3E0; stroke: #FB8C00; stroke-width: 3; }
+      .liquid { fill: #E3F2FD; stroke: #1E88E5; stroke-width: 1; }
+      .text-main { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: bold; fill: #333; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="500" height="300" class="bg"/>
+  
+  <!-- 器 (Encapsulation) -->
+  <path d="M 150,100 Q 150,250 250,250 Q 350,250 350,100 L 150,100" class="pot" />
+  <path d="M 170,120 Q 170,230 250,230 Q 330,230 330,120 L 170,120" class="liquid" />
+  
+  <text x="250" y="80" class="text-main" text-anchor="middle">術式の器 (関数・クラス)</text>
+  <text x="250" y="160" class="text-main" text-anchor="middle">内部ロジック</text>
+  <text x="250" y="180" class="text-main" text-anchor="middle" font-size="10" font-weight="normal">(実装詳細)</text>
+  
+  <line x1="150" y1="100" x2="350" y2="100" stroke="#FB8C00" stroke-width="4" stroke-dasharray="5" />
+  <text x="250" y="115" class="text-main" text-anchor="middle" fill="#FB8C00" font-size="12">インターフェース (境界)</text>
+</svg>

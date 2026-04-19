@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" width="500" height="300">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .spiral { stroke: #FB8C00; stroke-width: 3; fill: none; }
+      .node { fill: #FFF3E0; stroke: #FB8C00; stroke-width: 2; }
+      .text-main { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: bold; fill: #333; text-anchor: middle; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="500" height="300" class="bg"/>
+  
+  <text x="250" y="40" class="text-main" font-size="18">ユーザーとのフィードバックループ</text>
+
+  <!-- Cycle -->
+  <circle cx="150" cy="150" r="40" class="node" />
+  <text x="150" y="155" class="text-main">提供</text>
+
+  <circle cx="350" cy="150" r="40" class="node" />
+  <text x="350" y="155" class="text-main">計測</text>
+
+  <circle cx="250" cy="240" r="40" class="node" />
+  <text x="250" y="245" class="text-main">学習</text>
+
+  <!-- Arrows -->
+  <path d="M 195,150 L 305,150" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)" />
+  <path d="M 330,185 L 285,215" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)" />
+  <path d="M 215,215 L 170,185" stroke="#666" stroke-width="2" marker-end="url(#arrowhead)" />
+
+  <text x="250" y="120" class="text-main" font-size="12" fill="#FB8C00">リリースは「対話」の始まり</text>
+</svg>

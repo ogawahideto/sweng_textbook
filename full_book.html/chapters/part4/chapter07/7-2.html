@@ -1,0 +1,120 @@
+<!DOCTYPE html><html lang="ja"><head>
+    <meta charset="utf-8">
+    <title>7.2 Git/GitHubを通じた知の交流</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+  </head>
+  <body>
+    <section class="level1">
+      <h1 id="72-gitgithubを通じた知の交流">7.2 Git/GitHubを通じた知の交流</h1>
+      <section class="level2">
+        <h2 id="導入-コードに込めた手紙">導入: コードに込めた「手紙」</h2>
+        <p>5.2節ではAIとの対話的なコードレビューを学びました。また6.2節では、CI/CDパイプラインの中でコードが自動的にテスト・デプロイされる流れを見てきました。この節では、その基盤となる<strong>Git/GitHub</strong>を使った「チームでの知の交流」に焦点を当てます。</p>
+        <p>かつて、開発者たちは「共有フォルダ」という名の荒野で戦っていました。「<code>final_v2_修正版.zip</code>」のようなファイルが飛び交い、誰かが上書き保存をするたびに、仲間の作業が消滅する悲劇が繰り返されていたのです。</p>
+        <p>Gitの登場は、この荒野に「時間操作」と「平行世界」の魔法をもたらしました。私たちは過去のあらゆる時点に戻ることができ、並行して複数の未来（機能）を試すことができます。</p>
+        <p>そしてGitHubは、Gitを単なる保存場所から<strong>「知の交流広場」</strong>へと進化させました。ここでは、コードは単なる命令列ではありません。開発者から開発者へ宛てた、思考と意図を乗せた「手紙」なのです。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="ブランチ戦略-可能性の樹形図">ブランチ戦略: 可能性の樹形図</h2>
+        <p>Gitの強力な機能の一つに<strong>ブランチ（Branch）</strong>があります。これは文字通り「枝」です。本流（mainブランチ）から枝分かれして、安全な場所で実験や開発を行い、完成したら再び本流に戻す（マージする）ことができます。</p>
+        <p>冒険パーティにおいて、これは「斥候」の役割に似ています。</p>
+        <section class="level3">
+          <h3 id="シンプルイズベスト-github-flow">シンプル・イズ・ベスト: GitHub Flow</h3>
+          <p>複雑なブランチ戦略（Git Flowなど）も存在しますが、現代のアジャイル開発では、よりシンプルで高速な<strong>GitHub Flow</strong>が好まれます。</p>
+          <figure>
+            <img src="../../assets/diagrams/chapter07/7-2-github-flow.svg" alt="GitHub Flow">
+            <figcaption aria-hidden="true">GitHub Flow</figcaption>
+          </figure>
+          <ol>
+            <li><strong>Main</strong>: 常にデプロイ可能な、清浄な本流。</li>
+            <li><strong>Feature Branch</strong>: 新機能やバグ修正のために作成する枝。「<code>feature/login-screen</code>」のように、何をするか分かりやすい名前をつけます。</li>
+            <li><strong>Pull Request</strong>: 変更を本流に取り込んでもらうための「提案」。</li>
+            <li><strong>Review &amp; Merge</strong>: 仲間が確認し、承認されれば本流へ合流します。</li>
+          </ol>
+          <p>このシンプルなサイクルを高速に回すことが、チームの活力を保つ秘訣です。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="プルリクエスト-知恵の交差点">プルリクエスト: 知恵の交差点</h2>
+        <p>プルリクエスト（PR）は、単にコードをマージするための手続きではありません。それは「私はこの課題をこう解決しました。どう思いますか？」という、チームへの問いかけです。</p>
+        <section class="level3">
+          <h3 id="良いprは物語を語る">良いPRは「物語」を語る</h3>
+          <p>「コードを見れば分かる」は、書き手の傲慢かもしれません。読み手（レビュアー）のために、PRにはコンテキスト（文脈）という物語を添えましょう。</p>
+          <ul>
+            <li><strong>Why</strong>: なぜこの変更が必要なのか？（背景、目的）</li>
+            <li><strong>What</strong>: 何をしたのか？（変更の概要）</li>
+            <li><strong>How</strong>: どうやって実現したのか？（技術的な工夫、迷った点）</li>
+          </ul>
+          <p>スクリーンショットやGIF動画を貼るのも効果的です。テキストだけの説明よりも、動く画面は百倍の雄弁さで「成果」を伝えてくれます。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="コードレビューの作法-粗探しではなく宝探し">コードレビューの作法: 粗探しではなく「宝探し」</h2>
+        <p>コードレビューを「間違い探し」や「門番の検問」だと考えていませんか？ そのマインドセットは今すぐ捨てましょう。コードレビューは、仲間と共にコードをより美しく、堅牢にするための<strong>「共創の場」</strong>です。</p>
+        <section class="level3">
+          <h3 id="レビュアーの心得reviewer">レビュアーの心得（Reviewer）</h3>
+          <ol>
+            <li><strong>Good First</strong>: まず良い点を見つけて褒めましょう。「この実装、エレガントですね！」「この命名、分かりやすいです！」その一言が、レビュイー（書き手）の心理的安全性を高めます。</li>
+            <li><strong>質問として投げる</strong>: 「ここは間違っています」と断定するのではなく、「ここは〜という理由で、〜の方が安全ではないでしょうか？」や「この意図を教えてもらえますか？」と問いかけましょう。</li>
+            <li><strong>Nitpick（細かい指摘）は明示する</strong>: 本質的ではない細かい指摘（空白や改行など）には、「nits（nitpickの略）」と添えて、「修正しなくてもいいけど」というニュアンスを伝えましょう。</li>
+          </ol>
+        </section>
+        <section class="level3">
+          <h3 id="レビュイーの心得reviewee">レビュイーの心得（Reviewee）</h3>
+          <ol>
+            <li><strong>コードと人格を分ける</strong>: 指摘されているのは「コード」であって「あなた」ではありません。防御的にならず、「より良くするチャンス」として歓迎しましょう。</li>
+            <li><strong>感謝を伝える</strong>: レビューには時間がかかります。時間を割いてくれた仲間に「レビューありがとうございます！」と感謝を伝えましょう。</li>
+          </ol>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="ai時代の知の交流-頼れる副操縦士">AI時代の知の交流: 頼れる副操縦士</h2>
+        <p>AIは、ここでも強力な助っ人になります。</p>
+        <section class="level3">
+          <h3 id="aiによるpr要約">AIによるPR要約</h3>
+          <p>変更内容が膨大で、PRの説明を書くのが大変？ AIに <code>git diff</code> を読ませて、「この変更の要約と、レビュアーが注目すべきポイントをMarkdownで書いて」と頼んでみましょう。驚くほど的確な下書きを作ってくれます。</p>
+        </section>
+        <section class="level3">
+          <h3 id="aiコードレビュー">AIコードレビュー</h3>
+          <p>人間がレビューする前に、AIに一次レビューを依頼するのも賢い方法です。「このコードにセキュリティ上の脆弱性はないか？」「可読性を下げる箇所はないか？」と問いかければ、人間だけでは気づきにくいミスを事前に潰してくれます。これにより、人間同士のレビューはより本質的な設計やドメインロジックの議論に集中できます。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="まとめ">まとめ</h2>
+        <ol>
+          <li><strong>Git/GitHub</strong>: バージョン管理を超えた「知の交流広場」。コードは仲間への「手紙」である。</li>
+          <li><strong>GitHub Flow</strong>: シンプルなブランチ戦略で、開発のリズムを高速化する。</li>
+          <li><strong>プルリクエスト</strong>: Why, What, Howの物語を添えて、レビュアーをガイドする。</li>
+          <li><strong>コードレビュー</strong>: 粗探しではなく、良い点を見つけ、共に高め合う「宝探し」の時間。</li>
+        </ol>
+        <p>コードを通じて心を通わせる。それができれば、チームは単なる集団から、信頼で結ばれた一つの生命体へと進化します。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <p>この節で学んだことを実践するためのプロンプト：</p>
+        <pre class="language-text"><code class="language-text">私はGitHubのプルリクエスト（PR）を作成しようとしています。
+以下の変更内容（git diffの出力）をもとに、
+レビュアーに分かりやすいPRのタイトルと本文（Markdown形式）を作成してください。
+本文には「変更の目的」「実施したこと」「特に見てほしい点」を含めてください。
+
+[git diffの内容を貼り付け]</code></pre>
+        <pre class="language-text"><code class="language-text">あなたは経験豊富なシニアエンジニアです。
+以下のコードをレビューし、
+1. 良い点（褒めるポイント）
+2. 改善点（具体的な提案とともに）
+3. セキュリティ上の懸念点
+を挙げてください。
+口調は「後輩を指導する優しい先輩」のように、丁寧で建設的なトーンでお願いします。
+
+[コードを貼り付け]</code></pre>
+      </section>
+    </section>
+  
+
+</body></html>

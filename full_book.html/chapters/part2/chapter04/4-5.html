@@ -1,0 +1,253 @@
+<!DOCTYPE html><html lang="ja"><head>
+    <meta charset="utf-8">
+    <title>4.5 鉄壁の防衛線——テスト自動化とCI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+  </head>
+  <body>
+    <section class="level1">
+      <h1 id="45-鉄壁の防衛線テスト自動化とci">4.5 鉄壁の防衛線——テスト自動化とCI</h1>
+      <section class="level2">
+        <h2 id="導入-守護魔法を常時発動する">導入: 守護魔法を常時発動する</h2>
+        <p>ここまでに、テストの体系（4.1）、設計技法（4.2）、TDD（4.3）、AIによる拡張（4.4）を学びました。しかし、どれほど優れたテストスイートも、<strong>実行されなければ無意味</strong>です。</p>
+        <p>「テストを書いたのに、忙しくて実行しなかった」「誰かがテストを壊したまま気づかずマージしてしまった」——こうした事態を防ぐには、テストの実行を人間の意志に頼らず、<strong>自動化</strong>する必要があります。</p>
+        <p>本節では、テストを「手動で実行するもの」から「常に自動で守り続けるもの」に昇華させる仕組み——<strong>CI（継続的インテグレーション）</strong>を学びます。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="ciとは何か">CIとは何か</h2>
+        <p><strong>CI（Continuous Integration）</strong>とは、コードの変更がリポジトリにプッシュされるたびに、自動的にビルド・テストを実行する仕組みです。</p>
+        <figure>
+          <img src="../../assets/diagrams/chapter04/4-5-ci-pipeline.svg" alt="CIパイプライン">
+          <figcaption aria-hidden="true">CIパイプライン</figcaption>
+        </figure>
+        <section class="level3">
+          <h3 id="ciがもたらすもの">CIがもたらすもの</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>効果</th>
+                <th>説明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>即座のフィードバック</strong></td>
+                <td>コードを壊したら数分以内に通知される</td>
+              </tr>
+              <tr>
+                <td><strong>全テストの確実な実行</strong></td>
+                <td>「テスト通すの忘れた」がなくなる</td>
+              </tr>
+              <tr>
+                <td><strong>安心してマージできる</strong></td>
+                <td>CIが緑なら、少なくとも既存機能は壊れていない</td>
+              </tr>
+              <tr>
+                <td><strong>チームの信頼基盤</strong></td>
+                <td>全員が同じ基準で品質を確認できる</td>
+              </tr>
+            </tbody>
+          </table>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="github-actionsで実践する">GitHub Actionsで実践する</h2>
+        <p>最も手軽にCIを始められるのが<strong>GitHub Actions</strong>です。リポジトリに設定ファイルを1つ置くだけで、プッシュのたびにテストが自動実行されます。</p>
+        <section class="level3">
+          <h3 id="基本的な設定">基本的な設定</h3>
+          <pre class="language-yaml"><code class="language-yaml"><span class="token comment"># .github/workflows/test.yml</span>
+<span class="token key atrule">name</span><span class="token punctuation">:</span> QuestForge Tests
+
+<span class="token key atrule">on</span><span class="token punctuation">:</span>
+  <span class="token key atrule">push</span><span class="token punctuation">:</span>
+    <span class="token key atrule">branches</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>main<span class="token punctuation">]</span>
+  <span class="token key atrule">pull_request</span><span class="token punctuation">:</span>
+    <span class="token key atrule">branches</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>main<span class="token punctuation">]</span>
+
+<span class="token key atrule">jobs</span><span class="token punctuation">:</span>
+  <span class="token key atrule">test</span><span class="token punctuation">:</span>
+    <span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span>latest
+    <span class="token key atrule">steps</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/checkout@v4
+
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Set up Python
+        <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/setup<span class="token punctuation">-</span>python@v5
+        <span class="token key atrule">with</span><span class="token punctuation">:</span>
+          <span class="token key atrule">python-version</span><span class="token punctuation">:</span> <span class="token string">'3.12'</span>
+
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Install dependencies
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> pip install <span class="token punctuation">-</span>r requirements.txt
+
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Run tests
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> python <span class="token punctuation">-</span>m pytest tests/ <span class="token punctuation">-</span>v</code></pre>
+          <p>この設定で、<code>main</code>ブランチへのプッシュまたはプルリクエストのたびに、以下が自動実行されます:</p>
+          <ol>
+            <li>コードをチェックアウト</li>
+            <li>Python環境をセットアップ</li>
+            <li>依存パッケージをインストール</li>
+            <li>テストを実行</li>
+          </ol>
+        </section>
+        <section class="level3">
+          <h3 id="カバレッジレポートの自動生成">カバレッジレポートの自動生成</h3>
+          <p>4.2節で学んだカバレッジを、CIで自動計測・レポート化できます。</p>
+          <pre class="language-yaml"><code class="language-yaml">      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Run tests with coverage
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string">
+          pip install pytest-cov
+          python -m pytest tests/ --cov=src --cov-report=term-missing</span>
+
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Check coverage threshold
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> <span class="token punctuation">|</span><span class="token scalar string">
+          python -m pytest tests/ --cov=src --cov-fail-under=80</span></code></pre>
+          <p><code>--cov-fail-under=80</code> を指定すると、カバレッジが80%未満の場合にCIが失敗します。これが<strong>品質ゲート</strong>です。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="品質ゲート-マージの門番">品質ゲート: マージの門番</h2>
+        <p>品質ゲートとは、「この基準を満たさなければマージを許可しない」という自動チェックです。</p>
+        <table>
+          <thead>
+            <tr>
+              <th>ゲート</th>
+              <th>基準例</th>
+              <th>目的</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>テスト通過</strong></td>
+              <td>全テストがパス</td>
+              <td>既存機能が壊れていないことの保証</td>
+            </tr>
+            <tr>
+              <td><strong>カバレッジ閾値</strong></td>
+              <td>80%以上</td>
+              <td>テストの網羅性の最低基準</td>
+            </tr>
+            <tr>
+              <td><strong>静的解析</strong></td>
+              <td>Lintエラーゼロ</td>
+              <td>3.4節で学んだコード品質の維持</td>
+            </tr>
+            <tr>
+              <td><strong>型チェック</strong></td>
+              <td>Mypy通過</td>
+              <td>型の整合性</td>
+            </tr>
+          </tbody>
+        </table>
+        <pre class="language-yaml"><code class="language-yaml">      <span class="token comment"># 静的解析とテストを並列実行</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Lint
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> ruff check src/
+
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Type check
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> mypy src/
+
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> Test
+        <span class="token key atrule">run</span><span class="token punctuation">:</span> python <span class="token punctuation">-</span>m pytest tests/ <span class="token punctuation">-</span><span class="token punctuation">-</span>cov=src <span class="token punctuation">-</span><span class="token punctuation">-</span>cov<span class="token punctuation">-</span>fail<span class="token punctuation">-</span>under=80</code></pre>
+        <p>GitHub上でプルリクエストを作ると、これらのチェックが自動で走り、すべて通過しなければマージボタンが押せないように設定できます（Branch Protection Rules）。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="テストの実行戦略">テストの実行戦略</h2>
+        <p>テストが増えるにつれ、実行時間が課題になります。効率的な実行戦略を設計しましょう。</p>
+        <section class="level3">
+          <h3 id="テストの分類と実行タイミング">テストの分類と実行タイミング</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>分類</th>
+                <th>実行タイミング</th>
+                <th>実行時間の目安</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>単体テスト</strong></td>
+                <td>毎回のプッシュ</td>
+                <td>数秒〜数十秒</td>
+              </tr>
+              <tr>
+                <td><strong>結合テスト</strong></td>
+                <td>プルリクエスト作成時</td>
+                <td>数分</td>
+              </tr>
+              <tr>
+                <td><strong>E2E / システムテスト</strong></td>
+                <td>マージ前、リリース前</td>
+                <td>数十分</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre class="language-yaml"><code class="language-yaml"><span class="token key atrule">jobs</span><span class="token punctuation">:</span>
+  <span class="token comment"># 常に実行: 高速な単体テスト</span>
+  <span class="token key atrule">unit-tests</span><span class="token punctuation">:</span>
+    <span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span>latest
+    <span class="token key atrule">steps</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/checkout@v4
+      <span class="token punctuation">-</span> <span class="token key atrule">run</span><span class="token punctuation">:</span> python <span class="token punctuation">-</span>m pytest tests/unit/ <span class="token punctuation">-</span>v
+
+  <span class="token comment"># PRのみ実行: 結合テスト</span>
+  <span class="token key atrule">integration-tests</span><span class="token punctuation">:</span>
+    <span class="token key atrule">if</span><span class="token punctuation">:</span> github.event_name == 'pull_request'
+    <span class="token key atrule">runs-on</span><span class="token punctuation">:</span> ubuntu<span class="token punctuation">-</span>latest
+    <span class="token key atrule">steps</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">uses</span><span class="token punctuation">:</span> actions/checkout@v4
+      <span class="token punctuation">-</span> <span class="token key atrule">run</span><span class="token punctuation">:</span> python <span class="token punctuation">-</span>m pytest tests/integration/ <span class="token punctuation">-</span>v</code></pre>
+          <p>4.1節で学んだテストピラミッドの考え方が、ここでも活きます。土台（単体テスト）は常に・速く、上層（E2E）は必要なタイミングだけ実行します。</p>
+          <hr>
+          <blockquote>
+            <p><strong>コラム: カオスエンジニアリング——本番環境の回復力テスト</strong></p>
+            <p>CIパイプラインで守れるのは「コードが正しいか」までです。しかし、本番環境では「サーバーが突然落ちる」「ネットワークが不安定になる」といった予測困難な障害が起こります。</p>
+            <p><strong>カオスエンジニアリング</strong>は、意図的に障害を注入し、システムの回復力を検証するアプローチです。Netflixが開発した「Chaos Monkey」は、本番環境のサーバーをランダムに停止させることで有名です。</p>
+            <ul>
+              <li><strong>原則</strong>: 「障害は必ず起こる。だから、制御された状況で先に経験しておく」</li>
+              <li><strong>手法</strong>: プロセスの強制終了、ネットワーク遅延の注入、ディスク容量の枯渇シミュレーション</li>
+              <li><strong>効果</strong>: 障害発生時のアラート・復旧手順が本当に機能するかを確認できる</li>
+            </ul>
+            <p>これは第6章「進化する生命体（デプロイと運用）」で扱う運用の世界と深く関わります。テストの守りは、CIで終わりではなく、本番環境の回復力まで続いているのです。</p>
+          </blockquote>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="まとめ">まとめ</h2>
+        <ol>
+          <li><strong>CIはテストを「常時発動」にする仕組み</strong>: プッシュごとに自動でテストが走り、壊れた瞬間にフィードバックを受け取れる。</li>
+          <li><strong>品質ゲートでマージを守る</strong>: テスト通過、カバレッジ閾値、静的解析を自動チェックし、基準未達のコードはマージさせない。</li>
+          <li><strong>テストピラミッドに沿った実行戦略</strong>: 単体テストは常に・速く、結合テストはPR時に、E2Eはリリース前に。</li>
+          <li><strong>3.4節の静的解析と連携</strong>: Linter・型チェッカーもCIに組み込み、コード品質を多角的に守る。</li>
+        </ol>
+        <p>テストの自動化とCIによって、守護魔法は「常時発動」の状態になりました。次の4.6節では、テストが検出した不具合の<strong>原因を突き止める</strong>技術——デバッグを学びます。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <pre class="language-text"><code class="language-text">以下のPythonプロジェクトに対して、GitHub Actionsの設定ファイルを生成してください。
+要件:
+- Python 3.12を使用
+- pytest でテストを実行
+- ruff でLintチェック
+- mypy で型チェック
+- カバレッジ80%以上を品質ゲートに設定</code></pre>
+        <pre class="language-text"><code class="language-text">CIの実行時間が長くなってきました。
+以下のテストスイートを分析し、
+「単体テスト」「結合テスト」「E2Eテスト」に分類してください。
+また、実行時間を短縮するための並列化戦略を提案してください。
+
+[テストファイル一覧を貼り付け]</code></pre>
+        <hr>
+        <p><strong>執筆メモ</strong>:</p>
+        <ul>
+          <li>執筆日時: 2026-02-01</li>
+          <li>構成: CI基礎→GitHub Actions実践→品質ゲート→実行戦略→カオスエンジニアリング（コラム）</li>
+          <li>接続: 3.4節（静的解析）との統合、4.1（テストピラミッド）の実行戦略への応用、5章（リファクタリング）への橋渡し</li>
+        </ul>
+      </section>
+    </section>
+  
+
+</body></html>

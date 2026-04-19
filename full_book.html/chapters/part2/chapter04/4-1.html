@@ -1,0 +1,246 @@
+<!DOCTYPE html><html lang="ja"><head>
+    <meta charset="utf-8">
+    <title>4.1 守護魔法の体系——テストの全体像</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+  </head>
+  <body>
+    <section class="level1">
+      <h1 id="41-守護魔法の体系テストの全体像">4.1 守護魔法の体系——テストの全体像</h1>
+      <section class="level2">
+        <h2 id="導入-軍団を組織する前に">導入: 軍団を組織する前に</h2>
+        <p>第3章で、あなたはコードを実装する技法を学びました。しかし、どれほど丁寧に書いたコードも、明日の変更で壊れないという保証はありません。コードを守り続けるには——それを安心して変え続けるには——<strong>テスト</strong>という守護魔法が必要です。</p>
+        <p>ここで一つ、心に刻んでおいてほしいことがあります。<strong>「仕様書に書かれている手順をなぞって実行してみるだけでは、それはまだ真の『テスト』とは呼べません」</strong>。</p>
+        <p>テストとは、単なる「動作確認」ではなく、システムの「脆さ」や「境界線」を積極的に探し出し、意図的に壊そうとする試み——いわば、コードに対する厳格な「鑑定」なのです。AIが瞬時にコードを生成する現代において、そのコードが本当に信頼に値するかを見抜くあなたの鑑定眼こそが、品質の最後の砦となります。</p>
+        <p>本節ではまず、テストの全体像——<strong>何を、どの粒度で、どうテストするのか</strong>——という地図を手に入れます。地図なき軍団は烏合の衆ですが、地図を持った軍団は無敵です。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="テストレベル-4つの防衛圏">テストレベル: 4つの防衛圏</h2>
+        <p>テストには「どの範囲を検証するか」に応じた<strong>レベル</strong>があります。小さい範囲から大きい範囲へ、4つの防衛圏として整理できます。</p>
+        <table>
+          <thead>
+            <tr>
+              <th>レベル</th>
+              <th>検証対象</th>
+              <th>誰が担当するか</th>
+              <th>速度</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>単体テスト（Unit Test）</strong></td>
+              <td>関数・メソッド単体</td>
+              <td>開発者</td>
+              <td>非常に速い</td>
+            </tr>
+            <tr>
+              <td><strong>結合テスト（Integration Test）</strong></td>
+              <td>複数のコンポーネントの連携</td>
+              <td>開発者</td>
+              <td>やや遅い</td>
+            </tr>
+            <tr>
+              <td><strong>システムテスト（System Test）</strong></td>
+              <td>システム全体の動作</td>
+              <td>QAチーム / 開発者</td>
+              <td>遅い</td>
+            </tr>
+            <tr>
+              <td><strong>受入テスト（Acceptance Test）</strong></td>
+              <td>ユーザーの要求を満たしているか</td>
+              <td>顧客 / プロダクトオーナー</td>
+              <td>遅い</td>
+            </tr>
+          </tbody>
+        </table>
+        <section class="level3">
+          <h3 id="単体テストunit-test">単体テスト（Unit Test）</h3>
+          <p>最も小さな粒度のテストです。一つの関数やメソッドが、期待通りに動くかを確認します。</p>
+          <pre class="language-python"><code class="language-python"><span class="token comment"># QuestForge: 経験値計算の単体テスト</span>
+<span class="token keyword">import</span> unittest
+
+<span class="token keyword">class</span> <span class="token class-name">TestXpCalculation</span><span class="token punctuation">(</span>unittest<span class="token punctuation">.</span>TestCase<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">test_hard_quest_gives_double_xp_for_low_level_hero</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        quest <span class="token operator">=</span> Quest<span class="token punctuation">(</span>title<span class="token operator">=</span><span class="token string">"Dragon Slayer"</span><span class="token punctuation">,</span> difficulty<span class="token operator">=</span><span class="token string">"HARD"</span><span class="token punctuation">,</span> base_xp<span class="token operator">=</span><span class="token number">100</span><span class="token punctuation">,</span>
+                      recommended_level<span class="token operator">=</span><span class="token number">10</span><span class="token punctuation">)</span>
+        hero <span class="token operator">=</span> Hero<span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"Aria"</span><span class="token punctuation">,</span> level<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">)</span>
+
+        result <span class="token operator">=</span> calculate_quest_xp<span class="token punctuation">(</span>quest<span class="token punctuation">,</span> hero<span class="token punctuation">)</span>
+
+        self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span>result<span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">)</span>  <span class="token comment"># 100 * 2.0</span>
+
+    <span class="token keyword">def</span> <span class="token function">test_normal_quest_gives_base_xp</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        quest <span class="token operator">=</span> Quest<span class="token punctuation">(</span>title<span class="token operator">=</span><span class="token string">"Herb Gathering"</span><span class="token punctuation">,</span> difficulty<span class="token operator">=</span><span class="token string">"NORMAL"</span><span class="token punctuation">,</span> base_xp<span class="token operator">=</span><span class="token number">50</span><span class="token punctuation">,</span>
+                      recommended_level<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+        hero <span class="token operator">=</span> Hero<span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"Aria"</span><span class="token punctuation">,</span> level<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">)</span>
+
+        result <span class="token operator">=</span> calculate_quest_xp<span class="token punctuation">(</span>quest<span class="token punctuation">,</span> hero<span class="token punctuation">)</span>
+
+        self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span>result<span class="token punctuation">,</span> <span class="token number">50</span><span class="token punctuation">)</span></code></pre>
+          <p>単体テストは数ミリ秒で完了し、何百回でも気軽に実行できます。これが守護魔法の最前線です。</p>
+        </section>
+        <section class="level3">
+          <h3 id="結合テストintegration-test">結合テスト（Integration Test）</h3>
+          <p>複数のコンポーネントが正しく<strong>連携</strong>できるかを検証します。「関数単体は正しいのに、組み合わせると動かない」という状況を防ぎます。</p>
+          <pre class="language-python"><code class="language-python"><span class="token comment"># QuestForge: ユースケース + リポジトリの結合テスト</span>
+<span class="token keyword">class</span> <span class="token class-name">TestCompleteQuestIntegration</span><span class="token punctuation">(</span>unittest<span class="token punctuation">.</span>TestCase<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">test_completing_quest_updates_hero_xp</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># 実際のリポジトリ（インメモリ実装）を使う</span>
+        quest_repo <span class="token operator">=</span> InMemoryQuestRepository<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        hero_repo <span class="token operator">=</span> InMemoryHeroRepository<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+        quest <span class="token operator">=</span> Quest<span class="token punctuation">(</span>title<span class="token operator">=</span><span class="token string">"Forest Patrol"</span><span class="token punctuation">,</span> difficulty<span class="token operator">=</span><span class="token string">"NORMAL"</span><span class="token punctuation">,</span> base_xp<span class="token operator">=</span><span class="token number">80</span><span class="token punctuation">,</span>
+                      recommended_level<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+        hero <span class="token operator">=</span> Hero<span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"Kai"</span><span class="token punctuation">,</span> level<span class="token operator">=</span><span class="token number">5</span><span class="token punctuation">)</span>
+        quest_repo<span class="token punctuation">.</span>save<span class="token punctuation">(</span>quest<span class="token punctuation">)</span>
+        hero_repo<span class="token punctuation">.</span>save<span class="token punctuation">(</span>hero<span class="token punctuation">)</span>
+
+        use_case <span class="token operator">=</span> CompleteQuestUseCase<span class="token punctuation">(</span>quest_repo<span class="token punctuation">,</span> hero_repo<span class="token punctuation">)</span>
+        use_case<span class="token punctuation">.</span>execute<span class="token punctuation">(</span>quest<span class="token punctuation">.</span><span class="token builtin">id</span><span class="token punctuation">,</span> hero<span class="token punctuation">.</span><span class="token builtin">id</span><span class="token punctuation">)</span>
+
+        updated_hero <span class="token operator">=</span> hero_repo<span class="token punctuation">.</span>find_by_id<span class="token punctuation">(</span>hero<span class="token punctuation">.</span><span class="token builtin">id</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span>updated_hero<span class="token punctuation">.</span>xp<span class="token punctuation">,</span> <span class="token number">80</span><span class="token punctuation">)</span></code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="システムテスト--受入テスト">システムテスト / 受入テスト</h3>
+          <p>システム全体を通して、ユーザーの視点で「仕様通りに動くか」を検証します。受入テストは、第1章で定義した要求やユースケースが満たされているかを確認するテストでもあります。要求の定義（1章）からテストの検証（4章）まで、本書全体が一つの開発サイクルとして繋がっています。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="テストピラミッド-理想的な軍団編成">テストピラミッド: 理想的な軍団編成</h2>
+        <p>テストレベルごとに「どれくらいの数を書くべきか」を示したのが<strong>テストピラミッド</strong>です。</p>
+        <figure>
+          <img src="../../assets/diagrams/chapter04/4-1-test-pyramid.svg" alt="テストピラミッド">
+          <figcaption aria-hidden="true">テストピラミッド</figcaption>
+        </figure>
+        <table>
+          <thead>
+            <tr>
+              <th>層</th>
+              <th>特徴</th>
+              <th>目安</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>上層（E2E / System）</strong></td>
+              <td>遅い・壊れやすいが、ユーザー体験を直接検証</td>
+              <td>全体の10〜20%</td>
+            </tr>
+            <tr>
+              <td><strong>中層（Integration）</strong></td>
+              <td>コンポーネント連携の整合性を確認</td>
+              <td>全体の20〜30%</td>
+            </tr>
+            <tr>
+              <td><strong>下層（Unit）</strong></td>
+              <td>速い・安定・大量に書ける</td>
+              <td>全体の50〜70%</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>ピラミッドの形が逆さま（上層ばかり多い）になると、テストの実行に時間がかかり、原因の特定にも手間が増えます。<strong>土台（単体テスト）を厚く、頂点（E2E）は薄く</strong>が、効率的な軍団編成の原則です。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="v字モデル-開発工程とテストの対応">V字モデル: 開発工程とテストの対応</h2>
+        <p>ソフトウェアエンジニアリングには、開発の各工程と対応するテストレベルを示す<strong>V字モデル</strong>という考え方があります。</p>
+        <figure>
+          <img src="../../assets/diagrams/chapter04/4-1-v-model.svg" alt="V字モデル">
+          <figcaption aria-hidden="true">V字モデル</figcaption>
+        </figure>
+        <p>左側で「何を作るか」を決め、右側で「正しく作れたか」を検証します。</p>
+        <p>V字の同じ高さにある工程とテストが対応しているのがポイントです。</p>
+        <ul>
+          <li><strong>要求定義</strong>で書いた仕様は → <strong>受入テスト</strong>で検証する</li>
+          <li><strong>基本設計</strong>で決めた構造は → <strong>システムテスト</strong>で検証する</li>
+          <li><strong>詳細設計</strong>で決めた連携は → <strong>結合テスト</strong>で検証する</li>
+          <li><strong>実装</strong>した関数/クラスは → <strong>単体テスト</strong>で検証する</li>
+        </ul>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="テストダブル-依存を切り離す技法">テストダブル: 依存を切り離す技法</h2>
+        <p>単体テストで「データベースに保存する処理」をテストしたいとき、本物のデータベースを用意するのは大変です。そこで使うのが<strong>テストダブル（Test Double）</strong>——本物の代わりに使う「影武者」です。</p>
+        <table>
+          <thead>
+            <tr>
+              <th>種類</th>
+              <th>役割</th>
+              <th>用途</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>スタブ（Stub）</strong></td>
+              <td>固定値を返す替え玉</td>
+              <td>「リポジトリから常にこのデータを返す」</td>
+            </tr>
+            <tr>
+              <td><strong>モック（Mock）</strong></td>
+              <td>呼び出されたかを検証する替え玉</td>
+              <td>「save()が1回呼ばれたことを確認する」</td>
+            </tr>
+            <tr>
+              <td><strong>スパイ（Spy）</strong></td>
+              <td>本物の処理を実行しつつ記録する</td>
+              <td>「実際に動かし、呼び出し回数も数える」</td>
+            </tr>
+          </tbody>
+        </table>
+        <pre class="language-python"><code class="language-python"><span class="token comment"># スタブの例: 常に特定のクエストを返すリポジトリ</span>
+<span class="token keyword">class</span> <span class="token class-name">StubQuestRepository</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">find_by_id</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> quest_id<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> Quest<span class="token punctuation">:</span>
+        <span class="token keyword">return</span> Quest<span class="token punctuation">(</span>title<span class="token operator">=</span><span class="token string">"Stub Quest"</span><span class="token punctuation">,</span> difficulty<span class="token operator">=</span><span class="token string">"NORMAL"</span><span class="token punctuation">,</span>
+                     base_xp<span class="token operator">=</span><span class="token number">100</span><span class="token punctuation">,</span> recommended_level<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+
+<span class="token comment"># モックの例: save()が呼ばれたかを検証</span>
+<span class="token keyword">from</span> unittest<span class="token punctuation">.</span>mock <span class="token keyword">import</span> MagicMock
+
+<span class="token keyword">def</span> <span class="token function">test_complete_quest_saves_result</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    mock_repo <span class="token operator">=</span> MagicMock<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    quest <span class="token operator">=</span> Quest<span class="token punctuation">(</span>title<span class="token operator">=</span><span class="token string">"Test"</span><span class="token punctuation">,</span> difficulty<span class="token operator">=</span><span class="token string">"NORMAL"</span><span class="token punctuation">,</span> base_xp<span class="token operator">=</span><span class="token number">50</span><span class="token punctuation">,</span>
+                  recommended_level<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+    mock_repo<span class="token punctuation">.</span>find_by_id<span class="token punctuation">.</span>return_value <span class="token operator">=</span> quest
+
+    use_case <span class="token operator">=</span> CompleteQuestUseCase<span class="token punctuation">(</span>mock_repo<span class="token punctuation">,</span> hero_repo<span class="token punctuation">)</span>
+    use_case<span class="token punctuation">.</span>execute<span class="token punctuation">(</span>quest<span class="token punctuation">.</span><span class="token builtin">id</span><span class="token punctuation">,</span> hero<span class="token punctuation">.</span><span class="token builtin">id</span><span class="token punctuation">)</span>
+
+    mock_repo<span class="token punctuation">.</span>save<span class="token punctuation">.</span>assert_called_once<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># save()が1回呼ばれたことを確認</span></code></pre>
+        <p>テストダブルを使うことで、データベースやネットワークなどの外部依存を切り離し、高速で安定した単体テストが書けます。第2章で学んだ「依存性の逆転（DIP）」が、ここで実践的に活きてきます。インターフェース（抽象）に依存する設計だからこそ、本物と影武者を自在に差し替えられるのです。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="まとめ">まとめ</h2>
+        <ol>
+          <li><strong>テストレベル</strong>は4段階: 単体→結合→システム→受入。それぞれが異なる粒度でコードの正しさを保証する。</li>
+          <li><strong>テストピラミッド</strong>で量のバランスを取る: 土台（単体テスト）を厚く、頂点（E2E）は薄く。</li>
+          <li><strong>V字モデル</strong>で開発工程とテストを対応づける: 要求定義には受入テスト、実装には単体テスト。</li>
+          <li><strong>テストダブル</strong>で外部依存を切り離す: stub/mock/spyを使い分け、高速で安定したテストを実現する。</li>
+        </ol>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <pre class="language-text"><code class="language-text">以下のクラスの単体テストを書いてください。
+外部依存（リポジトリ）はモックに差し替え、以下のケースをテストしてください：
+1. 正常系: クエスト完了時に経験値が加算される
+2. 異常系: 存在しないクエストIDを指定した場合
+[コードを貼り付け]</code></pre>
+        <pre class="language-text"><code class="language-text">このプロジェクトのテストピラミッドを分析してください。
+単体テスト、結合テスト、E2Eテストの比率を数え、
+理想的なピラミッドとの乖離を指摘してください。</code></pre>
+        <hr>
+        <p><strong>執筆メモ</strong>:</p>
+        <ul>
+          <li>執筆日時: 2026-02-01</li>
+          <li>構成: テストの全体像を「地図」として最初に提示。以降の節の前提知識。</li>
+          <li>接続: 1章（要求定義）→4章（受入テスト）、2章（DIP）→テストダブル、5章（リファクタリング）→テストの安全網</li>
+        </ul>
+      </section>
+    </section>
+  
+
+</body></html>

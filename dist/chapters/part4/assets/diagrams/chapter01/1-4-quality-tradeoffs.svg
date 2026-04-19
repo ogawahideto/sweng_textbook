@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400" width="500" height="400">
+  <defs>
+    <style>
+      .radar-bg { fill: #FAFAFA; stroke: #DDD; stroke-width: 1; }
+      .radar-line { stroke: #CCC; stroke-width: 1; fill: none; }
+      .data-poly { fill: #E3F2FD; stroke: #4A90D9; stroke-width: 2; fill-opacity: 0.6; }
+      .text-label { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; fill: #333; font-weight: bold; text-anchor: middle; }
+      .text-val { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; fill: #666; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <title>品質特性のトレードオフ</title>
+  <rect x="0" y="0" width="500" height="400" fill="#FFF"/>
+
+  <!-- レーダーチャートの背景 (5角形) -->
+  <g transform="translate(250, 200)">
+    <!-- 補助線 -->
+    <circle cx="0" cy="0" r="150" class="radar-bg" />
+    <circle cx="0" cy="0" r="100" class="radar-line" />
+    <circle cx="0" cy="0" r="50" class="radar-line" />
+    
+    <!-- 軸 -->
+    <line x1="0" y1="0" x2="0" y2="-150" class="radar-line" /> <!-- 性能 -->
+    <line x1="0" y1="0" x2="142" y2="-46" class="radar-line" /> <!-- 信頼性 -->
+    <line x1="0" y1="0" x2="88" y2="121" class="radar-line" /> <!-- 使用性 -->
+    <line x1="0" y1="0" x2="-88" y2="121" class="radar-line" /> <!-- 保守性 -->
+    <line x1="0" y1="0" x2="-142" y2="-46" class="radar-line" /> <!-- 移植性 -->
+
+    <!-- ラベル -->
+    <text x="0" y="-165" class="text-label">性能 (Performance)</text>
+    <text x="160" y="-40" class="text-label" text-anchor="start">信頼性 (Reliability)</text>
+    <text x="100" y="145" class="text-label" text-anchor="start">使用性 (Usability)</text>
+    <text x="-100" y="145" class="text-label" text-anchor="end">保守性 (Maintainability)</text>
+    <text x="-160" y="-40" class="text-label" text-anchor="end">移植性 (Portability)</text>
+
+    <!-- データ (トレードオフの例) -->
+    <!-- 性能重視で保守性が低い例 -->
+    <polygon points="0,-140 110,-35 70,95 -40,55 -90,-30" class="data-poly" />
+    
+    <text x="0" y="0" class="text-val">トレードオフの均衡点</text>
+  </g>
+
+</svg>

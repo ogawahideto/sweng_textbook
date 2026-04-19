@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .line { stroke: #333; stroke-width: 1.5; stroke-dasharray: 4; }
+      .rect-actor { fill: #E3F2FD; stroke: #1E88E5; stroke-width: 2; }
+      .active-bar { fill: #FFF; stroke: #333; stroke-width: 1; }
+      .arrow { stroke: #333; stroke-width: 1.5; fill: none; marker-end: url(#arrowhead); }
+      .text-actor { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; font-weight: bold; text-anchor: middle; }
+      .text-msg { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; fill: #333; }
+    </style>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon fill="#333" points="0 0, 10 3.5, 0 7" />
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="600" height="400" class="bg"/>
+
+  <!-- Participants -->
+  <g transform="translate(50, 20)">
+    <rect x="-40" y="0" width="80" height="30" rx="5" class="rect-actor" />
+    <text x="0" y="20" class="text-actor">ユーザー</text>
+    <line x1="0" y1="30" x2="0" y2="350" class="line" />
+  </g>
+  <g transform="translate(180, 20)">
+    <rect x="-50" y="0" width="100" height="30" rx="5" class="rect-actor" />
+    <text x="0" y="20" class="text-actor">Controller</text>
+    <line x1="0" y1="30" x2="0" y2="350" class="line" />
+  </g>
+  <g transform="translate(310, 20)">
+    <rect x="-40" y="0" width="80" height="30" rx="5" class="rect-actor" />
+    <text x="0" y="20" class="text-actor">Quest</text>
+    <line x1="0" y1="30" x2="0" y2="350" class="line" />
+  </g>
+  <g transform="translate(440, 20)">
+    <rect x="-40" y="0" width="80" height="30" rx="5" class="rect-actor" />
+    <text x="0" y="20" class="text-actor">Reward</text>
+    <line x1="0" y1="30" x2="0" y2="350" class="line" />
+  </g>
+  <g transform="translate(550, 20)">
+    <rect x="-40" y="0" width="80" height="30" rx="5" class="rect-actor" />
+    <text x="0" y="20" class="text-actor">Hero</text>
+    <line x1="0" y1="30" x2="0" y2="350" class="line" />
+  </g>
+
+  <!-- Activation Bars -->
+  <rect x="175" y="60" width="10" height="250" class="active-bar" />
+  <rect x="305" y="80" width="10" height="60" class="active-bar" />
+  <rect x="435" y="160" width="10" height="60" class="active-bar" />
+  <rect x="545" y="240" width="10" height="40" class="active-bar" />
+
+  <!-- Messages -->
+  <path d="M 50,70 L 175,70" class="arrow" />
+  <text x="60" y="65" class="text-msg">1. 報告(ID)</text>
+
+  <path d="M 185,90 L 305,90" class="arrow" />
+  <text x="195" y="85" class="text-msg">2. complete()</text>
+
+  <path d="M 305,130 L 185,130" class="arrow" style="stroke-dasharray: 2; marker-end: none;" />
+  <text x="195" y="125" class="text-msg">3. return</text>
+
+  <path d="M 185,170 L 435,170" class="arrow" />
+  <text x="195" y="165" class="text-msg">4. apply_to(Hero)</text>
+
+  <path d="M 445,200 L 545,250" class="arrow" />
+  <text x="455" y="225" class="text-msg" transform="rotate(25 455,225)">5. add_exp(val)</text>
+
+</svg>

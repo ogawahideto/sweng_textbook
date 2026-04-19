@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <defs>
+    <style>
+      .map-bg { fill: #FDF5E6; stroke: #D2B48C; stroke-width: 3; }
+      .path { stroke: #8B4513; stroke-width: 2; stroke-dasharray: 8; fill: none; }
+      .node-circle { fill: #FFF; stroke: #8B4513; stroke-width: 2; }
+      .text-num { font-family: 'serif'; font-size: 14px; font-weight: bold; fill: #8B4513; text-anchor: middle; }
+      .text-title { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; fill: #333; }
+      .title-main { font-family: 'Noto Sans JP', sans-serif; font-size: 18px; font-weight: bold; fill: #8B4513; text-anchor: middle; }
+    </style>
+  </defs>
+  <rect x="10" y="10" width="580" height="380" rx="15" class="map-bg" />
+  <text x="300" y="45" class="title-main">第3章：冒険の地図（AI駆動の実装）</text>
+
+  <path d="M 80,100 L 200,80 L 350,100 L 480,120 L 500,220 L 380,250 L 220,220 L 100,300" class="path" />
+
+  <g transform="translate(80, 100)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">3.1</text>
+    <text x="-40" y="35" class="text-title">アルゴリズム</text>
+  </g>
+  <g transform="translate(200, 80)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">3.2</text>
+    <text x="0" y="35" class="text-title" text-anchor="middle">制御構造</text>
+  </g>
+  <g transform="translate(350, 100)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">3.3</text>
+    <text x="0" y="35" class="text-title" text-anchor="middle">データとクラス</text>
+  </g>
+  <g transform="translate(480, 120)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">3.4</text>
+    <text x="-40" y="35" class="text-title">静的解析</text>
+  </g>
+  <g transform="translate(500, 220)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">3.5</text>
+    <text x="-80" y="30" class="text-title">AIとの協働</text>
+  </g>
+  <g transform="translate(380, 250)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">3.6</text>
+    <text x="0" y="30" class="text-title" text-anchor="middle">多言語とパラダイム</text>
+  </g>
+  <g transform="translate(220, 220)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">3.7</text>
+    <text x="0" y="30" class="text-title" text-anchor="middle">並列詠唱</text>
+  </g>
+  <g transform="translate(100, 300)">
+    <circle r="15" class="node-circle" style="stroke: #D32F2F;" />
+    <text y="5" class="text-num" style="fill: #D32F2F;">3.8</text>
+    <text x="20" y="5" class="text-title" style="font-weight: bold;">【外伝】レガシー考古学</text>
+  </g>
+</svg>

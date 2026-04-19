@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>3.4 審美眼の錬磨——コードの評価と静的解析</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+    <style>
+        body { max-width: 900px; margin: 0 auto; background: white; }
+        section { padding: 20px; }
+        img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body style="margin:0; padding:0;">
+
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part2/chapter03/3-3.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part2/chapter03/3-5.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    <main>
+    <section class="level1">
+      <h1 id="34-審美眼の錬磨コードの評価と静的解析">3.4 審美眼の錬磨——コードの評価と静的解析</h1>
+      <p>これまでに、基本的な「元素（アルゴリズム）」と、それを組み上げる「構築（制御構造）」を学びました。しかし、AIと共に高速にコードを生成できるようになった今、アルケミスト（エンジニア）にはもう一つ、決定的に重要な能力が求められます。</p>
+      <p>それは、目の前のコードが「本当に良いものか」を瞬時に見抜く<strong>審美眼（Evaluation）</strong>です。</p>
+      <p>前節3.3で関数・クラス・モジュールという器で処理を整理したうえで、本節ではその器の出来栄えを数値と解析で鑑定します。</p>
+      <p>AIは平気な顔をして、動くけれどメンテナンス不可能な「呪いのアイテム」を生成することがあります。見た目は立派な剣でも、振った瞬間に折れる（バグる）ようでは使い物になりません。本セクションでは、コードの品質を数値で測る「鑑定魔法（メトリクス）」と、自動的に不備を検知する「結界（静的解析）」について学びます。</p>
+      <p>次の図は、リンター・フォーマッター・型チェッカーという三種類の静的解析ツールがコードのどの側面を検査するかを示しています。</p>
+      <figure>
+        <img src="../../assets/diagrams/chapter03/3-4-static-analysis.svg" alt="静的解析ツールの鑑定眼">
+        <figcaption aria-hidden="true">静的解析ツールの鑑定眼</figcaption>
+      </figure>
+      <p>ここで重要なのは、これらのツールがコードを「実行せずに」解析するという点です。リンターはバグの芽となる構造的な問題を指摘し、フォーマッターはスタイルを強制的に統一し、型チェッカーは型の不整合を事前に検知します。三者が連携することで、AIが生成したコードであっても人間がレビューする前段階で多くの問題を自動的に取り除くことができます。</p>
+      <hr>
+      <section class="level3">
+        <h3 id="なぜこれが重要か">なぜこれが重要か</h3>
+        <p>こうした客観的な評価は、AI時代のエンジニアにとって不可欠な能力です。「なんとなく読みづらい」「多分大丈夫」といった感覚的な評価は、チーム開発やAIとの協働では通用しません。</p>
+        <ol>
+          <li><strong>客観的な品質基準</strong>: 「複雑すぎる」という指摘を、「循環複雑度が15を超えている」という事実に置き換えることで、感情論抜きに議論できます。</li>
+          <li><strong>AIの暴走抑止</strong>: AIにコードを書かせた後、人間がレビューする際の「チェックリスト」として機能します。</li>
+          <li><strong>技術的負債の可視化</strong>: 目に見えない「借金」を数値化し、リファクタリングの優先順位を決める根拠になります。</li>
+        </ol>
+      </section>
+      <section class="level3">
+        <h3 id="基本概念鑑定のための指標メトリクス">基本概念：鑑定のための指標（メトリクス）</h3>
+        <p>コードの品質を測るスカウターのような数値です。シンプルなものから順に見ていきましょう。</p>
+        <section class="level4">
+          <h4 id="1-行数lines-of-code-loc">1. 行数（Lines of Code: LOC）</h4>
+          <p>最もシンプルですが、強力な指標です。</p>
+          <pre class="language-python"><code class="language-python"><span class="token comment"># 20行の関数（適切）</span>
+<span class="token keyword">def</span> <span class="token function">complete_quest</span><span class="token punctuation">(</span>quest<span class="token punctuation">,</span> hero<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> quest<span class="token punctuation">.</span>status <span class="token operator">!=</span> <span class="token string">"ACTIVE"</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> Error<span class="token punctuation">(</span><span class="token string">"Not active"</span><span class="token punctuation">)</span>
+    quest<span class="token punctuation">.</span>status <span class="token operator">=</span> <span class="token string">"COMPLETED"</span>
+    hero<span class="token punctuation">.</span>add_xp<span class="token punctuation">(</span>quest<span class="token punctuation">.</span>xp_reward<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> Success<span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 100行の関数（長すぎる → 分割を検討）</span>
+<span class="token keyword">def</span> <span class="token function">do_everything</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># ... 延々と続く処理 ...</span>
+    <span class="token keyword">pass</span></code></pre>
+          <p><strong>歴史的な基準と現代の実務基準</strong>:</p>
+          <p>
+            関数やメソッドの行数の基準は、開発環境やプログラミング言語などによって異なります。
+            ここではこれまでに提案されている代表的な基準をいくつか紹介します。
+          </p>
+          <table>
+            <thead>
+              <tr>
+                <th>出典</th>
+                <th>推奨行数</th>
+                <th>備考</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Robert C. Martin『Clean Code』(2008)</td>
+                <td>20行以下</td>
+                <td>理想は5〜10行。「関数は小さくあるべき」</td>
+              </tr>
+              <tr>
+                <td>Steve McConnell『Code Complete 第2版』(2004)</td>
+                <td>200行以下</td>
+                <td>研究では65行程度まで問題なしとのデータも紹介</td>
+              </tr>
+              <tr>
+                <td>Google Python Style Guide</td>
+                <td>40行超で検討</td>
+                <td>「長すぎる関数は分割を検討せよ」</td>
+              </tr>
+              <tr>
+                <td>各種Linter（一般的な設定）</td>
+                <td>50行前後で警告</td>
+                <td>プロジェクトごとに調整可能</td>
+              </tr>
+            </tbody>
+          </table>
+          <ul>
+            <li><strong>目安</strong>: 50行を超えたら分割を検討。20〜30行以内に収まると読みやすい。</li>
+            <li><strong>計測方法</strong>: <code>wc -l ファイル名</code> や、エディタの行数表示で確認できます。</li>
+            <li><strong>注意</strong>: 行数だけでは「空行やコメントが多いだけ」の場合を区別できないため、他の指標と併用します。</li>
+          </ul>
+        </section>
+        <section class="level4">
+          <h4 id="2-循環的複雑度cyclomatic-complexity">2. 循環的複雑度（Cyclomatic Complexity）</h4>
+          <p>行数という第一の指標を理解したら、次はコードの「分岐の多さ」を測る、より本質的な指標に踏み込みましょう。コードの中に「独立した実行経路」がいくつあるかを示すのが循環的複雑度です。1976年にThomas McCabeが提唱した伝統的な指標です。</p>
+          <p><strong>正式な計算式</strong>（制御フローグラフ理論）:</p>
+          <pre class="language-text"><code class="language-text">M = E - N + 2P
+
+M: 循環的複雑度
+E: エッジ数（制御フローの矢印の数）
+N: ノード数（処理ブロックの数）
+P: 連結成分数（通常は1）</code></pre>
+          <p><strong>実用的な計算方法</strong>: 以下の要素を数えて <code>+1</code> する</p>
+          <table>
+            <thead>
+              <tr>
+                <th>カウント対象</th>
+                <th>例</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>条件分岐</td>
+                <td><code>if</code>, <code>elif</code>, <code>case</code></td>
+              </tr>
+              <tr>
+                <td>ループ</td>
+                <td><code>for</code>, <code>while</code></td>
+              </tr>
+              <tr>
+                <td>論理演算子</td>
+                <td><code>and</code>, <code>or</code></td>
+              </tr>
+              <tr>
+                <td>例外処理</td>
+                <td><code>catch</code>, <code>except</code></td>
+              </tr>
+              <tr>
+                <td>三項演算子</td>
+                <td><code>? :</code>, <code>if-else</code>式</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">get_rank</span><span class="token punctuation">(</span>score<span class="token punctuation">)</span><span class="token punctuation">:</span>          <span class="token comment"># 基本: 1</span>
+    <span class="token keyword">if</span> score <span class="token operator">&gt;=</span> <span class="token number">90</span><span class="token punctuation">:</span>           <span class="token comment"># +1 (if)</span>
+        <span class="token keyword">return</span> <span class="token string">"S"</span>
+    <span class="token keyword">elif</span> score <span class="token operator">&gt;=</span> <span class="token number">70</span><span class="token punctuation">:</span>         <span class="token comment"># +1 (elif)</span>
+        <span class="token keyword">return</span> <span class="token string">"A"</span>
+    <span class="token keyword">elif</span> score <span class="token operator">&gt;=</span> <span class="token number">50</span><span class="token punctuation">:</span>         <span class="token comment"># +1 (elif)</span>
+        <span class="token keyword">return</span> <span class="token string">"B"</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token string">"C"</span>
+<span class="token comment"># 循環的複雑度 = 1 + 3 = 4</span></code></pre>
+          <ul>
+            <li><strong>目安</strong>: 10以下が理想。15を超えると要注意。20を超えるとテストが困難。</li>
+            <li><strong>意味</strong>: 「この関数を完全にテストするには、最低何個のテストケースが必要か」の下限値。</li>
+          </ul>
+          <p><strong>計測ツール（言語別）</strong>:</p>
+          <p>これらの値はツールで自動的に計測することができます。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>言語</th>
+                <th>ツール</th>
+                <th>コマンド例</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Python</td>
+                <td>radon</td>
+                <td><code>radon cc file.py -s</code></td>
+              </tr>
+              <tr>
+                <td>JavaScript/TypeScript</td>
+                <td>eslint + complexity</td>
+                <td><code>eslint --rule 'complexity: error'</code></td>
+              </tr>
+              <tr>
+                <td>Java</td>
+                <td>PMD, Checkstyle</td>
+                <td><code>pmd check -R category/java/design.xml</code></td>
+              </tr>
+              <tr>
+                <td>C#</td>
+                <td>Visual Studio メトリクス</td>
+                <td>IDE内で計測</td>
+              </tr>
+              <tr>
+                <td>Go</td>
+                <td>gocyclo</td>
+                <td><code>gocyclo -over 10 .</code></td>
+              </tr>
+              <tr>
+                <td>汎用</td>
+                <td>SonarQube</td>
+                <td>Web UI で確認</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre class="language-bash"><code class="language-bash"><span class="token comment"># Python での例</span>
+pip <span class="token function">install</span> radon
+radon cc your_file.py -s  <span class="token comment"># -s でスコア表示</span></code></pre>
+          <p>
+            出力例:
+            <code>your_file.py F 10:0 get_rank - A (4) # A=低複雑度、数値は4</code>
+          </p>
+        </section>
+        <section class="level4">
+          <h4 id="3-認知的複雑度cognitive-complexity">3. 認知的複雑度（Cognitive Complexity）</h4>
+          <p>循環的複雑度がコードの構造を数値化するなら、認知的複雑度はその数値が「人間の読みやすさ」とどう結びつくかをより精密に捉えます。「人間にとってどれくらい理解しづらいか」を測る、2016年にSonarSourceが提唱した現代的な指標であり、循環的複雑度と異なり<strong>ネストの深さ</strong>を重く評価します。</p>
+          <pre class="language-python"><code class="language-python"><span class="token comment"># 例1: フラットな構造（認知的複雑度 = 3）</span>
+<span class="token keyword">def</span> <span class="token function">check_eligibility</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> <span class="token keyword">not</span> user<span class="token punctuation">.</span>is_active<span class="token punctuation">:</span>      <span class="token comment"># +1</span>
+        <span class="token keyword">return</span> <span class="token boolean">False</span>
+    <span class="token keyword">if</span> user<span class="token punctuation">.</span>age <span class="token operator">&lt;</span> <span class="token number">18</span><span class="token punctuation">:</span>           <span class="token comment"># +1</span>
+        <span class="token keyword">return</span> <span class="token boolean">False</span>
+    <span class="token keyword">if</span> user<span class="token punctuation">.</span>is_banned<span class="token punctuation">:</span>          <span class="token comment"># +1</span>
+        <span class="token keyword">return</span> <span class="token boolean">False</span>
+    <span class="token keyword">return</span> <span class="token boolean">True</span>
+
+<span class="token comment"># 例2: ネストした構造（認知的複雑度 = 6）</span>
+<span class="token keyword">def</span> <span class="token function">check_eligibility</span><span class="token punctuation">(</span>user<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> user<span class="token punctuation">.</span>is_active<span class="token punctuation">:</span>          <span class="token comment"># +1</span>
+        <span class="token keyword">if</span> user<span class="token punctuation">.</span>age <span class="token operator">&gt;=</span> <span class="token number">18</span><span class="token punctuation">:</span>      <span class="token comment"># +2 (ネスト+1)</span>
+            <span class="token keyword">if</span> <span class="token keyword">not</span> user<span class="token punctuation">.</span>is_banned<span class="token punctuation">:</span>  <span class="token comment"># +3 (ネスト+2)</span>
+                <span class="token keyword">return</span> <span class="token boolean">True</span>
+    <span class="token keyword">return</span> <span class="token boolean">False</span></code></pre>
+          <p>同じロジックでも、ネストが深いと認知的複雑度は高くなります。</p>
+          <ul>
+            <li><strong>目安</strong>: 15以下が理想。25を超えると理解困難。</li>
+          </ul>
+          <p><strong>計測ツール（言語別）</strong>:</p>
+          <table>
+            <thead>
+              <tr>
+                <th>言語</th>
+                <th>ツール</th>
+                <th>コマンド例</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Python</td>
+                <td>flake8-cognitive-complexity</td>
+                <td><code>flake8 --max-cognitive-complexity 15</code></td>
+              </tr>
+              <tr>
+                <td>JavaScript/TypeScript</td>
+                <td>eslint-plugin-sonarjs</td>
+                <td><code>eslint --plugin sonarjs</code></td>
+              </tr>
+              <tr>
+                <td>Java</td>
+                <td>SonarQube, Sonarlint</td>
+                <td>IDE プラグインで確認</td>
+              </tr>
+              <tr>
+                <td>C#</td>
+                <td>SonarAnalyzer</td>
+                <td>IDE プラグインで確認</td>
+              </tr>
+              <tr>
+                <td>Go</td>
+                <td>gocognit</td>
+                <td><code>gocognit -over 15 .</code></td>
+              </tr>
+              <tr>
+                <td>汎用</td>
+                <td>SonarQube</td>
+                <td>Web UI で確認</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre class="language-bash"><code class="language-bash"><span class="token comment"># Python での例</span>
+pip <span class="token function">install</span> flake8-cognitive-complexity
+flake8 --max-cognitive-complexity <span class="token number">15</span> your_file.py</code></pre>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="魔法の道具静的解析ツールlinter--formatter">魔法の道具：静的解析ツール（Linter &amp; Formatter）</h2>
+        <p>コードを実行せずに、その構造や記述を解析して問題を見つけるツール群です。これらは、開発者を守る「常時発動型の結界」として機能します。メトリクスで指標を把握したら、今度はその問題を自動的に検出するツールを揃えましょう。</p>
+        <section class="level3">
+          <h3 id="1-リンターlinter粗探しの小鬼">1. リンター（Linter）：粗探しの小鬼</h3>
+          <p>文法的には間違っていなくても、バグになりそうな箇所やスタイル違反を指摘してくれます。</p>
+          <ul>
+            <li><strong>代表格</strong>: Ruff, Flake8, Pylint (Python), ESLint (JavaScript)</li>
+            <li><strong>指摘内容</strong>: 未使用の変数、定義されていない名前、危険なデフォルト引数など。</li>
+          </ul>
+        </section>
+        <section class="level3">
+          <h3 id="2-フォーマッターformatter整列の精霊">2. フォーマッター（Formatter）：整列の精霊</h3>
+          <p>リンターでバグの芽を摘んだら、次はコードの「見た目」を統一するツールの出番です。コードの見た目（インデント、改行、空白）を強制的に統一します。</p>
+          <ul>
+            <li><strong>代表格</strong>: Black, Ruff (Python), Prettier (JavaScript)</li>
+            <li><strong>効果</strong>: 「タブかスペースか」「改行の位置はどこか」といった無益な宗教論争を終わらせ、本質的なロジックの議論に集中させます。</li>
+          </ul>
+        </section>
+        <section class="level3">
+          <h3 id="3-型チェッカーtype-checker契約の番人">3. 型チェッカー（Type Checker）：契約の番人</h3>
+          <p>スタイルが整ったら、最後に「型」という観点で契約の番人を配置しましょう。動的型付け言語（PythonやJavaScript）において、型の整合性を静的に検証します。</p>
+          <ul>
+            <li><strong>代表格</strong>: Mypy, Pyright (Python), TypeScript Compiler</li>
+            <li><strong>効果</strong>: <code>int</code> を期待している場所に <code>None</code> が渡されるようなミスを、実行前に検知できます。</li>
+          </ul>
+          <hr>
+          <blockquote>
+            <p><strong>コラム: IDEが守ってくれる時代</strong></p>
+            <p>現代の開発では、IDE（統合開発環境）がこれらのツールを裏で自動実行し、リアルタイムで警告を表示してくれます。コマンドを手で叩く必要はほとんどありません。</p>
+            <p><strong>主要IDEの対応状況</strong>:</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>IDE</th>
+                  <th>特徴</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>VS Code</strong></td>
+                  <td>拡張機能で何でも追加可能。Pylance（Python）、ESLint、Prettier等をインストールすれば、保存時に自動フォーマット＆警告表示</td>
+                </tr>
+                <tr>
+                  <td><strong>IntelliJ IDEA / PyCharm</strong></td>
+                  <td>購入時点で高度な静的解析が組み込み済み。循環的複雑度も設定で警告可能</td>
+                </tr>
+                <tr>
+                  <td><strong>Visual Studio</strong></td>
+                  <td>C#/.NET向けにコードメトリクス機能を標準搭載。「分析」メニューから計測可能</td>
+                </tr>
+              </tbody>
+            </table>
+            <p><strong>IDEで有効にしておきたい設定</strong>:</p>
+            <ul>
+              <li><strong>保存時の自動フォーマット</strong>: 手動で整形する手間がゼロに</li>
+              <li><strong>リアルタイム型チェック</strong>: 書いた瞬間にエラーが分かる</li>
+              <li><strong>複雑度の警告閾値</strong>: 関数が複雑になりすぎたら黄色や赤で警告</li>
+            </ul>
+            <p>ツールの存在を使うことは重要ですが、実務では「IDEが勝手にやってくれる」状態を目指しましょう。結界は、意識せずとも常に発動しているのが理想です。</p>
+          </blockquote>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="実践例aiコードの鑑定会">実践例：AIコードの鑑定会</h2>
+        <p>AIに生成させたQuestForgeのコードを、ツールを使って評価してみましょう。メトリクスと静的解析が連携して初めて、コードの「真の品質」が見えてきます。</p>
+        <section class="level3">
+          <h3 id="鑑定対象のコードai生成未修正">鑑定対象のコード（AI生成・未修正）</h3>
+          <pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">calculate_rewards</span><span class="token punctuation">(</span>hero<span class="token punctuation">,</span> quests<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    total_xp <span class="token operator">=</span> <span class="token number">0</span>
+    total_gold <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">for</span> q <span class="token keyword">in</span> quests<span class="token punctuation">:</span>
+        <span class="token keyword">if</span> q<span class="token punctuation">.</span>status <span class="token operator">==</span> <span class="token string">'COMPLETED'</span><span class="token punctuation">:</span>
+            <span class="token keyword">if</span> q<span class="token punctuation">.</span>difficulty <span class="token operator">==</span> <span class="token string">'HARD'</span><span class="token punctuation">:</span>
+                <span class="token keyword">if</span> hero<span class="token punctuation">.</span>level <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">:</span>
+                    total_xp <span class="token operator">+=</span> q<span class="token punctuation">.</span>base_xp <span class="token operator">*</span> <span class="token number">2</span>
+                <span class="token keyword">else</span><span class="token punctuation">:</span>
+                    total_xp <span class="token operator">+=</span> q<span class="token punctuation">.</span>base_xp <span class="token operator">*</span> <span class="token number">1.5</span>
+            <span class="token keyword">elif</span> q<span class="token punctuation">.</span>difficulty <span class="token operator">==</span> <span class="token string">'NORMAL'</span><span class="token punctuation">:</span>
+                total_xp <span class="token operator">+=</span> q<span class="token punctuation">.</span>base_xp
+            <span class="token comment"># ... (以下略)</span>
+            
+    <span class="token keyword">return</span> total_xp<span class="token punctuation">,</span> total_gold</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="1-メトリクス計測鑑定">1. メトリクス計測（鑑定）</h3>
+          <p>このコードを <code>radon</code> (Pythonのメトリクス計測ツール) で計測したとします。</p>
+          <ul>
+            <li><strong>循環複雑度</strong>: 12 （少し高い）</li>
+            <li><strong>判定</strong>: ネストが深く、条件分岐が多いため、認知負荷が高い。</li>
+          </ul>
+        </section>
+        <section class="level3">
+          <h3 id="2-静的解析結界の反応">2. 静的解析（結界の反応）</h3>
+          <p>メトリクスで数値的な問題が把握できたら、次は静的解析ツールで具体的な警告を確認しましょう。<code>Ruff</code> や <code>Mypy</code> を通すと、以下のような警告が出ました。</p>
+          <ul>
+            <li><strong>Ruff</strong>: <code>total_gold</code> is defined but never used. （変数が使われていない）</li>
+            <li><strong>Mypy</strong>: <code>hero.level</code> is compatible with <code>int</code>? （型ヒントがないため不明瞭）</li>
+          </ul>
+        </section>
+        <section class="level3">
+          <h3 id="3-改善版鑑定結果に基づく修正">3. 改善版（鑑定結果に基づく修正）</h3>
+          <p>警告の内容が分かれば、具体的にどう修正するかが見えてきます。指摘を受けて、ガード節を使ったり関数を分けたりして修正します。</p>
+          <pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">calculate_quest_reward</span><span class="token punctuation">(</span>quest<span class="token punctuation">:</span> Quest<span class="token punctuation">,</span> hero<span class="token punctuation">:</span> Hero<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">int</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""単一クエストの報酬計算（複雑度を分離）"""</span>
+    <span class="token keyword">if</span> quest<span class="token punctuation">.</span>status <span class="token operator">!=</span> <span class="token string">'COMPLETED'</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token number">0</span>
+        
+    <span class="token keyword">if</span> quest<span class="token punctuation">.</span>difficulty <span class="token operator">==</span> <span class="token string">'HARD'</span><span class="token punctuation">:</span>
+        multiplier <span class="token operator">=</span> <span class="token number">2.0</span> <span class="token keyword">if</span> hero<span class="token punctuation">.</span>level <span class="token operator">&lt;</span> <span class="token number">5</span> <span class="token keyword">else</span> <span class="token number">1.5</span>
+        <span class="token keyword">return</span> <span class="token builtin">int</span><span class="token punctuation">(</span>quest<span class="token punctuation">.</span>base_xp <span class="token operator">*</span> multiplier<span class="token punctuation">)</span>
+        
+    <span class="token keyword">return</span> quest<span class="token punctuation">.</span>base_xp
+
+<span class="token keyword">def</span> <span class="token function">calculate_total_rewards</span><span class="token punctuation">(</span>hero<span class="token punctuation">:</span> Hero<span class="token punctuation">,</span> quests<span class="token punctuation">:</span> <span class="token builtin">list</span><span class="token punctuation">[</span>Quest<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">int</span><span class="token punctuation">:</span>
+    <span class="token triple-quoted-string string">"""全クエストの報酬合計（単純な集計）"""</span>
+    <span class="token keyword">return</span> <span class="token builtin">sum</span><span class="token punctuation">(</span>calculate_quest_reward<span class="token punctuation">(</span>q<span class="token punctuation">,</span> hero<span class="token punctuation">)</span> <span class="token keyword">for</span> q <span class="token keyword">in</span> quests<span class="token punctuation">)</span></code></pre>
+          <ul>
+            <li><strong>循環複雑度</strong>: それぞれ 3〜4 （非常に低い）</li>
+            <li><strong>型安全性</strong>: 型ヒントがあり、Mypyも通過。</li>
+            <li><strong>可読性</strong>: 意図が明確。</li>
+          </ul>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="ハンズオン-結界を張る">ハンズオン: 結界を張る</h2>
+        <p>あなたの環境に、最強の結界 <code>Ruff</code> と <code>Mypy</code> を導入しましょう。</p>
+        <section class="level3">
+          <h3 id="ステップ1-インストール">ステップ1: インストール</h3>
+          <pre class="language-bash"><code class="language-bash">pip <span class="token function">install</span> ruff mypy</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="ステップ2-実行">ステップ2: 実行</h3>
+          <p>QuestForgeのディレクトリで実行してみます。</p>
+          <pre class="language-bash"><code class="language-bash"><span class="token comment"># リンターとフォーマッターの実行</span>
+ruff check <span class="token builtin class-name">.</span>
+ruff <span class="token function">format</span> <span class="token builtin class-name">.</span>
+
+<span class="token comment"># 型チェックの実行</span>
+mypy <span class="token builtin class-name">.</span></code></pre>
+          <p>大量の警告が出るかもしれませんが、絶望しないでください。それは今まで見えていなかった「改善の種」が見えただけです。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="まとめ">まとめ</h2>
+        <p>審美眼とは、「なんとなく良い」という直感を客観的な根拠に変換する力です。循環複雑度はその核心的な指標であり、10を超えた関数はバグの住処になりやすいことが経験的に知られています。数値を把握することで、AIが生成したコードの質を感覚ではなく事実として評価できるようになります。</p>
+        <p>Linter・Formatter・Type Checkerは、コードレビューの前段階で多くの問題を自動的に発見してくれる最低限の装備です。これらをIDEと連携させて常時稼働させることで、書いた瞬間にフィードバックを受け取れる環境が整います。警告が多く出ても絶望する必要はありません。それは今まで見えていなかった改善の種が可視化されたということです。</p>
+        <p>次の3.5節では、この「審美眼」と「構築力」を武器に、AIエージェントとどのように協働するかを深く掘り下げます。ゴーレムを自律的に動かす詠唱術（プロンプトエンジニアリング）と、エージェントの思考サイクルの仕組みを学んでいきましょう。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <pre class="language-text"><code class="language-text">以下のPythonコードの循環複雑度を評価し、もし10を超えているなら、
+関数を分割するかロジックを簡素化して、複雑度を下げたコードを提案してください。</code></pre>
+        <pre class="language-text"><code class="language-text">このコードに対して、Flake8やMypyで警告が出そうな箇所を指摘し、修正案を提示してください。
+特に型ヒントの欠落と、未使用変数に注目してください。</code></pre>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>🌐 <strong>ツール</strong>: <a href="https://docs.astral.sh/ruff/">Ruff</a>（PythonのLinterとFormatterを統合した、極めて高速な現代の標準ツール）</li>
+          <li>🌐 <strong>ツール</strong>: <a href="https://www.mypy-lang.org/">mypy</a>（Pythonに静的型チェックを導入し、堅牢なコードを構築するための番人）</li>
+          <li>🌐 <strong>Web</strong>: <a href="https://google.github.io/styleguide/pyguide.html">Google Python Style Guide</a>（世界最高峰のエンジニアリング集団が定義する、美しく保守性の高いコードの基準）</li>
+          <li>📄 <strong>論文</strong>: T. J. McCabe "<a href="https://ieeexplore.ieee.org/document/233837">A Complexity Measure</a>" (1976)（循環的複雑度を定義した歴史的論文）</li>
+          <li>🌐 <strong>解説</strong>: <a href="https://www.sonarsource.com/resources/cognitive-complexity/">Cognitive Complexity by SonarSource</a>（人間にとっての「コードの読みづらさ」を数値化する認知的複雑度の公式ホワイトペーパー）</li>
+        </ul>
+        <hr>
+        <p><strong>執筆メモ</strong>:</p>
+        <ul>
+          <li>執筆日時: 2026-01-28</li>
+          <li>構成: 3.2節から「評価」を分離して新設</li>
+          <li>内容: メトリクス（循環/認知複雑度）+ 静的解析ツール（Linter/Formatter/Type Checker）</li>
+        </ul>
+      </section>
+    </section>
+  
+
+</main>
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part2/chapter03/3-3.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part2/chapter03/3-5.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    </body></html>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 350" width="600" height="350">
+  <defs>
+    <style>
+      .map-bg { fill: #FDF5E6; stroke: #D2B48C; stroke-width: 3; }
+      .path { stroke: #8B4513; stroke-width: 2; stroke-dasharray: 8; fill: none; }
+      .node-circle { fill: #FFF; stroke: #8B4513; stroke-width: 2; }
+      .text-num { font-family: 'serif'; font-size: 14px; font-weight: bold; fill: #8B4513; text-anchor: middle; }
+      .text-title { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; fill: #333; }
+      .title-main { font-family: 'Noto Sans JP', sans-serif; font-size: 18px; font-weight: bold; fill: #8B4513; text-anchor: middle; }
+    </style>
+  </defs>
+  <rect x="10" y="10" width="580" height="330" rx="15" class="map-bg" />
+  <text x="300" y="45" class="title-main">第5章：冒険の地図（リファクタリング）</text>
+
+  <path d="M 150,120 L 300,100 L 450,150 L 300,250" class="path" />
+
+  <g transform="translate(150, 120)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">5.1</text>
+    <text x="-40" y="35" class="text-title" text-anchor="middle">コードの匂い</text>
+  </g>
+  <g transform="translate(300, 100)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">5.2</text>
+    <text x="0" y="35" class="text-title" text-anchor="middle">AIレビュー</text>
+  </g>
+  <g transform="translate(450, 150)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">5.3</text>
+    <text x="20" y="5" class="text-title">技術的負債</text>
+  </g>
+  <g transform="translate(300, 250)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">5.4</text>
+    <text x="0" y="30" class="text-title" text-anchor="middle">プロダクトライン</text>
+  </g>
+</svg>

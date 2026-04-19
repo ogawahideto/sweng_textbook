@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>4.6 術式の不調を探る——デバッグという推理ゲーム（The Art of Debugging）</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+    <style>
+        body { max-width: 900px; margin: 0 auto; background: white; }
+        section { padding: 20px; }
+        img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body style="margin:0; padding:0;">
+
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part2/chapter04/4-5.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part2/chapter04/4-7.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    <main>
+    <section class="level1">
+      <h1 id="46-術式の不調を探るデバッグという推理ゲームthe-art-of-debugging">4.6 術式の不調を探る——デバッグという推理ゲーム（The Art of Debugging）</h1>
+      <p>テストという守護魔法を身につけたあなたには、もう一つ欠かせない力があります。テストが「不具合の存在」を知らせてくれたとして——では、その<strong>原因はどこにあるのか？</strong> それを論理的に突き止める力が<strong>デバッグ</strong>です。</p>
+      <p>デバッグは「面倒な作業」でしょうか？ いいえ。デバッグは、推理小説の探偵のように、手がかりを集め、仮説を立て、真犯人を追い詰めていく<strong>知的な推理ゲーム</strong>です。シャーロック・ホームズは言いました——「不可能を消去した後に残ったものが、どんなにありそうになくても、真実である」と。</p>
+      <p>テストが「守りの魔法」なら、デバッグは「真実を暴く鑑識魔法」です。このセクションでは、闇雲にコードを眺めるのではなく、体系的かつ効率的に原因を特定するための技法を学びます。そして、AIという強力な「助手（ワトソン）」を活用して、推理の精度と速度を飛躍的に高める方法を身につけましょう。</p>
+      <hr>
+      <section class="level2">
+        <h2 id="体系的デバッグ仮説検証のサイクル">体系的デバッグ——仮説検証のサイクル</h2>
+        <p>熟練のエンジニアとそうでない人のデバッグの違いは何でしょうか。それは<strong>「体系的であるかどうか」</strong>です。</p>
+        <section class="level3">
+          <h3 id="科学的手法としてのデバッグ">科学的手法としてのデバッグ</h3>
+          <p>デバッグは、まさに科学の営みと同じです。</p>
+          <p>次の図は、デバッグの仮説検証サイクルを示しています。</p>
+          <figure>
+            <img src="../../assets/diagrams/chapter04/4-6-debug-cycle.svg" alt="デバッグの仮説検証サイクル">
+            <figcaption aria-hidden="true">デバッグの仮説検証サイクル</figcaption>
+          </figure>
+          <p>ここで示されているのは、「観察→仮説→実験→結論」という4段階を繰り返すサイクルです。「あちこち触って余計に壊す」という状況を避けるために、このサイクルを意識することが重要です。一つの仮説を検証してから次に進むことで、デバッグは論理的な推理ゲームとなり、根本原因への道が着実に開けていきます。</p>
+          <ol>
+            <li><strong>観察する</strong>: 何が起きているかを正確に把握する（エラーメッセージ、ログ、再現手順）</li>
+            <li><strong>仮説を立てる</strong>: 「原因はおそらく〇〇だろう」と予想する</li>
+            <li><strong>実験する</strong>: 仮説を検証するために、最小限の変更を加えて動かす</li>
+            <li><strong>結論を出す</strong>: 仮説が正しかったか評価し、次の仮説へ進む</li>
+          </ol>
+          <p>このサイクルを意識するだけで、「あちこち触って余計に壊す」という事態を避けられます。</p>
+        </section>
+        <section class="level3">
+          <h3 id="二分探索デバッグolog-n-で犯人を追い詰める">二分探索デバッグ——O(log N) で犯人を追い詰める</h3>
+          <p>体系的に進めるとして、広大なコードの中でどこに仮説を向ければよいのか——3.1節で学んだアルゴリズムの知識が、ここで活きます。バグの原因箇所を特定する最も効率的な方法の一つが、<strong>二分探索的アプローチ</strong>です。</p>
+          <pre class="language-python"><code class="language-python"><span class="token comment"># 100行の処理のどこかでデータが壊れている場合...</span>
+
+<span class="token keyword">def</span> <span class="token function">process_quest_data</span><span class="token punctuation">(</span>quests<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># ステップ1: 入力データを確認</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"[checkpoint-1] quests: </span><span class="token interpolation"><span class="token punctuation">{</span>quests<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token format-spec">3]</span><span class="token punctuation">}</span></span><span class="token string">..."</span></span><span class="token punctuation">)</span>  <span class="token comment"># ← ここは正常？</span>
+
+    validated <span class="token operator">=</span> validate_quests<span class="token punctuation">(</span>quests<span class="token punctuation">)</span>
+    <span class="token comment"># ステップ2: バリデーション後を確認</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"[checkpoint-2] validated: </span><span class="token interpolation"><span class="token punctuation">{</span>validated<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token format-spec">3]</span><span class="token punctuation">}</span></span><span class="token string">..."</span></span><span class="token punctuation">)</span>  <span class="token comment"># ← ここは？</span>
+
+    sorted_quests <span class="token operator">=</span> sort_by_priority<span class="token punctuation">(</span>validated<span class="token punctuation">)</span>
+    enriched <span class="token operator">=</span> enrich_with_rewards<span class="token punctuation">(</span>sorted_quests<span class="token punctuation">)</span>
+    <span class="token comment"># ステップ3: 加工後を確認</span>
+    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"[checkpoint-3] enriched: </span><span class="token interpolation"><span class="token punctuation">{</span>enriched<span class="token punctuation">[</span><span class="token punctuation">:</span><span class="token format-spec">3]</span><span class="token punctuation">}</span></span><span class="token string">..."</span></span><span class="token punctuation">)</span>  <span class="token comment"># ← ここは？</span>
+
+    <span class="token keyword">return</span> format_output<span class="token punctuation">(</span>enriched<span class="token punctuation">)</span></code></pre>
+          <p>処理の「中間地点」にチェックポイントを置き、データが正常かどうかを確認します。正常なら後半に、そうでなければ前半にさらにチェックポイントを追加する——これを繰り返せば、O(log N) の効率で原因箇所を絞り込めます。</p>
+          <blockquote>
+            <p><strong>コツ</strong>: <code>git bisect</code> は、この二分探索をコミット履歴に適用するGitの強力なコマンドです。「いつからバグが入ったか」を自動的に特定してくれます。</p>
+          </blockquote>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="ロギング戦略システムの声を記録する">ロギング戦略——システムの声を記録する</h2>
+        <p><code>print</code> デバッグは手軽ですが、本番環境やチーム開発では<strong>構造化されたロギング</strong>が力を発揮します。</p>
+        <section class="level3">
+          <h3 id="ログレベルの設計">ログレベルの設計</h3>
+          <p>ログには「重要度」があります。適切なレベルを使い分けることで、必要な情報だけを効率的に取り出せます。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>レベル</th>
+                <th>用途</th>
+                <th>例</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>DEBUG</code></td>
+                <td>開発中の詳細な追跡</td>
+                <td>変数の値、関数の呼び出し順序</td>
+              </tr>
+              <tr>
+                <td><code>INFO</code></td>
+                <td>正常な動作の記録</td>
+                <td>「クエストが作成されました」</td>
+              </tr>
+              <tr>
+                <td><code>WARNING</code></td>
+                <td>注意が必要な状況</td>
+                <td>「レスポンスが3秒を超えました」</td>
+              </tr>
+              <tr>
+                <td><code>ERROR</code></td>
+                <td>機能の一部に支障</td>
+                <td>「データベース接続に失敗、リトライ中」</td>
+              </tr>
+              <tr>
+                <td><code>CRITICAL</code></td>
+                <td>システム全体に影響</td>
+                <td>「ディスク容量が限界に達しました」</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="level3">
+          <h3 id="構造化ログの威力">構造化ログの威力</h3>
+          <p>テキストの羅列ではなく、JSON形式で構造化されたログを出力すると、検索や集計が格段に楽になります。</p>
+          <pre class="language-python"><code class="language-python"><span class="token keyword">import</span> logging
+<span class="token keyword">import</span> json
+
+<span class="token keyword">class</span> <span class="token class-name">StructuredLogger</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__init__</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> name<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>logger <span class="token operator">=</span> logging<span class="token punctuation">.</span>getLogger<span class="token punctuation">(</span>name<span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">info</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> message<span class="token punctuation">,</span> <span class="token operator">**</span>context<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""構造化されたログを出力する"""</span>
+        log_entry <span class="token operator">=</span> <span class="token punctuation">{</span>
+            <span class="token string">"message"</span><span class="token punctuation">:</span> message<span class="token punctuation">,</span>
+            <span class="token string">"context"</span><span class="token punctuation">:</span> context
+        <span class="token punctuation">}</span>
+        self<span class="token punctuation">.</span>logger<span class="token punctuation">.</span>info<span class="token punctuation">(</span>json<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>log_entry<span class="token punctuation">,</span> ensure_ascii<span class="token operator">=</span><span class="token boolean">False</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment"># 使用例</span>
+logger <span class="token operator">=</span> StructuredLogger<span class="token punctuation">(</span><span class="token string">"questforge"</span><span class="token punctuation">)</span>
+logger<span class="token punctuation">.</span>info<span class="token punctuation">(</span>
+    <span class="token string">"クエスト完了"</span><span class="token punctuation">,</span>
+    quest_id<span class="token operator">=</span><span class="token string">"Q-042"</span><span class="token punctuation">,</span>
+    hero<span class="token operator">=</span><span class="token string">"アルケミスト見習い"</span><span class="token punctuation">,</span>
+    reward_xp<span class="token operator">=</span><span class="token number">150</span>
+<span class="token punctuation">)</span>
+<span class="token comment"># 出力: {"message": "クエスト完了", "context": {"quest_id": "Q-042", "hero": "アルケミスト見習い", ...}}</span></code></pre>
+          <p>構造化ログは、6.4節で学ぶオブザーバビリティの基盤にもなります。今のうちからこの習慣を身につけておくと、運用フェーズで大きなアドバンテージになります。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="デバッガーの活用時を止める魔法">デバッガーの活用——時を止める魔法</h2>
+        <p><code>print</code> やログが「痕跡を辿る」手法だとすれば、デバッガーは<strong>「時を止めてその場で観察する」</strong>魔法です。</p>
+        <section class="level3">
+          <h3 id="基本のデバッグ操作">基本のデバッグ操作</h3>
+          <p>現代のIDE（VS Code、PyCharm、IntelliJ）に搭載されたデバッガーは、驚くほど直感的です。</p>
+          <table>
+            <thead>
+              <tr>
+                <th>操作</th>
+                <th>意味</th>
+                <th>使いどころ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>ブレークポイント</strong></td>
+                <td>指定行で実行を一時停止</td>
+                <td>「この行に来た時の状態を見たい」</td>
+              </tr>
+              <tr>
+                <td><strong>ステップオーバー</strong></td>
+                <td>1行ずつ進む（関数の中には入らない）</td>
+                <td>処理の流れを概観したい</td>
+              </tr>
+              <tr>
+                <td><strong>ステップイン</strong></td>
+                <td>関数の中に入って追跡</td>
+                <td>関数内部の動きを確認したい</td>
+              </tr>
+              <tr>
+                <td><strong>ステップアウト</strong></td>
+                <td>現在の関数を抜けて呼び出し元に戻る</td>
+                <td>深く潜りすぎた時に復帰</td>
+              </tr>
+              <tr>
+                <td><strong>ウォッチ式</strong></td>
+                <td>指定した変数や式の値を監視</td>
+                <td>「この値がいつ変わるか知りたい」</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+        <section class="level3">
+          <h3 id="条件付きブレークポイントの威力">条件付きブレークポイントの威力</h3>
+          <p>「1000回ループする中の、特定の条件の時だけ止めたい」——こんな時に活躍するのが<strong>条件付きブレークポイント</strong>です。</p>
+          <pre class="language-python"><code class="language-python"><span class="token keyword">for</span> quest <span class="token keyword">in</span> quests<span class="token punctuation">:</span>  <span class="token comment"># 1000件のクエストを処理</span>
+    reward <span class="token operator">=</span> calculate_reward<span class="token punctuation">(</span>quest<span class="token punctuation">)</span>
+    <span class="token comment"># 条件付きブレークポイント: reward &lt; 0 の時だけ止まる</span>
+    assign_reward<span class="token punctuation">(</span>quest<span class="token punctuation">,</span> reward<span class="token punctuation">)</span></code></pre>
+          <p>VS Codeなら、ブレークポイントを右クリックして「条件式」に <code>reward &lt; 0</code> と入力するだけ。報酬がマイナスになる「事件」が起きた瞬間だけ、時を止めてその場を調べることができます。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="aiを活用したデバッグ最強の助手を召喚する">AIを活用したデバッグ——最強の助手を召喚する</h2>
+        <p>ログで痕跡を辿り、デバッガーで現場を直接観察する——それでも解けない謎に直面したとき、もう一人の強力な推理の相棒が役に立ちます。</p>
+        <section class="level3">
+          <h3 id="エラーメッセージの解読">エラーメッセージの解読</h3>
+          <p>エラーメッセージは時に暗号のように見えますが、AIは膨大な知識から瞬時に解読してくれます。</p>
+          <blockquote>
+            <p>
+              <strong>プロンプト例</strong>:
+              「以下のPythonのエラーメッセージが発生しました。原因として考えられることと、解決方法を3つ提案してください。」
+              <code>TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'</code>
+            </p>
+          </blockquote>
+          <p>AIは「関数が <code>None</code> を返している可能性」「変数の初期化漏れ」「条件分岐で値が設定されないパス」など、複数の可能性を提示してくれます。</p>
+        </section>
+        <section class="level3">
+          <h3 id="再現条件の特定">再現条件の特定</h3>
+          <p>バグで最も手強いのは、「時々しか起きない」ものです。AIに状況を伝えて、再現条件の仮説を立ててもらいましょう。</p>
+          <blockquote>
+            <p>
+              <strong>プロンプト例</strong>:
+              「QuestForgeで、クエストの報酬計算が時々0になるバグが報告されています。以下のコードを見て、再現条件として考えられるケースを列挙してください。特に、入力データのエッジケースに注目してください。」
+            </p>
+          </blockquote>
+        </section>
+        <section class="level3">
+          <h3 id="デバッグセッションの壁打ち相手">デバッグセッションの壁打ち相手</h3>
+          <p>仮説を立てたら、AIに「この仮説は妥当か？」と壁打ちすることで、見過ごしていた可能性に気づけることがあります。</p>
+          <blockquote>
+            <p>
+              <strong>プロンプト例</strong>:
+              「以下の関数で <code>reward</code> が0になるバグを調査しています。私の仮説は『<code>difficulty</code> が文字列で渡されている』です。他に考えられる原因はありますか？ コードの文脈を踏まえて検討してください。」
+            </p>
+          </blockquote>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="実践-questforgeでのデバッグ">実践: QuestForgeでのデバッグ</h2>
+        <p>QuestForgeのクエスト報酬計算で「報酬が0になる」という報告を受けたとしましょう。名探偵のようにステップを踏んで推理していきます。</p>
+        <pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">calculate_reward</span><span class="token punctuation">(</span>quest<span class="token punctuation">,</span> hero<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    base <span class="token operator">=</span> quest<span class="token punctuation">.</span>difficulty <span class="token operator">*</span> <span class="token number">10</span>
+    bonus <span class="token operator">=</span> hero<span class="token punctuation">.</span>streak_days <span class="token operator">//</span> <span class="token number">7</span> <span class="token operator">*</span> <span class="token number">5</span>  <span class="token comment"># 連続ログインボーナス</span>
+    level_modifier <span class="token operator">=</span> get_level_modifier<span class="token punctuation">(</span>hero<span class="token punctuation">.</span>level<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token builtin">int</span><span class="token punctuation">(</span>base <span class="token operator">*</span> level_modifier <span class="token operator">+</span> bonus<span class="token punctuation">)</span>
+
+<span class="token keyword">def</span> <span class="token function">get_level_modifier</span><span class="token punctuation">(</span>level<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    modifiers <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">:</span> <span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">:</span> <span class="token number">1.2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">:</span> <span class="token number">1.5</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">:</span> <span class="token number">2.0</span><span class="token punctuation">}</span>
+    <span class="token keyword">return</span> modifiers<span class="token punctuation">.</span>get<span class="token punctuation">(</span>level<span class="token punctuation">)</span>  <span class="token comment"># ← 手がかりはここに...</span></code></pre>
+        <p><strong>推理の過程</strong>:</p>
+        <ol>
+          <li><strong>観察</strong>: 報酬が0になるのは「レベル5以上の英雄」だけ</li>
+          <li><strong>仮説</strong>: <code>get_level_modifier</code> がレベル5以上で <code>None</code> を返しているのでは？</li>
+          <li><strong>検証</strong>: <code>modifiers.get(5)</code> は確かに <code>None</code> を返す（辞書にキーがない）</li>
+          <li><strong>真犯人</strong>: <code>int(base * None + bonus)</code> → <code>TypeError</code>... いや、<code>None</code> との乗算でエラーになる前に、実は別の場所で例外がキャッチされて0が返されていた！</li>
+        </ol>
+        <pre class="language-python"><code class="language-python"><span class="token comment"># さらに効果的な方法: デフォルト値を設定する</span>
+<span class="token keyword">def</span> <span class="token function">get_level_modifier</span><span class="token punctuation">(</span>level<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    modifiers <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">:</span> <span class="token number">1.0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">:</span> <span class="token number">1.2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">:</span> <span class="token number">1.5</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">:</span> <span class="token number">2.0</span><span class="token punctuation">}</span>
+    <span class="token keyword">return</span> modifiers<span class="token punctuation">.</span>get<span class="token punctuation">(</span>level<span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span>  <span class="token comment"># デフォルトで1.0を返す</span></code></pre>
+        <p>このように、デバッグは「原因→修正」の直線ではなく、仮説と検証を繰り返す<strong>螺旋的なプロセス</strong>です。その螺旋を楽しめるようになった時、あなたはデバッグの達人への道を歩み始めています。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="まとめ">まとめ</h2>
+        <p>デバッグは推理ゲームです。闇雲にコードを書き換えるのではなく、「観察→仮説→検証→結論」のサイクルで体系的に進めることで、原因究明の効率が格段に上がります。二分探索のアプローチでチェックポイントを置けば、原因箇所をO(log N)の速さで絞り込めます。</p>
+        <p>構造化ログとログレベルの設計は「未来の自分への手紙」として、運用フェーズでの診断力を長期にわたって高めてくれます。デバッガーのブレークポイントとウォッチ式は、実行中のプログラムをその場で観察できる時間魔法です。そしてAIは、エラーメッセージの解読から再現条件の推定、仮説の壁打ちまで、最強の助手として活躍します。</p>
+        <p>次の4.7節（外伝）では、テストと検証の地平をさらに広げ、コンテナとインフラレベルでの品質保証に踏み込みます。テストの限界を超えた先に広がる、より堅牢なシステムの作り方を探っていきましょう。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <section class="level3">
+          <h3 id="ide統合型バグの体系的調査">IDE統合型：バグの体系的調査</h3>
+          <pre class="language-text"><code class="language-text">@application/use_cases/complete_quest.py を読んでください。
+
+以下のバグが報告されています：
+「同じクエストを2回完了操作すると、経験値が二重に加算される」
+
+体系的なデバッグ手順に従い、以下を行ってください：
+1. 原因の候補を優先度順に列挙
+2. 各仮説の検証方法（確認すべきコード箇所・テストケース）
+3. 最も可能性の高い修正案を提示
+
+修正の実装は私が確認してから行ってください。</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="cliエージェント型ロギングの整備">CLIエージェント型：ロギングの整備</h3>
+          <pre class="language-text"><code class="language-text">application/ と infrastructure/ のコードを読んで、
+デバッグと運用監視に役立つロギングを追加してください。
+
+方針：
+- Python 標準の logging モジュールを使用
+- ログレベルを適切に使い分けること
+  （DEBUG: 詳細な処理フロー、INFO: 重要なイベント、WARNING/ERROR: 異常系）
+- 構造化ログ（JSON形式）を採用すること
+- ユーザーIDやクエストIDなど、原因特定に役立つ情報を含めること
+
+変更後に既存のテストが通ることを確認してください。</code></pre>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+      </section>
+    </section>
+  
+
+</main>
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part2/chapter04/4-5.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part2/chapter04/4-7.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    </body></html>

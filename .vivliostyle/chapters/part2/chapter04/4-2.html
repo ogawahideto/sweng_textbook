@@ -1,0 +1,346 @@
+<!DOCTYPE html><html lang="ja"><head>
+    <meta charset="utf-8">
+    <title>4.2 鑑定術の技法——テスト設計の4つの流派</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+  </head>
+  <body>
+    <section class="level1">
+      <h1 id="42-鑑定術の技法テスト設計の4つの流派">4.2 鑑定術の技法——テスト設計の4つの流派</h1>
+      <p>テストの全体像（4.1節）を学んだあなたは、次にこう問うはずです。「具体的に、<strong>どのテストケースを書けば十分なのか？</strong>」</p>
+      <p>すべての入力パターンをテストするのは不可能です。経験値の計算関数ひとつとっても、整数の入力パターンは事実上無限にあります。では、「十分なテスト」とはどう設計すればよいのでしょうか？</p>
+      <p>先人たちは、この問いに対して複数のアプローチを編み出しました。本節では、テストケースの設計技法を<strong>4つの流派</strong>として整理し、それぞれの強みと適所を学びます。</p>
+      <p>次の図は、テストケース設計における4つの流派とそれぞれの着眼点を示しています。</p>
+      <figure>
+        <img src="../../assets/diagrams/chapter04/4.2-test-design.svg" alt="テスト設計の4つの流派">
+        <figcaption aria-hidden="true">テスト設計の4つの流派</figcaption>
+      </figure>
+      <p>ここで示された4流派は、互いに補完し合う関係にあります。コードの内部を見る「コードベース（ホワイトボックス）」、仕様から設計する「仕様ベース（ブラックボックス）」、ユーザーの物語を辿る「シナリオベース」、そして即興で探索する「探索的テスト」——この4つを問いの性質に応じて使い分けることが、テストという守護魔法を真に強化する道です。</p>
+      <hr>
+      <section class="level2">
+        <h2 id="第1の流派-コードベースホワイトボックス">第1の流派: コードベース（ホワイトボックス）</h2>
+        <section class="level3">
+          <h3 id="カバレッジ-テストされていない場所の地図">カバレッジ: テストされていない場所の地図</h3>
+          <p>コードの内部構造を見て、「どの行が実行されたか」「どの分岐が通過したか」を測定するアプローチです。テスト自体を設計する技法というよりも、<strong>テストが不十分な場所を発見する地図</strong>として機能します。</p>
+          <section class="level4">
+            <h4 id="命令カバレッジstatement-coverage">命令カバレッジ（Statement Coverage）</h4>
+            <p>「すべての行が少なくとも1回実行されたか」を測定します。</p>
+            <pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">get_quest_rank</span><span class="token punctuation">(</span>score<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">str</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> score <span class="token operator">&gt;=</span> <span class="token number">90</span><span class="token punctuation">:</span>          <span class="token comment"># 行A</span>
+        <span class="token keyword">return</span> <span class="token string">"S"</span>           <span class="token comment"># 行B</span>
+    <span class="token keyword">elif</span> score <span class="token operator">&gt;=</span> <span class="token number">70</span><span class="token punctuation">:</span>        <span class="token comment"># 行C</span>
+        <span class="token keyword">return</span> <span class="token string">"A"</span>           <span class="token comment"># 行D</span>
+    <span class="token keyword">else</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token string">"B"</span>           <span class="token comment"># 行E</span></code></pre>
+            <p><code>score=95</code> と <code>score=75</code> の2つのテストで、行A〜Dは実行されますが、行Eは通過しません。命令カバレッジは <strong>4/5 = 80%</strong> です。<code>score=50</code> を追加すれば100%に達します。</p>
+          </section>
+          <section class="level4">
+            <h4 id="分岐カバレッジbranch-coverage">分岐カバレッジ（Branch Coverage）</h4>
+            <p>命令カバレッジをクリアしても、条件分岐の片方だけしか試されていない可能性があります。分岐カバレッジは「すべての条件分岐のTrue/Falseが実行されたか」を測定する、より厳密な基準です。</p>
+            <pre class="language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">can_accept_quest</span><span class="token punctuation">(</span>hero<span class="token punctuation">:</span> Hero<span class="token punctuation">,</span> quest<span class="token punctuation">:</span> Quest<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">bool</span><span class="token punctuation">:</span>
+    <span class="token keyword">if</span> hero<span class="token punctuation">.</span>level <span class="token operator">&gt;=</span> quest<span class="token punctuation">.</span>required_level <span class="token keyword">and</span> <span class="token keyword">not</span> quest<span class="token punctuation">.</span>is_expired<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">return</span> <span class="token boolean">True</span>    <span class="token comment"># 分岐: True</span>
+    <span class="token keyword">return</span> <span class="token boolean">False</span>       <span class="token comment"># 分岐: False</span></code></pre>
+            <table>
+              <thead>
+                <tr>
+                  <th>テスト</th>
+                  <th>hero.level &gt;= required</th>
+                  <th>not is_expired()</th>
+                  <th>結果</th>
+                  <th>通過する分岐</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>テスト1</td>
+                  <td>True</td>
+                  <td>True</td>
+                  <td>True</td>
+                  <td>True分岐</td>
+                </tr>
+                <tr>
+                  <td>テスト2</td>
+                  <td>False</td>
+                  <td>True</td>
+                  <td>False</td>
+                  <td>False分岐</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>この2つのテストで分岐カバレッジは100%です。しかし、<code>hero.level &gt;= required</code> がTrueで <code>is_expired()</code> がTrueのケース（期限切れ）はテストされていません。</p>
+          </section>
+          <section class="level4">
+            <h4 id="条件カバレッジcondition-coverage">条件カバレッジ（Condition Coverage）</h4>
+            <p>複合条件の各部分が独立してTrue/Falseの両方を取るかまで確かめるには、さらに一段階厳しい基準が必要です。条件カバレッジは、複合条件（<code>and</code> / <code>or</code>）の各部分がTrue/Falseの両方を取ったかを測定し、分岐カバレッジよりもさらに厳密です。</p>
+            <table>
+              <thead>
+                <tr>
+                  <th>テスト</th>
+                  <th>hero.level &gt;= required</th>
+                  <th>not is_expired()</th>
+                  <th>結果</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>テスト1</td>
+                  <td>True</td>
+                  <td>True</td>
+                  <td>True</td>
+                </tr>
+                <tr>
+                  <td>テスト2</td>
+                  <td>True</td>
+                  <td>False</td>
+                  <td>False</td>
+                </tr>
+                <tr>
+                  <td>テスト3</td>
+                  <td>False</td>
+                  <td>True</td>
+                  <td>False</td>
+                </tr>
+              </tbody>
+            </table>
+            <p>3つのテストで、各条件がTrue/Falseの両方を取ることを確認できます。</p>
+          </section>
+          <section class="level4">
+            <h4 id="カバレッジの限界">カバレッジの限界</h4>
+            <p>これら3種類のカバレッジをすべて満たせば品質は保証されるかというと、実はそうではありません。カバレッジ100%は「すべてのコードが実行された」ことを意味しますが、「正しく動いている」ことの証明ではありません。</p>
+            <pre class="language-python"><code class="language-python"><span class="token comment"># カバレッジ100%でも見逃すバグの例</span>
+<span class="token keyword">def</span> <span class="token function">calculate_tax</span><span class="token punctuation">(</span>price<span class="token punctuation">:</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">int</span><span class="token punctuation">:</span>
+    <span class="token keyword">return</span> price <span class="token operator">*</span> <span class="token number">0.1</span>  <span class="token comment"># 本来は0.08のはずだが...</span>
+
+<span class="token keyword">def</span> <span class="token function">test_tax</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">assert</span> calculate_tax<span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">100</span>  <span class="token comment"># テストは通る。しかし税率が間違っている！</span></code></pre>
+            <p>カバレッジは<strong>「テストされていない場所」を見つけるための地図</strong>であり、品質の十分条件ではありません。「カバレッジが高い＝テストが十分」ではなく、「カバレッジが低い＝テストが不十分な場所がある」と読むのが正しい使い方です。</p>
+            <hr>
+          </section>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="第2の流派-仕様ベースブラックボックス">第2の流派: 仕様ベース（ブラックボックス）</h2>
+        <p>コードの内部構造を見る第1の流派に対し、第2の流派はコードの中身を一切見ません。仕様書と期待される振る舞いだけを手がかりに、テストケースを設計します。</p>
+        <section class="level3">
+          <h3 id="同値分割-入力の代表選手を選ぶ">同値分割: 入力の「代表選手」を選ぶ</h3>
+          <p>コードの中身を見ずに、<strong>仕様（入力と期待出力の関係）</strong>に基づいてテストケースを設計する技法です。</p>
+          <p>同値分割では、入力を「同じ振る舞いをするはずのグループ（同値クラス）」に分け、各グループから<strong>代表値を1つずつ</strong>選んでテストします。</p>
+          <p><strong>例: QuestForgeの経験値倍率計算</strong></p>
+          <p>仕様: 「英雄のレベルがクエスト推奨レベル未満なら倍率2.0、以上なら倍率1.0」（推奨レベル = 10）</p>
+          <table>
+            <thead>
+              <tr>
+                <th>同値クラス</th>
+                <th>入力範囲</th>
+                <th>代表値</th>
+                <th>期待される倍率</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>有効クラス1</strong>: レベル不足</td>
+                <td>1〜9</td>
+                <td>5</td>
+                <td>2.0</td>
+              </tr>
+              <tr>
+                <td><strong>有効クラス2</strong>: レベル十分</td>
+                <td>10〜100</td>
+                <td>15</td>
+                <td>1.0</td>
+              </tr>
+              <tr>
+                <td><strong>無効クラス1</strong>: レベルゼロ以下</td>
+                <td>0, -1, ...</td>
+                <td>0</td>
+                <td>エラー or 特別処理</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre class="language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">TestXpMultiplier</span><span class="token punctuation">(</span>unittest<span class="token punctuation">.</span>TestCase<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">test_low_level_hero_gets_double</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># 有効クラス1の代表値</span>
+        self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span>calculate_xp_multiplier<span class="token punctuation">(</span>quest_lv10<span class="token punctuation">,</span> hero_lv5<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2.0</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">test_high_level_hero_gets_normal</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># 有効クラス2の代表値</span>
+        self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span>calculate_xp_multiplier<span class="token punctuation">(</span>quest_lv10<span class="token punctuation">,</span> hero_lv15<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">test_zero_level_raises_error</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># 無効クラスの代表値</span>
+        <span class="token keyword">with</span> self<span class="token punctuation">.</span>assertRaises<span class="token punctuation">(</span>ValueError<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            calculate_xp_multiplier<span class="token punctuation">(</span>quest_lv10<span class="token punctuation">,</span> hero_lv0<span class="token punctuation">)</span></code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="境界値分析-境界線上を狙い撃つ">境界値分析: 境界線上を狙い撃つ</h3>
+          <p>同値分割で「クラスの代表値」を選んだとして、クラスの境目そのものにはバグが最も集まりやすい傾向があります。境界値分析では、同値クラスの<strong>境目の値</strong>を重点的にテストします。</p>
+          <p>推奨レベル10の場合:</p>
+          <table>
+            <thead>
+              <tr>
+                <th>テストケース</th>
+                <th>値</th>
+                <th>意味</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>境界の直下</td>
+                <td>9</td>
+                <td>レベル不足の最大値</td>
+              </tr>
+              <tr>
+                <td>境界そのもの</td>
+                <td>10</td>
+                <td>境界値（どちらに属する？）</td>
+              </tr>
+              <tr>
+                <td>境界の直上</td>
+                <td>11</td>
+                <td>レベル十分の最小値</td>
+              </tr>
+            </tbody>
+          </table>
+          <pre class="language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">TestXpMultiplierBoundary</span><span class="token punctuation">(</span>unittest<span class="token punctuation">.</span>TestCase<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">test_one_below_threshold</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span>calculate_xp_multiplier<span class="token punctuation">(</span>quest_lv10<span class="token punctuation">,</span> hero_lv9<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2.0</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">test_at_threshold</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># ここがバグの温床。「未満」なので10は倍率1.0のはず</span>
+        self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span>calculate_xp_multiplier<span class="token punctuation">(</span>quest_lv10<span class="token punctuation">,</span> hero_lv10<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">def</span> <span class="token function">test_one_above_threshold</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span>calculate_xp_multiplier<span class="token punctuation">(</span>quest_lv10<span class="token punctuation">,</span> hero_lv11<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1.0</span><span class="token punctuation">)</span></code></pre>
+          <p>「未満」と「以下」の取り違え、<code>&lt;</code> と <code>&lt;=</code> の混同——こうしたバグは境界値分析で効率的に発見できます。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="第3の流派-シナリオベース">第3の流派: シナリオベース</h2>
+        <section class="level3">
+          <h3 id="ユーザーの物語をテストにする">ユーザーの物語をテストにする</h3>
+          <p>ユーザーが実際にシステムを使う<strong>一連の流れ（シナリオ）</strong>をテストケースとして記述する技法です。第1章で書いたユースケースが、ここでテストの根拠になります。</p>
+          <pre class="language-python"><code class="language-python"><span class="token keyword">class</span> <span class="token class-name">TestQuestCompletionScenario</span><span class="token punctuation">(</span>unittest<span class="token punctuation">.</span>TestCase<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">test_hero_completes_quest_and_levels_up</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token triple-quoted-string string">"""シナリオ: 英雄がクエストを完了し、レベルアップする"""</span>
+        <span class="token comment"># Given: レベル1の英雄と、報酬100XPのクエスト</span>
+        hero <span class="token operator">=</span> Hero<span class="token punctuation">(</span>name<span class="token operator">=</span><span class="token string">"Aria"</span><span class="token punctuation">,</span> level<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+        quest <span class="token operator">=</span> Quest<span class="token punctuation">(</span>title<span class="token operator">=</span><span class="token string">"First Adventure"</span><span class="token punctuation">,</span> difficulty<span class="token operator">=</span><span class="token string">"NORMAL"</span><span class="token punctuation">,</span>
+                      base_xp<span class="token operator">=</span><span class="token number">100</span><span class="token punctuation">,</span> recommended_level<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">)</span>
+
+        <span class="token comment"># When: クエストを完了する</span>
+        result <span class="token operator">=</span> complete_quest<span class="token punctuation">(</span>quest<span class="token punctuation">,</span> hero<span class="token punctuation">)</span>
+
+        <span class="token comment"># Then: 経験値が加算され、レベルアップしている</span>
+        self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span>result<span class="token punctuation">.</span>xp_gained<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
+        self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span>hero<span class="token punctuation">.</span>level<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>  <span class="token comment"># 100XPでレベル2に</span>
+        self<span class="token punctuation">.</span>assertEqual<span class="token punctuation">(</span>quest<span class="token punctuation">.</span>status<span class="token punctuation">,</span> <span class="token string">"COMPLETED"</span><span class="token punctuation">)</span></code></pre>
+          <p><strong>Given（前提）→ When（操作）→ Then（期待結果）</strong> の形式で書くと、テストが「仕様書」としても読めるようになります。この形式は<strong>BDD（振る舞い駆動開発）</strong>とも呼ばれ、非エンジニアとの共通言語にもなります。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="第4の流派-探索的テスト">第4の流派: 探索的テスト</h2>
+        <section class="level3">
+          <h3 id="仕様書に縛られない即興テスト">仕様書に縛られない即興テスト</h3>
+          <p>ここまでの3つの流派は、いずれもテストケースを<strong>事前に設計</strong>します。一方、探索的テストは、実際にソフトウェアを動かしながら「怪しいところはないか？」と探り、<strong>発見と学習を同時に行う</strong>即興的なアプローチです。</p>
+          <section class="level4">
+            <h4 id="チャーターとセッション">チャーターとセッション</h4>
+            <p>無目的に触るのではなく、<strong>チャーター（探索テーマ）</strong>を定め、時間を区切った<strong>セッション</strong>で行います。</p>
+            <pre class="language-text"><code class="language-text">チャーター: 「クエスト報酬計算で、極端な入力値を試す」
+時間: 30分
+探索メモ:
+- レベル999の英雄 → 正常に動作
+- 難易度を空文字に → 500エラー（バグ発見！）
+- 報酬XPに負の値 → 経験値が減る（仕様漏れ？）</code></pre>
+            <p>探索的テストは、仕様書やコードカバレッジでは見つけられない「想定外の使い方」を発見するのに効果的です。自動化されたテストと組み合わせることで、守りの層がさらに厚くなります。</p>
+            <hr>
+          </section>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="4つの流派を組み合わせる">4つの流派を組み合わせる</h2>
+        <p>各流派には得意・不得意があります。一つの流派だけに頼るのではなく、組み合わせてテストの網を編みます。</p>
+        <table>
+          <thead>
+            <tr>
+              <th>流派</th>
+              <th>強み</th>
+              <th>適所</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>コードベース</strong></td>
+              <td>テストの抜け漏れを可視化</td>
+              <td>カバレッジ計測、リグレッション防止</td>
+            </tr>
+            <tr>
+              <td><strong>仕様ベース</strong></td>
+              <td>仕様から体系的にケースを導出</td>
+              <td>入力パターンの網羅、境界値のバグ検出</td>
+            </tr>
+            <tr>
+              <td><strong>シナリオベース</strong></td>
+              <td>ユーザー視点の動作保証</td>
+              <td>受入テスト、チーム内の仕様共有</td>
+            </tr>
+            <tr>
+              <td><strong>探索的テスト</strong></td>
+              <td>想定外のバグ発見</td>
+              <td>リリース前の最終確認、新機能の品質探索</td>
+            </tr>
+          </tbody>
+        </table>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="まとめ">まとめ</h2>
+        <p>テスト設計の4つの流派は互いに補完し合います。コードベースのカバレッジはテストされていない場所を地図として示し、不十分な箇所の発見に役立ちます（100%が目的ではありません）。仕様ベースの同値分割・境界値分析は入力空間を効率的に分割し、代表値と境界を狙い撃てます。</p>
+        <p>シナリオベースのGiven-When-Then形式はユーザーの物語をテストに変換し、仕様書としても機能する優れた表現力を持ちます。そして探索的テストは仕様書にない「想定外」を即興で発見する、自動テストとの補完関係にある技法です。この4つを問いの性質に応じて使い分けることで、テストは単なる動作確認を超えた「生きた仕様書」へと昇華します。</p>
+        <p>次の4.3節では、テストを「後から書く検証」から「先に書く設計ツール」に転換するテスト駆動開発（TDD）を学びます。赤から緑へのサイクルが、コードの設計品質をどう変えるかを体感していきましょう。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <section class="level3">
+          <h3 id="ide統合型同値分割境界値でテストケースを設計">IDE統合型：同値分割・境界値でテストケースを設計</h3>
+          <pre class="language-text"><code class="language-text">@domain/hero.py の gain_xp() メソッドを読んで、以下を行ってください。
+
+1. 同値分割と境界値分析を実施し、テストケース一覧を表形式で提示
+   （「有効クラス/無効クラス」「境界値」のラベル付き）
+2. 設計したテストケースを pytest 形式でコード化する</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="cliエージェント型カバレッジ未到達分岐の補強">CLIエージェント型：カバレッジ未到達分岐の補強</h3>
+          <pre class="language-text"><code class="language-text">domain/ のコードと tests/unit/ のテストを読み比べて、
+分岐カバレッジ100%を達成するために必要な追加テストを特定してください。
+
+出力：
+- カバーされていない分岐の一覧（ファイル名・行番号・条件）
+- 各分岐をカバーするテストの説明
+- pytest 形式の追加テストコード</code></pre>
+          <hr>
+          <p><strong>執筆メモ</strong>:</p>
+          <ul>
+            <li>執筆日時: 2026-02-01</li>
+            <li>構成: テスト設計技法を4流派で整理。伝統的技法（カバレッジ、同値分割、境界値）とモダンな技法（探索的テスト）を併置</li>
+            <li>接続: 4.1（テストレベル）の上に「どうテストケースを設計するか」を積む。4.4（AIテスト生成）ではこれらの技法をAIに適用させる</li>
+          </ul>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>🌐 <strong>ツール</strong>: <a href="https://docs.pytest.org/">pytest 公式ドキュメント</a>（Pythonで最も使われている、シンプルかつ強力なテストフレームワーク）</li>
+          <li>🌐 <strong>ツール</strong>: <a href="https://junit.org/junit5/docs/current/user-guide/">JUnit 5 User Guide</a>（Javaにおける単体テストの標準。4.2節の思想の原点です）</li>
+          <li>📚 <strong>書籍</strong>: 浜井和夫、大岩隆司『<a href="https://www.amazon.co.jp/dp/477418290X">はじめてのユニットテスト ―失敗しないための実践的なテストコード</a>』（テストコードを「負債」にせず、開発の助けにするための知恵）</li>
+          <li>🌐 <strong>Web</strong>: <a href="https://www.nngroup.com/articles/exploratory-testing/">Nielsen Norman Group "Exploratory Testing"</a>（探索的テストの概念と、UXリサーチにおける位置づけ。英語）</li>
+        </ul>
+      </section>
+    </section>
+  
+
+</body></html>

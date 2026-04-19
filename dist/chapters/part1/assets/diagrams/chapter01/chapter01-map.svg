@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 350" width="600" height="350">
+  <defs>
+    <style>
+      .map-bg { fill: #FDF5E6; stroke: #D2B48C; stroke-width: 3; }
+      .path { stroke: #8B4513; stroke-width: 2; stroke-dasharray: 8; fill: none; }
+      .node-circle { fill: #FFF; stroke: #8B4513; stroke-width: 2; }
+      .text-num { font-family: 'serif'; font-size: 14px; font-weight: bold; fill: #8B4513; text-anchor: middle; }
+      .text-title { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; fill: #333; }
+      .title-main { font-family: 'Noto Sans JP', sans-serif; font-size: 18px; font-weight: bold; fill: #8B4513; text-anchor: middle; }
+    </style>
+  </defs>
+  <rect x="10" y="10" width="580" height="330" rx="15" class="map-bg" />
+  <text x="300" y="45" class="title-main">第1章：冒険の地図（要求工学）</text>
+
+  <!-- Path -->
+  <path d="M 100,100 L 250,120 L 400,100 L 450,200 L 300,250 L 150,230 L 100,300" class="path" />
+
+  <!-- Nodes -->
+  <g transform="translate(100, 100)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">1.1</text>
+    <text x="20" y="5" class="text-title">なぜ聞くのか？</text>
+  </g>
+  <g transform="translate(250, 120)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">1.2</text>
+    <text x="20" y="5" class="text-title">どう聞くのか？</text>
+  </g>
+  <g transform="translate(400, 100)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">1.3</text>
+    <text x="20" y="5" class="text-title">誰が求めているのか？</text>
+  </g>
+  <g transform="translate(450, 200)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">1.4</text>
+    <text x="-120" y="5" class="text-title">何を目指すのか？</text>
+  </g>
+  <g transform="translate(300, 250)">
+    <circle r="15" class="node-circle" />
+    <text y="5" class="text-num">1.5</text>
+    <text x="20" y="5" class="text-title">どう可視化するか？</text>
+  </g>
+  <g transform="translate(150, 230)">
+    <circle r="15" class="node-circle" style="stroke: #D32F2F;" />
+    <text y="5" class="text-num" style="fill: #D32F2F;">1.6</text>
+    <text x="-140" y="5" class="text-title" style="font-weight: bold;">【外伝】バベルの塔</text>
+  </g>
+</svg>

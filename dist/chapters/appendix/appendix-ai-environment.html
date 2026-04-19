@@ -1,0 +1,263 @@
+<!DOCTYPE html><html lang="ja"><head>
+    <meta charset="utf-8">
+    <title>付録A：魔導工房の設計図——この書物を生んだAI共同執筆環境</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../assets/styles/print.css">
+  </head>
+  <body>
+    <section class="level1">
+      <h1 id="付録a魔導工房の設計図この書物を生んだai共同執筆環境">付録A：魔導工房の設計図——この書物を生んだAI共同執筆環境</h1>
+      <section class="level2">
+        <h2 id="はじめに著者の告白">はじめに：著者の告白</h2>
+        <p>本書はひとつの実験でもあります。</p>
+        <p><strong>この書物自体が、AIエージェントとの協働によって執筆されました。</strong></p>
+        <p>Claude Code、Gemini CLI、そして Codex CLI——3つの異なる「ゴーレム」が、本文の草稿生成、コードレビュー、整合性チェック、リソース調査を担いました。人間の著者はそれらを指揮し、判断し、編集しました。</p>
+        <p>3.5節で語った「AIとの協働」の実践がここにあります。付録として、この執筆環境の構造を公開します。同じ方法で技術書を執筆したい方、あるいはAIエージェントを使った大規模な知的作業に挑みたい方への、ひとつの設計図として。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="全体構成三柱の魔導師">全体構成：三柱の魔導師</h2>
+        <p>本プロジェクトでは、3つのAIエージェントを使い分けました。</p>
+        <table>
+          <thead>
+            <tr>
+              <th>エージェント</th>
+              <th>役割</th>
+              <th>設定ファイル</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Claude Code</strong></td>
+              <td>主力執筆・コードレビュー・詠唱例の精錬</td>
+              <td><code>CLAUDE.md</code></td>
+            </tr>
+            <tr>
+              <td><strong>Gemini CLI</strong></td>
+              <td>草稿の批評・多角的なレビュー</td>
+              <td><code>GEMINI.md</code></td>
+            </tr>
+            <tr>
+              <td><strong>Codex CLI</strong></td>
+              <td>コードスニペットの検証・サンプルコード生成</td>
+              <td>（共通環境を参照）</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>これら3つは<strong>それぞれ独立したエージェント</strong>ですが、<strong>同じ「真実の書」（共通ファイル群）を参照</strong>します。これにより、エージェントが変わっても、執筆のトーン・進捗・ルールが一貫して保たれます。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="共通環境三つのゴーレムを束ねる召喚の書">共通環境：三つのゴーレムを束ねる「召喚の書」</h2>
+        <section class="level3">
+          <h3 id="ディレクトリ構造">ディレクトリ構造</h3>
+          <pre class="language-text"><code class="language-text">textbook/
+├── .ai/                          # 全エージェント共通の設定・記録
+│   ├── agents.md                 # エージェントの役割・能力定義
+│   ├── QUICKSTART.md             # 新規エージェント向け早見表
+│   ├── workflows/                # 標準ワークフロー
+│   │   ├── draft.md              # 草稿生成の手順
+│   │   ├── review.md             # レビューの手順
+│   │   └── plan-next.md          # 次タスク決定の手順
+│   ├── commands/                 # カスタムスキル定義
+│   │   ├── commit.md             # /commit スキル
+│   │   ├── positive-check.md     # /positive-check スキル
+│   │   ├── update-toc.md         # /update-toc スキル
+│   │   └── ...                   # その他のスキル
+│   ├── context/                  # プロジェクトの背景情報
+│   │   ├── project.md            # プロジェクト概要
+│   │   └── questforge-spec.md    # サンプルアプリ仕様
+│   └── sessions/                 # セッションログ（日次）
+│       ├── 2026-01-20.md
+│       └── ...
+│
+├── CLAUDE.md                     # Claude Code 固有の設定
+├── GEMINI.md                     # Gemini CLI 固有の設定
+│
+├── style-guide.md                # 執筆スタイルガイド（全エージェント共通）
+├── progress.md                   # 進捗状況（全エージェント共通）
+├── plan.md                       # 全体構成・目次案
+└── chapters/                     # 執筆原稿</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="共通参照ファイルの役割">共通参照ファイルの役割</h3>
+          <p><strong><code>style-guide.md</code>（執筆の憲法）</strong></p>
+          <p>文体・トーン・用語・コードスタイルを定義します。「ポジティブ・ライティング方針」（課題ではなく可能性から語る）もここに記載されています。どのエージェントがどのタイミングで草稿を書いても、同じ「声」になるための要となるファイルです。</p>
+          <p><strong><code>progress.md</code>（進捗の水晶球）</strong></p>
+          <p>全セクションの状態（⬜未着手 / 🟨AI草稿 / 🟦人間修正中 / 🟩レビュー / ✅完成）をひとつの表で管理します。</p>
+          <p>エージェントが変わっても「次に何をすべきか」を把握できます。作業完了後は必ずこのファイルを更新するルールにしておくことで、セッションをまたいでも一貫した進捗把握が可能になります。</p>
+          <p><strong><code>.ai/agents.md</code>（ゴーレムの仕様書）</strong></p>
+          <p>エージェントに期待する振る舞い・出力フォーマット・禁止事項を定義します。草稿生成、レビュー、タスク計画それぞれの応答形式を標準化することで、複数エージェントからの出力の品質を均一化できます。</p>
+          <p><strong><code>.ai/sessions/</code>（作業記録の石板）</strong></p>
+          <p>セッションのたびに日付付きMarkdownファイルを作成し、以下を記録します：</p>
+          <ul>
+            <li>当日の主な活動</li>
+            <li>作成・更新したファイル</li>
+            <li>次のステップ</li>
+          </ul>
+          <p>複数エージェントを使い回す場合、「前のセッションで何をしたか」という文脈の引き継ぎが最大の課題になります。このログがその橋渡しをします。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="エージェント固有の設定">エージェント固有の設定</h2>
+        <section class="level3">
+          <h3 id="claude-codeclaudemd">Claude Code：<code>CLAUDE.md</code></h3>
+          <p>Claude Codeは、プロジェクトのルートに <code>CLAUDE.md</code> を置くと、セッション開始時に自動的に読み込みます。このファイルには以下を記載しました：</p>
+          <ul>
+            <li>プロジェクト概要（タイトル・目的・構成）</li>
+            <li>ポジティブ・ライティング方針（NG/OK表現の変換ルール）</li>
+            <li>ファイル構成の説明</li>
+            <li>セッションログの運用ルール（追記方式）</li>
+            <li><strong>カスタムスキル（スラッシュコマンド）の一覧</strong></li>
+            <li>自動実行タイミング（セクション追加後に<code>/update-toc</code>を走らせる、等）</li>
+          </ul>
+          <p>特に強力なのが<strong>カスタムスキル</strong>です。<code>.ai/commands/</code> に置いたMarkdownファイルが、そのまま <code>/コマンド名</code> として使えます：</p>
+          <table>
+            <thead>
+              <tr>
+                <th>スキル</th>
+                <th>実行内容</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>/commit</code></td>
+                <td>変更を論理単位ごとにグループ分けしてコミット</td>
+              </tr>
+              <tr>
+                <td><code>/positive-check</code></td>
+                <td>ネガティブ表現をスキャンして代替案を提案</td>
+              </tr>
+              <tr>
+                <td><code>/update-toc</code></td>
+                <td>目次（toc.md）を最新の状態に更新</td>
+              </tr>
+              <tr>
+                <td><code>/session-log</code></td>
+                <td>当日のセッションログを更新</td>
+              </tr>
+              <tr>
+                <td><code>/draw-svg</code></td>
+                <td>図の草稿をSVG形式で作成</td>
+              </tr>
+              <tr>
+                <td><code>/estimate-pages</code></td>
+                <td>原稿の分量からページ数を概算</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>これらのスキルはMarkdownファイルなのでGitで管理でき、複数エージェント間で共有もできます。</p>
+        </section>
+        <section class="level3">
+          <h3 id="gemini-cligeminimd">Gemini CLI：<code>GEMINI.md</code></h3>
+          <p>Gemini CLIは、プロジェクトのルートに <code>GEMINI.md</code> を置くと設定として読み込みます。Claude Codeとは「同じ共通環境を参照する別のゴーレム」として設計し、GEMINI.mdには以下を記載しました：</p>
+          <ul>
+            <li>プロジェクト概要とQuestForgeアプリの技術スタック</li>
+            <li>執筆ワークフローの概要（plan→draft→edit→review）</li>
+            <li>コミットルール</li>
+            <li>Gemini特有の追記メモリ（<code>Gemini Added Memories</code> セクション）</li>
+          </ul>
+          <p>Gemini CLIは特に「別の視点からのレビュー」に活用しました。Claude Codeが草稿を書き、Gemini CLIが批評する——人間と二種類のAIが「多角形の目」を持つことで、見落としが減ります。</p>
+        </section>
+        <section class="level3">
+          <h3 id="codex-cli">Codex CLI</h3>
+          <p>OpenAIのCodex CLIも同じプロジェクト構造を参照できます。Claude CodeやGemini CLIが使う <code>style-guide.md</code>・<code>progress.md</code>・<code>.ai/</code> 配下のファイルは、特定のエージェントに依存しない設計にしています。どのエージェントでも「次に何をすべきか」「どんな文体で書くか」を自律的に判断できます。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="マルチエージェント運用の実践知">マルチエージェント運用の実践知</h2>
+        <section class="level3">
+          <h3 id="原則1共通の真実の書を一本に絞る">原則1：共通の「真実の書」を一本に絞る</h3>
+          <p><code>progress.md</code> や <code>style-guide.md</code> は<strong>必ず1ファイル</strong>に集約します。エージェントごとに別ファイルを持つと、更新が分散して状態が錯綜します。</p>
+        </section>
+        <section class="level3">
+          <h3 id="原則2エージェントへの指示はファイル参照で行う">原則2：エージェントへの指示はファイル参照で行う</h3>
+          <pre class="language-text"><code class="language-text"># 良い詠唱
+@style-guide.md に従って、3.1節の草稿を書いてください。
+
+# 避けるべき詠唱
+「文体は魔法のメタファーを使って、でも技術的に正確で、
+ 前後のセクションと繋がるように...」（毎回長い指示を書く）</code></pre>
+          <p>ルールをファイルに外出しすることで、どのエージェントでも同品質の出力が得られます。</p>
+        </section>
+        <section class="level3">
+          <h3 id="原則3セッションログで文脈を引き継ぐ">原則3：セッションログで文脈を引き継ぐ</h3>
+          <p>エージェントはセッションをまたいで記憶を保持しません。<code>.ai/sessions/</code> への日次ログが、「前回のゴーレムが何をしたか」を次のゴーレムに伝える唯一の手段です。</p>
+          <pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">##</span> セッション1（2026-01-20）</span>
+<span class="token list punctuation">-</span> 3.1節の草稿を生成（3,200字）
+<span class="token list punctuation">-</span> QuestForgeのソートアルゴリズム例を追加
+<span class="token list punctuation">-</span> progress.mdを「🟨 AI草稿」に更新
+
+<span class="token title important"><span class="token punctuation">##</span> 次のステップ</span>
+<span class="token list punctuation">-</span> 人間が3.1節をレビュー・修正
+<span class="token list punctuation">-</span> 3.2節の執筆に着手</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="原則4コミットは論理単位で頻繁に">原則4：コミットは論理単位で頻繁に</h3>
+          <p>章の完成を待たず、節ごとにコミットします。エージェントが作業中断・切り替えをしても、Gitの履歴が「どこまで完成したか」の水晶球になります。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="執筆フロー全体像">執筆フロー全体像</h2>
+        <pre class="language-text"><code class="language-text">【タスク決定】
+ human → /progress → 次に着手すべき節を確認
+      ↓
+【草稿生成】
+ Claude Code / Gemini CLI → .ai/workflows/draft.md に従って草稿を生成
+      ↓
+【人間レビュー・編集】
+ human → 技術的正確性・体験談・ニュアンスを修正
+      ↓
+【AI品質チェック】
+ Claude Code → /positive-check（ネガティブ表現検出）
+             → /chapter-consistency（章内整合性）
+      ↓
+【進捗更新・コミット】
+ Claude Code → progress.md を更新 → /commit でグループコミット
+      ↓
+【TOC更新・セッションログ記録】
+ Claude Code → /update-toc → /session-log</code></pre>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="この設計から学べること">この設計から学べること</h2>
+        <p>本書はソフトウェアエンジニアリングを扱っていますが、この付録自体が<strong>「大規模な知的作業へのAI活用」</strong>の実例です。</p>
+        <p>重要な洞察をいくつか：</p>
+        <ol>
+          <li>
+            <p>
+              <strong>AIは「手を動かす職人」、人間は「設計者と審査員」</strong>
+              草稿の生成・検索・整合性チェックはAIが担い、最終判断・方向性・体験談の追加は人間が行う。この分業が機能するほど、執筆のスピードと品質が両立します。
+            </p>
+          </li>
+          <li>
+            <p>
+              <strong>エージェントが変わっても品質が均一になる設計</strong>
+              スタイルガイド・ワークフロー・進捗管理が「ファイルに宿る知識」として外部化されていると、どのエージェント（あるいはどの人間のアシスタント）が参加しても同じ品質を維持できます。
+            </p>
+          </li>
+          <li>
+            <p>
+              <strong>3.9節で学んだ「手技（スキル）」はここでも活きる</strong>
+              <code>/commit</code> <code>/positive-check</code> <code>/update-toc</code> ——これらのカスタムスキルが、本書の執筆を支えました。繰り返す作業をスキルに定義することで、執筆の「儀式的なノイズ」が消え、創造的な部分に集中できました。
+            </p>
+          </li>
+        </ol>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>🌐 <strong>公式ドキュメント</strong>: <a href="https://docs.anthropic.com/ja/docs/claude-code/overview">Claude Code</a>（CLAUDE.mdの設定方法・カスタムスキルの定義・サブエージェントの活用）</li>
+          <li>🌐 <strong>公式ドキュメント</strong>: <a href="https://github.com/google-gemini/gemini-cli">Gemini CLI</a>（GEMINI.mdによるプロジェクト設定・ツール連携）</li>
+          <li>🌐 <strong>公式ドキュメント</strong>: <a href="https://github.com/openai/codex">Codex CLI</a>（OpenAIのターミナル型コーディングエージェント）</li>
+          <li>🌐 <strong>Web</strong>: <a href="https://modelcontextprotocol.io/">Model Context Protocol</a>（本書3.9節で扱ったMCPの公式サイト。複数エージェントの外部ツール接続に活用できます）</li>
+        </ul>
+      </section>
+    </section>
+  
+
+</body></html>

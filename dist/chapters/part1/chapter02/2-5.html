@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>2.5 どう守るか？——クリーンアーキテクチャ</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../../../assets/styles/print.css">
+    <style>
+        body { max-width: 900px; margin: 0 auto; background: white; }
+        section { padding: 20px; }
+        img { max-width: 100%; height: auto; }
+    </style>
+</head>
+<body style="margin:0; padding:0;">
+
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part1/chapter02/2-4.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part1/chapter02/2-6.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    <main>
+    <section class="level1">
+      <h1 id="25-どう守るかクリーンアーキテクチャ">2.5 どう守るか？——クリーンアーキテクチャ</h1>
+      <p>オブジェクト指向で「魔力の源」を知り、UMLで「魔法陣」を描き、SOLID原則とデザインパターンで「美しい構造」を学びました。しかし、あなたの作ったシステムは、外の世界の嵐（変化）に耐えられるでしょうか？</p>
+      <ul>
+        <li>「データベースをOracleからPostgreSQLに変えたい」</li>
+        <li>「Web画面だけでなく、スマホアプリも作りたい」</li>
+        <li>「UIフレームワークをReactからVueに変えたい」</li>
+      </ul>
+      <p>こうした外側の変化のたびに、大切なビジネスロジック（クエストの計算式やレベルアップのルール）まで書き換える必要があったら、冒険はいつまでたっても進みません。</p>
+      <p>本当に大切な「魂（ドメインロジック）」を守るために、堅牢な城壁を築く必要があります。それが<strong>クリーンアーキテクチャ</strong>です。</p>
+      <hr>
+      <section class="level3">
+        <h3 id="同心円の城郭都市">同心円の城郭都市</h3>
+        <p>次の図は、クリーンアーキテクチャを構成する同心円状の各レイヤーと、それらの間の依存の方向を示しています。</p>
+        <figure>
+          <img src="../../assets/diagrams/chapter02/2-5-clean-architecture.svg" alt="クリーンアーキテクチャの層と依存方向">
+          <figcaption aria-hidden="true">クリーンアーキテクチャの層と依存方向</figcaption>
+        </figure>
+        <p>ここで特に注目すべきは、矢印の向きです。すべての依存関係は「外から内」——すなわちインフラ層やインターフェース層からドメイン層へと向かっています。中心にある「ドメイン層」は何にも依存せず、データベースやWebフレームワークの存在を知りません。この構造により、外側の「道具」が何であれ、城の本丸（ビジネスロジック）は傷つかずに輝き続けます。</p>
+        <p>クリーンアーキテクチャは、システムを同心円状の階層（レイヤー）に分ける考え方です。</p>
+        <p>中心に行けば行くほど「重要で変化しにくいもの」、外側に行けば行くほど「詳細で変化しやすいもの」を配置します。</p>
+        <section class="level4">
+          <h4 id="1-ドメイン層entities城の本丸keep">1. ドメイン層（Entities）：城の本丸（Keep）</h4>
+          <p>ビジネスの核心となるルールです。QuestForgeで言えば、「経験値が溜まればレベルが上がる」といった、ゲーム自体のルールです。データベースやUIが何であれ、このルールは変わりません。</p>
+        </section>
+        <section class="level4">
+          <h4 id="2-アプリケーション層use-cases内郭inner-wall">2. アプリケーション層（Use Cases）：内郭（Inner Wall）</h4>
+          <p>ユーザーがシステムを使って達成したいこと（ユースケース）です。「クエストを作成する」「報酬を受け取る」といった処理の流れを記述します。</p>
+        </section>
+        <section class="level4">
+          <h4 id="3-インターフェース層interface-adapters外郭outer-wall">3. インターフェース層（Interface Adapters）：外郭（Outer Wall）</h4>
+          <p>内側のデータを、外側（DBやUI）が使いやすい形に変換する翻訳者たちです。ControllerやPresenter、Gatewayがここにいます。</p>
+        </section>
+        <section class="level4">
+          <h4 id="4-インフラ層frameworks--drivers城下町">4. インフラ層（Frameworks &amp; Drivers）：城下町</h4>
+          <p>Webフレームワーク、データベース、外部APIなど。これらはあくまで「道具」であり、いつでも取り替え可能な状態にしておきます。</p>
+        </section>
+      </section>
+      <section class="level3">
+        <h3 id="依存の方向性the-dependency-rule">依存の方向性（The Dependency Rule）</h3>
+        <p>[図: 依存方向のルール（内向きの矢印）]</p>
+        <p>この城にはたった一つ、絶対の掟があります。</p>
+        <blockquote>
+          <p><strong>「依存の矢印は、常に外側から内側へ向かわなければならない」</strong></p>
+        </blockquote>
+        <p>外側（DBやUI）は内側（ドメイン）を知っていますが、内側は外側のことを一切知りません。王様（ドメイン）は、城下町（DB）の流行り廃りに影響されないのです。</p>
+      </section>
+      <section class="level3">
+        <h3 id="城壁の高さオーバーエンジニアリングとyagniの智慧">城壁の高さ：オーバーエンジニアリングとYAGNIの智慧</h3>
+        <p>クリーンアーキテクチャは強力な「守り」ですが、一つだけ心がけておきたいポイントがあります。それは、<strong>オーバーエンジニアリング（過剰設計）</strong>です。</p>
+        <p>小さな小屋を建てるだけなのに、何十メートルもの石造りの城壁（何層もの抽象化レイヤー）を築くのは、かえって時間と労力の無駄になり、身動きが取れなくなってしまいます。</p>
+        <p>ここで、アルケミストが心得ておくべき2つの「自戒の呪文」を紹介します。</p>
+        <ol>
+          <li>
+            <strong>YAGNI（You Aren't Gonna Need It）</strong>:
+            「それはきっと必要にならない」。将来の変更を予測して複雑な構造を作るのではなく、本当に必要になった瞬間に初めてその構造を導入せよ、という教えです。
+          </li>
+          <li>
+            <strong>KISS（Keep It Simple, Stupid）</strong>:
+            「常にシンプルにしておけ」。複雑な魔法陣よりも、誰にでも効果がわかる単純な術式の方が、間違いが少なく扱いやすいのです。
+          </li>
+        </ol>
+        <p>クリーンアーキテクチャという「堅牢な城」を築くべきか、あるいは今はまだ「身軽なキャンプ」で済ませるべきか。その<strong>トレードオフ（利害のバランス）</strong>を見極めることこそが、真のエンジニアリングの醍醐味です。</p>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="実践例-questforgeの城郭構造">実践例: QuestForgeの城郭構造</h2>
+        <p>QuestForgeのディレクトリ構造は、この思想を反映しています。</p>
+        <p>同心円の城郭設計と依存の掟を理解したところで、QuestForgeという実際の城の構造を見ながら、それが現実のコードにどう現れるかを確認しましょう。</p>
+        <pre class="language-text"><code class="language-text">questforge/
+├── domain/           # [本丸] エンティティ、リポジトリのインターフェース
+│   ├── hero.py       # Heroクラス（純粋なPythonコード）
+│   └── i_repo.py     # IHeroRepository（インターフェース）
+│
+├── application/      # [内郭] ユースケース
+│   └── level_up.py   # LevelUpUseCase
+│
+├── infrastructure/   # [城下町] 詳細な実装
+│   └── db_repo.py    # SqliteHeroRepository（IHeroRepositoryの実装）
+│
+└── presentation/     # [城下町] UI
+    └── cli.py        # コマンドライン操作</code></pre>
+        <section class="level3">
+          <h3 id="コードで見る依存の逆転">コードで見る「依存の逆転」</h3>
+          <p>ここで重要なのが、2.3節で学んだ「依存性逆転の原則（DIP）」です。</p>
+          <p>
+            <strong>初期の状態（内側が外側に依存）</strong>:
+            ```python
+            # application/level_up.py
+            from infrastructure.db_repo import SqliteRepo # ❌ 外側の詳細に依存している！
+          </p>
+          <p>
+            def level_up(hero_id):
+            repo = SqliteRepo() # DBが変わったらここも修正が必要
+            hero = repo.find(hero_id)
+            ```
+          </p>
+          <p>
+            <strong>さらに効果的な方法（外側が内側に依存）</strong>:
+            ```python
+            # application/level_up.py
+            from domain.i_repo import IHeroRepository # ⭕ 内側のインターフェースに依存
+          </p>
+          <p>
+            def level_up(hero_id, repo: IHeroRepository):
+            # repoがSqliteかJsonかは知らなくていい
+            hero = repo.find(hero_id)
+            ```
+          </p>
+          <p>こうすることで、<code>infrastructure</code> フォルダを丸ごと削除しても、<code>domain</code> と <code>application</code> のコードは1行も書き換えずに済みます。これが「守られている」状態です。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="ai時代のアプローチ-ボイラープレートからの解放">AI時代のアプローチ: ボイラープレートからの解放</h2>
+        <p>レイヤーを分けると、どうしても似たようなクラスや変換処理（ボイラープレートコード）が増えます。これを手で書くのは退屈ですが、AIにとっては得意分野です。</p>
+        <section class="level3">
+          <h3 id="レイヤー構造の生成">レイヤー構造の生成</h3>
+          <p>「依存の逆転」でコードの繋がり方が変わることを確認したところで、AIを使ってその城の骨組みをどれだけ素早く築けるかを探ってみましょう。「Heroエンティティを基に、Repositoryインターフェース、ユースケース、そしてSQLite用の実装クラスの雛形を一括生成して」と詠唱すれば、AIは城の骨組みを一瞬で築き上げます。</p>
+        </section>
+        <section class="level3">
+          <h3 id="依存ルールのチェック">依存ルールのチェック</h3>
+          <p>「このプロジェクトの中で、内側のレイヤーから外側のレイヤーをimportしている箇所はないかチェックして」とAIに依頼することで、城壁のほころび（アーキテクチャ違反）を早期に発見できます。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="ハンズオン-城壁を築く">ハンズオン: 城壁を築く</h2>
+        <section class="level3">
+          <h3 id="ステップ1-レイヤーを定義する">ステップ1: レイヤーを定義する</h3>
+          <p>AIを使った設計のスピードを体感したところで、今度は自分でディレクトリを切り、本丸（ドメイン）を守る城壁の初めの一石を置いてみましょう。自分のプロジェクトフォルダに <code>domain</code>, <code>application</code>, <code>infrastructure</code> という3つのディレクトリを作成します。</p>
+        </section>
+        <section class="level3">
+          <h3 id="ステップ2-本丸ドメインを守る">ステップ2: 本丸（ドメイン）を守る</h3>
+          <p><code>domain</code> フォルダに、外部ライブラリ（SQLAlchemyやDjangoなど）を一切使わない、純粋なPythonクラスを作成してください。これが守るべき宝です。</p>
+        </section>
+        <section class="level3">
+          <h3 id="ステップ3-門インターフェースを作る">ステップ3: 門（インターフェース）を作る</h3>
+          <p><code>domain</code> フォルダに、データの保存や取得に必要なメソッドを定義した「抽象クラス（インターフェース）」を作成しましょう。実装はまだ書きません。</p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="コラム-城の内側を豊かにする思想ドメイン駆動設計ddd">コラム: 城の内側を豊かにする思想——ドメイン駆動設計（DDD）</h2>
+        <p>クリーンアーキテクチャは「城の守り方（構造）」を教えてくれますが、「城の中で誰がどのように暮らすか（ドメインモデルの中身）」を決定するのは、あなたの思想です。ここで役立つのが、<strong>ドメイン駆動設計（Domain-Driven Design: DDD）</strong>の知恵です。</p>
+        <p>「アーキテクチャ」が城壁なら、「DDD」はその中で共通の言葉を話し、秩序を守るための「王国の法律」のようなものです。特に重要な3つの概念を、冒険の比喩で紐解いてみましょう。</p>
+        <section class="level3">
+          <h3 id="1-ユビキタス言語翻訳の壁を壊す共通語">1. ユビキタス言語：翻訳の壁を壊す「共通語」</h3>
+          <p>
+            城壁の設計を終えた後の問いは自然と「では、城の中に秩序をどう築くか」へと向かいます。その基盤となるのが「共通語」です。開発者と、ビジネスの専門家（ドメインエキスパート）が使う言葉がバラバラだと、悲劇が起きます。
+            専門家が「冒険者の称号を授与する」と言っているのに、コードが <code>update_user_status(3)</code> となっていたらどうでしょう？ 修正のたびに「status(3)って称号のことだっけ？」という脳内翻訳が必要になり、いつか必ずミスが起きます。
+          </p>
+          <p>
+            DDDでは、会話でも、仕様書でも、そして<strong>ソースコードの変数名やメソッド名でも</strong>、全く同じ言葉（ユビキタス言語）を使います。
+            <code>hero.grant_title("Dragon Slayer")</code> と書けば、誰が読んでも意図が一目でわかります。言葉の壁を取り払うことで、魔法（プログラム）の暴走を防ぐのです。
+          </p>
+        </section>
+        <section class="level3">
+          <h3 id="2-境界づけられたコンテキスト言葉の衝突を防ぐ領土">2. 境界づけられたコンテキスト：言葉の衝突を防ぐ「領土」</h3>
+          <p>同じ「ヒーロー」という言葉でも、場所が変われば意味が変わります。</p>
+          <ul>
+            <li><strong>「戦闘」の領土</strong>では、ヒーローは「HPや攻撃力を持つ戦士」です。</li>
+            <li><strong>「酒場（ギルド管理）」の領土</strong>では、ヒーローは「ランクや会費の支払い状況を持つ登録者」です。</li>
+          </ul>
+          <p>
+            これらを無理に一つの巨大な <code>Hero</code> クラスにまとめようとすると、あらゆるデータが混ざり合い、複雑すぎて手がつけられない「キメラ」が生まれてしまいます。
+            領土（コンテキスト）ごとに境界を引き、「ここではヒーローは戦士として扱う」「あちらでは登録者として扱う」と割り切ることで、モデルをシンプルに保つのです。
+          </p>
+        </section>
+        <section class="level3">
+          <h3 id="3-集約データの整合性を守る結束">3. 集約：データの整合性を守る「結束」</h3>
+          <p>
+            システムの中には、バラバラに操作してはいけない「運命共同体」が存在します。
+            例えば、「クエスト」とその「達成条件（タスク）」です。クエスト本体を知らずに、勝手にタスクだけを「完了」にできてしまったら、クエスト全体の整合性が崩れてしまいます。
+          </p>
+          <p>これを防ぐのが「集約」です。クエストとタスクを一つのグループ（集約）とし、外部からの操作は必ずグループのリーダー（集約ルート）である「クエスト」を通すように制限します。これにより、「タスクが全部終わっていないのにクエストが完了扱いになる」といった矛盾した状態を防ぐ、強力な防壁となるのです。</p>
+          <p>城壁（アーキテクチャ）を作ったら、その中にはこれらの法律を敷き、豊かで秩序ある王国（ドメインモデル）を築いていきましょう。</p>
+          <hr>
+          <p>クリーンアーキテクチャは、ビジネスロジックという「宝」を、フレームワークやデータベースという「道具」の変化から守るための城郭です。同心円の中心に近いほど重要で変化しにくいものを置き、依存の方向は常に「外から内」へ——この一点を守るだけで、DBを取り替えてもUIを変えても、核心のロジックは傷つきません。そしてこの構造は、テストの書きやすさにも直結します。外側の詳細（DBやUIフレームワーク）を差し替えてテストを走らせられるからこそ、設計の健全性を継続的に確認できるのです。</p>
+          <blockquote>
+            <p><strong>コラム: 技術的負債という魔物</strong></p>
+            <p>クリーンアーキテクチャを学んだところで、心に留めておきたい概念があります——<strong>技術的負債（Technical Debt）</strong>です。</p>
+            <p>技術的負債とは、「今は楽だが、後で利子（追加の作業）を払うことになる設計上の妥協」のことです。締め切りに追われて「とりあえず動く」コードを書いたり、本来分離すべきレイヤーを混ぜてしまったりすると、負債は静かに積み上がります。</p>
+            <p>負債そのものは必ずしも悪ではありません。冒険には時に「今を乗り切るための借金」が必要なこともあります。大切なのは、<strong>負債の存在を認識し、計画的に返済していくこと</strong>です。</p>
+            <p>技術的負債を見つけ出し、美しく返済していく技術——それが<strong>リファクタリング</strong>です。この魔法については、<strong>第5章「リファクタリング：彫刻を磨く喜び」</strong>で詳しく学びます。</p>
+          </blockquote>
+          <hr>
+          <p>
+            これで第2章「悠久のアーキテクチャ」の旅は終わりです。
+            オブジェクト指向から始まり、UML、SOLID、デザインパターンを経て、最後にそれらを統合するクリーンアーキテクチャに到達しました。
+          </p>
+          <p>
+            あなたの手には今、堅牢で美しい城を築くための設計図があります。
+            次章からは、いよいよこの城に命を吹き込む「実装」の旅——<strong>第3章：モダン・アルケミー（AI駆動実装）</strong>が始まります。
+          </p>
+          <hr>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <pre class="language-text"><code class="language-text">以下のドメインオブジェクト（Heroクラス）に対して、クリーンアーキテクチャに基づいた
+1. リポジトリインターフェース
+2. ヒーローを作成するユースケース
+3. インメモリで動作するリポジトリの実装
+のPythonコードを生成してください。</code></pre>
+        <pre class="language-text"><code class="language-text">このPythonプロジェクトのディレクトリ構造を解析し、Clean Architectureの「依存性のルール（外側から内側へのみ依存）」に違反しているimport文があれば指摘してください。</code></pre>
+        <section class="level3">
+          <h3 id="cliエージェント型アーキテクチャ違反の自動検出claude-code--mcp">CLIエージェント型：アーキテクチャ違反の自動検出（Claude Code + MCP）</h3>
+          <p>コードを貼らなくても、Claude Codeがリポジトリ全体を走査して依存ルール違反を見つけられます。さらにGitHub MCPを使うと、PRがマージされる前に違反を自動検知できます。</p>
+          <pre class="language-text"><code class="language-text"># Claude Codeでの実行（プロジェクトルートから）
+
+このプロジェクトのすべての .py ファイルを走査して、
+Clean Architecture の依存ルール違反を検出してください。
+
+具体的には、以下のような「内側から外側への依存」を探してください：
+- domain/ が infrastructure/ または presentation/ をインポートしている
+- application/ が infrastructure/ をインポートしている
+
+違反箇所を列挙し、それぞれについて：
+1. なぜ違反なのかを説明する
+2. 依存を逆転させるための修正案（インターフェース導入など）を示す</code></pre>
+        </section>
+        <section class="level3">
+          <h3 id="hookによるアーキテクチャ守護claude-code-hooks">Hookによるアーキテクチャ守護（Claude Code Hooks）</h3>
+          <p>Claude Codeの <strong>Hooks</strong> 機能を使うと、コードを保存・コミットするたびに自動でアーキテクチャチェックが走る「常時稼働の結界」を張れます。</p>
+          <pre class="language-json"><code class="language-json"><span class="token comment">// .claude/settings.json</span>
+<span class="token punctuation">{</span>
+  <span class="token property">"hooks"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"PostToolUse"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"matcher"</span><span class="token operator">:</span> <span class="token string">"Write|Edit"</span><span class="token punctuation">,</span>
+        <span class="token property">"hooks"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+          <span class="token punctuation">{</span>
+            <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"command"</span><span class="token punctuation">,</span>
+            <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"python scripts/check_arch.py $CLAUDE_TOOL_OUTPUT_PATH"</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
+          <pre class="language-python"><code class="language-python"><span class="token comment"># scripts/check_arch.py</span>
+<span class="token comment"># ファイルが保存されるたびに依存方向を自動チェックするスクリプト</span>
+<span class="token keyword">import</span> ast<span class="token punctuation">,</span> sys<span class="token punctuation">,</span> pathlib
+
+LAYER_ORDER <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"domain"</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">"application"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"infrastructure"</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">"presentation"</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">}</span>
+
+<span class="token keyword">def</span> <span class="token function">check_file</span><span class="token punctuation">(</span>path<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    src <span class="token operator">=</span> pathlib<span class="token punctuation">.</span>Path<span class="token punctuation">(</span>path<span class="token punctuation">)</span>
+    layer <span class="token operator">=</span> <span class="token builtin">next</span><span class="token punctuation">(</span><span class="token punctuation">(</span>k <span class="token keyword">for</span> k <span class="token keyword">in</span> LAYER_ORDER <span class="token keyword">if</span> k <span class="token keyword">in</span> src<span class="token punctuation">.</span>parts<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">None</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> <span class="token keyword">not</span> layer<span class="token punctuation">:</span>
+        <span class="token keyword">return</span>
+    tree <span class="token operator">=</span> ast<span class="token punctuation">.</span>parse<span class="token punctuation">(</span>src<span class="token punctuation">.</span>read_text<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> node <span class="token keyword">in</span> ast<span class="token punctuation">.</span>walk<span class="token punctuation">(</span>tree<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token keyword">if</span> <span class="token builtin">isinstance</span><span class="token punctuation">(</span>node<span class="token punctuation">,</span> <span class="token punctuation">(</span>ast<span class="token punctuation">.</span>Import<span class="token punctuation">,</span> ast<span class="token punctuation">.</span>ImportFrom<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            mod <span class="token operator">=</span> <span class="token builtin">getattr</span><span class="token punctuation">(</span>node<span class="token punctuation">,</span> <span class="token string">"module"</span><span class="token punctuation">,</span> <span class="token string">""</span><span class="token punctuation">)</span> <span class="token keyword">or</span> <span class="token string">""</span>
+            <span class="token keyword">for</span> outer<span class="token punctuation">,</span> level <span class="token keyword">in</span> LAYER_ORDER<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">if</span> outer <span class="token keyword">in</span> mod <span class="token keyword">and</span> level <span class="token operator">&gt;</span> LAYER_ORDER<span class="token punctuation">[</span>layer<span class="token punctuation">]</span><span class="token punctuation">:</span>
+                    <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"⚠️  アーキテクチャ違反: </span><span class="token interpolation"><span class="token punctuation">{</span>src<span class="token punctuation">}</span></span><span class="token string"> が </span><span class="token interpolation"><span class="token punctuation">{</span>outer<span class="token punctuation">}</span></span><span class="token string"> に依存しています"</span></span><span class="token punctuation">)</span>
+                    sys<span class="token punctuation">.</span>exit<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+
+<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
+    check_file<span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre>
+          <p>これにより、違反のあるコードはClaude Code上で即座に警告が表示され、「気づかないうちに城壁が崩れる」事態を防げます。</p>
+        </section>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>📚 <strong>書籍</strong>: エリック・エヴァンス『<a href="https://www.shoeisha.co.jp/book/detail/9784798121963">ドメイン駆動設計</a>』（ビジネスの複雑さに立ち向かうための設計思想）</li>
+          <li>📚 <strong>書籍</strong>: ヴァーン・ヴァーノン『<a href="https://www.shoeisha.co.jp/book/detail/9784798131610">実践ドメイン駆動設計</a>』（DDDの実装パターンを詳細に解説した、通称「赤本」）</li>
+          <li>📚 <strong>書籍</strong>: 成瀬 允宣『<a href="https://www.shoeisha.co.jp/book/detail/9784798161501">ドメイン駆動設計入門</a>』（ボトムアップでDDDを学べる、日本で最も分かりやすい入門書）</li>
+          <li>🌐 <strong>Web</strong>: Robert C. Martin "<a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html">The Clean Architecture</a>"（すべての始まりとなった、伝説的なブログ記事）</li>
+        </ul>
+        <hr>
+      </section>
+    </section>
+  
+
+</main>
+    <nav style="display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; background: #f8f9fa; border-bottom: 1px solid #ddd; font-family: sans-serif; position: sticky; top: 0; z-index: 1000;">
+        <a href="../../../chapters/part1/chapter02/2-4.html" style="color: #1E88E5; text-decoration: none;">← 前へ</a>
+        <a href="../../../toc.html" style="color: #666; text-decoration: none; font-weight: bold;">目次</a>
+        <a href="../../../chapters/part1/chapter02/2-6.html" style="color: #1E88E5; text-decoration: none;">次へ →</a>
+    </nav>
+    </body></html>

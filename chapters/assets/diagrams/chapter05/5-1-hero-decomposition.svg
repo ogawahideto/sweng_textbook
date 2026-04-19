@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .class-box { fill: #FFF; stroke: #333; stroke-width: 2; }
+      .text-title { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: bold; fill: #333; text-anchor: middle; }
+      .text-attr { font-family: 'monospace'; font-size: 11px; fill: #333; }
+      .diamond { fill: #FFF; stroke: #333; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="600" height="400" class="bg"/>
+
+  <!-- Hero (The Governor) -->
+  <rect x="220" y="30" width="160" height="100" class="class-box" />
+  <line x1="220" y1="55" x2="380" y2="55" stroke="#333" />
+  <text x="300" y="48" class="text-title">Hero</text>
+  <text x="230" y="70" class="text-attr">+name: str</text>
+  <line x1="220" y1="80" x2="380" y2="80" stroke="#333" />
+  <text x="230" y="95" class="text-attr">+take_damage(amt)</text>
+  <text x="230" y="110" class="text-attr">+save()</text>
+
+  <!-- Status -->
+  <rect x="50" y="180" width="120" height="60" class="class-box" />
+  <text x="110" y="200" class="text-title">HeroStatus</text>
+  <text x="60" y="225" class="text-attr">+hp: int</text>
+
+  <!-- Inventory -->
+  <rect x="220" y="250" width="120" height="60" class="class-box" />
+  <text x="280" y="270" class="text-title">Inventory</text>
+  <text x="230" y="295" class="text-attr">+items: list</text>
+
+  <!-- Location -->
+  <rect x="400" y="180" width="120" height="60" class="class-box" />
+  <text x="460" y="200" class="text-title">Location</text>
+  <text x="410" y="225" class="text-attr">+x, y: int</text>
+
+  <!-- Repository Interface -->
+  <rect x="400" y="30" width="150" height="60" class="class-box" style="stroke-dasharray: 4;" />
+  <text x="475" y="55" class="text-title">«interface»<br/>HeroRepository</text>
+
+  <!-- Aggregations -->
+  <line x1="220" y1="100" x2="110" y2="180" stroke="#333" />
+  <polygon points="220,100 215,110 205,105 210,95" class="diamond" />
+
+  <line x1="300" y1="130" x2="280" y2="250" stroke="#333" />
+  <polygon points="300,130 305,140 295,145 290,135" class="diamond" />
+
+  <line x1="380" y1="100" x2="460" y2="180" stroke="#333" />
+  <polygon points="380,100 385,110 395,105 390,95" class="diamond" />
+
+  <line x1="380" y1="60" x2="400" y2="60" stroke="#333" />
+  <path d="M 395,55 L 400,60 L 395,65" fill="none" stroke="#333" />
+</svg>
