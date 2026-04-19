@@ -116,7 +116,7 @@ AIエージェントがツール・リソース・プロンプトを標準化さ
 **OCP（Open/Closed Principle）** → 「SOLID 原則」参照
 
 **OWASP Top 10**
-Open Worldwide Application Security Project が公開する「Webアプリで最も頻繁に見られる10種のセキュリティリスク」一覧。SQLインジェクション・XSS・認証不備などを含む（2021年版）。→ 6.3節
+Open Worldwide Application Security Project が公開する「Webアプリで最も頻繁に見られる10種のセキュリティリスク」一覧。2025年版ではアクセス制御の不備が1位、サプライチェーンの失敗が新設3位。→ 6.3節
 
 **Platform Engineering**
 開発者の生産性を高める内部プラットフォーム（IDP）を構築・運営する工学分野。「組織の組織」として全チームを支える。→ 6.9節
