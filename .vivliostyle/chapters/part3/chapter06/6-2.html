@@ -134,14 +134,14 @@ QuestForge 用の完全な CI/CD パイプラインを設計・生成してく�
         <span class="token property">"hooks"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
           <span class="token punctuation">{</span>
             <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"command"</span><span class="token punctuation">,</span>
-            <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"bash -c \"echo '$CLAUDE_TOOL_INPUT' | grep -q 'git commit' &amp;&amp; ruff check src/ &amp;&amp; pytest tests/unit/ -q --tb=no || true\""</span>
+            <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"cmd=$(jq -r '.tool_input.command'); echo \"$cmd\" | grep -q 'git commit' &amp;&amp; ruff check src/ &amp;&amp; pytest tests/unit/ -q --tb=no || true"</span>
           <span class="token punctuation">}</span>
         <span class="token punctuation">]</span>
       <span class="token punctuation">}</span>
     <span class="token punctuation">]</span>
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre>
-          <p>このHookが設定された環境では、Claude Codeが <code>git commit</code> コマンドを実行しようとするたびに、自動的にLintとユニットテストが先行して走ります。テストが失敗すればコミットは実行されず、Claude Codeが修正を試みます——まさに「城門で衛兵が自動審査する」仕組みです。</p>
+          <p>Hookは実行されるツールの情報を<strong>標準入力のJSON</strong>として受け取るため、<code>jq</code> で <code>tool_input.command</code> を取り出し、それが <code>git commit</code> を含むかを判定しています。このHookが設定された環境では、Claude Codeが <code>git commit</code> コマンドを実行しようとするたびに、自動的にLintとユニットテストが先行して走ります。テストが失敗すればコミットは実行されず、Claude Codeが修正を試みます——まさに「城門で衛兵が自動審査する」仕組みです。</p>
           <blockquote>
             <p>
               <strong>コラム: ローカルHookとリモートCIの使い分け</strong>

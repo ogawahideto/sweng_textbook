@@ -83,7 +83,7 @@
           <h3 id="ステップ1-コンテキストの準備契約">ステップ1: コンテキストの準備（契約）</h3>
           <p>
             まず、プロジェクトのルールをエージェントに読み込ませます。
-            （多くのエージェントは <code>.cursorrules</code> や <code>.ai/context/</code> といったファイルを自動的に参照します）
+            （多くのエージェントは <code>.cursor/rules/*.mdc</code>（Cursorの現行形式。旧 <code>.cursorrules</code>）や <code>.ai/context/</code> といったファイルを自動的に参照します）
           </p>
           <p>
             <strong>指示（プロンプト）例</strong>:
@@ -128,7 +128,7 @@
         <h2 id="高度な魔術-ルールファイルによる自動化">高度な魔術: ルールファイルによる自動化</h2>
         <p>個別の指示を都度書く手間を減らしたいとき、ルールファイルという「永続的な契約」が力を発揮します。毎回「Clean Architectureで…」と指示するのは手間です。プロジェクトルートに「エージェントへの指示書」を配置することで、これらの前提共有を自動化できます。</p>
         <p>
-          <strong>例: <code>.ai/rules.md</code> (あるいは <code>.cursorrules</code>)</strong>
+          <strong>例: <code>.ai/rules.md</code> (あるいはCursorの <code>.cursor/rules/*.mdc</code>)</strong>
           ```markdown
           # プロジェクト指針
         </p>
@@ -190,8 +190,8 @@
         </section>
         <section class="level3">
           <h3 id="claudemdゴーレムへの永続的な魂の書き込み">CLAUDE.md：ゴーレムへの「永続的な魂の書き込み」</h3>
-          <p>CLI型の特性が分かったところで、そのゴーレムにプロジェクトの記憶を与える「魂の書き込み」の仕組みを見ていきましょう。前述の <code>.cursorrules</code> と同様の役割を、Claude Codeは <strong><code>CLAUDE.md</code></strong> というファイルで果たします。ただし、その深さは一段上です。</p>
-          <p><code>.cursorrules</code> が「作業ルールの伝達」を目的とするのに対し、<code>CLAUDE.md</code> は<strong>「プロジェクトの記憶と文脈」そのもの</strong>を記述します。セッションをまたいでも、エージェントはここを読んでプロジェクトの背景を再学習します。</p>
+          <p>CLI型の特性が分かったところで、そのゴーレムにプロジェクトの記憶を与える「魂の書き込み」の仕組みを見ていきましょう。前述のCursorのルールファイルと同様の役割を、Claude Codeは <strong><code>CLAUDE.md</code></strong> というファイルで果たします。ただし、その深さは一段上です。</p>
+          <p>Cursorのルールファイルが「作業ルールの伝達」を目的とするのに対し、<code>CLAUDE.md</code> は<strong>「プロジェクトの記憶と文脈」そのもの</strong>を記述します。セッションをまたいでも、エージェントはここを読んでプロジェクトの背景を再学習します。</p>
           <pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> QuestForge プロジェクト設定</span>
 
 <span class="token title important"><span class="token punctuation">##</span> このプロジェクトについて</span>
@@ -241,7 +241,7 @@ RPG風タスク管理アプリ。Clean Architectureを採用。
         </section>
         <section class="level3">
           <h3 id="スラッシュコマンド使い魔への短縮詠唱">スラッシュコマンド：使い魔への「短縮詠唱」</h3>
-          <p>三つの流派を使い分けられるようになったら、さらに効率を高める「短縮詠唱」の仕組みも知っておきましょう。Claude Codeには、頻繁に使う操作をワンフレーズで呼び出す<strong>スラッシュコマンド</strong>が用意されています。</p>
+          <p>三つの流派を使い分けられるようになったら、さらに効率を高める「短縮詠唱」の仕組みも知っておきましょう。Claude Codeには、頻繁に使う操作をワンフレーズで呼び出す<strong>スラッシュコマンド</strong>が標準で用意されています。</p>
           <table>
             <thead>
               <tr>
@@ -251,20 +251,20 @@ RPG風タスク管理アプリ。Clean Architectureを採用。
             </thead>
             <tbody>
               <tr>
-                <td><code>/commit</code></td>
-                <td>変更を論理単位ごとに自動でグループ化してコミット</td>
+                <td><code>/review</code></td>
+                <td>変更内容やプルリクエストをレビュー</td>
               </tr>
               <tr>
-                <td><code>/review-pr</code></td>
-                <td>プルリクエストのレビューを依頼</td>
+                <td><code>/init</code></td>
+                <td>コードベースを分析して <code>CLAUDE.md</code> を自動生成</td>
               </tr>
               <tr>
-                <td><code>/fix</code></td>
-                <td>直前のエラーを自動修正</td>
+                <td><code>/agents</code></td>
+                <td>サブエージェント（使い魔の分身）を定義・管理</td>
               </tr>
             </tbody>
           </table>
-          <p>さらに、プロジェクト固有のスラッシュコマンドを <strong><code>.claude/commands/</code></strong> フォルダに定義することで、「このプロジェクト専用の詠唱術」を作り出せます。たとえば <code>/deploy</code> と入力するだけで、テスト→ビルド→デプロイの一連の儀式を自動実行させることも可能です。</p>
+          <p>さらに、プロジェクト固有のスラッシュコマンドを <strong><code>.claude/commands/</code></strong>（あるいはモデルが自動起動する <strong><code>.claude/skills/</code></strong>）に定義することで、「このプロジェクト専用の詠唱術」を作り出せます。たとえば <code>/deploy</code> と入力するだけで、テスト→ビルド→デプロイの一連の儀式を自動実行させることも可能です。</p>
           <pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> .claude/commands/deploy.md</span>
 テスト(<span class="token code-snippet code keyword">`pytest`</span>)を実行し、全て通過したらDockerイメージをビルドして
 ステージング環境にデプロイしてください。
@@ -310,6 +310,7 @@ RPG風タスク管理アプリ。Clean Architectureを採用。
           <h3 id="評価パイプラインの構築">評価パイプラインの構築</h3>
           <p>品質を継続的に保つ鍵は、<strong>評価の自動化</strong>です。</p>
           <pre class="language-python"><code class="language-python"><span class="token comment"># QuestForge: クエスト推薦AIの評価ループ</span>
+<span class="token keyword">import</span> json
 <span class="token keyword">import</span> anthropic
 
 <span class="token keyword">def</span> <span class="token function">evaluate_recommendation</span><span class="token punctuation">(</span>question<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> answer<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> gold_answer<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">dict</span><span class="token punctuation">:</span>
@@ -321,21 +322,22 @@ RPG風タスク管理アプリ。Clean Architectureを採用。
 金回答: </span><span class="token interpolation"><span class="token punctuation">{</span>gold_answer<span class="token punctuation">}</span></span><span class="token string">
 推薦回答: </span><span class="token interpolation"><span class="token punctuation">{</span>answer<span class="token punctuation">}</span></span><span class="token string">
 
-以下の観点でJSON形式で採点してください：
+以下の観点で採点し、JSONオブジェクトのみを出力してください（前後の説明文は不要）：
 - relevance: 関連性 (0-1)
-- accuracy: 正確性 (0-1)  
+- accuracy: 正確性 (0-1)
 - helpfulness: 有用性 (0-1)
 """</span></span>
     response <span class="token operator">=</span> client<span class="token punctuation">.</span>messages<span class="token punctuation">.</span>create<span class="token punctuation">(</span>
-        model<span class="token operator">=</span><span class="token string">"claude-opus-4-6"</span><span class="token punctuation">,</span>
+        model<span class="token operator">=</span><span class="token string">"claude-opus-4-8"</span><span class="token punctuation">,</span>
         max_tokens<span class="token operator">=</span><span class="token number">256</span><span class="token punctuation">,</span>
         messages<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">{</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> prompt<span class="token punctuation">}</span><span class="token punctuation">]</span>
     <span class="token punctuation">)</span>
-    <span class="token keyword">return</span> response<span class="token punctuation">.</span>content<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>text
+    <span class="token comment"># 応答テキスト（JSON文字列）を辞書にパースして返す</span>
+    <span class="token keyword">return</span> json<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>response<span class="token punctuation">.</span>content<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>text<span class="token punctuation">)</span>
 
 <span class="token comment"># 毎晩、前日の推薦ログをサンプリングして評価する</span>
 <span class="token keyword">def</span> <span class="token function">nightly_eval_run</span><span class="token punctuation">(</span>log_path<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">,</span> sample_size<span class="token punctuation">:</span> <span class="token builtin">int</span> <span class="token operator">=</span> <span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">import</span> json<span class="token punctuation">,</span> random
+    <span class="token keyword">import</span> random
     <span class="token keyword">with</span> <span class="token builtin">open</span><span class="token punctuation">(</span>log_path<span class="token punctuation">)</span> <span class="token keyword">as</span> f<span class="token punctuation">:</span>
         logs <span class="token operator">=</span> <span class="token punctuation">[</span>json<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>line<span class="token punctuation">)</span> <span class="token keyword">for</span> line <span class="token keyword">in</span> f<span class="token punctuation">]</span>
     sample <span class="token operator">=</span> random<span class="token punctuation">.</span>sample<span class="token punctuation">(</span>logs<span class="token punctuation">,</span> <span class="token builtin">min</span><span class="token punctuation">(</span>sample_size<span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">(</span>logs<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
@@ -386,17 +388,10 @@ RPG風タスク管理アプリ。Clean Architectureを採用。
         <hr>
       </section>
       <section class="level2">
-        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
-        <ul>
-          <li>🌐 <strong>ドキュメント</strong>: <a href="https://docs.cursor.com/">Cursor Documentation</a>（AI統合型エージェントの代表格。<code>.cursorrules</code> によるコンテキスト制御の最前線を学べます）</li>
-          <li>🌐 <strong>ドキュメント</strong>: <a href="https://docs.anthropic.com/en/docs/agents-and-tools/claude-code">Claude Code (Anthropic)</a>（CLIベースで自律的に動作するAIエージェントの公式ガイド）</li>
-          <li>🌐 <strong>Web</strong>: <a href="https://simonwillison.net/">Simon Willison's Weblog</a>（LLMとエンジニアリングの交差点における最新の実験と知見が日々更新されるブログ）</li>
-          <li>📄 <strong>論文</strong>: S. Yao et al. "<a href="https://arxiv.org/abs/2210.03629">ReAct: Synergizing Reasoning and Acting in Language Models</a>" (2022)（エージェントが「推論」と「行動」を交互に行う仕組みの理論的基盤）</li>
-          <li>📄 <strong>論文</strong>: J. Wei et al. "<a href="https://arxiv.org/abs/2201.11903">Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</a>" (2022)（AIに「順を追って考えさせる」ことで推論能力を引き出す手法の原典）</li>
-        </ul>
-        <hr>
-        <p>）</p>
-        <pre class="language-text"><code class="language-text">クエスト検索機能を実装してください。
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <section class="level3">
+          <h3 id="cliエージェント型クエスト検索機能の実装">CLIエージェント型：クエスト検索機能の実装</h3>
+          <pre class="language-text"><code class="language-text">クエスト検索機能を実装してください。
 
 要件:
 - GET /api/quests?status=active&amp;level_min=5
@@ -405,6 +400,7 @@ RPG風タスク管理アプリ。Clean Architectureを採用。
 - 実装完了後、適切な単位でコミットまで行うこと
 
 まず現在のアーキテクチャを把握してから作業を開始してください。</code></pre>
+        </section>
         <section class="level3">
           <h3 id="cliエージェント型claudemd-の作成依頼">CLIエージェント型：CLAUDE.md の作成依頼</h3>
           <pre class="language-text"><code class="language-text">このプロジェクト（QuestForge）用の CLAUDE.md を作成してください。
@@ -429,15 +425,14 @@ RPG風タスク管理アプリ。Clean Architectureを採用。
         </section>
       </section>
       <section class="level2">
-        <h2 id="さらに学ぶためのリソース-1">さらに学ぶためのリソース</h2>
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
         <ul>
-          <li>🌐 <strong>ドキュメント</strong>: <a href="https://docs.cursor.com/">Cursor Documentation</a>（AI統合型エージェントの代表格。<code>.cursorrules</code> によるコンテキスト制御の最前線を学べます）</li>
-          <li>🌐 <strong>ドキュメント</strong>: <a href="https://docs.anthropic.com/en/docs/agents-and-tools/claude-code">Claude Code (Anthropic)</a>（CLIベースで自律的に動作するAIエージェントの公式ガイド）</li>
+          <li>🌐 <strong>ドキュメント</strong>: <a href="https://docs.cursor.com/">Cursor Documentation</a>（AI統合型エージェントの代表格。<code>.cursor/rules/*.mdc</code> によるコンテキスト制御の最前線を学べます）</li>
+          <li>🌐 <strong>ドキュメント</strong>: <a href="https://code.claude.com/docs/en/overview">Claude Code (Anthropic)</a>（CLIベースで自律的に動作するAIエージェントの公式ガイド）</li>
           <li>🌐 <strong>Web</strong>: <a href="https://simonwillison.net/">Simon Willison's Weblog</a>（LLMとエンジニアリングの交差点における最新の実験と知見が日々更新されるブログ）</li>
           <li>📄 <strong>論文</strong>: S. Yao et al. "<a href="https://arxiv.org/abs/2210.03629">ReAct: Synergizing Reasoning and Acting in Language Models</a>" (2022)（エージェントが「推論」と「行動」を交互に行う仕組みの理論的基盤）</li>
           <li>📄 <strong>論文</strong>: J. Wei et al. "<a href="https://arxiv.org/abs/2201.11903">Chain-of-Thought Prompting Elicits Reasoning in Large Language Models</a>" (2022)（AIに「順を追って考えさせる」ことで推論能力を引き出す手法の原典）</li>
         </ul>
-        <hr>
       </section>
     </section>
   

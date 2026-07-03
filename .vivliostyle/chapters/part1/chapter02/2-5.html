@@ -45,7 +45,6 @@
       </section>
       <section class="level3">
         <h3 id="依存の方向性the-dependency-rule">依存の方向性（The Dependency Rule）</h3>
-        <p>[図: 依存方向のルール（内向きの矢印）]</p>
         <p>この城にはたった一つ、絶対の掟があります。</p>
         <blockquote>
           <p><strong>「依存の矢印は、常に外側から内側へ向かわなければならない」</strong></p>
@@ -239,7 +238,7 @@ Clean Architecture の依存ルール違反を検出してください。
         <span class="token property">"hooks"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
           <span class="token punctuation">{</span>
             <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"command"</span><span class="token punctuation">,</span>
-            <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"python scripts/check_arch.py $CLAUDE_TOOL_OUTPUT_PATH"</span>
+            <span class="token property">"command"</span><span class="token operator">:</span> <span class="token string">"python \"$CLAUDE_PROJECT_DIR/scripts/check_arch.py\""</span>
           <span class="token punctuation">}</span>
         <span class="token punctuation">]</span>
       <span class="token punctuation">}</span>
@@ -248,7 +247,7 @@ Clean Architecture の依存ルール違反を検出してください。
 <span class="token punctuation">}</span></code></pre>
           <pre class="language-python"><code class="language-python"><span class="token comment"># scripts/check_arch.py</span>
 <span class="token comment"># ファイルが保存されるたびに依存方向を自動チェックするスクリプト</span>
-<span class="token keyword">import</span> ast<span class="token punctuation">,</span> sys<span class="token punctuation">,</span> pathlib
+<span class="token keyword">import</span> ast<span class="token punctuation">,</span> sys<span class="token punctuation">,</span> json<span class="token punctuation">,</span> pathlib
 
 LAYER_ORDER <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token string">"domain"</span><span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">"application"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"infrastructure"</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token string">"presentation"</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">}</span>
 
@@ -264,11 +263,16 @@ LAYER_ORDER <span class="token operator">=</span> <span class="token punctuation
             <span class="token keyword">for</span> outer<span class="token punctuation">,</span> level <span class="token keyword">in</span> LAYER_ORDER<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
                 <span class="token keyword">if</span> outer <span class="token keyword">in</span> mod <span class="token keyword">and</span> level <span class="token operator">&gt;</span> LAYER_ORDER<span class="token punctuation">[</span>layer<span class="token punctuation">]</span><span class="token punctuation">:</span>
                     <span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f"⚠️  アーキテクチャ違反: </span><span class="token interpolation"><span class="token punctuation">{</span>src<span class="token punctuation">}</span></span><span class="token string"> が </span><span class="token interpolation"><span class="token punctuation">{</span>outer<span class="token punctuation">}</span></span><span class="token string"> に依存しています"</span></span><span class="token punctuation">)</span>
-                    sys<span class="token punctuation">.</span>exit<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+                    sys<span class="token punctuation">.</span>exit<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>  <span class="token comment"># exit code 2 でClaude Codeに警告を返す</span>
 
 <span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">"__main__"</span><span class="token punctuation">:</span>
-    check_file<span class="token punctuation">(</span>sys<span class="token punctuation">.</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span></code></pre>
-          <p>これにより、違反のあるコードはClaude Code上で即座に警告が表示され、「気づかないうちに城壁が崩れる」事態を防げます。</p>
+    <span class="token comment"># Hookはツールの情報を「標準入力のJSON」で受け取る（環境変数ではない）。</span>
+    <span class="token comment"># 編集対象のパスは tool_input.file_path に入っている。</span>
+    event <span class="token operator">=</span> json<span class="token punctuation">.</span>load<span class="token punctuation">(</span>sys<span class="token punctuation">.</span>stdin<span class="token punctuation">)</span>
+    path <span class="token operator">=</span> event<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"tool_input"</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"file_path"</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> path<span class="token punctuation">:</span>
+        check_file<span class="token punctuation">(</span>path<span class="token punctuation">)</span></code></pre>
+          <p>ポイントは、Hookが対象ファイルのパスを<strong>環境変数ではなく標準入力のJSON</strong>（<code>tool_input.file_path</code>）として受け取ることです。これにより、違反のあるコードはClaude Code上で即座に警告が表示され、「気づかないうちに城壁が崩れる」事態を防げます。</p>
         </section>
       </section>
       <section class="level2">
@@ -279,7 +283,6 @@ LAYER_ORDER <span class="token operator">=</span> <span class="token punctuation
           <li>📚 <strong>書籍</strong>: 成瀬 允宣『<a href="https://www.shoeisha.co.jp/book/detail/9784798161501">ドメイン駆動設計入門</a>』（ボトムアップでDDDを学べる、日本で最も分かりやすい入門書）</li>
           <li>🌐 <strong>Web</strong>: Robert C. Martin "<a href="https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html">The Clean Architecture</a>"（すべての始まりとなった、伝説的なブログ記事）</li>
         </ul>
-        <hr>
       </section>
     </section>
   

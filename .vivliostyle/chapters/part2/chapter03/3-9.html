@@ -8,7 +8,7 @@
     <section class="level1">
       <h1 id="39-外伝手技の工房skillsmcpサブエージェントでゴーレムを拡張する">3.9 【外伝】手技の工房——Skills・MCP・サブエージェントでゴーレムを拡張する</h1>
       <figure>
-        <img src="../../../assets/images/chapter_covers/Gaiden_Workshop.png" alt="扉絵: 手技の工房">
+        <img src="../../../assets/images/chapter_covers/Gaiden_Workshop.svg" alt="扉絵: 手技の工房">
         <figcaption aria-hidden="true">扉絵: 手技の工房</figcaption>
       </figure>
       <p>3.5節で、あなたはコーディングエージェント（ゴーレム）を召喚し、使役する術を学びました。しかし、そのゴーレムはまだ「生まれたまま」の状態です。</p>
@@ -32,6 +32,12 @@
         <section class="level3">
           <h3 id="claude-codeでの実装">Claude Codeでの実装</h3>
           <p>概念を理解したら、Claude Codeでどのように定義するかを具体的に見ていきましょう。<code>.claude/commands/</code> フォルダにMarkdownファイルを置くと、そのファイル名がそのままカスタムスラッシュコマンドになります。</p>
+          <blockquote>
+            <p>
+              <strong>補足: スラッシュコマンドと「Agent Skills」</strong>
+              Claude Codeには、似て非なる二つの仕組みがあります。<code>.claude/commands/*.md</code> に置く<strong>スラッシュコマンド</strong>は、あなたが <code>/コマンド名</code> と明示的に打って起動する「手動の短縮詠唱」です。一方、<code>.claude/skills/&lt;名前&gt;/SKILL.md</code> に置く<strong>Agent Skills</strong>は、あなたの依頼内容とスキルの説明文をAI自身が照合し、必要と判断したときに自動で読み込む「自律起動の手技」です。テンプレートやスクリプトを同梱できる点も後者の強みで、新規に作るなら Skills 形式が推奨されています。ここでは分かりやすさを優先し、手動起動のコマンドを例に進めます。
+            </p>
+          </blockquote>
           <pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> .claude/commands/security-review.md</span>
 <span class="token title important"><span class="token punctuation">#</span> 使い方: /security-review</span>
 
@@ -94,11 +100,11 @@ OWASP Top 10を参考に、以下の点をチェックしてください：
             <tbody>
               <tr>
                 <td>Claude Code</td>
-                <td><code>.claude/commands/*.md</code></td>
+                <td><code>.claude/commands/*.md</code>（手動）／ <code>.claude/skills/&lt;名前&gt;/SKILL.md</code>（自動起動）</td>
               </tr>
               <tr>
                 <td>Cursor / Windsurf</td>
-                <td><code>.cursorrules</code> + カスタムスラッシュコマンド</td>
+                <td><code>.cursor/rules/*.mdc</code>（旧 <code>.cursorrules</code>）＋カスタムスラッシュコマンド</td>
               </tr>
               <tr>
                 <td>GitHub Copilot</td>
@@ -174,7 +180,7 @@ OWASP Top 10を参考に、以下の点をチェックしてください：
         </section>
         <section class="level3">
           <h3 id="mcpサーバーの追加方法">MCPサーバーの追加方法</h3>
-          <p>活用のイメージが掴めたら、実際にMCPサーバーを追加する手順を確認しておきましょう。Claude Codeでは、<code>claude_desktop_config.json</code>（またはプロジェクトの設定ファイル）にサーバーを登録します。</p>
+          <p>活用のイメージが掴めたら、実際にMCPサーバーを追加する手順を確認しておきましょう。Claude Codeでは <code>claude mcp add</code> コマンドで登録するのが手軽ですが、チームで共有したい場合はプロジェクトルートの <code>.mcp.json</code> に記述してGitで管理します（<code>claude_desktop_config.json</code> はデスクトップ版Claude用で、CLIのClaude Codeとは別物です）。<code>.mcp.json</code> の中身は次のような形です。</p>
           <pre class="language-json"><code class="language-json"><span class="token punctuation">{</span>
   <span class="token property">"mcpServers"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
     <span class="token property">"questforge-db"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
@@ -189,6 +195,7 @@ OWASP Top 10を参考に、以下の点をチェックしてください：
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre>
           <p>一度設定すれば、エージェントが自動的に「この会話でどのツールを使うべきか」を判断して呼び出します。</p>
+          <p>なお、上の <code>github</code> サーバーは仕組みを示すための最小例です。GitHub連携については、現在はGitHubが提供する<strong>公式のGitHub MCPサーバー</strong>（ホスト型／Docker版）が推奨されており、実運用ではそちらを利用するとよいでしょう。</p>
           <hr>
         </section>
       </section>
@@ -283,7 +290,7 @@ pytestを使った包括的なテストを自動生成する」ものです。
         <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
         <ul>
           <li>🌐 <strong>公式ドキュメント</strong>: <a href="https://modelcontextprotocol.io/">Model Context Protocol</a>（MCPの仕様・サーバー一覧・実装ガイド。急速に拡充中）</li>
-          <li>🌐 <strong>公式ドキュメント</strong>: <a href="https://docs.anthropic.com/ja/docs/claude-code/slash-commands">Claude Code スラッシュコマンド</a>（カスタムスキルの定義方法の公式ガイド）</li>
+          <li>🌐 <strong>公式ドキュメント</strong>: <a href="https://code.claude.com/docs/en/slash-commands">Claude Code スラッシュコマンド</a> ・ <a href="https://code.claude.com/docs/en/skills">Agent Skills</a>（カスタムスキルの定義方法の公式ガイド）</li>
           <li>🌐 <strong>Web</strong>: <a href="https://github.com/modelcontextprotocol/servers">MCP Servers（GitHub）</a>（Anthropicが管理する公式MCPサーバー集。filesystem・github・postgres等のリファレンス実装）</li>
         </ul>
       </section>

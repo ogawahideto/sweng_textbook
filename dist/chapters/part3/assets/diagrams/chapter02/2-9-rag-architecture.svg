@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .box-know { fill: #E8F5E9; stroke: #43A047; stroke-width: 2; }
+      .box-query { fill: #E3F2FD; stroke: #1E88E5; stroke-width: 2; }
+      .box-ai { fill: #F3E5F5; stroke: #8E24AA; stroke-width: 2; }
+      .db-body { fill: #FFF8E1; stroke: #F9A825; stroke-width: 2; }
+      .text-main { font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: bold; fill: #333; }
+      .text-sub { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; fill: #555; }
+      .text-stage { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; font-weight: bold; fill: #8E24AA; }
+      .arrow { stroke: #666; stroke-width: 2; fill: none; marker-end: url(#ah); }
+      .arrow-d { stroke: #F9A825; stroke-width: 2; fill: none; stroke-dasharray: 5 3; marker-end: url(#ahd); }
+    </style>
+    <marker id="ah" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon fill="#666" points="0 0, 10 3.5, 0 7" />
+    </marker>
+    <marker id="ahd" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon fill="#F9A825" points="0 0, 10 3.5, 0 7" />
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="600" height="400" class="bg"/>
+
+  <text x="300" y="28" class="text-main" text-anchor="middle" font-size="15">RAGアーキテクチャ：外部知識を検索して生成に活かす</text>
+
+  <!-- Vector DB (shared, right) -->
+  <g>
+    <ellipse cx="510" cy="120" rx="55" ry="14" class="db-body"/>
+    <path d="M 455,120 L 455,200 A 55 14 0 0 0 565 200 L 565,120" class="db-body"/>
+    <ellipse cx="510" cy="120" rx="55" ry="14" fill="none" stroke="#F9A825" stroke-width="2"/>
+    <text x="510" y="160" class="text-main" text-anchor="middle">ベクトルDB</text>
+    <text x="510" y="178" class="text-sub" text-anchor="middle">意味の座標</text>
+  </g>
+
+  <!-- Stage 1: Indexing -->
+  <text x="20" y="80" class="text-stage">① インデキシング</text>
+  <rect x="30" y="92" width="100" height="48" rx="5" class="box-know"/>
+  <text x="80" y="121" class="text-main" text-anchor="middle">知識文書</text>
+  <path d="M 130,116 L 175,116" class="arrow"/>
+  <rect x="180" y="92" width="120" height="48" rx="5" class="box-ai"/>
+  <text x="240" y="113" class="text-main" text-anchor="middle">エンベディング</text>
+  <text x="240" y="130" class="text-sub" text-anchor="middle">テキスト→ベクトル</text>
+  <path d="M 300,116 L 450,118" class="arrow"/>
+  <text x="375" y="108" class="text-sub" text-anchor="middle">格納</text>
+
+  <!-- Stage 2: Retrieval -->
+  <text x="20" y="248" class="text-stage">② 検索</text>
+  <rect x="30" y="260" width="100" height="48" rx="5" class="box-query"/>
+  <text x="80" y="289" class="text-main" text-anchor="middle">質問</text>
+  <path d="M 130,284 L 175,284" class="arrow"/>
+  <rect x="180" y="260" width="120" height="48" rx="5" class="box-ai"/>
+  <text x="240" y="289" class="text-main" text-anchor="middle">エンベディング</text>
+  <!-- query vector to DB (similarity search) -->
+  <path d="M 300,272 C 380,250 420,220 470,205" class="arrow-d"/>
+  <text x="392" y="238" class="text-sub" text-anchor="middle" fill="#F9A825">コサイン類似度で検索</text>
+  <!-- DB returns related knowledge -->
+  <rect x="430" y="260" width="140" height="48" rx="5" class="box-know"/>
+  <text x="500" y="289" class="text-main" text-anchor="middle">関連知識（上位k件）</text>
+  <path d="M 510,210 L 500,256" class="arrow-d"/>
+
+  <!-- Stage 3: Generation -->
+  <text x="20" y="348" class="text-stage">③ 生成</text>
+  <rect x="30" y="356" width="150" height="36" rx="5" class="box-know" opacity="0.9"/>
+  <text x="105" y="379" class="text-main" text-anchor="middle" font-size="12">関連知識 ＋ 質問</text>
+  <path d="M 180,374 L 235,374" class="arrow"/>
+  <rect x="240" y="354" width="110" height="40" rx="5" class="box-ai"/>
+  <text x="295" y="379" class="text-main" text-anchor="middle">LLM</text>
+  <path d="M 350,374 L 420,374" class="arrow"/>
+  <rect x="425" y="354" width="145" height="40" rx="5" class="box-query"/>
+  <text x="497" y="379" class="text-main" text-anchor="middle" font-size="12">精度の高い回答</text>
+
+  <!-- link related knowledge (stage2) down to stage3 -->
+  <path d="M 500,308 L 200,352" class="arrow" opacity="0.5"/>
+</svg>

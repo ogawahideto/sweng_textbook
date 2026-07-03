@@ -67,11 +67,11 @@
         <h2 id="実践-aiによる意訳とパラダイムシフト">実践: AIによる「意訳」とパラダイム・シフト</h2>
         <p>四つの学派の哲学を俯瞰できたら、その知識を実際のAIとの対話にどう活かすかを見ていきましょう。AIは言語間の翻訳が得意ですが、単に「翻訳して」と頼むと、直訳調の不自然なコードが生成されます。その言語の「流儀（Idiomatic way）」を反映させるには、<strong>パラダイムを指定した詠唱（プロンプト）</strong>が必要です。</p>
         <section class="level3">
-          <h3 id="悪い例直訳python--go">悪い例：直訳（Python → Go）</h3>
+          <h3 id="シンプルな直訳python--go">シンプルな直訳（Python → Go）</h3>
           <p>Pythonの「クラスと継承」をそのままGoに持ち込もうとすると、Goの良さであるシンプルさが失われ、複雑で壊れやすいコードになります。</p>
         </section>
         <section class="level3">
-          <h3 id="良い例パラダイムシフトを伴う意訳">良い例：パラダイム・シフトを伴う意訳</h3>
+          <h3 id="さらに効果的な方法パラダイムを意識した意訳">さらに効果的な方法：パラダイムを意識した意訳</h3>
           <p>AIに「Goの流儀（Idiomatic Go）に合わせて、継承ではなく<strong>構造体の埋め込み（Composition）</strong>と<strong>インターフェース</strong>で再設計して」と指示します。</p>
           <pre class="language-go"><code class="language-go"><span class="token comment">// Pythonの「継承」をGoの「構成」へ意訳した例</span>
 <span class="token keyword">type</span> Flyer <span class="token keyword">interface</span> <span class="token punctuation">{</span>
@@ -204,21 +204,18 @@
       <section class="level2">
         <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
         <pre class="language-prompt"><code class="language-prompt">このPythonコードを、関数型プログラミングの「不変性（Immutability）」を意識してリファクタリングしてください。変数の再代入を避け、リスト内包表記やmap/filterを活用してください。</code></pre>
-        <pre class="language-prompt"><code class="language-prompt">以下のロジックをRustで実装したいです。パフォーマンスを最大化するために、ヒープ割り当てを最小限に抑え、所有権を効率的に扱う方法を提案してください。
----
-
-## さらに学ぶためのリソース
-
-- 📚 **書籍**: Bruce A. Tate『[セブン・ランゲージ ―7つの言語 7つの世界](https://www.ohmsha.co.jp/book/9784274068553/)』（Ruby, Io, Prolog, Scala, Erlang, Clojure, Haskell。全く異なる7つの世界観を一望できる名著）
-- 📚 **書籍**: Harold Abelson他『[計算機プログラムの構造と解釈 第2版 (SICP)](https://www.kadokawa.co.jp/product/301402000676/)』（プログラミングの本質を学ぶ「魔法使いの必読書」）
-- 🌐 **Web**: [Exercism](https://exercism.org/)（多くの言語を、メンターの指導を受けながら無料で学べる最高の修行場）
-- 🌐 **Web**: [Rosetta Code](https://rosettacode.org/)（一つの問題を何百もの言語でどう解くかを比較できる、現代のロゼッタ・ストーン）
-- 📄 **論文**: John Backus "[Can Programming Be Liberated from the von Neumann Style?](https://dl.acm.org/doi/10.1145/359576.359579)" (1977)（命令型の限界を指摘し、関数型プログラミングの道を拓いた歴史的講演）
-
----
-
-## AIへの詠唱例
-</code></pre>
+        <pre class="language-prompt"><code class="language-prompt">以下のロジックをRustで実装したいです。パフォーマンスを最大化するために、ヒープ割り当てを最小限に抑え、所有権を効率的に扱う方法を提案してください。</code></pre>
+        <hr>
+      </section>
+      <section class="level2">
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
+        <ul>
+          <li>📚 <strong>書籍</strong>: Bruce A. Tate『<a href="https://www.ohmsha.co.jp/book/9784274068553/">セブン・ランゲージ ―7つの言語 7つの世界</a>』（Ruby, Io, Prolog, Scala, Erlang, Clojure, Haskell。全く異なる7つの世界観を一望できる名著）</li>
+          <li>📚 <strong>書籍</strong>: Harold Abelson他『<a href="https://www.kadokawa.co.jp/product/301402000676/">計算機プログラムの構造と解釈 第2版 (SICP)</a>』（プログラミングの本質を学ぶ「魔法使いの必読書」）</li>
+          <li>🌐 <strong>Web</strong>: <a href="https://exercism.org/">Exercism</a>（多くの言語を、メンターの指導を受けながら無料で学べる最高の修行場）</li>
+          <li>🌐 <strong>Web</strong>: <a href="https://rosettacode.org/">Rosetta Code</a>（一つの問題を何百もの言語でどう解くかを比較できる、現代のロゼッタ・ストーン）</li>
+          <li>📄 <strong>論文</strong>: John Backus "<a href="https://dl.acm.org/doi/10.1145/359576.359579">Can Programming Be Liberated from the von Neumann Style?</a>" (1977)（命令型の限界を指摘し、関数型プログラミングの道を拓いた歴史的講演）</li>
+        </ul>
       </section>
     </section>
   

@@ -20,18 +20,15 @@
         </figure>
         <section class="level3">
           <h3 id="-インデキシング知識を意味の座標に変換する">① インデキシング：知識を「意味の座標」に変換する</h3>
-          <p>テキストをそのままDBに入れても、意味による検索はできません。まず<strong>エンベディング（Embedding）</strong>と呼ばれる変換で、テキストを高次元の数値ベクトルに変換します。</p>
-          <pre class="language-python"><code class="language-python"><span class="token keyword">import</span> anthropic
+          <p>テキストをそのままDBに入れても、意味による検索はできません。まず<strong>エンベディング（Embedding）</strong>と呼ばれる変換で、テキストを高次元の数値ベクトルに変換します。なお、Anthropic自身はエンベディング専用APIを提供しておらず、公式には<a href="https://www.voyageai.com/">Voyage AI</a>などの専用モデルの利用を推奨しています。ここでもVoyage AIのSDKを使います。</p>
+          <pre class="language-python"><code class="language-python"><span class="token keyword">import</span> voyageai
 
-client <span class="token operator">=</span> anthropic<span class="token punctuation">.</span>Anthropic<span class="token punctuation">(</span><span class="token punctuation">)</span>
+vo <span class="token operator">=</span> voyageai<span class="token punctuation">.</span>Client<span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment"># 環境変数 VOYAGE_API_KEY を使用</span>
 
 <span class="token keyword">def</span> <span class="token function">embed_text</span><span class="token punctuation">(</span>text<span class="token punctuation">:</span> <span class="token builtin">str</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token builtin">list</span><span class="token punctuation">[</span><span class="token builtin">float</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
     <span class="token triple-quoted-string string">"""テキストをエンベディングベクトルに変換する"""</span>
-    response <span class="token operator">=</span> client<span class="token punctuation">.</span>embeddings<span class="token punctuation">.</span>create<span class="token punctuation">(</span>
-        model<span class="token operator">=</span><span class="token string">"voyage-3"</span><span class="token punctuation">,</span>
-        <span class="token builtin">input</span><span class="token operator">=</span>text<span class="token punctuation">,</span>
-    <span class="token punctuation">)</span>
-    <span class="token keyword">return</span> response<span class="token punctuation">.</span>embeddings<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
+    result <span class="token operator">=</span> vo<span class="token punctuation">.</span>embed<span class="token punctuation">(</span><span class="token punctuation">[</span>text<span class="token punctuation">]</span><span class="token punctuation">,</span> model<span class="token operator">=</span><span class="token string">"voyage-3.5"</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> result<span class="token punctuation">.</span>embeddings<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
 
 <span class="token comment"># QuestForgeの過去クエストをインデキシング</span>
 quest_log <span class="token operator">=</span> <span class="token string">"ゴブリンの森での討伐クエスト。罠を解除し、リーダーを捕縛した。難易度★★★。"</span>
@@ -147,7 +144,7 @@ client <span class="token operator">=</span> anthropic<span class="token punctua
     <span class="token punctuation">)</span>
     
     response <span class="token operator">=</span> client<span class="token punctuation">.</span>messages<span class="token punctuation">.</span>create<span class="token punctuation">(</span>
-        model<span class="token operator">=</span><span class="token string">"claude-opus-4-6"</span><span class="token punctuation">,</span>
+        model<span class="token operator">=</span><span class="token string">"claude-opus-4-8"</span><span class="token punctuation">,</span>
         max_tokens<span class="token operator">=</span><span class="token number">512</span><span class="token punctuation">,</span>
         system<span class="token operator">=</span><span class="token string">"あなたはQuestForgeの賢明な冒険ガイドです。過去の冒険記録を参考に、勇者に最適な次の一手を提案してください。"</span><span class="token punctuation">,</span>
         messages<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">{</span>

@@ -93,12 +93,12 @@ safe_output <span class="token operator">=</span> html<span class="token punctua
       <section class="level2">
         <h2 id="owasp-top-10-を知る最も多い脅威のカタログ">OWASP Top 10 を知る——最も多い脅威のカタログ</h2>
         <p><strong>OWASP（Open Worldwide Application Security Project）</strong> が公開する「Top 10」は、Webアプリケーションで最も頻繁に見られるセキュリティ上の弱点をまとめたリストです。全てを詳細に学ぶ必要はありませんが、<strong>「何が存在するか」を知っていること</strong>が守りの第一歩です。</p>
-        <p>以下は <strong>OWASP Top 10 2021</strong> の上位5項目です（最新版は <a href="https://owasp.org/www-project-top-ten/">owasp.org</a> で確認できます）。</p>
+        <p>以下は <strong>OWASP Top 10 2025</strong> の上位5項目です（最新版は <a href="https://owasp.org/Top10/2025/">owasp.org</a> で確認できます）。</p>
         <table>
           <thead>
             <tr>
               <th>順位</th>
-              <th>カテゴリ（2021年版）</th>
+              <th>カテゴリ（2025年版）</th>
               <th>QuestForgeでの例</th>
             </tr>
           </thead>
@@ -110,23 +110,23 @@ safe_output <span class="token operator">=</span> html<span class="token punctua
             </tr>
             <tr>
               <td>2</td>
+              <td>セキュリティ設定の不備</td>
+              <td>デバッグモードが本番で有効、不要なポートが開放されている</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>ソフトウェア・サプライチェーンの失敗</td>
+              <td>脆弱な依存ライブラリを気づかず組み込んでいる</td>
+            </tr>
+            <tr>
+              <td>4</td>
               <td>暗号化の不備</td>
               <td>パスワードを平文で保存している</td>
             </tr>
             <tr>
-              <td>3</td>
+              <td>5</td>
               <td>インジェクション</td>
               <td>SQLインジェクション、XSS</td>
-            </tr>
-            <tr>
-              <td>4</td>
-              <td>安全でない設計</td>
-              <td>認証チェックが特定のルートにしかない</td>
-            </tr>
-            <tr>
-              <td>5</td>
-              <td>セキュリティ設定の不備</td>
-              <td>デバッグモードが本番で有効</td>
             </tr>
           </tbody>
         </table>
@@ -183,7 +183,7 @@ SECRET_KEY <span class="token operator">=</span> <span class="token string">"you
       </section>
       <section class="level2">
         <h2 id="依存ライブラリの脆弱性管理">依存ライブラリの脆弱性管理</h2>
-        <p>現代のソフトウェアは、多くの外部ライブラリに依存しています。あなた自身のコードが完璧でも、依存ライブラリに脆弱性があれば、城門は破られます。</p>
+        <p>現代のソフトウェアは、多くの外部ライブラリに依存しています。あなた自身のコードが完璧でも、依存ライブラリに脆弱性があれば、城門は破られます。OWASP Top 10 2025 では「ソフトウェア・サプライチェーンの失敗」が3位に新設されるほど、この脅威への注目が高まっています。</p>
         <section class="level3">
           <h3 id="自動チェックツール">自動チェックツール</h3>
           <p>この脅威に対応する第一手として、自動チェックツールの活用が挙げられます。</p>
@@ -400,7 +400,7 @@ SYSTEM_PROMPT <span class="token operator">=</span> <span class="token triple-qu
     client <span class="token operator">=</span> anthropic<span class="token punctuation">.</span>Anthropic<span class="token punctuation">(</span><span class="token punctuation">)</span>
     <span class="token comment"># ユーザー入力をデータとして渡し、システム命令とは分離する</span>
     response <span class="token operator">=</span> client<span class="token punctuation">.</span>messages<span class="token punctuation">.</span>create<span class="token punctuation">(</span>
-        model<span class="token operator">=</span><span class="token string">"claude-opus-4-6"</span><span class="token punctuation">,</span>
+        model<span class="token operator">=</span><span class="token string">"claude-opus-4-8"</span><span class="token punctuation">,</span>
         max_tokens<span class="token operator">=</span><span class="token number">512</span><span class="token punctuation">,</span>
         system<span class="token operator">=</span>SYSTEM_PROMPT<span class="token punctuation">,</span>
         messages<span class="token operator">=</span><span class="token punctuation">[</span><span class="token punctuation">{</span><span class="token string">"role"</span><span class="token punctuation">:</span> <span class="token string">"user"</span><span class="token punctuation">,</span> <span class="token string">"content"</span><span class="token punctuation">:</span> <span class="token string-interpolation"><span class="token string">f"クエスト要求: </span><span class="token interpolation"><span class="token punctuation">{</span>user_request<span class="token punctuation">}</span></span><span class="token string">"</span></span><span class="token punctuation">}</span><span class="token punctuation">]</span>

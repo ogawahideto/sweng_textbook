@@ -206,7 +206,7 @@ rectangle QuestForge {
 勇者 --&gt; UC1
 勇者 --&gt; UC2
 UC2 ..&gt; UC3 : &lt;&lt;include&gt;&gt;
-UC3 ..&gt; UC4 : &lt;&lt;extend&gt;&gt;
+UC4 ..&gt; UC3 : &lt;&lt;extend&gt;&gt;
 ギルドマスター --&gt; UC5
 
 @enduml</code></pre>
@@ -379,28 +379,20 @@ UC3 ..&gt; UC4 : &lt;&lt;extend&gt;&gt;
         </section>
       </section>
       <section class="level2">
-        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
-        <ul>
-          <li>📚 <strong>書籍</strong>: マーチン・ファウラー『<a href="https://www.shoeisha.co.jp/book/detail/9784798107950">UMLモデリングのエッセンス 第3版</a>』（UMLのエッセンスを凝縮した定番入門書）</li>
-          <li>📚 <strong>書籍</strong>: アリスター・コーバーン『<a href="https://www.amazon.co.jp/dp/489471415X">ユースケース実践ガイド</a>』（ユースケース記述の書き方を深く学びたい方向けのバイブル）</li>
-          <li>🌐 <strong>ツール</strong>: <a href="https://plantuml.com/ja/">PlantUML</a>（テキストからUML図を生成する強力なツール。プロフェッショナルのデファクトスタンダード）</li>
-          <li>🌐 <strong>ツール</strong>: <a href="https://mermaid.js.org/">Mermaid</a>（Markdown内で図を描くための、GitHub等でも標準採用されているライブラリ）</li>
-        </ul>
-        <p>ム名<strong>: QuestForge
-</strong>機能一覧**:</p>
-        <ul>
-          <li>ユーザー登録</li>
-          <li>ログイン</li>
-          <li>クエスト作成</li>
-          <li>クエスト完了</li>
-          <li>経験値獲得</li>
-          <li>レベルアップ</li>
-          <li>バッジ獲得</li>
-          <li>
-            進捗確認（管理者のみ）
-            ```
-          </li>
-        </ul>
+        <h2 id="aiへの詠唱例">AIへの詠唱例</h2>
+        <pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> ユースケース図の生成</span>
+以下の機能一覧から、PlantUML形式のユースケース図を生成してください。
+
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">システム名</span><span class="token punctuation">**</span></span>: QuestForge
+<span class="token bold"><span class="token punctuation">**</span><span class="token content">機能一覧</span><span class="token punctuation">**</span></span>:
+<span class="token list punctuation">-</span> ユーザー登録
+<span class="token list punctuation">-</span> ログイン
+<span class="token list punctuation">-</span> クエスト作成
+<span class="token list punctuation">-</span> クエスト完了
+<span class="token list punctuation">-</span> 経験値獲得
+<span class="token list punctuation">-</span> レベルアップ
+<span class="token list punctuation">-</span> バッジ獲得
+<span class="token list punctuation">-</span> 進捗確認（管理者のみ）</code></pre>
         <pre class="language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> アクティビティ図の生成</span>
 以下の処理フローを、PlantUML形式のアクティビティ図で表現してください。
 スイムレーンを使って、勇者とシステムの責任を分けてください。
@@ -430,7 +422,7 @@ UC3 ..&gt; UC4 : &lt;&lt;extend&gt;&gt;
         <hr>
       </section>
       <section class="level2">
-        <h2 id="さらに学ぶためのリソース-1">さらに学ぶためのリソース</h2>
+        <h2 id="さらに学ぶためのリソース">さらに学ぶためのリソース</h2>
         <ul>
           <li>📚 <strong>書籍</strong>: マーチン・ファウラー『<a href="https://www.shoeisha.co.jp/book/detail/9784798107950">UMLモデリングのエッセンス 第3版</a>』（UMLのエッセンスを凝縮した定番入門書）</li>
           <li>📚 <strong>書籍</strong>: アリスター・コーバーン『<a href="https://www.amazon.co.jp/dp/489471415X">ユースケース実践ガイド</a>』（ユースケース記述の書き方を深く学びたい方向けのバイブル）</li>

@@ -32,17 +32,14 @@
       </figure>
       <p>ここで重要なのは、これらのツールがコードを「実行せずに」解析するという点です。リンターはバグの芽となる構造的な問題を指摘し、フォーマッターはスタイルを強制的に統一し、型チェッカーは型の不整合を事前に検知します。三者が連携することで、AIが生成したコードであっても人間がレビューする前段階で多くの問題を自動的に取り除くことができます。</p>
       <hr>
+      <p>こうした客観的な評価は、AI時代のエンジニアにとって不可欠な能力です。「なんとなく読みづらい」「多分大丈夫」といった感覚的な評価は、チーム開発やAIとの協働では通用しません。具体的には、次の三つの効果があります。</p>
+      <ol>
+        <li><strong>客観的な品質基準</strong>: 「複雑すぎる」という指摘を、「循環複雑度が15を超えている」という事実に置き換えることで、感情論抜きに議論できます。</li>
+        <li><strong>AIの暴走抑止</strong>: AIにコードを書かせた後、人間がレビューする際の「チェックリスト」として機能します。</li>
+        <li><strong>技術的負債の可視化</strong>: 目に見えない「借金」を数値化し、リファクタリングの優先順位を決める根拠になります。</li>
+      </ol>
       <section class="level3">
-        <h3 id="なぜこれが重要か">なぜこれが重要か</h3>
-        <p>こうした客観的な評価は、AI時代のエンジニアにとって不可欠な能力です。「なんとなく読みづらい」「多分大丈夫」といった感覚的な評価は、チーム開発やAIとの協働では通用しません。</p>
-        <ol>
-          <li><strong>客観的な品質基準</strong>: 「複雑すぎる」という指摘を、「循環複雑度が15を超えている」という事実に置き換えることで、感情論抜きに議論できます。</li>
-          <li><strong>AIの暴走抑止</strong>: AIにコードを書かせた後、人間がレビューする際の「チェックリスト」として機能します。</li>
-          <li><strong>技術的負債の可視化</strong>: 目に見えない「借金」を数値化し、リファクタリングの優先順位を決める根拠になります。</li>
-        </ol>
-      </section>
-      <section class="level3">
-        <h3 id="基本概念鑑定のための指標メトリクス">基本概念：鑑定のための指標（メトリクス）</h3>
+        <h3 id="鑑定のための指標メトリクス">鑑定のための指標（メトリクス）</h3>
         <p>コードの品質を測るスカウターのような数値です。シンプルなものから順に見ていきましょう。</p>
         <section class="level4">
           <h4 id="1-行数lines-of-code-loc">1. 行数（Lines of Code: LOC）</h4>
@@ -448,13 +445,6 @@ mypy <span class="token builtin class-name">.</span></code></pre>
           <li>🌐 <strong>Web</strong>: <a href="https://google.github.io/styleguide/pyguide.html">Google Python Style Guide</a>（世界最高峰のエンジニアリング集団が定義する、美しく保守性の高いコードの基準）</li>
           <li>📄 <strong>論文</strong>: T. J. McCabe "<a href="https://ieeexplore.ieee.org/document/233837">A Complexity Measure</a>" (1976)（循環的複雑度を定義した歴史的論文）</li>
           <li>🌐 <strong>解説</strong>: <a href="https://www.sonarsource.com/resources/cognitive-complexity/">Cognitive Complexity by SonarSource</a>（人間にとっての「コードの読みづらさ」を数値化する認知的複雑度の公式ホワイトペーパー）</li>
-        </ul>
-        <hr>
-        <p><strong>執筆メモ</strong>:</p>
-        <ul>
-          <li>執筆日時: 2026-01-28</li>
-          <li>構成: 3.2節から「評価」を分離して新設</li>
-          <li>内容: メトリクス（循環/認知複雑度）+ 静的解析ツール（Linter/Formatter/Type Checker）</li>
         </ul>
       </section>
     </section>

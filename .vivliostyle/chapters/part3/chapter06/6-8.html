@@ -8,7 +8,7 @@
     <section class="level1">
       <h1 id="68-外伝浮遊する魔導城サーバーレスとクラウドの経済学">6.8 【外伝】浮遊する魔導城——サーバーレスとクラウドの経済学</h1>
       <figure>
-        <img src="../../../assets/images/chapter_covers/Gaiden_Serverless.png" alt="扉絵: 浮遊城">
+        <img src="../../../assets/images/chapter_covers/Gaiden_Serverless.svg" alt="扉絵: 浮遊城">
         <figcaption aria-hidden="true">扉絵: 浮遊城</figcaption>
       </figure>
       <p>かつて、魔法を発動させるには自前の魔法陣（サーバー）を丹念に描き、維持し続ける必要がありました。サーバーの調達、OSのセットアップ、ミドルウェアの設定、パッチ適用——魔法を使う前に、城の管理だけで膨大な労力が費えていました。</p>
@@ -16,10 +16,10 @@
       <p>この実体を持たない城は、どのような仕組みで動き、どう運用すればよいのでしょうか。「魔力（クラウドコスト）」を賢く統治するFinOpsの知恵とともに探っていきましょう。</p>
       <p>次の図は、サーバーレスという「浮遊する魔導城」のアーキテクチャ概念と、従来の常駐サーバーとの対比を示しています。</p>
       <figure>
-        <img src="../../../assets/diagrams/chapter06/6-7-floating-castle.svg" alt="浮遊する魔導城">
+        <img src="../../../assets/diagrams/chapter06/6-8-floating-castle.svg" alt="浮遊する魔導城">
         <figcaption aria-hidden="true">浮遊する魔導城</figcaption>
       </figure>
-      <p>ここで示されているのは、「呼ばれた瞬間だけ顕現する城」というサーバーレスの本質です。従来のサーバーが夜中も門番を常駐させるのに対し、FaaSは必要な時だけ召喚されてすぐに消えます。この「使った分だけ課金」という性質が、散発的なイベント処理では圧倒的なコスト効率をもたらします。</p>
+      <p>ここで示されているのは、「呼ばれた瞬間だけ顕現する城」というサーバーレスの本質です。従来のサーバーが夜中も門番を常駐させるのに対し、FaaS（Function as a Service）は必要な時だけ召喚されてすぐに消えます。この「使った分だけ課金」という性質が、散発的なイベント処理では圧倒的なコスト効率をもたらします。</p>
       <hr>
       <section class="level2">
         <h2 id="瞬時の顕現faasとイベント駆動アーキテクチャ">瞬時の顕現：FaaSとイベント駆動アーキテクチャ</h2>
@@ -47,7 +47,7 @@
               </tr>
             </tbody>
           </table>
-          <p><strong>FaaS（Function as a Service）</strong> の代表がAWS Lambdaです。QuestForgeにおける使い方を見てみましょう。</p>
+          <p><strong>FaaS</strong> の代表がAWS Lambdaです。QuestForgeにおける使い方を見てみましょう。</p>
           <pre class="language-python"><code class="language-python"><span class="token comment"># AWS Lambda: クエスト完了時の通知関数</span>
 <span class="token keyword">import</span> json
 <span class="token keyword">import</span> boto3

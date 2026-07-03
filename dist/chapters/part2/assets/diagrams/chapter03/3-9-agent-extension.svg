@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 360" width="560" height="360">
+  <defs>
+    <style>
+      .bg { fill: #FAFAFA; }
+      .box-agent { fill: #F3E5F5; stroke: #8E24AA; stroke-width: 3; }
+      .box-skill { fill: #E8F5E9; stroke: #43A047; stroke-width: 2; }
+      .box-mcp { fill: #E3F2FD; stroke: #1E88E5; stroke-width: 2; }
+      .box-sub { fill: #FFF3E0; stroke: #FB8C00; stroke-width: 2; }
+      .text-main { font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: bold; fill: #333; }
+      .text-sub { font-family: 'Noto Sans JP', sans-serif; font-size: 10px; fill: #555; }
+      .arrow { stroke: #666; stroke-width: 2.5; fill: none; marker-end: url(#ah); }
+    </style>
+    <marker id="ah" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon fill="#666" points="0 0, 10 3.5, 0 7" />
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="560" height="360" class="bg"/>
+
+  <text x="280" y="28" class="text-main" text-anchor="middle" font-size="15">ゴーレムを拡張する三つの手技</text>
+
+  <!-- Center agent -->
+  <rect x="205" y="150" width="150" height="70" rx="8" class="box-agent"/>
+  <text x="280" y="180" class="text-main" text-anchor="middle">エージェント</text>
+  <text x="280" y="200" class="text-main" text-anchor="middle">（ゴーレム）</text>
+
+  <!-- Skills (top) -->
+  <rect x="200" y="50" width="160" height="55" rx="6" class="box-skill"/>
+  <text x="280" y="73" class="text-main" text-anchor="middle">Skills</text>
+  <text x="280" y="92" class="text-sub" text-anchor="middle">繰り返す手技を定義（/コマンド）</text>
+  <path d="M 280,105 L 280,148" class="arrow"/>
+  <text x="345" y="130" class="text-sub" text-anchor="middle">指示の手間↓</text>
+
+  <!-- MCP (left) -->
+  <rect x="20" y="155" width="160" height="60" rx="6" class="box-mcp"/>
+  <text x="100" y="180" class="text-main" text-anchor="middle">MCP</text>
+  <text x="100" y="199" class="text-sub" text-anchor="middle">外部ツール接続</text>
+  <text x="100" y="240" class="text-sub" text-anchor="middle">DB ・ GitHub ・ Web検索</text>
+  <path d="M 180,185 L 203,185" class="arrow"/>
+  <text x="192" y="172" class="text-sub" text-anchor="middle">感覚器官↑</text>
+
+  <!-- Subagent (right) -->
+  <rect x="380" y="155" width="160" height="60" rx="6" class="box-sub"/>
+  <text x="460" y="180" class="text-main" text-anchor="middle">サブエージェント</text>
+  <text x="460" y="199" class="text-sub" text-anchor="middle">分業・並列・専門化</text>
+  <text x="460" y="240" class="text-sub" text-anchor="middle">調査 → 実装 → 検証</text>
+  <path d="M 380,185 L 357,185" class="arrow"/>
+  <text x="368" y="172" class="text-sub" text-anchor="middle">文脈上限突破↑</text>
+
+  <text x="280" y="320" class="text-main" text-anchor="middle" font-size="12">一人の術者から、専門部隊の指揮官へ</text>
+</svg>

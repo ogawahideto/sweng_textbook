@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1600" viewBox="0 0 1200 1600" role="img" aria-label="外伝 扉絵（プレースホルダー）: 手技の工房">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a1633"/>
+      <stop offset="1" stop-color="#0d0b1f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#bg)"/>
+  <rect x="48" y="48" width="1104" height="1504" fill="none" stroke="#c9a84c" stroke-width="4"/>
+  <rect x="66" y="66" width="1068" height="1468" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- 外伝リボン -->
+  <g text-anchor="middle" font-family="'Noto Sans JP','Yu Gothic',sans-serif">
+    <text x="600" y="230" font-size="46" letter-spacing="14" fill="#c9a84c">外 伝　—　SIDE STORY</text>
+
+    <!-- 錬金術円の意匠 -->
+    <g fill="none" stroke="#c9a84c" opacity="0.5">
+      <circle cx="600" cy="720" r="250" stroke-width="2"/>
+      <circle cx="600" cy="720" r="200" stroke-width="1"/>
+      <polygon points="600,520 773,820 427,820" stroke-width="1.5"/>
+      <polygon points="600,920 427,620 773,620" stroke-width="1.5"/>
+    </g>
+    <text x="600" y="758" font-size="150" font-weight="700" fill="#f2ecd6">3.9</text>
+
+    <!-- タイトル -->
+    <text x="600" y="1120" font-size="96" font-weight="700" fill="#f2ecd6">手技の工房</text>
+    <text x="600" y="1210" font-size="44" fill="#c9a84c">Skills・MCP・サブエージェント</text>
+
+    <!-- プレースホルダー注記 -->
+    <text x="600" y="1470" font-size="30" fill="#8a83a6">※扉絵プレースホルダー（本アートは制作予定）</text>
+  </g>
+</svg>
