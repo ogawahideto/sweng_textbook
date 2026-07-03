@@ -214,7 +214,7 @@ OpenAIのCodex CLIも同じプロジェクト構造を参照できます。Claud
 
 ## さらに学ぶためのリソース
 
-- 🌐 **公式ドキュメント**: [Claude Code](https://docs.anthropic.com/ja/docs/claude-code/overview)（CLAUDE.mdの設定方法・カスタムスキルの定義・サブエージェントの活用）
+- 🌐 **公式ドキュメント**: [Claude Code](https://code.claude.com/docs/en/overview)（CLAUDE.mdの設定方法・カスタムスキルの定義・サブエージェントの活用）
 - 🌐 **公式ドキュメント**: [Gemini CLI](https://github.com/google-gemini/gemini-cli)（GEMINI.mdによるプロジェクト設定・ツール連携）
 - 🌐 **公式ドキュメント**: [Codex CLI](https://github.com/openai/codex)（OpenAIのターミナル型コーディングエージェント）
 - 🌐 **Web**: [Model Context Protocol](https://modelcontextprotocol.io/)（本書3.9節で扱ったMCPの公式サイト。複数エージェントの外部ツール接続に活用できます）
